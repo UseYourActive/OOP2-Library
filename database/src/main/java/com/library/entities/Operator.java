@@ -1,11 +1,39 @@
 package com.library.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Builder;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "operators")
 @Builder
-public class Operator extends User{
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class Operator{
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name="password")
+    private String password;
 }

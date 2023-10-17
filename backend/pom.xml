@@ -6,10 +6,23 @@
     <parent>
         <groupId>com.library</groupId>
         <artifactId>oop2-library</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>backend</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.library</groupId>
+            <artifactId>frontend</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.library</groupId>
+            <artifactId>database</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
