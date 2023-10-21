@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
 public abstract class User {
