@@ -8,17 +8,20 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public abstract class User {
+public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Role role;
     @Column(name = "username")
     private String username;
 

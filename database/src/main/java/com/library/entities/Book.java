@@ -32,6 +32,7 @@ public class Book {
     @Column(name = "isbn", nullable = false)
     private String isbn;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "genre", nullable = false)
     private Genre genre;
 }
