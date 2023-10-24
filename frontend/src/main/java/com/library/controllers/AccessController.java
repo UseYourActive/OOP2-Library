@@ -4,10 +4,11 @@ import com.library.oop2library.LibraryApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import lombok.SneakyThrows;
 
 import java.io.IOException;
 
@@ -24,7 +25,6 @@ public class AccessController {
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordPasswordField;
-    private RegistrationController registrationController;
 
     @FXML
     public void onLogInButtonClick() {
@@ -41,11 +41,18 @@ public class AccessController {
         }
     }
 
-    public void signUpButtonOnAction() throws IOException {
-
+    public void signUpButtonOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("RegisterForm.fxml"));
+        Parent root = FXMLLoader.load(fxmlLoader.getLocation());
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setTitle("Registration Form");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void forgotPasswordLinkOnAction(ActionEvent click) {
+    public void forgotPasswordLinkOnAction(ActionEvent event) {
 
     }
 }
