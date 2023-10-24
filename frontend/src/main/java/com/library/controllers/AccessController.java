@@ -22,21 +22,18 @@ public class AccessController {
 
     @FXML
     public void onLogInButtonClick(){
-
-        logInMessageLabel.setText("");
-        if(usernameTextField.getText().isBlank()&&passwordPasswordField.getText().isBlank()){
-            logInMessageLabel.setText("Please enter username\nand password!");
-        }
-        else if(usernameTextField.getText().isBlank()){
+        if(usernameTextField.getText().isBlank()){
             logInMessageLabel.setText("Please enter your username!");
-        } else if(passwordPasswordField.getText().isBlank()){
+        }
+
+        if(passwordPasswordField.getText().isBlank()){
             logInMessageLabel.setText("Please enter your password!");
         }
 
-
+        if(usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()){
+            logInMessageLabel.setText("Please enter username\nand password!");
+        }
     }
-
-
 
     public void signUpButtonOnAction(ActionEvent click){
 
