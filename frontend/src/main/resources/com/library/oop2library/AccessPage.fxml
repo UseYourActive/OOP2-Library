@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controllers.AccessController">
+<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controllers.AccessController">
    <children>
       <Button id="logInButton" fx:id="logInButton" layoutX="125.0" layoutY="330.0" mnemonicParsing="false" onAction="#onLogInButtonClick" prefHeight="26.0" prefWidth="69.0" text="Log in" />
       <Button id="signInButton" fx:id="signUpButton" layoutX="202.0" layoutY="330.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="Sign Up" />
