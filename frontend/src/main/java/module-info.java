@@ -7,4 +7,6 @@ module com.library.oop2library {
 
     opens com.library.oop2library to javafx.fxml;
     exports com.library.oop2library;
+    exports com.library.controllers;
+    opens com.library.controllers to javafx.fxml;
 }
