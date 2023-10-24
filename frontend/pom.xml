@@ -16,7 +16,13 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
     <dependencies>
+        <dependency>
+            <groupId>com.library</groupId>
+            <artifactId>backend</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>

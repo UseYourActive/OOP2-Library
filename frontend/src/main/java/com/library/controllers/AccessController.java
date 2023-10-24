@@ -1,12 +1,15 @@
 package com.library.controllers;
 
+import com.library.oop2library.LibraryApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
+
+import java.io.IOException;
 
 public class AccessController {
     @FXML
@@ -14,40 +17,35 @@ public class AccessController {
     @FXML
     private Button signUpButton;
     @FXML
-    private Button forgotPasswordButton;
-    @FXML
-    private Button exitButton;
+    private Hyperlink forgotPasswordHyperlink;
     @FXML
     private Label logInMessageLabel;
     @FXML
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordPasswordField;
+    private RegistrationController registrationController;
 
-    public void logInButtonOnAction(ActionEvent click){
-        if(usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()){
-            logInMessageLabel.setText("Please don't leave the username blank!");
+    @FXML
+    public void onLogInButtonClick() {
+        if (usernameTextField.getText().isBlank()) {
+            logInMessageLabel.setText("Please enter your username!");
         }
 
-        if(usernameTextField.getText().isBlank()){
-            logInMessageLabel.setText("Please don't leave the username blank!");
+        if (passwordPasswordField.getText().isBlank()) {
+            logInMessageLabel.setText("Please enter your password!");
         }
 
-        if(passwordPasswordField.getText().isBlank()){
-            logInMessageLabel.setText("Please don't leave the password blank!");
+        if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
+            logInMessageLabel.setText("Please enter username\nand password!");
         }
     }
 
-    public void signUpButtonOnAction(ActionEvent click){
+    public void signUpButtonOnAction() throws IOException {
 
     }
 
-    public void forgotPasswordButtonOnAction(ActionEvent click){
+    public void forgotPasswordLinkOnAction(ActionEvent click) {
 
-    }
-
-    public void exitButtonOnAction(ActionEvent click){
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
     }
 }
