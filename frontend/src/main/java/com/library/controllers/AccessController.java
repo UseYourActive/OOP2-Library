@@ -19,25 +19,25 @@ public class AccessController {
     private PasswordField passwordPasswordField;
 
     @FXML
-    public void onLogInButtonClick(){
-        if(usernameTextField.getText().isBlank()){
+    public void onLogInButtonClick() {
+        if (usernameTextField.getText().isBlank()) {
             logInMessageLabel.setText("Please enter your username!");
         }
 
-        if(passwordPasswordField.getText().isBlank()){
+        if (passwordPasswordField.getText().isBlank()) {
             logInMessageLabel.setText("Please enter your password!");
         }
 
-        if(usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()){
+        if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
             logInMessageLabel.setText("Please enter username\nand password!");
         }
     }
 
-    public void signUpButtonOnAction(ActionEvent click){
+    public void signUpButtonOnAction(ActionEvent click) {
 
     }
 
-    public void forgotPasswordLinkOnAction(ActionEvent click){
+    public void forgotPasswordLinkOnAction(ActionEvent click) {
 
     }
 }

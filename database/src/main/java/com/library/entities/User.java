@@ -2,7 +2,6 @@ package com.library.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -22,6 +21,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column
     private Role role;
+
     @Column(name = "username")
     private String username;
 
