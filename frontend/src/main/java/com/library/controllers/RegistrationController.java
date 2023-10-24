@@ -25,7 +25,7 @@ public class RegistrationController {
 
     @FXML
     public void onRegisterButtonClick() {
-        if(!passwordPasswordField.getText().equals(repeatPasswordPasswordField.getText())){
+        if (!passwordPasswordField.getText().equals(repeatPasswordPasswordField.getText())) {
             resultLabel.setText("The passwords did not match!");
         }
 
