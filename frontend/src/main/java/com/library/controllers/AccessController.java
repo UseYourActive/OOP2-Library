@@ -3,8 +3,6 @@ package com.library.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import lombok.NoArgsConstructor;
 
 public class AccessController {
     @FXML

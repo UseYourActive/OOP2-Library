@@ -5,7 +5,6 @@ module com.library.oop2library {
     requires java.sql;
     requires jakarta.validation;
 
-
     opens com.library.oop2library to javafx.fxml;
     exports com.library.oop2library;
     exports com.library.controllers;
