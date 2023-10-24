@@ -1,8 +1,15 @@
 package com.library.controllers;
 
+import com.library.oop2library.LibraryApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import lombok.SneakyThrows;
+
+import java.io.IOException;
 
 public class AccessController {
     @FXML
@@ -17,6 +24,7 @@ public class AccessController {
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordPasswordField;
+    private RegistrationController registrationController;
 
     @FXML
     public void onLogInButtonClick() {
@@ -33,7 +41,7 @@ public class AccessController {
         }
     }
 
-    public void signUpButtonOnAction(ActionEvent click) {
+    public void signUpButtonOnAction() throws IOException {
 
     }
 
