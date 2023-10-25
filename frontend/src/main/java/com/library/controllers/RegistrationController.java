@@ -6,6 +6,14 @@ import javafx.scene.control.*;
 public class RegistrationController {
     @FXML
     private Button registerButton;
+
+    @FXML
+    private TextField visiblePasswordTextField;
+
+    @FXML
+    private TextField visibleRepeatPasswordTextField;
+    @FXML
+    private CheckBox showPasswordCheckBox;
     @FXML
     private TextField firstNameTextField;
     @FXML
@@ -21,12 +29,12 @@ public class RegistrationController {
     @FXML
     private PasswordField repeatPasswordPasswordField;
     @FXML
-    private PasswordField resultLabel;
+    private PasswordField messageRegistrationLabel;
 
     @FXML
     public void onRegisterButtonClick() {
         if (!passwordPasswordField.getText().equals(repeatPasswordPasswordField.getText())) {
-            resultLabel.setText("The passwords did not match!");
+            messageRegistrationLabel.setText("The passwords did not match!");
         }
 
         if (firstNameTextField.getText().isEmpty() ||
@@ -36,7 +44,28 @@ public class RegistrationController {
                 emailTextField.getText().isEmpty() ||
                 passwordPasswordField.getText().isEmpty() ||
                 repeatPasswordPasswordField.getText().isEmpty()) {
-            resultLabel.setText("Please fill out all fields!");
+            messageRegistrationLabel.setText("Please fill out all fields!");
+        }
+    }
+
+    @FXML
+    public void onCheckUncheck(){
+        if(showPasswordCheckBox.isSelected()){
+            visiblePasswordTextField.setText(passwordPasswordField.getText());
+            visibleRepeatPasswordTextField.setText(repeatPasswordPasswordField.getText());
+            visiblePasswordTextField.setVisible(true);
+            passwordPasswordField.setVisible(false);
+
+            visibleRepeatPasswordTextField.setVisible(true);
+            repeatPasswordPasswordField.setVisible(false);
+        }else{
+            passwordPasswordField.setText(visiblePasswordTextField.getText());
+            repeatPasswordPasswordField.setText(visibleRepeatPasswordTextField.getText());
+            visiblePasswordTextField.setVisible(false);
+            passwordPasswordField.setVisible(true);
+
+            visibleRepeatPasswordTextField.setVisible(false);
+            repeatPasswordPasswordField.setVisible(true);
         }
     }
 }
