@@ -1,7 +1,9 @@
 package com.library.entities;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum Genre {
     ACTION_AND_ADVENTURE("Action and adventure"),

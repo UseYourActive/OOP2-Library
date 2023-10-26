@@ -20,25 +20,22 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     private String secondName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", nullable = false)
     private Timestamp dateOfBirth;
 
-    @Column(name = "date_of_death")
-    private Timestamp dateOfDeath;
-
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 
-    @ManyToMany
+    @OneToMany
     @Column(name = "books", nullable = false)
     private List<Book> books;
 }
