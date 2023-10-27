@@ -1,8 +1,8 @@
 package com.library.entities;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+@Getter
 public enum Role {
     ADMIN("Admin"),
     CLIENT("Client"),
@@ -10,4 +10,7 @@ public enum Role {
 
     private final String value;
 
+    Role(String value) {
+        this.value = value;
+    }
 }
