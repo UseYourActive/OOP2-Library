@@ -10,12 +10,14 @@ import com.library.requests.CreateNewAuthorRequest;
 import com.library.responses.CreateNewAuthorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 @RequiredArgsConstructor
 @Slf4j
 public class CreateNewAuthorOperationProcessor implements CreateNewAuthorOperation {
@@ -24,15 +26,15 @@ public class CreateNewAuthorOperationProcessor implements CreateNewAuthorOperati
     private final CreateNewAuthorMapper createNewAuthorMapper;
 
     @Override
-    public CreateNewAuthorResponse process(final CreateNewAuthorRequest createNewAuthorRequest) {
+    public CreateNewAuthorResponse process(final CreateNewAuthorRequest input) {
         log.info("Processing a new author creation request.");
 
-        String firstName = createNewAuthorRequest.getFirstName();
-        String secondName = createNewAuthorRequest.getSecondName();
-        String lastName = createNewAuthorRequest.getLastName();
-        String country = createNewAuthorRequest.getCountry();
-        String dateOfBirth = createNewAuthorRequest.getDateOfBirth();
-        List<String> books = createNewAuthorRequest.getBookIds();
+        String firstName = input.getFirstName();
+        String secondName = input.getSecondName();
+        String lastName = input.getLastName();
+        String country = input.getCountry();
+        String dateOfBirth = input.getDateOfBirth();
+        List<String> books = input.getBookIds();
 
         List<UUID> listOfBooks = books.stream()
                 .map(UUID::fromString)

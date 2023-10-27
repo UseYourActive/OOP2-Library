@@ -3,6 +3,7 @@ module com.library.oop2library {
     requires javafx.fxml;
     requires lombok;
     requires jakarta.validation;
+    requires spring.context;
 
     opens com.library.oop2library to javafx.fxml;
     exports com.library.oop2library;

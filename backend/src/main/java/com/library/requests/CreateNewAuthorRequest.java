@@ -1,5 +1,6 @@
 package com.library.requests;
 
+import com.library.annotations.Date;
 import com.library.operations.base.OperationInput;
 
 import lombok.*;
@@ -15,6 +16,7 @@ public class CreateNewAuthorRequest implements OperationInput {
     private String firstName;
     private String secondName;
     private String lastName;
+    @Date
     private String dateOfBirth;
     private String country;
     private List<String> bookIds;

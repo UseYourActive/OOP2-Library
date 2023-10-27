@@ -2,7 +2,9 @@ package com.library.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class RegistrationController {
     @FXML
     private Button registerButton;
