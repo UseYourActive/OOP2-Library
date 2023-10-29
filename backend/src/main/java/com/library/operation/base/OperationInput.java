@@ -1,4 +1,4 @@
-package com.library.operations.base;
+package com.library.operation.base;
 
 public interface OperationInput {
 }

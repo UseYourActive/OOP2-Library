@@ -1,4 +1,4 @@
-package com.library.exceptions;
+package com.library.exception;
 
 import lombok.experimental.StandardException;
 

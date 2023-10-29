@@ -1,4 +1,4 @@
-package com.library.mappers;
+package com.library.mapper;
 
 import com.library.entities.Author;
 import com.library.requests.CreateNewAuthorRequest;

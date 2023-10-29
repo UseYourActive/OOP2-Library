@@ -1,21 +1,23 @@
-package com.library.processors;
+package com.library.processor;
 
 import com.library.entities.Author;
 import com.library.entities.Book;
-import com.library.mappers.CreateNewAuthorMapper;
-import com.library.operations.CreateNewAuthorOperation;
+import com.library.operation.CreateNewAuthorOperation;
 import com.library.repositories.AuthorRepository;
 import com.library.repositories.BookRepository;
 import com.library.requests.CreateNewAuthorRequest;
 import com.library.responses.CreateNewAuthorResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor

@@ -1,10 +1,9 @@
-package com.library.processors;
+package com.library.processor;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.entities.Role;
 import com.library.entities.User;
-import com.library.mappers.CreateNewUserMapper;
-import com.library.operations.CreateNewUserOperation;
+import com.library.operation.CreateNewUserOperation;
 import com.library.repositories.UserRepository;
 import com.library.requests.CreateNewUserRequest;
 import com.library.responses.CreateNewUserResponse;

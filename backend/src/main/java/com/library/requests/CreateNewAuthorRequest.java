@@ -1,7 +1,7 @@
 package com.library.requests;
 
 import com.library.annotations.Date;
-import com.library.operations.base.OperationInput;
+import com.library.operation.base.OperationInput;
 
 import lombok.*;
 

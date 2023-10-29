@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 //@Getter
 //@Setter
 public class User {
@@ -39,6 +39,79 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    public User(UUID id, Role role, String username, String firstName, String lastName, String email, String phone, String password) {
+        this.id = id;
+        this.role = role;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
+    public static UserBuilder builder(){
+        return new UserBuilder();
+    }
+
+    public static class UserBuilder {
+        private UUID id;
+        private Role role;
+        private String username;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+        private String password;
+
+        public UserBuilder() {
+        }
+
+        public UserBuilder id(final UUID id){
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder role(final Role role){
+            this.role = role;
+            return this;
+        }
+
+        public UserBuilder username(final String username){
+            this.username = username;
+            return this;
+        }
+
+        public UserBuilder firstName(final String firstName){
+            this.firstName = firstName;
+            return this;
+        }
+
+        public UserBuilder lastName(final String lastName){
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserBuilder email(final String email){
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder phone(final String phone){
+            this.phone = phone;
+            return this;
+        }
+
+        public UserBuilder password(final String password){
+            this.password = password;
+            return this;
+        }
+
+        public User build(){
+            return new User(this.id, this.role, this.username, this.firstName, this.lastName, this.email, this.phone, this.password);
+        }
+    }
 
     public UUID getId() {
         return id;

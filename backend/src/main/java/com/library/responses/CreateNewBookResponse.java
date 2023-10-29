@@ -1,6 +1,6 @@
 package com.library.responses;
 
-import com.library.operations.base.OperationOutput;
+import com.library.operation.base.OperationOutput;
 
 import java.util.UUID;
 

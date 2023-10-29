@@ -1,6 +1,6 @@
-package com.library.operations;
+package com.library.operation;
 
-import com.library.operations.base.OperationProcessor;
+import com.library.operation.base.OperationProcessor;
 import com.library.requests.CreateNewBookRequest;
 import com.library.responses.CreateNewBookResponse;
 
