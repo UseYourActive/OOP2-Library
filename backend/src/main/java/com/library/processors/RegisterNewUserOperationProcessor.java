@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RegisterNewUserOperationProcessor implements CreateNewUserOperation {
     private final UserRepository userRepository;
-    private final CreateNewUserMapper createNewUserMapper;
+//    private final CreateNewUserMapper createNewUserMapper;
 
     @Override
     public CreateNewUserResponse process(final CreateNewUserRequest input) {

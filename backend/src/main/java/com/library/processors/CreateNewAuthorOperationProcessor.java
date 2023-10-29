@@ -23,7 +23,7 @@ import java.util.UUID;
 public class CreateNewAuthorOperationProcessor implements CreateNewAuthorOperation {
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
-    private final CreateNewAuthorMapper createNewAuthorMapper;
+//    private final CreateNewAuthorMapper createNewAuthorMapper;
 
     @Override
     public CreateNewAuthorResponse process(final CreateNewAuthorRequest input) {

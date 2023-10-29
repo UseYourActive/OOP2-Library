@@ -2,7 +2,7 @@ package com.library.entities;
 
 import lombok.Getter;
 
-@Getter
+//@Getter
 public enum Genre {
     ACTION_AND_ADVENTURE("Action and adventure"),
     CLASSICS("Classics"),
@@ -19,5 +19,9 @@ public enum Genre {
 
     Genre(String value) {
         this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 }
