@@ -1,13 +1,16 @@
-module com.library.frontend {
+module frontend {
     requires javafx.controls;
     requires javafx.fxml;
-    requires lombok;
-    requires jakarta.validation;
-    requires spring.context;
-    requires com.library.backend;
+    requires javafx.web;
+    requires backend;
 
-    opens com.library.oop2library to javafx.fxml;
-    exports com.library.oop2library;
+    requires org.controlsfx.controls;
+    requires com.dlsc.formsfx;
+    requires net.synedra.validatorfx;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.bootstrapfx.core;
+    requires com.almasb.fxgl.all;
+    requires spring.context;
 
     opens com.library.controllers to javafx.fxml;
     exports com.library.controllers;

@@ -1,6 +1,5 @@
 package com.library.controllers;
 
-import com.library.oop2library.LibraryApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

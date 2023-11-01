@@ -1,4 +1,4 @@
-module com.library.database {
+module database {
     requires lombok;
     requires jakarta.persistence;
     requires spring.data.jpa;
