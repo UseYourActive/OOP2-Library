@@ -3,5 +3,5 @@ package com.library.exceptions;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class LibraryException extends RuntimeException{
+public abstract class LibraryException extends RuntimeException{
 }
