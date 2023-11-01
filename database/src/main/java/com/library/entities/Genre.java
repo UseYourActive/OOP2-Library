@@ -1,10 +1,5 @@
 package com.library.entities;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum Genre {
     ACTION_AND_ADVENTURE("Action and adventure"),
     CLASSICS("Classics"),
@@ -17,5 +12,17 @@ public enum Genre {
     SCIENCE_FICTION("Science fiction"),
     SUSPENSE_AND_THRILLERS("Suspense and thrillers");
 
-    private final String value;
+    private String value;
+
+    Genre(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

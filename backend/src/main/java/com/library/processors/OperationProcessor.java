@@ -1,4 +1,4 @@
 package com.library.processors;
 
-public class sample {
+public class OperationProcessor {
 }

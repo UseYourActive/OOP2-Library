@@ -17,6 +17,10 @@
         <property name="hbm2ddl.auto">update</property>
 
         <mapping class="com.library.entities.Author"/>
+        <mapping class="com.library.entities.Book"/>
+        <mapping class="com.library.entities.Genre"/>
+        <mapping class="com.library.entities.Role"/>
+        <mapping class="com.library.entities.User"/>
 
     </session-factory>
 </hibernate-configuration>
