@@ -14,6 +14,7 @@ import lombok.*;
 public class CreateUserRequest implements OperationInput {
     private String username;
     private String firstName;
+    private String middleName;
     private String lastName;
 
     @Email

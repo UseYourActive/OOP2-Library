@@ -45,7 +45,7 @@ public class AccessController {
 
     public void signUpButtonOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("/com/library/libraryproject/views/RegisterForm.fxml"));
-        Parent root = FXMLLoader.load(fxmlLoader.getLocation());
+        Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setResizable(false);

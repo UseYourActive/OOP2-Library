@@ -26,6 +26,8 @@ public class RegistrationController {
     private TextField usernameTextField;
     @FXML
     private TextField emailTextField;
+//    @FXML
+//    private TextField phoneNumberField;
     @FXML
     private PasswordField passwordPasswordField;
     @FXML

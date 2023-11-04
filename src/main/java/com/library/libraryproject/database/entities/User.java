@@ -25,6 +25,9 @@ public class User {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @Column(name = "middle_name", nullable = false)
+    private String middleName;
+
     @Column(name = "last_name", nullable = false)
     private String lastName;
 

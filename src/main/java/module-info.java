@@ -14,6 +14,7 @@ module com.library.libraryproject {
     requires spring.core;
     requires lombok;
     requires java.logging;
+    requires spring.beans;
     // backend
 
     // database
