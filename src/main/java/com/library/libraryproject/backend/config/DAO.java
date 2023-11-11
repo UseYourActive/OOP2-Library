@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public abstract class DAO<T> implements AutoCloseable {
     private SessionFactory sessionFactory;
-    private Session session;
+    protected Session session;
 
     protected abstract Optional<T> get(UUID id);
     protected abstract List<T> findAll();
