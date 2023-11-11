@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
@@ -13,6 +14,10 @@ import java.io.IOException;
 public class LibraryApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+//        context.register(JpaConfig.class);
+//        context.refresh();
+
         FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("/com/library/libraryproject/views/LogInForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setResizable(false);

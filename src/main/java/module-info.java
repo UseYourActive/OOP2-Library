@@ -15,6 +15,7 @@ module com.library.libraryproject {
     requires lombok;
     requires java.logging;
     requires spring.beans;
+    requires org.hibernate.orm.core;
     // backend
 
     // database
@@ -30,6 +31,9 @@ module com.library.libraryproject {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
+    requires java.naming;
+
+//    opens com.library.libraryproject.backend.config to spring.core;
 
     exports com.library.libraryproject.frontend.controllers;
     opens com.library.libraryproject.frontend.controllers to javafx.fxml;

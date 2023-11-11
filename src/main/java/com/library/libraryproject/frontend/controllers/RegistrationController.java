@@ -1,10 +1,14 @@
 package com.library.libraryproject.frontend.controllers;
 
+import com.almasb.fxgl.core.Inject;
+import com.library.libraryproject.backend.operations.CreateUserOperation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
+//@RequiredArgsConstructor
 public class RegistrationController {
     @FXML
     private Button registerButton;
@@ -34,6 +38,8 @@ public class RegistrationController {
     private PasswordField repeatPasswordPasswordField;
     @FXML
     private PasswordField messageRegistrationLabel;
+
+//    private final CreateUserOperation createUserOperation;
 
     @FXML
     public void onRegisterButtonClick() {
