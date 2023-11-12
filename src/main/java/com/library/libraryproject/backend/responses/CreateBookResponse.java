@@ -7,8 +7,8 @@ import lombok.*;
 @Getter
 @Builder
 @AllArgsConstructor
-@Setter(AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class CreateBookResponse implements OperationOutput {
     private String bookId;
     private String title;

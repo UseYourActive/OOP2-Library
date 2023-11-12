@@ -1,14 +1,15 @@
 package com.library.libraryproject.frontend.controllers;
 
-import com.almasb.fxgl.core.Inject;
 import com.library.libraryproject.backend.operations.CreateUserOperation;
+import com.library.libraryproject.backend.requests.CreateUserRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-//@RequiredArgsConstructor
+@NoArgsConstructor
 public class RegistrationController {
     @FXML
     private Button registerButton;
@@ -39,7 +40,12 @@ public class RegistrationController {
     @FXML
     private PasswordField messageRegistrationLabel;
 
-//    private final CreateUserOperation createUserOperation;
+    private CreateUserOperation createUserOperation;
+
+    @Autowired
+    public RegistrationController(CreateUserOperation createUserOperation) {
+        this.createUserOperation = createUserOperation;
+    }
 
     @FXML
     public void onRegisterButtonClick() {
@@ -56,6 +62,24 @@ public class RegistrationController {
                 repeatPasswordPasswordField.getText().isEmpty()) {
             messageRegistrationLabel.setText("Please fill out all fields!");
         }
+
+        String firstName = firstNameTextField.getText();
+        String middleName = middleNameTextField.getText();
+        String lastName = lastNameTextField.getText();
+        String username = usernameTextField.getText();
+        String password = passwordPasswordField.getText();
+        String email = emailTextField.getText();
+
+        CreateUserRequest build = CreateUserRequest.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .username(username)
+                .middleName(middleName)
+                .password(password)
+                .email(email)
+                .build();
+
+        createUserOperation.process(build);
     }
 
     @FXML

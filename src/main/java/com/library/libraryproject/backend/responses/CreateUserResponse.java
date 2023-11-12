@@ -6,8 +6,8 @@ import lombok.*;
 @Getter
 @Builder
 @AllArgsConstructor
-@Setter(AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class CreateUserResponse implements OperationOutput {
     private String userId;
     private String username;
