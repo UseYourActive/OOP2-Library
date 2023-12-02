@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @Setter
 @AllArgsConstructor
-public class CreateBookResponse implements OperationOutput {
+public class CreateBookResponse implements Response {
     private String bookId;
     private String title;
     private String resume;

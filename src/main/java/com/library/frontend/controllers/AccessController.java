@@ -1,24 +1,23 @@
 package com.library.frontend.controllers;
 
 
-import com.library.LibraryApplication;
-import com.library.backend.operations.OperationProcessorFactory;
-import com.library.backend.operations.processors.contracts.LogInOperation;
+import com.library.backend.operations.OperationFactory;
+import com.library.backend.operations.processors.LogInOperationProcessor;
 import com.library.backend.operations.requests.LogInRequest;
 import com.library.backend.operations.responses.LogInResponse;
+import com.library.frontend.utils.Form;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class AccessController{
+@NoArgsConstructor
+public class AccessController implements Controller {
     @FXML
     private Button logInButton;
     @FXML
@@ -32,58 +31,66 @@ public class AccessController{
     @FXML
     private PasswordField passwordPasswordField;
 
-    @Setter
-    private LogInOperation logInOperation;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(() -> usernameTextField.requestFocus());
+    }
 
     @FXML
     public void onLogInButtonClick() {
-        if (usernameTextField.getText().isBlank()) {
-            logInMessageLabel.setText("Please enter your username!");
-        }
-
-        if (passwordPasswordField.getText().isBlank()) {
-            logInMessageLabel.setText("Please enter your password!");
-        }
-
-        if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
-            logInMessageLabel.setText("Please enter username\nand password!");
-        }
-
-        LogInRequest request=LogInRequest.builder()
-                .username(usernameTextField.getText())
-                .password(passwordPasswordField.getText())
-                .build();
-
         try {
-            LogInResponse response = logInOperation.process(request);
+            checkInput();
+
+            LogInRequest request=LogInRequest.builder()
+                    .username(usernameTextField.getText())
+                    .password(passwordPasswordField.getText())
+                    .build();
+
+
+            LogInOperationProcessor createUserOperationProcessor = OperationFactory.getOperationProcessor(LogInOperationProcessor.class);
+            LogInResponse response = createUserOperationProcessor.process(request);
+
+
             switch (response.getRole()){
                 case "ADMIN" -> {}
                 case "OPERATOR" ->{}
                 case "CLIENT" ->{}
             }
 
+
         }catch (Exception e){
-            //
+            logInMessageLabel.setText("Please enter your password!");
         }
     }
 
-    public void signUpButtonOnAction(ActionEvent event) throws IOException {
-        OperationProcessorFactory operationProcessorFactory=new OperationProcessorFactory();
-        FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("/com.library/views/RegisterForm.fxml"));
-        Parent root = fxmlLoader.load();
-
-        RegistrationController controller=fxmlLoader.getController();
-        controller.setCreateUserOperation(operationProcessorFactory.getUserOperation());
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setResizable(false);
-        stage.setTitle("Registration Form");
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    public void signUpButtonOnAction(ActionEvent event){
+        try {
+            Form form = new Form(event, "/com.library/views/RegisterForm.fxml", "Registration Form");
+            form.load();
+        }catch (IOException e){
+            //--
+        }
     }
 
+    @FXML
     public void forgotPasswordLinkOnAction(ActionEvent event) {
 
     }
+
+    private void checkInput() throws Exception {
+        if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
+            throw new Exception("Please enter username\nand password!");
+        }
+
+        if (usernameTextField.getText().isBlank()) {
+            throw new Exception("Please enter your username!");
+        }
+
+        if (passwordPasswordField.getText().isBlank()) {
+            throw new Exception("Please enter your password!");
+        }
+    }
+
 }

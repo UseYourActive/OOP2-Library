@@ -20,13 +20,13 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 32, nullable = false)
     private String name;
 
     @Column(name = "date_of_birth", nullable = false)
     private Timestamp dateOfBirth;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country",length = 16, nullable = false)
     private String country;
 
     @OneToMany(mappedBy = "author",orphanRemoval = true)

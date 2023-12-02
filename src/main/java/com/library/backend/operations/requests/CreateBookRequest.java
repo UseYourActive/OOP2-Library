@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateBookRequest implements OperationInput {
+public class CreateBookRequest implements Request {
     private String title;
     private String resume;
     private String author;

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Library.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Library.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Library.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OOP2-Library.Library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OOP2-Library.Library.main.iml" />
     </modules>
   </component>
 </project>

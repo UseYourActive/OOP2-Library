@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LogInRequest implements OperationInput{
+public class LogInRequest implements Request {
     private String username;
     private String password;
 }

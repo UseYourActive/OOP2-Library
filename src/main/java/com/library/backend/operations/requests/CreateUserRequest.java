@@ -1,7 +1,6 @@
 package com.library.backend.operations.requests;
 
 
-import com.library.backend.annotations.PhoneNumberValidation;
 import com.library.backend.annotations.StrongPasswordValidation;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -11,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateUserRequest implements OperationInput {
+public class CreateUserRequest implements Request {
     private String username;
     private String firstName;
     private String middleName;
@@ -19,9 +18,6 @@ public class CreateUserRequest implements OperationInput {
 
     @Email
     private String email;
-
-    @PhoneNumberValidation
-    private String phoneNumber;
 
     @StrongPasswordValidation
     private String password;

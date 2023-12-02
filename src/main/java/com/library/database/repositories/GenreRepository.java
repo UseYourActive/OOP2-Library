@@ -1,7 +1,6 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.Genre;
-import com.library.database.repositories.contracts.Repository;
 
 import java.util.UUID;
 import java.util.stream.Stream;

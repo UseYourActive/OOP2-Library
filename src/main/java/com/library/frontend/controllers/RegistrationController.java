@@ -1,13 +1,19 @@
 package com.library.frontend.controllers;
 
-import com.library.backend.operations.processors.contracts.CreateUserOperation;
+import com.library.backend.operations.OperationFactory;
+import com.library.backend.operations.processors.CreateUserOperationProcessor;
 import com.library.backend.operations.requests.CreateUserRequest;
 import com.library.backend.operations.responses.CreateUserResponse;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import lombok.NoArgsConstructor;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class RegistrationController {
+@NoArgsConstructor
+public class RegistrationController implements Controller {
     @FXML
     private Button registerButton;
     @FXML
@@ -33,9 +39,9 @@ public class RegistrationController {
     @FXML
     private Label registrationMessageLabel;
 
-    private CreateUserOperation createUserOperation;
-
-    public RegistrationController() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(() -> firstNameTextField.requestFocus());
     }
 
     @FXML
@@ -53,8 +59,8 @@ public class RegistrationController {
                     .email(emailTextField.getText())
                     .build();
 
-            CreateUserResponse createUserResponse = createUserOperation.process(request);
-
+            CreateUserOperationProcessor processor= OperationFactory.getOperationProcessor(CreateUserOperationProcessor.class);
+            CreateUserResponse createUserResponse= processor.process(request);
 
 
         }catch (Exception e){
@@ -118,7 +124,4 @@ public class RegistrationController {
         }
     }
 
-    public void setCreateUserOperation(CreateUserOperation createUserOperation) {
-        this.createUserOperation = createUserOperation;
-    }
 }

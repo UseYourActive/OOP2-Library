@@ -1,9 +1,7 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.User;
-import com.library.database.repositories.contracts.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 

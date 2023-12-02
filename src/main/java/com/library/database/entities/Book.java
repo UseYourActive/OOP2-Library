@@ -18,17 +18,17 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title",length = 32, nullable = false)
     private String title;
 
-    @Column(name = "resume", nullable = false)
+    @Column(name = "resume",length = 512, nullable = false)
     private String resume;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @Column(name = "isbn", nullable = false)
+    @Column(name = "isbn",length = 16, nullable = false)
     private String isbn;
 
     //@Enumerated(EnumType.STRING)

@@ -1,7 +1,6 @@
 package com.library.backend.operations.responses;
 
 
-import com.library.database.entities.Role;
 import lombok.*;
 
 
@@ -10,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor
-public class LogInResponse implements OperationOutput {
+public class LogInResponse implements Response {
     private String userId;
     private String username;
     private String firstName;
