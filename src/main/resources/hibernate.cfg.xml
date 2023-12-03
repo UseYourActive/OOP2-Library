@@ -17,11 +17,11 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
 
-        <mapping class="com.library.database.entities.Author"/>
-        <mapping class="com.library.database.entities.Book"/>
-        <mapping class="com.library.database.entities.Genre"/>
-        <mapping class="com.library.database.entities.Role"/>
-        <mapping class="com.library.database.entities.User"/>
+        <mapping class="com.project.database.entities.Author"/>
+        <mapping class="com.project.database.entities.Book"/>
+        <mapping class="com.project.database.entities.Genre"/>
+        <mapping class="com.project.database.entities.Role"/>
+        <mapping class="com.project.database.entities.User"/>
 
     </session-factory>
 </hibernate-configuration>
