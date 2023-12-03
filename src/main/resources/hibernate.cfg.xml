@@ -17,10 +17,24 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
 
-        <mapping class="com.library.database.entities.Author"/>
-        <mapping class="com.library.database.entities.Book"/>
-        <mapping class="com.library.database.entities.Genre"/>
-        <mapping class="com.library.database.entities.User"/>
+        <!-- Entity Classes -->
+            <mapping class="com.library.database.entities.Author"/>
+            <mapping class="com.library.database.entities.Book"/>
+            <mapping class="com.library.database.entities.Genre"/>
 
+            <!-- The main entity user class -->
+            <mapping class="com.library.database.entities.User"/>
+            <!-- The main entity user class -->
+
+            <!-- The inheritors of the main entity user class -->
+            <mapping class="com.library.database.entities.Admin"/>
+            <mapping class="com.library.database.entities.Client"/>
+            <!-- The inheritors of the main entity user class -->
+
+            <!-- The inheritors of the client class -->
+            <mapping class="com.library.database.entities.Operator"/>
+            <mapping class="com.library.database.entities.Reader"/>
+            <!-- The inheritors of the client class -->
+        <!-- Entity Classes -->
     </session-factory>
 </hibernate-configuration>

@@ -10,10 +10,10 @@ public class CreateUserResponseConverter implements Converter<User, CreateUserRe
     public CreateUserResponse convert(User source) {
         return CreateUserResponse.builder()
                 .userId(String.valueOf(source.getId()))
-                .email(source.getEmail())
-                .firstName(source.getFirstName())
-                .lastName(source.getLastName())
-                .role(String.valueOf(source.getRole()))
+//                .email(source.getEmail())
+//                .firstName(source.getFirstName())
+//                .lastName(source.getLastName())
+//                .role(String.valueOf(source.getRole()))
                 .username(source.getUsername())
                 .build();
     }

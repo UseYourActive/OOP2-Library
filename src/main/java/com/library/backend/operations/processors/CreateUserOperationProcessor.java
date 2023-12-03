@@ -6,7 +6,6 @@ import com.library.backend.mappers.CreateUserResponseConverter;
 import com.library.backend.operations.processors.contracts.CreateUserOperation;
 import com.library.backend.operations.requests.CreateUserRequest;
 import com.library.backend.operations.responses.CreateUserResponse;
-import com.library.database.enums.Role;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +31,8 @@ public class CreateUserOperationProcessor implements CreateUserOperation {
         String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, password.toCharArray()));
 
         User user = User.builder()
-                .email(email)
-                .firstName(firstName)
-                .middleName(middleName)
-                .lastName(lastName)
                 .password(hashedPassword)
                 .username(username)
-                .role(Role.CLIENT)
                 .build();
 
 //        userRepository.openSession();
