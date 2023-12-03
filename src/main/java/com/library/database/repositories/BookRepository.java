@@ -21,7 +21,7 @@ public class BookRepository extends Repository<Book> {
 
     @Override
     public Stream<Book> getAll() {
-        return null;
+        return session.createQuery("SELECT b FROM Book b", Book.class).getResultStream();
     }
 
     public Book getByTitle(String title) {

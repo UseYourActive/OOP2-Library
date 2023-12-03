@@ -38,7 +38,7 @@ public class AccessController implements Controller {
     }
 
     @FXML
-    public void onLogInButtonClick() {
+    public void logInButtonOnAction(ActionEvent event) {
         try {
             checkInput();
 
@@ -54,6 +54,7 @@ public class AccessController implements Controller {
 
             switch (response.getRole()) {
                 case "ADMIN" -> {
+                    new Form(event,"/views/AdminForm.fxml","Administrator panel").load();
                 }
                 case "OPERATOR" -> {
                 }

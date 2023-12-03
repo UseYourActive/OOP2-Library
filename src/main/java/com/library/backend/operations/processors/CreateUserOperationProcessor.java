@@ -43,14 +43,17 @@ public class CreateUserOperationProcessor implements CreateUserOperation {
 
 //        userRepository.openSession();
 
-        CreateUserResponse response = null;
+        CreateUserResponse response;
 
         if (userRepository.save(user)) {
             response = converter.convert(user);
         }
+        else {
+            userRepository.close();
+            throw new RuntimeException("Critical error");
+        }
 
         userRepository.close();
-
         return response;
     }
 }

@@ -14,7 +14,7 @@ public class GenreRepository extends Repository<Genre> {
     }
 
     @Override
-    public Genre get(UUID id) {
+    public Genre get(Long id) {
         return session.get(Genre.class, id);
     }
 
