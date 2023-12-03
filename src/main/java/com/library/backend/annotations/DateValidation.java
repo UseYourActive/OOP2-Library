@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = DateValidator.class)
 public @interface DateValidation {
     String message() default "Invalid date format";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

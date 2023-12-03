@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = StrongPasswordValidator.class)
 public @interface StrongPasswordValidation {
     String message() default "Password must contain at least one special character, one uppercase letter,one lowercase letter, one digit, no whitespaces and have a minimum length of 8.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

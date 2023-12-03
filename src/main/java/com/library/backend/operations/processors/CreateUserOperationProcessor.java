@@ -44,8 +44,8 @@ public class CreateUserOperationProcessor implements CreateUserOperation {
         userRepository.openSession();
 
         CreateUserResponse response = null;
-        
-        if(userRepository.save(user)){
+
+        if (userRepository.save(user)) {
             response = converter.convert(user);
         }
 

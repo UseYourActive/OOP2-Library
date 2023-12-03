@@ -19,7 +19,7 @@ public final class Form {
     public Form(ActionEvent event, String resourceFiles, String stageTitle) {
         this.resourceFiles = resourceFiles;
         this.stageTitle = stageTitle;
-        this.stage= (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
     public Form(Stage stage, String resourceFiles, String stageTitle) {

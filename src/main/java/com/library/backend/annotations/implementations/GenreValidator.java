@@ -15,9 +15,9 @@ public class GenreValidator implements ConstraintValidator<GenreValidation, Stri
     @Override
     public boolean isValid(String genre, ConstraintValidatorContext context) {
 
-        GenreRepository repository=new GenreRepository();
+        GenreRepository repository = new GenreRepository();
 
-        for(Genre validGenre : repository.getAll().toList()){
+        for (Genre validGenre : repository.getAll().toList()) {
             if (validGenre.toString().equals(genre)) {
                 return true;
             }

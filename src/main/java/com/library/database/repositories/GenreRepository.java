@@ -7,11 +7,13 @@ import java.util.stream.Stream;
 
 public class GenreRepository extends Repository<Genre> {
 
-    public GenreRepository() {super();}
+    public GenreRepository() {
+        super();
+    }
 
     @Override
     public Genre get(UUID id) {
-        return session.get(Genre.class,id);
+        return session.get(Genre.class, id);
     }
 
     @Override
@@ -19,10 +21,10 @@ public class GenreRepository extends Repository<Genre> {
         return session.createQuery("SELECT g FROM GENRES g", Genre.class).getResultStream();
     }
 
-    public Genre getByName(String name){
-        return session.createQuery("SELECT g FROM GENRES g",Genre.class).getResultStream()
-                .filter(g->g.getName().equals(name))
+    public Genre getByName(String name) {
+        return session.createQuery("SELECT g FROM GENRES g", Genre.class).getResultStream()
+                .filter(g -> g.getName().equals(name))
                 .findFirst()
-                .orElseThrow(()->new RuntimeException("Genre not found!"));
+                .orElseThrow(() -> new RuntimeException("Genre not found!"));
     }
 }

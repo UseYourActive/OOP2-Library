@@ -1,6 +1,5 @@
 package com.library.database.repositories;
 
-import com.library.database.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,14 +13,15 @@ public abstract class Repository<T> implements AutoCloseable {
     protected Session session;
     private static SessionFactory factory;
 
-    protected Repository() {}
+    protected Repository() {
+    }
 
     static {
-       try {
-          factory = new Configuration().configure().buildSessionFactory();
-       }catch (Throwable ex){
-           System.out.println("Database configuration error");
-       }
+        try {
+            factory = new Configuration().configure().buildSessionFactory();
+        } catch (Throwable ex) {
+            System.out.println("Database configuration error");
+        }
     }
 
     public abstract T get(UUID id);
@@ -52,7 +52,6 @@ public abstract class Repository<T> implements AutoCloseable {
     public void update(T t) {
         executeInsideTransaction(session -> session.merge(t));
     }
-
 
 
     public void openSession() {

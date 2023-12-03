@@ -15,44 +15,44 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CreateBookOperationProcessor implements CreateBookOperation {
-  private final BookRepository bookRepository;
-  private final GenreRepository genreRepository;
-  private final AuthorRepository authorRepository;
-  private final CreateBookResponseConverter converter;
+    private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
+    private final CreateBookResponseConverter converter;
 
-  @Override
-  public CreateBookResponse process(final CreateBookRequest request) {
-      //log.info("Processing CreateBookRequest: {}", request);
+    @Override
+    public CreateBookResponse process(final CreateBookRequest request) {
+        //log.info("Processing CreateBookRequest: {}", request);
 
-      String title = request.getTitle();
-      String isbn = request.getIsbn();
-      String authorName = request.getAuthor();
-      String genreName = request.getGenre();
-      String resume = request.getResume();
-    //  log.debug("Received values: title={}, isbn={}, author={}, genre={}, resume={}", title, isbn, author, genre, resume);
+        String title = request.getTitle();
+        String isbn = request.getIsbn();
+        String authorName = request.getAuthor();
+        String genreName = request.getGenre();
+        String resume = request.getResume();
+        //  log.debug("Received values: title={}, isbn={}, author={}, genre={}, resume={}", title, isbn, author, genre, resume);
 
-      Author author = authorRepository.getByName(authorName);
-      Genre genre=genreRepository.getByName(genreName);
+        Author author = authorRepository.getByName(authorName);
+        Genre genre = genreRepository.getByName(genreName);
 
-      Book book = Book.builder()
-              .author(author)
-              .genre(genre)
-              .isbn(isbn)
-              .title(title)
-              .resume(resume)
-              .build();
-      //log.debug("Created Book object: {}", book);
+        Book book = Book.builder()
+                .author(author)
+                .genre(genre)
+                .isbn(isbn)
+                .title(title)
+                .resume(resume)
+                .build();
+        //log.debug("Created Book object: {}", book);
 
-      if(bookRepository.save(book)){
-          return converter.convert(book);
-      }
+        if (bookRepository.save(book)) {
+            return converter.convert(book);
+        }
 
-      //Book savedBook = bookRepository.save(book);
-      //log.info("Saved Book: {}", savedBook);
+        //Book savedBook = bookRepository.save(book);
+        //log.info("Saved Book: {}", savedBook);
 
-      //CreateBookResponse response = converter.convert(savedBook);
-      //log.info("Created CreateBookResponse: {}", response);
+        //CreateBookResponse response = converter.convert(savedBook);
+        //log.info("Created CreateBookResponse: {}", response);
 
-      return null;
-  }
+        return null;
+    }
 }

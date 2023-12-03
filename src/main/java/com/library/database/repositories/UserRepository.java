@@ -17,7 +17,7 @@ public class UserRepository extends Repository<User> {
 
     @Override
     public Stream<User> getAll() {
-        return session.createQuery("SELECT u FROM User u",User.class).getResultStream();
+        return session.createQuery("SELECT u FROM User u", User.class).getResultStream();
     }
 
     public User findByUsername(String username) throws Exception {

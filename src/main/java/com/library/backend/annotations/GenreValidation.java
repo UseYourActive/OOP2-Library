@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = GenreValidator.class)
 public @interface GenreValidation {
     String message() default "Invalid genre. Please choose a valid one.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

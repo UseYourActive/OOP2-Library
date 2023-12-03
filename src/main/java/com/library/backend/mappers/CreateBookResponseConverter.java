@@ -6,7 +6,6 @@ import com.library.database.entities.Book;
 
 
 public class CreateBookResponseConverter implements Converter<Book, CreateBookResponse> {
-
     @Override
     public CreateBookResponse convert(Book source) {
         return CreateBookResponse.builder()

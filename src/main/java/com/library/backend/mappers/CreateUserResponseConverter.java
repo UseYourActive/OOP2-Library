@@ -5,7 +5,6 @@ import com.library.backend.operations.responses.CreateUserResponse;
 import com.library.database.entities.User;
 
 
-
 public class CreateUserResponseConverter implements Converter<User, CreateUserResponse> {
     @Override
     public CreateUserResponse convert(User source) {

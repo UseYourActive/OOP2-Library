@@ -42,7 +42,7 @@ public class AccessController implements Controller {
         try {
             checkInput();
 
-            LogInRequest request=LogInRequest.builder()
+            LogInRequest request = LogInRequest.builder()
                     .username(usernameTextField.getText())
                     .password(passwordPasswordField.getText())
                     .build();
@@ -52,24 +52,27 @@ public class AccessController implements Controller {
             LogInResponse response = createUserOperationProcessor.process(request);
 
 
-            switch (response.getRole()){
-                case "ADMIN" -> {}
-                case "OPERATOR" ->{}
-                case "CLIENT" ->{}
+            switch (response.getRole()) {
+                case "ADMIN" -> {
+                }
+                case "OPERATOR" -> {
+                }
+                case "CLIENT" -> {
+                }
             }
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logInMessageLabel.setText("Please enter your password!");
         }
     }
 
     @FXML
-    public void signUpButtonOnAction(ActionEvent event){
+    public void signUpButtonOnAction(ActionEvent event) {
         try {
-            Form form = new Form(event, "/com.library/views/RegisterForm.fxml", "Registration Form");
+            Form form = new Form(event, "/library/views/RegisterForm.fxml", "Registration Form");
             form.load();
-        }catch (IOException e){
+        } catch (IOException e) {
             //--
         }
     }

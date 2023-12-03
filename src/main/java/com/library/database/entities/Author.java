@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "authors")
@@ -26,9 +25,9 @@ public class Author {
     @Column(name = "date_of_birth", nullable = false)
     private Timestamp dateOfBirth;
 
-    @Column(name = "country",length = 16, nullable = false)
+    @Column(name = "country", length = 16, nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "author",orphanRemoval = true)
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
     private List<Book> books;
 }

@@ -1,8 +1,9 @@
 package com.library.backend.annotations.implementations;
 
+import com.library.backend.annotations.ValidBigDecimalStringValidation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import com.library.backend.annotations.ValidBigDecimalStringValidation;
+
 import java.math.BigDecimal;
 
 public class BigDecimalStringValidator implements ConstraintValidator<ValidBigDecimalStringValidation, String> {
@@ -19,7 +20,5 @@ public class BigDecimalStringValidator implements ConstraintValidator<ValidBigDe
         } catch (NumberFormatException e) {
             return false;
         }
-
-
     }
 }

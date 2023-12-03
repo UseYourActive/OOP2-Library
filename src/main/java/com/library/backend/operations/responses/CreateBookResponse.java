@@ -1,7 +1,10 @@
 package com.library.backend.operations.responses;
 
 import com.library.database.entities.Author;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder

@@ -15,16 +15,16 @@ public class LogInOperationProcessor implements LogInOperation {
 
     @Override
     public LogInResponse process(LogInRequest logInRequest) {
-        LogInResponse logInResponse=LogInResponse.builder().build();
-        try{
-            User user= userRepository.findByUsername(logInRequest.getUsername());
+        LogInResponse logInResponse = LogInResponse.builder().build();
+        try {
+            User user = userRepository.findByUsername(logInRequest.getUsername());
             logInResponse.setEmail(user.getEmail());
             logInResponse.setFirstName(user.getFirstName());
             logInResponse.setLastName(user.getLastName());
             logInResponse.setRole(user.getRole().getRole());
             logInResponse.setUsername(user.getUsername());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logInResponse.setE(e);
         }
         return logInResponse;

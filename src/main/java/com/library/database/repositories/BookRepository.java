@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 
 public class BookRepository extends Repository<Book> {
 
-    public BookRepository() {super();}
+    public BookRepository() {
+        super();
+    }
 
     @Override
     public Book get(UUID id) {
@@ -19,12 +21,12 @@ public class BookRepository extends Repository<Book> {
         return null;
     }
 
-    public Book getByTitle(String title){
-        try{
-        return session.createQuery("SELECT b FROM BOOK b",Book.class).getResultStream()
-                .filter(b -> b.getTitle().equals(title))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Book getByTitle(String title) {
+        try {
+            return session.createQuery("SELECT b FROM BOOK b", Book.class).getResultStream()
+                    .filter(b -> b.getTitle().equals(title))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         } catch (Exception e) {
             return null;
         }

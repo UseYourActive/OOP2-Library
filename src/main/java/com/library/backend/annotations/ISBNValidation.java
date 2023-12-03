@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ISBNValidator.class)
 public @interface ISBNValidation {
     String message() default "Invalid ISBN format";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

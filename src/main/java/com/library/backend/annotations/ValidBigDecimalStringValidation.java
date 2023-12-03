@@ -12,6 +12,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidBigDecimalStringValidation {
     String message() default "Invalid BigDecimal format";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

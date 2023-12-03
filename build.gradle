@@ -4,7 +4,7 @@ plugins {
     id 'application'
 }
 
-group = 'com.project'
+group = 'com.library'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -42,7 +42,7 @@ javafx {
 }
 
 application {
-    mainClassName = 'com.project.LibraryApplication'
+    mainClassName = 'com.library.LibraryApplication'
 }
 
 test {

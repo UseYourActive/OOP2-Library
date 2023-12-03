@@ -59,11 +59,11 @@ public class RegistrationController implements Controller {
                     .email(emailTextField.getText())
                     .build();
 
-            CreateUserOperationProcessor processor= OperationFactory.getOperationProcessor(CreateUserOperationProcessor.class);
-            CreateUserResponse createUserResponse= processor.process(request);
+            CreateUserOperationProcessor processor = OperationFactory.getOperationProcessor(CreateUserOperationProcessor.class);
+            CreateUserResponse createUserResponse = processor.process(request);
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             registrationMessageLabel.setText(e.getMessage());
         }
     }
@@ -92,7 +92,6 @@ public class RegistrationController implements Controller {
     private void checkAllFieldsForInput() throws Exception {
 
 
-
         String firstNameTextFieldText = firstNameTextField.getText();
         String middleNameTextFieldText = middleNameTextField.getText();
         String lastNameTextFieldText = lastNameTextField.getText();
@@ -101,15 +100,15 @@ public class RegistrationController implements Controller {
         String pass;
         String repeatPass;
 
-        if(passwordPasswordField.isVisible()){
-            pass  = passwordPasswordField.getText();
-            repeatPass  = repeatPasswordPasswordField.getText();
-        }else {
-            pass  = visiblePasswordTextField.getText();
-            repeatPass  = visibleRepeatPasswordTextField.getText();
+        if (passwordPasswordField.isVisible()) {
+            pass = passwordPasswordField.getText();
+            repeatPass = repeatPasswordPasswordField.getText();
+        } else {
+            pass = visiblePasswordTextField.getText();
+            repeatPass = visibleRepeatPasswordTextField.getText();
         }
 
-        if(firstNameTextFieldText.isEmpty() ||
+        if (firstNameTextFieldText.isEmpty() ||
                 middleNameTextFieldText.isEmpty() ||
                 lastNameTextFieldText.isEmpty() ||
                 usernameTextFieldText.isEmpty() ||
