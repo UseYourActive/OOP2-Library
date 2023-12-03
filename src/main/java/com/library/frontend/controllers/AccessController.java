@@ -70,7 +70,7 @@ public class AccessController implements Controller {
     @FXML
     public void signUpButtonOnAction(ActionEvent event) {
         try {
-            Form form = new Form(event, "/library/views/RegisterForm.fxml", "Registration Form");
+            Form form = new Form(event, "/views/RegisterForm.fxml", "Registration Form");
             form.load();
         } catch (IOException e) {
             //--

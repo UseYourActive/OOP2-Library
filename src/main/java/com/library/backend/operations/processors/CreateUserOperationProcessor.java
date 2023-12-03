@@ -6,7 +6,7 @@ import com.library.backend.mappers.CreateUserResponseConverter;
 import com.library.backend.operations.processors.contracts.CreateUserOperation;
 import com.library.backend.operations.requests.CreateUserRequest;
 import com.library.backend.operations.responses.CreateUserResponse;
-import com.library.database.entities.Role;
+import com.library.database.enums.Role;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class CreateUserOperationProcessor implements CreateUserOperation {
                 .role(Role.CLIENT)
                 .build();
 
-        userRepository.openSession();
+//        userRepository.openSession();
 
         CreateUserResponse response = null;
 

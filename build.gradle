@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    // Validations
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     // Tests
@@ -21,6 +22,9 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Logger
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.9'
 
     // Password Hashing
     implementation 'at.favre.lib:bcrypt:0.10.2'

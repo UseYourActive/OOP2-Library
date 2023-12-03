@@ -1,5 +1,6 @@
 package com.library.database.entities;
 
+import com.library.database.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "inventory_number", unique = true, nullable = false)
+    private String inventoryNumber;
+
     @Column(name = "title", length = 32, nullable = false)
     private String title;
 
@@ -29,8 +33,11 @@ public class Book {
     @Column(name = "isbn", length = 16, nullable = false)
     private String isbn;
 
-    //@Enumerated(EnumType.STRING)
     @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "book_status", length = 16, nullable = false)
+    private BookStatus bookStatus;
 }

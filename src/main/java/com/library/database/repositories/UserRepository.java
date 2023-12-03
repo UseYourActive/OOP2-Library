@@ -1,17 +1,21 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 import java.util.stream.Stream;
 
 public class UserRepository extends Repository<User> {
+    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
+
     public UserRepository() {
         super();
     }
 
     @Override
-    public User get(UUID id) {
+    public User get(Long id) {
         return session.find(User.class, id);
     }
 

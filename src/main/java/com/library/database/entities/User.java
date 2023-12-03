@@ -1,5 +1,6 @@
 package com.library.database.entities;
 
+import com.library.database.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,9 +35,6 @@ public class User {
     @Column(name = "password", length = 1024, nullable = false)
     private String password;
 
-
-    //@ManyToOne
-    //@JoinColumn(name = "role_id",nullable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 64, nullable = false)
     private Role role;

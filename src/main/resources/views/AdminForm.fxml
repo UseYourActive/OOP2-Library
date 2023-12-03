@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <Button text="Create Operator" layoutX="20" layoutY="20" />
+    <Button text="Remove Operator" layoutX="20" layoutY="60" />
+    <Button text="Register a Book" layoutX="20" layoutY="100" />
+    <Button text="Remove Book from Register" layoutX="20" layoutY="140" />
+
+    <ListView fx:id="operatorsListView" prefWidth="200" prefHeight="150" layoutX="250" layoutY="20" />
+    <ListView fx:id="booksListView" prefWidth="200" prefHeight="150" layoutX="500" layoutY="20" />
+</AnchorPane>
