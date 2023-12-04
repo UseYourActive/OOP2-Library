@@ -8,7 +8,7 @@ public class LibraryApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Form form = new Form(stage, "/views/LogInForm.fxml", "Library");
+        Form form = new Form(stage, "/views/LogInForm.fxml", "Library",false);
         form.load();
     }
 

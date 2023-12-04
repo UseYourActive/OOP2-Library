@@ -23,12 +23,12 @@
             <mapping class="com.library.database.entities.Genre"/>
 
             <!-- The main entity user class -->
-            <mapping class="com.library.database.entities.User"/>
+            <mapping class="com.library.database.entities.base.User"/>
             <!-- The main entity user class -->
 
             <!-- The inheritors of the main entity user class -->
             <mapping class="com.library.database.entities.Admin"/>
-            <mapping class="com.library.database.entities.Client"/>
+            <mapping class="com.library.database.entities.base.Client"/>
             <!-- The inheritors of the main entity user class -->
 
             <!-- The inheritors of the client class -->

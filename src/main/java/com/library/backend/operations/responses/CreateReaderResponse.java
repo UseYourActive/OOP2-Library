@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor
-public class CreateUserResponse implements Response {
+public class CreateReaderResponse implements Response {
     private String userId;
     private String username;
     private String firstName;

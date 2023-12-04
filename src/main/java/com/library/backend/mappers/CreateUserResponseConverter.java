@@ -1,14 +1,14 @@
 package com.library.backend.mappers;
 
 
-import com.library.backend.operations.responses.CreateUserResponse;
-import com.library.database.entities.User;
+import com.library.backend.operations.responses.CreateReaderResponse;
+import com.library.database.entities.base.User;
 
 
-public class CreateUserResponseConverter implements Converter<User, CreateUserResponse> {
+public class CreateUserResponseConverter implements Converter<User, CreateReaderResponse> {
     @Override
-    public CreateUserResponse convert(User source) {
-        return CreateUserResponse.builder()
+    public CreateReaderResponse convert(User source) {
+        return CreateReaderResponse.builder()
                 .userId(String.valueOf(source.getId()))
 //                .email(source.getEmail())
 //                .firstName(source.getFirstName())

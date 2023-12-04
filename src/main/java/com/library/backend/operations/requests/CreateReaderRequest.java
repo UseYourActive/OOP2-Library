@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateUserRequest implements Request {
+public class CreateReaderRequest implements Request {
     private String username;
     private String firstName;
     private String middleName;

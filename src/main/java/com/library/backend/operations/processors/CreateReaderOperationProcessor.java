@@ -3,22 +3,22 @@ package com.library.backend.operations.processors;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.mappers.CreateUserResponseConverter;
-import com.library.backend.operations.processors.contracts.CreateUserOperation;
-import com.library.backend.operations.requests.CreateUserRequest;
-import com.library.backend.operations.responses.CreateUserResponse;
-import com.library.database.entities.User;
-import com.library.database.repositories.UserRepository;
+import com.library.backend.operations.processors.contracts.CreateReaderOperation;
+import com.library.backend.operations.requests.CreateReaderRequest;
+import com.library.backend.operations.responses.CreateReaderResponse;
+import com.library.database.entities.Reader;
+import com.library.database.repositories.ReaderRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 
 @RequiredArgsConstructor
-public class CreateUserOperationProcessor implements CreateUserOperation {
-    private final UserRepository userRepository;
+public class CreateReaderOperationProcessor implements CreateReaderOperation {
+    private final ReaderRepository readerRepository;
     private final CreateUserResponseConverter converter;
 
     @Override
-    public CreateUserResponse process(final CreateUserRequest request) {
+    public CreateReaderResponse process(final CreateReaderRequest request) {
         String username = request.getUsername();
         String email = request.getEmail();
         String password = request.getPassword();
@@ -30,24 +30,31 @@ public class CreateUserOperationProcessor implements CreateUserOperation {
 
         String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, password.toCharArray()));
 
-        User user = User.builder()
-                .password(hashedPassword)
+        Reader reader=Reader.builder()
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
                 .username(username)
+                .password(hashedPassword)
+                .email(email)
                 .build();
+
+        //User user1= Admin.builder()
+
 
 //        userRepository.openSession();
 
-        CreateUserResponse response;
+        CreateReaderResponse response;
 
-        if (userRepository.save(user)) {
-            response = converter.convert(user);
+        if (readerRepository.save(reader)) {
+            response = converter.convert(reader);
         }
         else {
-            userRepository.close();
+            readerRepository.close();
             throw new RuntimeException("Critical error");
         }
 
-        userRepository.close();
+        readerRepository.close();
         return response;
     }
 }

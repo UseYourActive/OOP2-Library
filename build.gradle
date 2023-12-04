@@ -4,8 +4,7 @@ plugins {
     id 'application'
 }
 
-group = 'com.library'
-version = '1.0-SNAPSHOT'
+
 
 repositories {
     mavenCentral()
@@ -35,9 +34,6 @@ dependencies {
     // Postgres
     implementation 'org.postgresql:postgresql:42.6.0'
 
-    // JavaFX
-//    implementation 'org.openjfx:javafx-controls:17'
-//    implementation 'org.openjfx:javafx-fxml:17'
 }
 
 javafx {
@@ -46,6 +42,8 @@ javafx {
 }
 
 application {
+    group = 'com.library'
+    version = '1.0-SNAPSHOT'
     mainClassName = 'com.library.LibraryApplication'
 }
 

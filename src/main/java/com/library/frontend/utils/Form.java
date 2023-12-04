@@ -16,16 +16,20 @@ public final class Form {
     private final String resourceFiles;
     private final String stageTitle;
 
-    public Form(ActionEvent event, String resourceFiles, String stageTitle) {
+    private final Boolean isResizable;
+
+    public Form(ActionEvent event, String resourceFiles, String stageTitle, Boolean isResizable) {
         this.resourceFiles = resourceFiles;
         this.stageTitle = stageTitle;
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        this.isResizable=isResizable;
     }
 
-    public Form(Stage stage, String resourceFiles, String stageTitle) {
+    public Form(Stage stage, String resourceFiles, String stageTitle,Boolean isResizable) {
         this.stage = stage;
         this.resourceFiles = resourceFiles;
         this.stageTitle = stageTitle;
+        this.isResizable=isResizable;
     }
 
     public void load() throws IOException {
@@ -35,7 +39,7 @@ public final class Form {
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root);
-        stage.setResizable(false);
+        stage.setResizable(isResizable);
         stage.setTitle(stageTitle);
         stage.setScene(scene);
         stage.show();

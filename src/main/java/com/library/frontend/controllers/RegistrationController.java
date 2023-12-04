@@ -1,9 +1,9 @@
 package com.library.frontend.controllers;
 
 import com.library.backend.operations.OperationFactory;
-import com.library.backend.operations.processors.CreateUserOperationProcessor;
-import com.library.backend.operations.requests.CreateUserRequest;
-import com.library.backend.operations.responses.CreateUserResponse;
+import com.library.backend.operations.processors.CreateReaderOperationProcessor;
+import com.library.backend.operations.requests.CreateReaderRequest;
+import com.library.backend.operations.responses.CreateReaderResponse;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -50,7 +50,7 @@ public class RegistrationController implements Controller {
         try {
             checkAllFieldsForInput();
 
-            CreateUserRequest request = CreateUserRequest.builder()
+            CreateReaderRequest request = CreateReaderRequest.builder()
                     .firstName(firstNameTextField.getText())
                     .middleName(middleNameTextField.getText())
                     .lastName(lastNameTextField.getText())
@@ -59,8 +59,8 @@ public class RegistrationController implements Controller {
                     .email(emailTextField.getText())
                     .build();
 
-            CreateUserOperationProcessor processor = OperationFactory.getOperationProcessor(CreateUserOperationProcessor.class);
-            CreateUserResponse createUserResponse = processor.process(request);
+            CreateReaderOperationProcessor processor = OperationFactory.getOperationProcessor(CreateReaderOperationProcessor.class);
+            CreateReaderResponse createReaderResponse = processor.process(request);
 
 
         } catch (Exception e) {

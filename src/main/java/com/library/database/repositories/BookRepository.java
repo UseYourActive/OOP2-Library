@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 public class BookRepository extends Repository<Book> {
     private static final Logger logger = LoggerFactory.getLogger(BookRepository.class);
-
     public BookRepository() {
         super();
     }

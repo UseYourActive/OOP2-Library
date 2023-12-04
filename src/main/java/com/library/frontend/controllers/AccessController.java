@@ -49,18 +49,25 @@ public class AccessController implements Controller {
 
 
             LogInOperationProcessor createUserOperationProcessor = OperationFactory.getOperationProcessor(LogInOperationProcessor.class);
+
             LogInResponse response = createUserOperationProcessor.process(request);
 
 
+            Form form=null;
             switch (response.getRole()) {
-                case "ADMIN" -> {
-                    new Form(event,"/views/AdminForm.fxml","Administrator panel").load();
-                }
-                case "OPERATOR" -> {
-                }
-                case "CLIENT" -> {
-                }
+                case "ADMIN" -> form = new Form(event, "/views/AdminForm.fxml", "Administrator panel", false);
+                //case "OPERATOR" -> {
+                //}
+                //case "CLIENT" -> {
+                //}
+
             }
+            if(form == null)
+                throw new Exception();
+
+            form.load();
+
+
 
 
         } catch (Exception e) {
@@ -71,7 +78,7 @@ public class AccessController implements Controller {
     @FXML
     public void signUpButtonOnAction(ActionEvent event) {
         try {
-            Form form = new Form(event, "/views/RegisterForm.fxml", "Registration Form");
+            Form form = new Form(event, "/views/RegisterForm.fxml", "Registration Form",false);
             form.load();
         } catch (IOException e) {
             //--
