@@ -17,5 +17,4 @@ import java.util.List;
 public class Operator extends Client {
     //@OneToMany(mappedBy = "",orphanRemoval = true)
     private List<Reader> listOfReaders;
-
 }

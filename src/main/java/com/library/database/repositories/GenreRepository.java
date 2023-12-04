@@ -14,12 +14,12 @@ public class GenreRepository extends Repository<Genre> {
     }
 
     @Override
-    public Genre get(Long id) {
+    public Genre findById(Long id) {
         return session.get(Genre.class, id);
     }
 
     @Override
-    public Stream<Genre> getAll() {
+    public Stream<Genre> findAll() {
         return session.createQuery("SELECT g FROM Genre g", Genre.class).getResultStream();
     }
 

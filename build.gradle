@@ -4,8 +4,6 @@ plugins {
     id 'application'
 }
 
-
-
 repositories {
     mavenCentral()
 }
@@ -22,18 +20,18 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    // Logger
+    // Loggers - Diagnostics
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.9'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.9'
 
     // Password Hashing
     implementation 'at.favre.lib:bcrypt:0.10.2'
 
-    // Hibernate
+    // Hibernate - ORM
     implementation 'org.hibernate:hibernate-core:6.2.9.Final'
 
-    // Postgres
+    // Postgres - Database
     implementation 'org.postgresql:postgresql:42.6.0'
-
 }
 
 javafx {

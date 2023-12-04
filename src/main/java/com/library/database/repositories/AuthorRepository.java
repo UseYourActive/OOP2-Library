@@ -10,12 +10,12 @@ public class AuthorRepository extends Repository<Author> {
     private static final Logger logger = LoggerFactory.getLogger(AuthorRepository.class);
 
     @Override
-    public Author get(Long id) {
+    public Author findById(Long id) {
         return session.get(Author.class, id);
     }
 
     @Override
-    public Stream<Author> getAll() {
+    public Stream<Author> findAll() {
         return session.createQuery("SELECT a FROM Author a", Author.class).getResultStream();
     }
 

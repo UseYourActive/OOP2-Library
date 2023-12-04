@@ -21,5 +21,4 @@ public class User {
 
     @Column(name = "password", length = 1024, nullable = false)
     protected String password;
-
 }

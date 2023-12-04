@@ -12,7 +12,6 @@ import lombok.*;
 @Getter
 @Setter
 public class BookRequestForm {
-
     @Id
     @Column(name = "form_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -17,7 +17,7 @@ public class GenreValidator implements ConstraintValidator<GenreValidation, Stri
 
         GenreRepository repository = new GenreRepository();
 
-        for (Genre validGenre : repository.getAll().toList()) {
+        for (Genre validGenre : repository.findAll().toList()) {
             if (validGenre.toString().equals(genre)) {
                 return true;
             }

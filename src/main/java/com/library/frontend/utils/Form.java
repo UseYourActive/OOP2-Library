@@ -22,14 +22,14 @@ public final class Form {
         this.resourceFiles = resourceFiles;
         this.stageTitle = stageTitle;
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        this.isResizable=isResizable;
+        this.isResizable = isResizable;
     }
 
-    public Form(Stage stage, String resourceFiles, String stageTitle,Boolean isResizable) {
+    public Form(Stage stage, String resourceFiles, String stageTitle, Boolean isResizable) {
         this.stage = stage;
         this.resourceFiles = resourceFiles;
         this.stageTitle = stageTitle;
-        this.isResizable=isResizable;
+        this.isResizable = isResizable;
     }
 
     public void load() throws IOException {

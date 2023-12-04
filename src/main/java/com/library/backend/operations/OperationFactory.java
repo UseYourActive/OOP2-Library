@@ -31,35 +31,37 @@ public class OperationFactory {
      */
     @Getter
     @RequiredArgsConstructor
-    private enum OperationProcessorType{
+    private enum OperationProcessorType {
         CREATE_READER(CreateReaderOperationProcessor.class),
         CREATE_BOOK(CreateBookOperation.class),
         LOG_IN(LogInOperationProcessor.class);
 
-        private final Class<? extends OperationProcessor<?extends Response,? extends Request>> processorClass;
+        private final Class<? extends OperationProcessor<? extends Response, ? extends Request>> processorClass;
     }
 
 
     /**
      * Retrieves an operation processor instance based on the provided processor class.
      *
-     * @param processorClass    The class of the processor to retrieve.
-     * @param RESPONSE          The type of response handled by the processor.
-     * @param REQUEST           The type of request handled by the processor.
-     * @param PROCESSOR         The processor type extending {@link OperationProcessor}.
+     * @param processorClass The class of the processor to retrieve.
+     * @param RESPONSE       The type of response handled by the processor.
+     * @param REQUEST        The type of request handled by the processor.
+     * @param PROCESSOR      The processor type extending {@link OperationProcessor}.
      * @return An instance of   the specified operation processor.
      * @throws Exception If an error occurs during processor retrieval.
      */
-    public static <RESPONSE extends Response, REQUEST extends Request, PROCESSOR extends OperationProcessor<RESPONSE,REQUEST>> PROCESSOR getOperationProcessor(Class<PROCESSOR> processorClass) throws Exception {
+    public static <RESPONSE extends Response, REQUEST extends Request, PROCESSOR extends OperationProcessor<RESPONSE, REQUEST>> PROCESSOR getOperationProcessor(Class<PROCESSOR> processorClass) throws Exception {
 
         PROCESSOR processor;
 
-        switch (getOperationProcessorType(processorClass)){
-            case LOG_IN ->  processor =  processorClass.cast(new LogInOperationProcessor(new ReaderRepository()));
+        switch (getOperationProcessorType(processorClass)) {
+            case LOG_IN -> processor = processorClass.cast(new LogInOperationProcessor(new ReaderRepository()));
 
-            case CREATE_BOOK ->  processor = processorClass.cast(new CreateBookOperationProcessor(new BookRepository(),new GenreRepository(),new AuthorRepository(),new CreateBookResponseConverter()));
+            case CREATE_BOOK ->
+                    processor = processorClass.cast(new CreateBookOperationProcessor(new BookRepository(), new GenreRepository(), new AuthorRepository(), new CreateBookResponseConverter()));
 
-            case CREATE_READER -> processor = processorClass.cast(new CreateReaderOperationProcessor(new ReaderRepository(),new CreateUserResponseConverter()));
+            case CREATE_READER ->
+                    processor = processorClass.cast(new CreateReaderOperationProcessor(new ReaderRepository(), new CreateUserResponseConverter()));
 
             default -> throw new RuntimeException("There is no such enum");
         }
@@ -70,16 +72,16 @@ public class OperationFactory {
     /**
      * Determines the operation processor type based on the provided processor class.
      *
-     * @param RESPONSE          The type of response handled by the operation processor.
-     * @param REQUEST           The type of request handled by the operation processor.
-     * @param PROCESSOR         The type of operation processor, extending {@link OperationProcessor}.
-     * @param processorClass    The class of the operation processor to determine the type.
+     * @param RESPONSE       The type of response handled by the operation processor.
+     * @param REQUEST        The type of request handled by the operation processor.
+     * @param PROCESSOR      The type of operation processor, extending {@link OperationProcessor}.
+     * @param processorClass The class of the operation processor to determine the type.
      * @return The corresponding {@link OperationProcessorType} of the provided class.
      * @throws RuntimeException If the enum for the provided processor class is not found.
      */
-    private static <RESPONSE extends Response, REQUEST extends Request, PROCESSOR extends OperationProcessor<RESPONSE,REQUEST>>  OperationProcessorType getOperationProcessorType(Class<PROCESSOR> processorClass){
+    private static <RESPONSE extends Response, REQUEST extends Request, PROCESSOR extends OperationProcessor<RESPONSE, REQUEST>> OperationProcessorType getOperationProcessorType(Class<PROCESSOR> processorClass) {
 
-        OperationProcessorType processorType=null;
+        OperationProcessorType processorType = null;
 
         for (OperationProcessorType type : OperationProcessorType.values()) {
             if (type.processorClass == processorClass) {

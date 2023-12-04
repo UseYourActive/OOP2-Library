@@ -11,7 +11,6 @@ import lombok.*;
 @Getter
 @Setter
 public class Genre {
-
     @Id
     @Column(name = "genre_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

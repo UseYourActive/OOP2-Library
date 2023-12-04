@@ -14,12 +14,12 @@ public class BookRepository extends Repository<Book> {
     }
 
     @Override
-    public Book get(Long id) {
+    public Book findById(Long id) {
         return session.get(Book.class, id);
     }
 
     @Override
-    public Stream<Book> getAll() {
+    public Stream<Book> findAll() {
         return session.createQuery("SELECT b FROM Book b", Book.class).getResultStream();
     }
 
@@ -27,15 +27,10 @@ public class BookRepository extends Repository<Book> {
         try {
             return session.createQuery("SELECT b FROM Book b WHERE b.title = :title", Book.class)
                     .setParameter("title", title)
-                    .getResultStream()
-                    .findFirst()
-                    .orElseThrow(() -> {
-                        logger.error("Book not found with title: {}", title);
-                        return new RuntimeException("Book not found with title: " + title);
-                    });
+                    .getSingleResult();
         } catch (NoResultException e) {
-            logger.error("Error querying book by title: {}", title, e);
-            return null;
+            logger.error("Book not found with title: {}", title);
+            throw new RuntimeException("Book not found with title: " + title);
         }
     }
 }

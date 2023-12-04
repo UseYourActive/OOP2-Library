@@ -9,19 +9,19 @@ import java.util.stream.Stream;
 
 public class OperatorRepository extends Repository<Operator>{
 
-    private static final Logger logger = LoggerFactory.getLogger(com.library.database.repositories.ReaderRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(OperatorRepository.class);
 
     public OperatorRepository() {
         super();
     }
 
     @Override
-    public Operator get(Long id) {
+    public Operator findById(Long id) {
         return session.find(Operator.class, id);
     }
 
     @Override
-    public Stream<Operator> getAll() {
+    public Stream<Operator> findAll() {
         return session.createQuery("SELECT o FROM Operator o", Operator.class).getResultStream();
     }
 

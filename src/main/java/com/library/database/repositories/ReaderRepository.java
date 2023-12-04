@@ -15,12 +15,12 @@ public class ReaderRepository extends Repository<Reader> {
     }
 
     @Override
-    public Reader get(Long id) {
+    public Reader findById(Long id) {
         return session.find(Reader.class, id);
     }
 
     @Override
-    public Stream<Reader> getAll() {
+    public Stream<Reader> findAll() {
         return session.createQuery("SELECT r FROM Reader r", Reader.class).getResultStream();
     }
 
