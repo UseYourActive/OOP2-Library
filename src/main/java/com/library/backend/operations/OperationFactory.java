@@ -9,10 +9,7 @@ import com.library.backend.operations.processors.contracts.CreateBookOperation;
 import com.library.backend.operations.processors.contracts.OperationProcessor;
 import com.library.backend.operations.requests.Request;
 import com.library.backend.operations.responses.Response;
-import com.library.database.repositories.AuthorRepository;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.GenreRepository;
-import com.library.database.repositories.ReaderRepository;
+import com.library.database.repositories.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +52,7 @@ public class OperationFactory {
         PROCESSOR processor;
 
         switch (getOperationProcessorType(processorClass)) {
-            case LOG_IN -> processor = processorClass.cast(new LogInOperationProcessor(new ReaderRepository()));
+            case LOG_IN -> processor = processorClass.cast(new LogInOperationProcessor(new ReaderRepository(),new OperatorRepository(),new AdminRepository()));
 
             case CREATE_BOOK ->
                     processor = processorClass.cast(new CreateBookOperationProcessor(new BookRepository(), new GenreRepository(), new AuthorRepository(), new CreateBookResponseConverter()));

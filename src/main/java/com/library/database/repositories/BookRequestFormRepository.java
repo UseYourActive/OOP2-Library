@@ -1,24 +1,23 @@
 package com.library.database.repositories;
 
+import com.library.database.entities.BookRequestForm;
 import com.library.database.entities.Genre;
-import com.library.database.entities.Reader;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
-public class GenreRepository extends Repository<Genre> {
-    private static final Logger logger = LoggerFactory.getLogger(GenreRepository.class);
+public class BookRequestFormRepository extends Repository<BookRequestForm>{
+    private static final Logger logger = LoggerFactory.getLogger(BookRequestForm.class);
 
     @Override
-    public Optional<Genre> findById(Long id) {
+    public Optional<BookRequestForm> findById(Long id) {
         try {
-            Genre genre = session.get(Genre.class, id);
-            return Optional.ofNullable(genre);
+            BookRequestForm bookRequestForm = session.get(BookRequestForm.class, id);
+            return Optional.ofNullable(bookRequestForm);
         } catch (Exception e) {
             logger.error("Error finding genre by ID: {}", id, e);
             throw e;
@@ -26,18 +25,18 @@ public class GenreRepository extends Repository<Genre> {
     }
 
     @Override
-    public List<Genre> findAll() {
+    public List<BookRequestForm> findAll() {
         try {
-            return session.createQuery("SELECT g FROM Genre g", Genre.class).getResultList();
+            return session.createQuery("SELECT b FROM BookRequestForm b", BookRequestForm.class).getResultList();
         } catch (Exception e) {
             logger.error("Error retrieving all genres", e);
             throw e;
         }
     }
 
-    public Optional<Genre> findGenreByName(String name) {
+    public Optional<BookRequestForm> findGenreByName(String name) {
         try {
-            return session.createQuery("SELECT g FROM Genre g WHERE g.name = :name", Genre.class)
+            return session.createQuery("SELECT g FROM BookRequestForm b WHERE b.name = :name", BookRequestForm.class)
                     .setParameter("name", name)
                     .getResultStream()
                     .findFirst();

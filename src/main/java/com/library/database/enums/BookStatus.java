@@ -7,9 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BookStatus {
     AVAILABLE("Available"),
-    ON_LOAN("On Loan"),
+    LENT("Lent"),
     ARCHIVED("Archived"),
     DAMAGED("Damaged");
 
-    private String displayValue;
+    private final String displayValue;
 }

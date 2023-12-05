@@ -32,6 +32,10 @@ public abstract class Repository<T> implements AutoCloseable {
         }
     }
 
+    public abstract Optional<T> findById(Long id);
+
+    public abstract List<T> findAll();
+
     private Session getThreadLocalSession() {
         Session currentSession = threadLocalSession.get();
         if (currentSession == null || !currentSession.isOpen()) {
@@ -89,8 +93,4 @@ public abstract class Repository<T> implements AutoCloseable {
         executeInsideTransaction(session -> session.merge(object));
         logger.info("Entity updated successfully");
     }
-
-    public abstract Optional<T> findById(Long id);
-
-    public abstract List<T> findAll();
 }

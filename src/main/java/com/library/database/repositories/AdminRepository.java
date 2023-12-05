@@ -1,6 +1,7 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.Admin;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,13 +9,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@AllArgsConstructor
 public class AdminRepository extends Repository<Admin>{
 
     private static final Logger logger = LoggerFactory.getLogger(AdminRepository.class);
-
-    public AdminRepository() {
-        super();
-    }
 
     @Override
     public Optional<Admin> findById(Long id) {

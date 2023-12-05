@@ -3,24 +3,25 @@ package com.library.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-
-@Entity
-@Table(name = "forms")
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+
+@Entity
+@Table(name = "forms")
 public class BookRequestForm {
     @Id
     @Column(name = "form_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //@ManyToOne
-    //@JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "reader_id")
     private Reader reader;
 
-    //@OneToOne(mappedBy = "bookRequestForm", orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
 }

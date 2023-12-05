@@ -14,9 +14,8 @@ public class LogInResponse implements Response {
     private String username;
     private String firstName;
     private String lastName;
-    private String role;
+    private Role role;
     private String email;
     private String phone;
 
-    private Exception e;
 }

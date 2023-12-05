@@ -2,6 +2,7 @@ package com.library.database.repositories;
 
 import com.library.database.entities.Operator;
 import com.library.database.entities.Reader;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,13 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@AllArgsConstructor
 public class OperatorRepository extends Repository<Operator>{
 
     private static final Logger logger = LoggerFactory.getLogger(OperatorRepository.class);
-
-    public OperatorRepository() {
-        super();
-    }
 
     @Override
     public Optional<Operator> findById(Long id) {

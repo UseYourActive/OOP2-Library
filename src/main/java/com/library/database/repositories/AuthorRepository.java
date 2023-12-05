@@ -2,12 +2,14 @@ package com.library.database.repositories;
 
 import com.library.database.entities.Author;
 import jakarta.persistence.NoResultException;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class AuthorRepository extends Repository<Author> {
     private static final Logger logger = LoggerFactory.getLogger(AuthorRepository.class);
 

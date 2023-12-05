@@ -2,6 +2,7 @@ package com.library.database.repositories;
 
 import com.library.database.entities.Book;
 import jakarta.persistence.NoResultException;
+import lombok.AllArgsConstructor;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class BookRepository extends Repository<Book> {
     private static final Logger logger = LoggerFactory.getLogger(BookRepository.class);
-
-    public BookRepository() {
-        super();
-    }
 
     @Override
     public Optional<Book> findById(Long id) {

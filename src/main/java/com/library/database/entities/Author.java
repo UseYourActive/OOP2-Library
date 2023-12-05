@@ -6,13 +6,14 @@ import lombok.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity
-@Table(name = "authors")
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+
+@Entity
+@Table(name = "authors")
 public class Author {
     @Id
     @Column(name = "author_id")
@@ -28,6 +29,6 @@ public class Author {
     @Column(name = "country", length = 16, nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "author", orphanRemoval = true)
+    @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Book> books;
 }

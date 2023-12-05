@@ -15,12 +15,12 @@
         <property name="hibernate.format_sql">true</property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
 
         <!-- Entity Classes -->
             <mapping class="com.library.database.entities.Author"/>
             <mapping class="com.library.database.entities.Book"/>
             <mapping class="com.library.database.entities.Genre"/>
+            <mapping class="com.library.database.entities.BookRequestForm"/>
 
             <!-- The main entity user class -->
             <mapping class="com.library.database.entities.base.User"/>

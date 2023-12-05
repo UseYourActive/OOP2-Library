@@ -1,20 +1,25 @@
 package com.library.database.entities;
 
 import com.library.database.entities.base.Client;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+
+
+@Getter
+@SuperBuilder
+
 @Entity
 @Table(name = "operators")
-@SuperBuilder
-@NoArgsConstructor
-@Getter
+@PrimaryKeyJoinColumn(name = "user_id")
 public class Operator extends Client {
-    //@OneToMany(mappedBy = "",orphanRemoval = true)
+    @OneToMany(mappedBy = "operator", cascade = CascadeType.ALL)
     private List<Reader> listOfReaders;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 }

@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Entity
+
 @Getter
 @Setter
 @SuperBuilder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@MappedSuperclass
 public class User {
     @Id
     @Column(name = "user_id")

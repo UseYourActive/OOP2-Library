@@ -4,20 +4,21 @@ import com.library.database.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "books")
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+
+@Entity
+@Table(name = "books")
 public class Book {
     @Id
     @Column(name = "book_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "inventory_number", unique = true, nullable = false)
+    @Column(name = "inventory_number",length = 13, unique = true, nullable = false)
     private String inventoryNumber;
 
     @Column(name = "title", length = 32, nullable = false)
@@ -40,4 +41,8 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status", length = 16, nullable = false)
     private BookStatus bookStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 }
