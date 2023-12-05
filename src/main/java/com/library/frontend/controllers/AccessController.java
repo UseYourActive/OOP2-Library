@@ -69,6 +69,7 @@ public class AccessController implements Controller {
 
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             logInMessageLabel.setText("Please enter your password!");
         }
     }

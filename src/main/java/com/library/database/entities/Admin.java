@@ -9,6 +9,7 @@ import java.util.List;
 
 @Getter
 @SuperBuilder
+@NoArgsConstructor
 
 @Entity
 @Table(name = "admins")

@@ -3,6 +3,7 @@ package com.library.database.entities;
 import com.library.database.entities.base.Client;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @SuperBuilder
+@NoArgsConstructor
 
 @Entity
 @Table(name = "readers")
