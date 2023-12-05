@@ -30,7 +30,7 @@ public class CreateReaderOperationProcessor implements CreateReaderOperation {
 
         String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, password.toCharArray()));
 
-        Reader reader=Reader.builder()
+        Reader reader = Reader.builder()
                 .firstName(firstName)
                 .middleName(middleName)
                 .lastName(lastName)
@@ -48,8 +48,7 @@ public class CreateReaderOperationProcessor implements CreateReaderOperation {
 
         if (readerRepository.save(reader)) {
             response = converter.convert(reader);
-        }
-        else {
+        } else {
             readerRepository.close();
             throw new RuntimeException("Critical error");
         }

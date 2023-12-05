@@ -1,4 +1,7 @@
 <configuration>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <excludeLogger name="org.slf4j.impl.StaticLoggerBinder" />
+    <logger name="org.hibernate" level="DEBUG"/>
 
     <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -33,5 +36,4 @@
         <appender-ref ref="FILE"/>
         <appender-ref ref="ROLLING_FILE"/>
     </root>
-
 </configuration>
