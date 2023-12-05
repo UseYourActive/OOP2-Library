@@ -31,8 +31,11 @@ public class CreateBookOperationProcessor implements CreateBookOperation {
         String resume = request.getResume();
         //  log.debug("Received values: title={}, isbn={}, author={}, genre={}, resume={}", title, isbn, author, genre, resume);
 
-        Author author = authorRepository.getByName(authorName);
-        Genre genre = genreRepository.getByName(genreName);
+        Author author = authorRepository.findByName(authorName)
+                .orElseThrow(() -> new RuntimeException("Author not found!"));
+
+        Genre genre = genreRepository.findGenreByName(genreName)
+                .orElseThrow(() -> new RuntimeException("Genre not found!"));
 
         Book book = Book.builder()
                 .author(author)

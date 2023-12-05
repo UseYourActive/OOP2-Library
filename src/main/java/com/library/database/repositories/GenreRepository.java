@@ -1,9 +1,12 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.Genre;
+import com.library.database.entities.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class GenreRepository extends Repository<Genre> {
@@ -14,19 +17,35 @@ public class GenreRepository extends Repository<Genre> {
     }
 
     @Override
-    public Genre findById(Long id) {
-        return session.get(Genre.class, id);
+    public Optional<Genre> findById(Long id) {
+        try {
+            Genre genre = session.get(Genre.class, id);
+            return Optional.ofNullable(genre);
+        } catch (Exception e) {
+            logger.error("Error finding genre by ID: {}", id, e);
+            throw e;
+        }
     }
 
     @Override
-    public Stream<Genre> findAll() {
-        return session.createQuery("SELECT g FROM Genre g", Genre.class).getResultStream();
+    public List<Genre> findAll() {
+        try {
+            return session.createQuery("SELECT g FROM Genre g", Genre.class).getResultList();
+        } catch (Exception e) {
+            logger.error("Error retrieving all genres", e);
+            throw e;
+        }
     }
 
-    public Genre getByName(String name) {
-        return session.createQuery("SELECT g FROM Genre g", Genre.class).getResultStream()
-                .filter(g -> g.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Genre not found!"));
+    public Optional<Genre> findGenreByName(String name) {
+        try {
+            return session.createQuery("SELECT g FROM Genre g WHERE g.name = :name", Genre.class)
+                    .setParameter("name", name)
+                    .getResultStream()
+                    .findFirst();
+        } catch (Exception e) {
+            logger.error("Error finding genre by name: {}", name, e);
+            throw e;
+        }
     }
 }

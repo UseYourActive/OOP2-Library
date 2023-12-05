@@ -4,6 +4,8 @@ import com.library.database.entities.Admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class AdminRepository extends Repository<Admin>{
@@ -15,13 +17,14 @@ public class AdminRepository extends Repository<Admin>{
     }
 
     @Override
-    public Admin findById(Long id) {
-        return session.find(Admin.class, id);
+    public Optional<Admin> findById(Long id) {
+        Admin admin = session.get(Admin.class, id);
+        return Optional.ofNullable(admin);
     }
 
     @Override
-    public Stream<Admin> findAll() {
-        return session.createQuery("SELECT a FROM Admin a", Admin.class).getResultStream();
+    public List<Admin> findAll() {
+        return session.createQuery("SELECT a FROM Admin a", Admin.class).getResultList();
     }
 
     public Admin findByUsername(String username) throws Exception {

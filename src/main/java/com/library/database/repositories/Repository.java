@@ -7,8 +7,9 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public abstract class Repository<T> implements AutoCloseable {
     private static final SessionFactory sessionFactory;
@@ -41,7 +42,7 @@ public abstract class Repository<T> implements AutoCloseable {
         return currentSession;
     }
 
-    protected void executeInsideTransaction(Consumer<Session> action) {
+    protected final void executeInsideTransaction(Consumer<Session> action) {
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
@@ -60,7 +61,7 @@ public abstract class Repository<T> implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public final void close() {
         try {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -73,23 +74,23 @@ public abstract class Repository<T> implements AutoCloseable {
         }
     }
 
-    public void delete(T object) {
+    public final void delete(T object) {
         executeInsideTransaction(session -> session.remove(object));
         logger.info("Entity deleted successfully");
     }
 
-    public boolean save(T object) {
+    public final boolean save(T object) {
         executeInsideTransaction(session -> session.persist(object));
         logger.info("Entity saved successfully");
         return true;
     }
 
-    public void update(T object) {
+    public final void update(T object) {
         executeInsideTransaction(session -> session.merge(object));
         logger.info("Entity updated successfully");
     }
 
-    public abstract T findById(Long id);
+    public abstract Optional<T> findById(Long id);
 
-    public abstract Stream<T> findAll();
+    public abstract List<T> findAll();
 }

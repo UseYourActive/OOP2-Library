@@ -1,10 +1,13 @@
 package com.library.database.repositories;
 
+import com.library.database.entities.Operator;
 import com.library.database.entities.Reader;
 import com.library.database.entities.base.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ReaderRepository extends Repository<Reader> {
@@ -15,13 +18,14 @@ public class ReaderRepository extends Repository<Reader> {
     }
 
     @Override
-    public Reader findById(Long id) {
-        return session.find(Reader.class, id);
+    public Optional<Reader> findById(Long id) {
+        Reader reader = session.get(Reader.class, id);
+        return Optional.ofNullable(reader);
     }
 
     @Override
-    public Stream<Reader> findAll() {
-        return session.createQuery("SELECT r FROM Reader r", Reader.class).getResultStream();
+    public List<Reader> findAll() {
+        return session.createQuery("SELECT r FROM Reader r", Reader.class).getResultList();
     }
 
     public Reader findByUsername(String username) throws Exception {

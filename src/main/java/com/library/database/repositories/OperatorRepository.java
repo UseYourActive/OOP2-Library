@@ -5,6 +5,8 @@ import com.library.database.entities.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class OperatorRepository extends Repository<Operator>{
@@ -16,13 +18,14 @@ public class OperatorRepository extends Repository<Operator>{
     }
 
     @Override
-    public Operator findById(Long id) {
-        return session.find(Operator.class, id);
+    public Optional<Operator> findById(Long id) {
+        Operator operator = session.get(Operator.class, id);
+        return Optional.ofNullable(operator);
     }
 
     @Override
-    public Stream<Operator> findAll() {
-        return session.createQuery("SELECT o FROM Operator o", Operator.class).getResultStream();
+    public List<Operator> findAll() {
+        return session.createQuery("SELECT o FROM Operator o", Operator.class).getResultList();
     }
 
     public Operator findByUsername(String username) throws Exception {
