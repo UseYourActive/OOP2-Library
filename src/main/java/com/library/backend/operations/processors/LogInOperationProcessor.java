@@ -28,47 +28,50 @@ public class LogInOperationProcessor implements LogInOperation {
     @Override
     public LogInResponse process(LogInRequest logInRequest) throws Exception {
 
-        User user=getUser(logInRequest);
+        User user = getUser(logInRequest);
 
-        if(user==null)
+        if (user == null)
             throw new UserException("User not found");
 
         return getLogInResponse(user);
     }
 
     private User getUser(LogInRequest logInRequest) {
-        User user=null;
+        User user = null;
 
         try {
             user = readerRepository.findByUsername(logInRequest.getUsername());
-        } catch (ReaderException ignored) {}
+        } catch (ReaderException ignored) {
+        }
 
         try {
             user = operatorRepository.findByUsername(logInRequest.getUsername());
-        } catch (OperatorException ignored) {}
+        } catch (OperatorException ignored) {
+        }
 
         try {
             user = adminRepository.findByUsername(logInRequest.getUsername());
-        } catch (AdminException ignored) {}
+        } catch (AdminException ignored) {
+        }
 
         return user;
     }
 
-    private LogInResponse getLogInResponse(User user){
+    private LogInResponse getLogInResponse(User user) {
         LogInResponse logInResponse = LogInResponse.builder().build();
 
-        if(user instanceof Reader){
-            logInResponse.setEmail(((Reader)user).getEmail());
-            logInResponse.setFirstName(((Reader)user).getFirstName());
-            logInResponse.setLastName(((Reader)user).getLastName());
+        if (user instanceof Reader) {
+            logInResponse.setEmail(((Reader) user).getEmail());
+            logInResponse.setFirstName(((Reader) user).getFirstName());
+            logInResponse.setLastName(((Reader) user).getLastName());
             logInResponse.setRole(Role.READER);
         }
 
-        if(user instanceof Operator){
+        if (user instanceof Operator) {
             logInResponse.setRole(Role.OPERATOR);
         }
 
-        if(user instanceof Admin){
+        if (user instanceof Admin) {
             logInResponse.setRole(Role.ADMIN);
         }
 
