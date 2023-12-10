@@ -1,9 +1,9 @@
 package com.library.backend.operations.processors;
 
-import com.library.backend.exception.entities.AdminException;
-import com.library.backend.exception.entities.OperatorException;
-import com.library.backend.exception.entities.ReaderException;
-import com.library.backend.exception.entities.UserException;
+import com.library.backend.exception.AdminNotFoundException;
+import com.library.backend.exception.OperatorNotFoundException;
+import com.library.backend.exception.ReaderNotFoundException;
+import com.library.backend.exception.UserNotFoundException;
 import com.library.backend.operations.processors.contracts.LogInOperation;
 import com.library.backend.operations.requests.LogInRequest;
 import com.library.backend.operations.responses.LogInResponse;
@@ -31,7 +31,7 @@ public class LogInOperationProcessor implements LogInOperation {
         User user = getUser(logInRequest);
 
         if (user == null)
-            throw new UserException("User not found");
+            throw new UserNotFoundException("User not found");
 
         return getLogInResponse(user);
     }
@@ -41,17 +41,17 @@ public class LogInOperationProcessor implements LogInOperation {
 
         try {
             user = readerRepository.findByUsername(logInRequest.getUsername());
-        } catch (ReaderException ignored) {
+        } catch (ReaderNotFoundException ignored) {
         }
 
         try {
             user = operatorRepository.findByUsername(logInRequest.getUsername());
-        } catch (OperatorException ignored) {
+        } catch (OperatorNotFoundException ignored) {
         }
 
         try {
             user = adminRepository.findByUsername(logInRequest.getUsername());
-        } catch (AdminException ignored) {
+        } catch (AdminNotFoundException ignored) {
         }
 
         return user;

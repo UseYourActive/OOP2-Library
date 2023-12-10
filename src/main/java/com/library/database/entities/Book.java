@@ -9,16 +9,15 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "books")
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "inventory_number",length = 13, unique = true, nullable = false)
+    @Column(name = "inventory_number", length = 13, unique = true, nullable = false)
     private String inventoryNumber;
 
     @Column(name = "title", length = 32, nullable = false)

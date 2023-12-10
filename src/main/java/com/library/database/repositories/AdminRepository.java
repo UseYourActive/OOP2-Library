@@ -1,6 +1,6 @@
 package com.library.database.repositories;
 
-import com.library.backend.exception.entities.AdminException;
+import com.library.backend.exception.AdminNotFoundException;
 import com.library.database.entities.Admin;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -25,11 +25,11 @@ public class AdminRepository extends Repository<Admin>{
         return session.createQuery("SELECT a FROM Admin a", Admin.class).getResultList();
     }
 
-    public Admin findByUsername(String username) throws AdminException {
+    public Admin findByUsername(String username) throws AdminNotFoundException {
         return session.createQuery("Select a from Admin a", Admin.class).stream()
                 .filter(u -> u.getUsername().equals(username))
                 .findFirst()
-                .orElseThrow(() -> new AdminException("Admin not found"));
+                .orElseThrow(() -> new AdminNotFoundException("Admin not found"));
     }
 
 }

@@ -10,18 +10,17 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "genres")
 public class Genre {
     @Id
-    @Column(name = "genre_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "genre_id")
     private Long id;
 
     @Column(name = "name", length = 64, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
 }

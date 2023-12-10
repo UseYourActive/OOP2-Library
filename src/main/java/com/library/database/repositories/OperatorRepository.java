@@ -1,6 +1,6 @@
 package com.library.database.repositories;
 
-import com.library.backend.exception.entities.OperatorException;
+import com.library.backend.exception.OperatorNotFoundException;
 import com.library.database.entities.Operator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -25,11 +25,11 @@ public class OperatorRepository extends Repository<Operator>{
         return session.createQuery("SELECT o FROM Operator o", Operator.class).getResultList();
     }
 
-    public Operator findByUsername(String username) throws OperatorException {
+    public Operator findByUsername(String username) throws OperatorNotFoundException {
         return session.createQuery("Select o from Operator o", Operator.class).stream()
                 .filter(u -> u.getUsername().equals(username))
                 .findFirst()
-                .orElseThrow(() -> new OperatorException("Operator not found"));
+                .orElseThrow(() -> new OperatorNotFoundException("Operator not found"));
     }
 
 }

@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 @MappedSuperclass
 public class Client extends User {
     @Column(name = "first_name", length = 16, nullable = false)

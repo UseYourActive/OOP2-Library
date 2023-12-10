@@ -1,6 +1,6 @@
 package com.library.database.repositories;
 
-import com.library.backend.exception.entities.ReaderException;
+import com.library.backend.exception.ReaderNotFoundException;
 import com.library.database.entities.Reader;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -24,10 +24,10 @@ public class ReaderRepository extends Repository<Reader> {
         return session.createQuery("SELECT r FROM Reader r", Reader.class).getResultList();
     }
 
-    public Reader findByUsername(String username) throws ReaderException {
+    public Reader findByUsername(String username) throws ReaderNotFoundException {
         return session.createQuery("Select r from Reader r", Reader.class).stream()
                 .filter(u -> u.getUsername().equals(username))
                 .findFirst()
-                .orElseThrow(() -> new ReaderException("Reader not found"));
+                .orElseThrow(() -> new ReaderNotFoundException("Reader not found"));
     }
 }

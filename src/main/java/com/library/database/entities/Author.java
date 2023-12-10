@@ -3,7 +3,7 @@ package com.library.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -11,24 +11,23 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "authors")
 public class Author {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "name", length = 32, nullable = false)
     private String name;
 
     @Column(name = "date_of_birth", nullable = false)
-    private Timestamp dateOfBirth;
+    private LocalDate dateOfBirth;  // Timestamp from SQL?
 
     @Column(name = "country", length = 16, nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
 }

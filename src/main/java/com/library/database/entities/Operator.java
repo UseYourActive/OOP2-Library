@@ -7,12 +7,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-
-
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-
 @Entity
 @Table(name = "operators")
 @PrimaryKeyJoinColumn(name = "user_id")
