@@ -1,6 +1,5 @@
 package com.library.backend.operations.processors;
 
-
 import com.library.backend.mappers.CreateBookResponseConverter;
 import com.library.backend.operations.processors.contracts.CreateBookOperation;
 import com.library.backend.operations.requests.CreateBookRequest;

@@ -17,9 +17,9 @@ import javax.naming.AuthenticationException;
 
 public class AuthenticationService {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
-    private AdminRepository adminRepository;
-    private OperatorRepository operatorRepository;
-    private ReaderRepository readerRepository;
+    private final AdminRepository adminRepository;
+    private final OperatorRepository operatorRepository;
+    private final ReaderRepository readerRepository;
 
     public AuthenticationService(
             AdminRepository adminRepository,

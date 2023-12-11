@@ -1,6 +1,5 @@
 package com.library.backend.operations.processors;
 
-
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.mappers.CreateUserResponseConverter;
 import com.library.backend.operations.processors.contracts.CreateReaderOperation;

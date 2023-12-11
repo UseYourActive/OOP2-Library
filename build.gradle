@@ -22,17 +22,15 @@ dependencies {
 
     // Loggers - Diagnostics
     implementation 'org.slf4j:slf4j-api:2.0.9'
-    implementation 'ch.qos.logback:logback-classic:1.2.9'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.14'
 
     // Password Hashing
     implementation 'at.favre.lib:bcrypt:0.10.2'
 
     // Hibernate - ORM
-    implementation ('org.hibernate:hibernate-core:6.2.9.Final')
-//            {
-//        exclude group: 'org.slf4j', module: 'slf4j-api'
-//        exclude group: 'ch.qos.logback', module: 'logback-classic'
-//    }
+    implementation ('org.hibernate:hibernate-core:6.2.9.Final') {
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+    }
 
     // Postgres - Database
     implementation 'org.postgresql:postgresql:42.6.0'

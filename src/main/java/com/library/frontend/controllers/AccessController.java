@@ -1,23 +1,25 @@
 package com.library.frontend.controllers;
 
-
 import com.library.backend.operations.OperationFactory;
 import com.library.backend.operations.processors.LogInOperationProcessor;
 import com.library.backend.operations.requests.LogInRequest;
 import com.library.backend.operations.responses.LogInResponse;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.Form;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @NoArgsConstructor
 public class AccessController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(AccessController.class);
     @FXML
     private Button logInButton;
     @FXML
@@ -30,7 +32,6 @@ public class AccessController implements Controller {
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordPasswordField;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,28 +61,24 @@ public class AccessController implements Controller {
                 }
                 //case READER -> {
                 //}
-
             }
-            if (form == null)
-                throw new Exception();
 
-            form.load();
-
+            if (form != null) {
+                form.load();
+            } else {
+                throw new Exception("Unknown role or error processing login response");
+            }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            logInMessageLabel.setText("Please enter your password!");
+            logger.error("Error during login", e);
+            DialogUtils.showError("Error", "An error occurred during login!", e.getMessage());
         }
     }
 
     @FXML
     public void signUpButtonOnAction(ActionEvent event) {
-        try {
-            Form form = new Form(event, "/views/RegisterForm.fxml", "Registration Form", false);
-            form.load();
-        } catch (IOException e) {
-            //--
-        }
+        Form form = new Form(event, "/views/RegisterForm.fxml", "Registration Form", false);
+        form.load();
     }
 
     @FXML

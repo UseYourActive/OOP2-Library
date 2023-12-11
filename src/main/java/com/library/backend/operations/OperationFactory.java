@@ -14,8 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
-
 /**
  * Factory class for obtaining instances of {@link OperationProcessor}.
  * This factory uses an internal enum {@link OperationProcessorType} to map processor types to their respective classes.
