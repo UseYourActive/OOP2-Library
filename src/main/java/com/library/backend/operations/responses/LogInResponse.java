@@ -18,6 +18,4 @@ public class LogInResponse implements Response {
     private String lastName;
     private Role role;
     private String email;
-    private String phone;
-
 }

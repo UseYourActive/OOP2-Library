@@ -12,63 +12,26 @@ import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
 public class LogInOperationProcessor implements LogInOperation {
+    private static final Logger logger = LoggerFactory.getLogger(LogInOperationProcessor.class);
 
-    private final ReaderRepository readerRepository;
-    private final OperatorRepository operatorRepository;
-    private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public LogInResponse process(LogInRequest logInRequest) throws Exception {
+    public LogInResponse process(final LogInRequest request) throws ProcessException {
+        logger.info("Processing login request for username: {}", request.getUsername());
 
-        User user = getUser(logInRequest);
+        User user = userRepository.findByUsername(request.getUsername());
 
-        if (user == null)
-            throw new UserNotFoundException("User not found");
+        logger.info("Login request processed successfully for username: {}", request.getUsername());
 
-        return getLogInResponse(user);
-    }
-
-    private User getUser(LogInRequest logInRequest) {
-        User user = null;
-
-        try {
-            user = readerRepository.findByUsername(logInRequest.getUsername());
-        } catch (ReaderNotFoundException ignored) {
-        }
-
-        try {
-            user = operatorRepository.findByUsername(logInRequest.getUsername());
-        } catch (OperatorNotFoundException ignored) {
-        }
-
-        try {
-            user = adminRepository.findByUsername(logInRequest.getUsername());
-        } catch (AdminNotFoundException ignored) {
-        }
-
-        return user;
-    }
-
-    private LogInResponse getLogInResponse(User user) {
-        LogInResponse logInResponse = LogInResponse.builder().build();
-
-        if (user instanceof Reader) {
-            logInResponse.setEmail(((Reader) user).getEmail());
-            logInResponse.setFirstName(((Reader) user).getFirstName());
-            logInResponse.setLastName(((Reader) user).getLastName());
-            logInResponse.setRole(Role.READER);
-        }
-
-        if (user instanceof Operator) {
-            logInResponse.setRole(Role.OPERATOR);
-        }
-
-        if (user instanceof Admin) {
-            logInResponse.setRole(Role.ADMIN);
-        }
-
-        logInResponse.setUsername(user.getUsername());
-
-        return logInResponse;
+        return LogInResponse.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .userId(String.valueOf(user.getId()))
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .middleName(user.getMiddleName())
+                .role(user.getRole())
+                .build();
     }
 }
