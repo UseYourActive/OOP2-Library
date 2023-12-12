@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.library.database.enums.Role.*;
-
 @NoArgsConstructor
 public class AccessController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AccessController.class);
