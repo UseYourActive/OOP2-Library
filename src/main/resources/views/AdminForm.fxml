@@ -4,12 +4,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-    <Button text="Create Operator" layoutX="20" layoutY="20" />
-    <Button text="Remove Operator" layoutX="20" layoutY="60" />
-    <Button text="Register a Book" layoutX="20" layoutY="100" />
-    <Button text="Remove Book from Register" layoutX="20" layoutY="140" />
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.AdminController">
+    <Button layoutX="20" layoutY="20"  text="Create Operator" onAction="#createOperatorButtonOnAction" />
+    <Button layoutX="20" layoutY="60" text="Remove Operator" onAction="#removeOperatorButtonOnAction"/>
+    <Button layoutX="20" layoutY="100" text="Register a Book" onAction="#registerABookButtonOnAction" />
+    <Button layoutX="20" layoutY="140" text="Archive Book" onAction="#archiveBookButtonOnAction"/>
 
-    <ListView fx:id="operatorsListView" prefWidth="200" prefHeight="150" layoutX="250" layoutY="20" />
-    <ListView fx:id="booksListView" prefWidth="200" prefHeight="150" layoutX="500" layoutY="20" />
+    <ListView fx:id="operatorsListView" layoutX="228.0" layoutY="10.0" prefHeight="150" prefWidth="200" />
+    <ListView fx:id="booksListView" layoutX="494.0" layoutY="65.0" prefHeight="231.0" prefWidth="282.0" />
 </AnchorPane>
