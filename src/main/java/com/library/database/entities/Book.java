@@ -40,8 +40,4 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status", length = 16, nullable = false)
     private BookStatus bookStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
 }

@@ -5,15 +5,16 @@ import com.library.backend.mappers.CreateUserResponseConverter;
 import com.library.backend.operations.processors.contracts.CreateReaderOperation;
 import com.library.backend.operations.requests.CreateReaderRequest;
 import com.library.backend.operations.responses.CreateReaderResponse;
-import com.library.database.entities.Reader;
-import com.library.database.repositories.ReaderRepository;
+import com.library.database.entities.User;
+import com.library.database.enums.Role;
+import com.library.database.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 
 @RequiredArgsConstructor
-public class CreateReaderOperationProcessor implements CreateReaderOperation {
-    private final ReaderRepository readerRepository;
+public class CreateUserOperationProcessor implements CreateReaderOperation {
+    private final UserRepository userRepository;
     private final CreateUserResponseConverter converter;
 
     @Override
@@ -29,30 +30,26 @@ public class CreateReaderOperationProcessor implements CreateReaderOperation {
 
         String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, password.toCharArray()));
 
-        Reader reader = Reader.builder()
+        User user = User.builder()
                 .firstName(firstName)
                 .middleName(middleName)
                 .lastName(lastName)
                 .username(username)
                 .password(hashedPassword)
                 .email(email)
+                .role(Role.READER)
                 .build();
-
-        //User user1= Admin.builder()
-
-
-//        userRepository.openSession();
 
         CreateReaderResponse response;
 
-        if (readerRepository.save(reader)) {
-            response = converter.convert(reader);
+        if (userRepository.save(user)) {
+            response = converter.convert(user);
         } else {
-            readerRepository.close();
+            userRepository.close();
             throw new RuntimeException("Critical error");
         }
 
-        readerRepository.close();
+        userRepository.close();
         return response;
     }
 }

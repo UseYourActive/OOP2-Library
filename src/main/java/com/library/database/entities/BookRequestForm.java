@@ -8,7 +8,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "forms")
 public class BookRequestForm {
@@ -18,10 +17,10 @@ public class BookRequestForm {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "reader_id")
-    private Reader reader;
-
-    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

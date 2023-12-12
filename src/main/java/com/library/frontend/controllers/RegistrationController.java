@@ -1,7 +1,7 @@
 package com.library.frontend.controllers;
 
 import com.library.backend.operations.OperationFactory;
-import com.library.backend.operations.processors.CreateReaderOperationProcessor;
+import com.library.backend.operations.processors.CreateUserOperationProcessor;
 import com.library.backend.operations.requests.CreateReaderRequest;
 import com.library.backend.operations.responses.CreateReaderResponse;
 import javafx.application.Platform;
@@ -59,7 +59,7 @@ public class RegistrationController implements Controller {
                     .email(emailTextField.getText())
                     .build();
 
-            CreateReaderOperationProcessor processor = OperationFactory.getOperationProcessor(CreateReaderOperationProcessor.class);
+            CreateUserOperationProcessor processor = OperationFactory.getOperationProcessor(CreateUserOperationProcessor.class);
             CreateReaderResponse createReaderResponse = processor.process(request);
 
 

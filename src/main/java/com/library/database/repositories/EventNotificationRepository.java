@@ -1,7 +1,7 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.EventNotification;
-import com.library.database.entities.base.User;
+import com.library.database.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

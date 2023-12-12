@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static com.library.database.enums.Role.*;
+
 @NoArgsConstructor
 public class AccessController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AccessController.class);
@@ -48,7 +50,6 @@ public class AccessController implements Controller {
                     .password(passwordPasswordField.getText())
                     .build();
 
-
             LogInOperationProcessor createUserOperationProcessor = OperationFactory.getOperationProcessor(LogInOperationProcessor.class);
 
             LogInResponse response = createUserOperationProcessor.process(request);
@@ -59,8 +60,8 @@ public class AccessController implements Controller {
                 case ADMIN -> form = new Form(event, "/views/AdminForm.fxml", "Administrator panel", false);
                 case OPERATOR -> {
                 }
-                //case READER -> {
-                //}
+                case READER -> {
+                }
             }
 
             if (form != null) {

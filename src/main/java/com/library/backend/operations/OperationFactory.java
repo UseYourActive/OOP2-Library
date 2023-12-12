@@ -3,7 +3,7 @@ package com.library.backend.operations;
 import com.library.backend.mappers.CreateBookResponseConverter;
 import com.library.backend.mappers.CreateUserResponseConverter;
 import com.library.backend.operations.processors.CreateBookOperationProcessor;
-import com.library.backend.operations.processors.CreateReaderOperationProcessor;
+import com.library.backend.operations.processors.CreateUserOperationProcessor;
 import com.library.backend.operations.processors.LogInOperationProcessor;
 import com.library.backend.operations.processors.contracts.CreateBookOperation;
 import com.library.backend.operations.processors.contracts.OperationProcessor;
@@ -27,7 +27,7 @@ public class OperationFactory {
     @Getter
     @RequiredArgsConstructor
     private enum OperationProcessorType {
-        CREATE_READER(CreateReaderOperationProcessor.class),
+        CREATE_READER(CreateUserOperationProcessor.class),
         CREATE_BOOK(CreateBookOperation.class),
         LOG_IN(LogInOperationProcessor.class);
 
@@ -50,13 +50,13 @@ public class OperationFactory {
         PROCESSOR processor;
 
         switch (getOperationProcessorType(processorClass)) {
-            case LOG_IN -> processor = processorClass.cast(new LogInOperationProcessor(new ReaderRepository(),new OperatorRepository(),new AdminRepository()));
+            case LOG_IN -> processor = processorClass.cast(new LogInOperationProcessor(new UserRepository()));
 
             case CREATE_BOOK ->
                     processor = processorClass.cast(new CreateBookOperationProcessor(new BookRepository(), new GenreRepository(), new AuthorRepository(), new CreateBookResponseConverter()));
 
             case CREATE_READER ->
-                    processor = processorClass.cast(new CreateReaderOperationProcessor(new ReaderRepository(), new CreateUserResponseConverter()));
+                    processor = processorClass.cast(new CreateUserOperationProcessor(new UserRepository(), new CreateUserResponseConverter()));
 
             default -> throw new RuntimeException("There is no such enum");
         }

@@ -1,6 +1,5 @@
 package com.library.database.entities;
 
-import com.library.database.entities.base.User;
 import com.library.database.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.Getter;

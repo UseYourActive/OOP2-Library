@@ -1,23 +1,18 @@
 import com.library.backend.mappers.CreateUserResponseConverter;
-import com.library.backend.operations.processors.CreateReaderOperationProcessor;
-import com.library.backend.operations.requests.CreateReaderRequest;
-import com.library.backend.operations.responses.CreateReaderResponse;
-import com.library.database.repositories.ReaderRepository;
+import com.library.backend.operations.processors.CreateUserOperationProcessor;
+import com.library.database.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CreateReaderOperationProcessorTest {
-    private CreateReaderOperationProcessor readerProcessor;
-
-    @BeforeEach
-    void setUp() {
-        ReaderRepository readerRepository = new ReaderRepository();
-        CreateUserResponseConverter converter = new CreateUserResponseConverter();
-        readerProcessor = new CreateReaderOperationProcessor(readerRepository, converter);
-    }
-
+//    private CreateUserOperationProcessor readerProcessor;
+//
+//    @BeforeEach
+//    void setUp() {
+//        UserRepository userRepository = new UserRepository();
+//        CreateUserResponseConverter converter = new CreateUserResponseConverter();
+//        readerProcessor = new CreateUserOperationProcessor(userRepository, converter);
+//    }
+//
 //    @Test
 //    void testCreateReaderSuccessfully() {
 //        // Given

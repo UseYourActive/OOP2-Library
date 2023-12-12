@@ -2,7 +2,7 @@ package com.library.backend.mappers;
 
 
 import com.library.backend.operations.responses.CreateReaderResponse;
-import com.library.database.entities.base.User;
+import com.library.database.entities.User;
 
 
 public class CreateUserResponseConverter implements Converter<User, CreateReaderResponse> {

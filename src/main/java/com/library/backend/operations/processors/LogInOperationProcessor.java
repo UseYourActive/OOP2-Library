@@ -1,22 +1,14 @@
 package com.library.backend.operations.processors;
 
-import com.library.backend.exception.AdminNotFoundException;
-import com.library.backend.exception.OperatorNotFoundException;
-import com.library.backend.exception.ReaderNotFoundException;
-import com.library.backend.exception.UserNotFoundException;
+import com.library.backend.exception.ProcessException;
 import com.library.backend.operations.processors.contracts.LogInOperation;
 import com.library.backend.operations.requests.LogInRequest;
 import com.library.backend.operations.responses.LogInResponse;
-import com.library.backend.operations.responses.Role;
-import com.library.database.entities.Admin;
-import com.library.database.entities.Operator;
-import com.library.database.entities.Reader;
-import com.library.database.entities.base.User;
-import com.library.database.repositories.AdminRepository;
-import com.library.database.repositories.OperatorRepository;
-import com.library.database.repositories.ReaderRepository;
+import com.library.database.entities.User;
+import com.library.database.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
 public class LogInOperationProcessor implements LogInOperation {
