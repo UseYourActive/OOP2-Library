@@ -10,6 +10,6 @@
     <Button layoutX="20" layoutY="100" text="Register a Book" onAction="#registerABookButtonOnAction" />
     <Button layoutX="20" layoutY="140" text="Archive Book" onAction="#archiveBookButtonOnAction"/>
 
-    <ListView fx:id="operatorsListView" layoutX="228.0" layoutY="10.0" prefHeight="150" prefWidth="200" />
+    <ListView fx:id="usersListView" layoutX="228.0" layoutY="10.0" prefHeight="150" prefWidth="200" />
     <ListView fx:id="booksListView" layoutX="494.0" layoutY="65.0" prefHeight="231.0" prefWidth="282.0" />
 </AnchorPane>

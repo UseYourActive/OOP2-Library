@@ -1,7 +1,6 @@
 package com.library.database.repositories;
 
 import com.library.database.entities.BookRequestForm;
-import com.library.database.entities.Genre;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

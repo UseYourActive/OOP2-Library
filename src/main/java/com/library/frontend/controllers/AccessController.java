@@ -1,9 +1,8 @@
 package com.library.frontend.controllers;
 
-import com.library.backend.operations.OperationFactory;
-import com.library.backend.operations.processors.LogInOperationProcessor;
-import com.library.backend.operations.requests.LogInRequest;
-import com.library.backend.operations.responses.LogInResponse;
+import com.library.backend.services.AccessService;
+import com.library.backend.services.ServiceFactory;
+import com.library.database.entities.User;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.Form;
 import javafx.application.Platform;
@@ -43,18 +42,17 @@ public class AccessController implements Controller {
         try {
             checkInput();
 
-            LogInRequest request = LogInRequest.builder()
+            User logInUser = User.builder()
                     .username(usernameTextField.getText())
                     .password(passwordPasswordField.getText())
                     .build();
 
-            LogInOperationProcessor createUserOperationProcessor = OperationFactory.getOperationProcessor(LogInOperationProcessor.class);
+            AccessService service = (AccessService) ServiceFactory.getService(AccessService.class);
 
-            LogInResponse response = createUserOperationProcessor.process(request);
-
+            User user = service.getUser(logInUser);
 
             Form form = null;
-            switch (response.getRole()) {
+            switch (user.getRole()) {
                 case ADMIN -> form = new Form(event, "/views/AdminForm.fxml", "Administrator panel", false);
                 case OPERATOR -> {
                 }
@@ -64,8 +62,6 @@ public class AccessController implements Controller {
 
             if (form != null) {
                 form.load();
-            } else {
-                throw new Exception("Unknown role or error processing login response");
             }
 
         } catch (Exception e) {
