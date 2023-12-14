@@ -8,6 +8,7 @@ import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
 import com.library.frontend.utils.Form;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +43,7 @@ public class AdminController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> createOperator.requestFocus());
         AdminService service= (AdminService) ServiceFactory.getService(AdminService.class);
-        usersListView.setItems((ObservableList<User>) service.getUsers());
+        usersListView.setItems(FXCollections.observableArrayList(service.getUsers()));
     }
 
     @FXML
