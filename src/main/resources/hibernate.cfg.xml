@@ -21,5 +21,6 @@
         <mapping class="com.library.database.entities.Genre"/>
         <mapping class="com.library.database.entities.BookRequestForm"/>
         <mapping class="com.library.database.entities.User"/>
+        <mapping class="com.library.database.entities.EventNotification"/>
     </session-factory>
 </hibernate-configuration>

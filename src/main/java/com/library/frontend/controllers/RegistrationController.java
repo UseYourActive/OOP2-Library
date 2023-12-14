@@ -3,6 +3,7 @@ package com.library.frontend.controllers;
 import com.library.backend.services.RegisterService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
+import com.library.database.enums.Role;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -55,6 +56,7 @@ public class RegistrationController implements Controller {
                     .lastName(lastNameTextField.getText())
                     .username(usernameTextField.getText())
                     .password(passwordPasswordField.getText())
+                    .role(Role.READER)
                     .email(emailTextField.getText())
                     .build();
 
