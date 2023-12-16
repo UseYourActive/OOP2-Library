@@ -5,12 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum BookStatus {
-    AVAILABLE("Available"),
-    LENT("Lent"),
-    ARCHIVED("Archived"),
-    DAMAGED("Damaged"),
-    IN_READING_ROOM("In reading room");
+public enum FormStatus {
+    IN_USE("In use"),
+    RETURNED("Returned"),
+    LATE("Late");
 
     private final String displayValue;
 }

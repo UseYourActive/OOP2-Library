@@ -35,6 +35,12 @@ public class BookRepository extends Repository<Book> {
         }
     }
 
+    @Override
+    public Book getById(Long id) {
+        logger.info("Successfully found book with id: {}", id);
+        return session.get(Book.class, id);
+    }
+
     public Optional<Book> findByIsbn(String isbn) {
         try {
             return Optional.ofNullable(

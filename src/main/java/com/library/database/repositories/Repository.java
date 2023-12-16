@@ -36,6 +36,8 @@ public abstract class Repository<T> implements AutoCloseable {
 
     public abstract List<T> findAll();
 
+    public abstract T getById(Long id);
+
     private Session getThreadLocalSession() {
         Session currentSession = threadLocalSession.get();
         if (currentSession == null || !currentSession.isOpen()) {
