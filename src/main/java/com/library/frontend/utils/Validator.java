@@ -79,7 +79,7 @@ public class Validator {
 
         @Override
         public boolean isValid(String genre, ConstraintValidatorContext context) {
-            GenreRepository repository = new GenreRepository();
+            GenreRepository repository = GenreRepository.getInstance();
 
             for (Genre validGenre : repository.findAll()) {
                 if (validGenre.toString().equals(genre)) {

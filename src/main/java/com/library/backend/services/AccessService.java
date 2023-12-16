@@ -12,8 +12,9 @@ public class AccessService implements Service{
         this.userRepository = userRepository;
     }
 
-    public User getUser(User user) throws UserNotFoundException {
-        return this.userRepository.findByUsername(user.getUsername());
+    public User getUser(User user) {
+//        return this.userRepository.findByUsername(user.getUsername());
+        return null;
     }
 
 }
