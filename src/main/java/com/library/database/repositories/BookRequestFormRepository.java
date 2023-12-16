@@ -33,9 +33,15 @@ public class BookRequestFormRepository extends Repository<BookRequestForm>{
         }
     }
 
+    @Override
+    public BookRequestForm getById(Long id) {
+        logger.info("Successfully found book request form with id: {}", id);
+        return session.get(BookRequestForm.class, id);
+    }
+
     public Optional<BookRequestForm> findGenreByName(String name) {
         try {
-            return session.createQuery("SELECT g FROM BookRequestForm b WHERE b.name = :name", BookRequestForm.class)
+            return session.createQuery("SELECT b FROM BookRequestForm b WHERE b.name = :name", BookRequestForm.class)
                     .setParameter("name", name)
                     .getResultStream()
                     .findFirst();

@@ -32,6 +32,12 @@ public class EventNotificationRepository extends Repository<EventNotification> {
         }
     }
 
+    @Override
+    public EventNotification getById(Long id) {
+        logger.info("Successfully found event notification with id: {}", id);
+        return session.get(EventNotification.class, id);
+    }
+
     public List<EventNotification> findByUser(User user) {
         try {
             return session.createQuery("SELECT n FROM EventNotification n WHERE n.user = :user", EventNotification.class)

@@ -34,6 +34,12 @@ public class AuthorRepository extends Repository<Author> {
         }
     }
 
+    @Override
+    public Author getById(Long id) {
+        logger.info("Successfully found author with id: {}", id);
+        return session.get(Author.class, id);
+    }
+
     public Optional<Author> findByName(String authorName) {
         try {
             return Optional.ofNullable(

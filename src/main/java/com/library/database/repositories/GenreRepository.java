@@ -1,5 +1,6 @@
 package com.library.database.repositories;
 
+import com.library.database.entities.EventNotification;
 import com.library.database.entities.Genre;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -31,6 +32,12 @@ public class GenreRepository extends Repository<Genre> {
             logger.error("Error retrieving all genres", e);
             throw e;
         }
+    }
+
+    @Override
+    public Genre getById(Long id) {
+        logger.info("Successfully found genre with id: {}", id);
+        return session.get(Genre.class, id);
     }
 
     public Optional<Genre> findGenreByName(String name) {

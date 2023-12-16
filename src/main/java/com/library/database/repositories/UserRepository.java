@@ -27,6 +27,12 @@ public class UserRepository extends Repository<User> {
         return users;
     }
 
+    @Override
+    public User getById(Long id) {
+        logger.info("Successfully found user with id: {}", id);
+        return super.session.get(User.class, id);
+    }
+
     public User findByUsername(String username) throws UserNotFoundException {
         logger.info("Finding user by username: {}", username);
         User user = super.session.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
