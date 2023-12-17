@@ -56,8 +56,6 @@ public class AccessController implements Controller {
                 case ADMIN -> form = new Form(event, "/views/AdminForm.fxml", "Administrator panel", false);
                 case OPERATOR -> {
                 }
-                case READER -> {
-                }
             }
 
             if (form != null) {

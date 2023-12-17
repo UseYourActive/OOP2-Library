@@ -3,7 +3,6 @@ package com.library.database.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -21,12 +20,6 @@ public class Author {
 
     @Column(name = "name", length = 32, nullable = false)
     private String name;
-
-    @Column(name = "date_of_birth", nullable = false)
-    private LocalDate dateOfBirth;  // Timestamp from SQL?
-
-    @Column(name = "country", length = 16, nullable = false)
-    private String country;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;

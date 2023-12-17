@@ -18,9 +18,9 @@
 
         <mapping class="com.library.database.entities.Author"/>
         <mapping class="com.library.database.entities.Book"/>
-        <mapping class="com.library.database.entities.Genre"/>
-        <mapping class="com.library.database.entities.BookRequestForm"/>
+        <mapping class="com.library.database.entities.BookForm"/>
         <mapping class="com.library.database.entities.User"/>
+        <mapping class="com.library.database.entities.Reader"/>
         <mapping class="com.library.database.entities.EventNotification"/>
     </session-factory>
 </hibernate-configuration>

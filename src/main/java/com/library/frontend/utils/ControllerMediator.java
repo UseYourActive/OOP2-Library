@@ -1,5 +1,22 @@
 package com.library.frontend.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ControllerMediator {
-    // napravi vsichkite DAO-ta singleton s volatile i synchronized!!!!!!!!!!!!!!!!!!!!!!
+    private static ControllerMediator instance;
+    private String globalData;
+
+    private ControllerMediator() {
+        this.globalData = "Default Global Data";
+    }
+
+    public static synchronized ControllerMediator getInstance() {
+        if (instance == null) {
+            instance = new ControllerMediator();
+        }
+        return instance;
+    }
 }

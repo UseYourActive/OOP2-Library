@@ -1,6 +1,5 @@
 package com.library.database.repositories;
 
-import com.library.backend.exception.UserNotFoundException;
 import com.library.database.entities.User;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;

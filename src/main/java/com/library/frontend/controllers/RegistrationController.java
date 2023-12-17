@@ -51,13 +51,8 @@ public class RegistrationController implements Controller {
             checkAllFieldsForInput();
 
             User user = User.builder()
-                    .firstName(firstNameTextField.getText())
-                    .middleName(middleNameTextField.getText())
-                    .lastName(lastNameTextField.getText())
                     .username(usernameTextField.getText())
                     .password(passwordPasswordField.getText())
-                    .role(Role.READER)
-                    .email(emailTextField.getText())
                     .build();
 
             RegisterService registerService= (RegisterService) ServiceFactory.getService(RegisterService.class);
