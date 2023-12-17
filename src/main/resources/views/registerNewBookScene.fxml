@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.registerNewBookController">
    <children>
-      <TextField layoutX="43.0" layoutY="21.0" prefHeight="26.0" prefWidth="316.0" promptText="ISBN" />
-      <TextField layoutX="43.0" layoutY="58.0" prefHeight="26.0" prefWidth="316.0" promptText="Title" />
-      <TextField layoutX="43.0" layoutY="95.0" prefHeight="26.0" prefWidth="316.0" promptText="Author" />
-      <TextField layoutX="315.0" layoutY="134.0" prefHeight="26.0" prefWidth="43.0" promptText="Year" />
-      <TextArea layoutX="43.0" layoutY="189.0" prefHeight="138.0" prefWidth="316.0" promptText="Resume" />
-      <ComboBox layoutX="43.0" layoutY="134.0" prefHeight="26.0" prefWidth="201.0" promptText="Genre" />
-      <Button layoutX="235.0" layoutY="336.0" mnemonicParsing="false" text="Register" />
-      <Button layoutX="311.0" layoutY="336.0" mnemonicParsing="false" text="Cancel" />
+      <TextField fx:id="ISBNTextField" layoutX="43.0" layoutY="21.0" prefHeight="26.0" prefWidth="316.0" promptText="ISBN" />
+      <TextField fx:id="titleTextField" layoutX="43.0" layoutY="58.0" prefHeight="26.0" prefWidth="316.0" promptText="Title" />
+      <TextField fx:id="authorTextField" layoutX="43.0" layoutY="95.0" prefHeight="26.0" prefWidth="316.0" promptText="Author" />
+      <TextField fx:id="yearTextField" layoutX="315.0" layoutY="134.0" prefHeight="26.0" prefWidth="43.0" promptText="Year" />
+      <TextArea fx:id="resumeTextField" layoutX="43.0" layoutY="189.0" prefHeight="138.0" prefWidth="316.0" promptText="Resume" />
+      <ComboBox fx:id="genreComboBox" layoutX="43.0" layoutY="134.0" prefHeight="26.0" prefWidth="201.0" promptText="Genre" />
+      <Button fx:id="registerButton" layoutX="235.0" layoutY="336.0" mnemonicParsing="false" text="Register" />
+      <Button fx:id="cancelButton" layoutX="311.0" layoutY="336.0" mnemonicParsing="false" text="Cancel" />
    </children>
 </AnchorPane>

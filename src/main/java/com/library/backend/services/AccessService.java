@@ -13,8 +13,7 @@ public class AccessService implements Service{
     }
 
     public User getUser(User user) {
-//        return this.userRepository.findByUsername(user.getUsername());
-        return null;
+        return this.userRepository.findByUsername(user.getUsername()).orElseThrow(RuntimeException::new);
     }
 
 }

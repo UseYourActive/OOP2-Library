@@ -17,7 +17,7 @@ import java.util.List;
 public class BookForm {
     @Id
     @Column(name = "form_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

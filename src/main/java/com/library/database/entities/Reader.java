@@ -14,7 +14,7 @@ import lombok.*;
 public class Reader {
     @Id
     @Column(name = "reader_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "first_name", length = 16)

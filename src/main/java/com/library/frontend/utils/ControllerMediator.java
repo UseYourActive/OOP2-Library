@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class ControllerMediator {
     private static ControllerMediator instance;
-    private String globalData;
+    private Object globalData;
 
     private ControllerMediator() {
         this.globalData = "Default Global Data";
