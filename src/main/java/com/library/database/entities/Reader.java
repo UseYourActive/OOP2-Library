@@ -1,6 +1,5 @@
 package com.library.database.entities;
 
-import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.Rating;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,11 +33,17 @@ public class Reader {
     @Column(name = "email", length = 32, unique = true)
     private String email;
 
-    @Column(name = "book_form_status")
-    @Enumerated(EnumType.STRING)
-    private BookFormStatus bookFormStatus;
+    @OneToOne
+    @JoinColumn(name = "book_form")
+    private BookForm bookForm;
 
     @Column(name = "reader_rating")
     @Enumerated(EnumType.STRING)
     private Rating rating;
+
+    @Override
+    public String toString() {
+        return String.format("Id: %d, First Name: %s, Middle Name: %s, Last Name: %s, Phone Number: %s, Email: %s, Book Form Id: %d, Rating: %s",
+                id, firstName, middleName, lastName, phoneNumber, email, bookForm.getId(), rating.getDisplayValue());
+    }
 }
