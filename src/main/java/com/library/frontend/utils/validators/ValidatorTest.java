@@ -1,11 +1,11 @@
-package com.library.frontend.utils;
+package com.library.frontend.utils.validators;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
-public class Validator {
+public class ValidatorTest {
     public static boolean validateBigDecimalString(String value) {
         return new BigDecimalStringValidator().isValid(value);
     }
