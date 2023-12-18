@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Year;
+import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
@@ -21,7 +24,7 @@ public class Book {
     private Long id;
 
     @Column(name = "amount_of_copies")
-    private static Integer amountOfCopies;
+    private Integer amountOfCopies;
 
     @Column(name = "number_of_times_used")
     private Integer numberOfTimesUsed;
@@ -32,6 +35,7 @@ public class Book {
     @Column(name = "title", length = 32, nullable = false)
     private String title;
 
+    @Lob @Basic(fetch = LAZY)
     @Column(name = "resume", length = 512, nullable = false)
     private String resume;
 
@@ -43,8 +47,8 @@ public class Book {
     private String isbn;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "genre", nullable = false)
-    private Genre genre;
+    @Column(name = "genres", nullable = false)
+    private List<Genre> genre;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status", length = 16, nullable = false)
@@ -52,14 +56,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + "\s\s"+ author+"\s\s"+genre+"\s\s"+publishYear;
-    }
-
-    public static Integer getAmountOfCopies() {
-        return amountOfCopies;
-    }
-
-    public static void setAmountOfCopies(Integer amountOfCopies) {
-        Book.amountOfCopies = amountOfCopies;
+        return String.format("Id: %d, Title: %s, ISBN: %s, Publish Year: %s",
+                id, title, isbn, publishYear);
     }
 }

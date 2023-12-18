@@ -93,4 +93,29 @@ public class BookRepository extends Repository<Book> {
         String query = "SELECT b FROM Book b WHERE b.inventoryNumber = :inventoryNumber";
         return executeQuery(query, "inventoryNumber", inventoryNumber, Book.class);
     }
+
+    public Integer getAmountOfCopies(Long bookId) throws HibernateException {
+        try {
+            Book book = session.get(Book.class, bookId);
+            return book != null ? book.getAmountOfCopies() : null;
+        } catch (HibernateException e) {
+            logger.error("Error getting amount of copies for book with ID: {}", bookId, e);
+            throw e;
+        }
+    }
+
+    public void updateAmountOfCopies(Long bookId, Integer newAmount) throws HibernateException {
+        try {
+            Book book = session.get(Book.class, bookId);
+            if (book != null) {
+                book.setAmountOfCopies(newAmount);
+                super.update(book);
+            } else {
+                logger.info("No book found with ID: {}", bookId);
+            }
+        } catch (HibernateException e) {
+            logger.error("Error updating amount of copies for book with ID: {}", bookId, e);
+            throw e;
+        }
+    }
 }
