@@ -6,7 +6,6 @@ import com.library.database.entities.User;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -45,8 +44,12 @@ public class LogInController implements Controller {
             User user = service.getUser(logInUser);
 
             switch (user.getRole()) {
-                case ADMIN -> SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml","Administrator");
-                case OPERATOR -> SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", "Operator");
+                case ADMIN ->{
+                    SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",usernameTextField.getText() + " (Administrator)");
+                }
+                case OPERATOR -> {
+                    SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", usernameTextField.getText()+" (Operator)");
+                }
             }
 
         } catch (Exception e) {
@@ -58,6 +61,8 @@ public class LogInController implements Controller {
     public void forgotPasswordHyperlinkOnMouseClicked(MouseEvent mouseEvent) {
     }
 
+
+    //Try to move the logic inside a class
     private void checkInput() throws Exception {
         if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
             throw new Exception("Please enter username\nand password!");

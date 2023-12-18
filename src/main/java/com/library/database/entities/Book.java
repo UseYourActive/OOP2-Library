@@ -5,7 +5,7 @@ import com.library.database.enums.Genre;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.Year;
 
 @Getter
 @Setter
@@ -27,7 +27,7 @@ public class Book {
     private Integer numberOfTimesUsed;
 
     @Column(name = "publish_date")
-    private LocalDate publishDate;
+    private Year publishYear;
 
     @Column(name = "title", length = 32, nullable = false)
     private String title;
@@ -49,4 +49,17 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status", length = 16, nullable = false)
     private BookStatus bookStatus;
+
+    @Override
+    public String toString() {
+        return title + "\s\s"+ author+"\s\s"+genre+"\s\s"+publishYear;
+    }
+
+    public static Integer getAmountOfCopies() {
+        return amountOfCopies;
+    }
+
+    public static void setAmountOfCopies(Integer amountOfCopies) {
+        Book.amountOfCopies = amountOfCopies;
+    }
 }

@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,10 @@ import java.util.Objects;
 public class SceneLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(SceneLoader.class);
+
+    @Getter
+    private static Stage stage;
+
     private SceneLoader(){}
     public static void load(Event event, String resourceFiles, String stageTitle){
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -33,6 +38,8 @@ public class SceneLoader {
             stage.setResizable(false);
             stage.setTitle(stageTitle);
             stage.show();
+            SceneLoader.stage=stage;
+
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);
             DialogUtils.showError("Error", "An error occurred when trying to open the new dialog window!", e.getMessage());

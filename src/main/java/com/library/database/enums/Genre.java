@@ -3,8 +3,10 @@ package com.library.database.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+import java.util.Objects;
+
 @Getter
+@AllArgsConstructor
 public enum Genre {
     FICTION("Fiction"),
     NON_FICTION("Non-fiction"),
@@ -28,4 +30,19 @@ public enum Genre {
     TRAVEL("Travel");
 
     private final String value;
+
+
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    public static Genre getValueOf(String value){
+        for(Genre genre:Genre.values()){
+            if(Objects.equals(genre.value, value)){
+                return genre;
+            }
+        }
+        return null;
+    }
 }

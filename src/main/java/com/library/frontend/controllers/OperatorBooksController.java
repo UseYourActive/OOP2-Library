@@ -3,8 +3,9 @@ package com.library.frontend.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,11 +17,15 @@ public class OperatorBooksController implements Controller{
     @FXML public Button lendReadingRoomButton;
     @FXML public TextField searchBarTextField;
     @FXML public Button searchBookButton;
-    @FXML public TreeView booksReadersTreeView;
+
+    @FXML public TreeTableView booksTreeTableView;
+
+    @Setter
+    private String stageTittle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+
     }
     @FXML
     public void readersButtonOnMouseClicked(MouseEvent mouseEvent) {

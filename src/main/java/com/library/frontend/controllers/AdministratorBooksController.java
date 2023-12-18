@@ -4,12 +4,14 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.tableViews.BookTreeItem;
+import com.library.frontend.utils.tableViews.TableViewBuilder;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -27,24 +29,30 @@ public class AdministratorBooksController implements Controller {
     @FXML public Button loadBooksButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
-    @FXML public TreeView<Book> bookTreeView;
+
+    @FXML public TreeTableView<String> bookTreeTableView;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> switchButton.requestFocus());
+        populateTreeTableView();
+
+    }
+
+    private void populateTreeTableView(){
+        TreeItem<String> root = new TreeItem<>();
+        root.setExpanded(true);
+
+        TableViewBuilder.buildBookTreeTableView(bookTreeTableView);
+
         AdminService service= (AdminService) ServiceFactory.getService(AdminService.class);
-        //usersListView.setItems(FXCollections.observableArrayList(service.getUsers()));
-    }
-
-    @FXML
-    public void createOperatorButtonOnAction(ActionEvent event) {
-        SceneLoader.load(event,"/views/createOperatorScene.fxml","Create operator");
-    }
-
-    @FXML
-    public void removeOperatorButtonOnAction() {
-
+        for(Book book : service.getBooks())
+        {
+            BookTreeItem bookTreeItem=new BookTreeItem(book);
+            root.getChildren().add(bookTreeItem);
+        }
+        bookTreeTableView.setRoot(root);
     }
 
     @FXML
@@ -54,16 +62,18 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void loadBooksButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/addBooksScene.fxml","Register new book");
     }
     @FXML
-    public void scrapBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void scrapBookButtonOnMouseClicked() {
+
     }
     @FXML
-    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void searchBookButtonOnMouseClicked() {
     }
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml","Administrator");
+        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml", SceneLoader.getStage().getTitle());
     }
 }

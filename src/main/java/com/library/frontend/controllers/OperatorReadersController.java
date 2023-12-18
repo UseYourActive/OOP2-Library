@@ -4,7 +4,7 @@ import com.library.database.entities.Reader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -16,8 +16,8 @@ public class OperatorReadersController implements Controller {
     @FXML public Button removeReaderButton;
     @FXML public TextField searchBarTextField;
     @FXML public Button searchReaderButton;
-    @FXML public TreeView<Reader> readerTreeView;
     @FXML public Button checkReaderInfoButton;
+    @FXML public TreeTableView<Reader> readerTreeTableView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -32,4 +32,8 @@ public class AdminService implements Service {
     public List<User> getUsers(){
         return userRepository.findAll();
     }
+
+    public List<Book> getBooks(){
+        return bookRepository.findAll();
+    }
 }
