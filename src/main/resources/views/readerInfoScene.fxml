@@ -6,8 +6,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.Rating?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="414.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.readerInfoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="414.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.ReaderInfoController">
    <children>
       <TreeView fx:id="bookFormTreeView" layoutX="47.0" layoutY="114.0" prefHeight="233.0" prefWidth="510.0" />
       <Button fx:id="goBackButton" layoutX="497.0" layoutY="360.0" mnemonicParsing="false" text="Go back" />

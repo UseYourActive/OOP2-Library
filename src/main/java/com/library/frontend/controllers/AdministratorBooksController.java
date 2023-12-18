@@ -21,13 +21,13 @@ import java.util.ResourceBundle;
 @NoArgsConstructor
 public class AdministratorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
-    public Button switchButton;
-    public Button scrapBookButton;
-    public Button registerBookButton;
-    public Button loadBooksButton;
-    public TextField searchBookTextField;
-    public Button searchBookButton;
-    public TreeView<Book> bookTreeView;
+    @FXML public Button switchButton;
+    @FXML public Button scrapBookButton;
+    @FXML public Button registerBookButton;
+    @FXML public Button loadBooksButton;
+    @FXML public TextField searchBookTextField;
+    @FXML public Button searchBookButton;
+    @FXML public TreeView<Book> bookTreeView;
 
 
     @Override

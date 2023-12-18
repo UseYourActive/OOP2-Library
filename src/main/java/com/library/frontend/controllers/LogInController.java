@@ -19,16 +19,11 @@ import java.util.ResourceBundle;
 @NoArgsConstructor
 public class LogInController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
-    @FXML
-    private Button logInButton;
-    @FXML
-    private Hyperlink forgotPasswordHyperlink;
-    @FXML
-    private Label logInMessageLabel;
-    @FXML
-    private TextField usernameTextField;
-    @FXML
-    private PasswordField passwordPasswordField;
+    @FXML private Button logInButton;
+    @FXML private Hyperlink forgotPasswordHyperlink;
+    @FXML private Label logInMessageLabel;
+    @FXML private TextField usernameTextField;
+    @FXML private PasswordField passwordPasswordField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

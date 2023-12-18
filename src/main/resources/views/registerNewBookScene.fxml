@@ -6,8 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.registerNewBookController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.RegisterNewBookController">
    <children>
       <TextField fx:id="ISBNTextField" layoutX="43.0" layoutY="21.0" prefHeight="26.0" prefWidth="316.0" promptText="ISBN" />
       <TextField fx:id="titleTextField" layoutX="43.0" layoutY="58.0" prefHeight="26.0" prefWidth="316.0" promptText="Title" />

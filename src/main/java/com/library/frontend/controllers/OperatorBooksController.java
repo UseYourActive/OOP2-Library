@@ -1,5 +1,6 @@
 package com.library.frontend.controllers;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
@@ -9,13 +10,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class OperatorBooksController implements Controller{
-    public Button readersButton;
-    public Button archiveButton;
-    public Button lendButton;
-    public Button lendReadingRoomButton;
-    public TextField searchBarTextField;
-    public Button searchBookButton;
-    public TreeView booksReadersTreeView;
+    @FXML public Button readersButton;
+    @FXML public Button archiveButton;
+    @FXML public Button lendButton;
+    @FXML public Button lendReadingRoomButton;
+    @FXML public TextField searchBarTextField;
+    @FXML public Button searchBookButton;
+    @FXML public TreeView booksReadersTreeView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

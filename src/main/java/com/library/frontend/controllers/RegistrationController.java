@@ -3,7 +3,6 @@ package com.library.frontend.controllers;
 import com.library.backend.services.RegisterService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
-import com.library.database.enums.Role;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,30 +13,18 @@ import java.util.ResourceBundle;
 
 @NoArgsConstructor
 public class RegistrationController implements Controller {
-    @FXML
-    private Button registerButton;
-    @FXML
-    private TextField visiblePasswordTextField;
-    @FXML
-    private TextField visibleRepeatPasswordTextField;
-    @FXML
-    private CheckBox showPasswordCheckBox;
-    @FXML
-    private TextField firstNameTextField;
-    @FXML
-    private TextField middleNameTextField;
-    @FXML
-    private TextField lastNameTextField;
-    @FXML
-    private TextField usernameTextField;
-    @FXML
-    private TextField emailTextField;
-    @FXML
-    private PasswordField passwordPasswordField;
-    @FXML
-    private PasswordField repeatPasswordPasswordField;
-    @FXML
-    private Label registrationMessageLabel;
+    @FXML private Button registerButton;
+    @FXML private TextField visiblePasswordTextField;
+    @FXML private TextField visibleRepeatPasswordTextField;
+    @FXML private CheckBox showPasswordCheckBox;
+    @FXML private TextField firstNameTextField;
+    @FXML private TextField middleNameTextField;
+    @FXML private TextField lastNameTextField;
+    @FXML private TextField usernameTextField;
+    @FXML private TextField emailTextField;
+    @FXML private PasswordField passwordPasswordField;
+    @FXML private PasswordField repeatPasswordPasswordField;
+    @FXML private Label registrationMessageLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
