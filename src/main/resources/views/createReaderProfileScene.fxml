@@ -18,7 +18,7 @@
       <TextField fx:id="emailTextField" layoutX="168.0" layoutY="211.0" prefHeight="26.0" prefWidth="190.0" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Text layoutX="56.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-      <Button fx:id="createReaderProfileButton" layoutX="168.0" layoutY="266.0" mnemonicParsing="false" text="Create reader profile" />
-      <Button fx:id="cancelButton" layoutX="306.0" layoutY="266.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="createReaderProfileButton" layoutX="168.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#createReaderProfileButtonOnMouseClicked" text="Create reader profile" />
+      <Button fx:id="cancelButton" layoutX="306.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#cancelButtonOnMouseClicked" text="Cancel" />
    </children>
 </AnchorPane>

@@ -44,23 +44,15 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void removeOperatorButtonOnAction() {
-        AdminService adminService = (AdminService) ServiceFactory.getService(AdminService.class);
-       // adminService.removeOperator(usersListView.getSelectionModel().getSelectedItem());
+
     }
-
-    @FXML
-    public void archiveBookButtonOnAction(ActionEvent event) {
-        AdminService adminService = (AdminService) ServiceFactory.getService(AdminService.class);
-       // adminService.archiveBook(booksListView.getSelectionModel().getSelectedItem());
-    }
-
-
 
     @FXML
     public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
     }
 
+    @FXML
     public void loadBooksButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
     @FXML
@@ -70,7 +62,7 @@ public class AdministratorBooksController implements Controller {
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 
-
+    @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml","Administrator");
     }

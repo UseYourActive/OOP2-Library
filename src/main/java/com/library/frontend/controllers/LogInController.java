@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,8 @@ public class LogInController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> usernameTextField.requestFocus());
     }
-
     @FXML
-    public void logInButtonOnAction(ActionEvent event) {
+    public void logInButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
             checkInput();
 
@@ -45,8 +45,8 @@ public class LogInController implements Controller {
             User user = service.getUser(logInUser);
 
             switch (user.getRole()) {
-                case ADMIN -> SceneLoader.load(event, "/views/administratorBooksScene.fxml","Administrator");
-                case OPERATOR -> SceneLoader.load(event,"/views/operatorBooksScene.fxml", "Operator");
+                case ADMIN -> SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml","Administrator");
+                case OPERATOR -> SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", "Operator");
             }
 
         } catch (Exception e) {
@@ -54,10 +54,8 @@ public class LogInController implements Controller {
             DialogUtils.showError("Error", "An error occurred during login!", e.getMessage());
         }
     }
-
     @FXML
-    public void forgotPasswordLinkOnAction(ActionEvent event) {
-
+    public void forgotPasswordHyperlinkOnMouseClicked(MouseEvent mouseEvent) {
     }
 
     private void checkInput() throws Exception {
@@ -73,5 +71,4 @@ public class LogInController implements Controller {
             throw new Exception("Please enter your password!");
         }
     }
-
 }

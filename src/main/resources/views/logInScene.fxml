@@ -12,7 +12,7 @@
 
 <AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.LogInController">
    <children>
-      <Button id="logInButton" fx:id="logInButton" layoutX="165.0" layoutY="332.0" mnemonicParsing="false" onAction="#logInButtonOnAction" prefHeight="26.0" prefWidth="69.0" text="Log in" />
+      <Button id="logInButton" fx:id="logInButton" layoutX="165.0" layoutY="332.0" mnemonicParsing="false" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="69.0" text="Log in" />
       <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="125.0" layoutY="196.0" />
       <PasswordField id="passwordPasswordField" fx:id="passwordPasswordField" layoutX="125.0" layoutY="236.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="125.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
@@ -31,6 +31,6 @@
          </font>
       </Label>
       <Label id="logInMessageLabel" fx:id="logInMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="127.0" layoutY="286.0" prefHeight="34.0" prefWidth="150.0" textAlignment="CENTER" />
-      <Hyperlink fx:id="forgotPasswordHyperlink" layoutX="178.0" layoutY="262.0" text="Forgot password" textFill="#290cb9" />
+      <Hyperlink fx:id="forgotPasswordHyperlink" layoutX="178.0" layoutY="262.0" onMouseClicked="#forgotPasswordHyperlinkOnMouseClicked" text="Forgot password" textFill="#290cb9" />
    </children>
 </AnchorPane>

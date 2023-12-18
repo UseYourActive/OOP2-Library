@@ -22,19 +22,19 @@ public class OperatorBooksController implements Controller{
     public void initialize(URL location, ResourceBundle resources) {
         
     }
-
+    @FXML
     public void readersButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void archiveButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void lendButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 }

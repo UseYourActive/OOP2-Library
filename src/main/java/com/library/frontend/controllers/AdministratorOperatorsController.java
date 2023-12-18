@@ -6,29 +6,42 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AdministratorOperatorsController implements Controller{
     @FXML public Button booksButton;
-    @FXML public Button registerBookButton;
-    @FXML public Button loadBooksButton;
     @FXML public TextField searchBookTextField;
-    @FXML public Button searchBookButton;
     @FXML public TreeView<Book> bookTreeView;
+    @FXML public Button createOperatorButton;
+    @FXML public Button removeOperatorButton;
+    @FXML public Button searchOperatorButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
     }
 
-    public void booksButtonOnAction(ActionEvent event) {
+    @FXML
+    public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 
-    public void registerBookButtonOnAction(ActionEvent event) {
+    @FXML
+    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 
-    public void loadBooksButtonOnAction(ActionEvent event) {
+    @FXML
+    public void loadBooksButtonOnMouseClicked(MouseEvent mouseEvent) {
+    }
+    @FXML
+    public void createOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
+    }
+    @FXML
+    public void searchOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
+    }
+    @FXML
+    public void removeOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 }

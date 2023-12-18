@@ -34,11 +34,13 @@ dependencies {
 
     // Postgres - Database
     implementation 'org.postgresql:postgresql:42.6.0'
+
+    implementation 'org.controlsfx:controlsfx:11.1.2'
 }
 
 javafx {
     version = "17"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml']
 }
 
 application {

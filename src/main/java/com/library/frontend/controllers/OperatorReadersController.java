@@ -23,19 +23,19 @@ public class OperatorReadersController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         
     }
-
+    @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void createReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void removeReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
-
+    @FXML
     public void checkReaderInfoButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 }
