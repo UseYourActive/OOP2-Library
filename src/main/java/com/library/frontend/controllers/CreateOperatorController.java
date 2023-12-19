@@ -4,6 +4,7 @@ import com.library.backend.services.RegisterService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
+import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -28,7 +29,7 @@ public class CreateOperatorController implements Controller {
 
     }
     @FXML
-    public void createOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void createOperatorButtonOnMouseClicked() {
         try {
             checkAllFieldsForInput();
 
@@ -48,6 +49,7 @@ public class CreateOperatorController implements Controller {
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml","Administrator");
     }
     @FXML
     public void showPasswordCheckBoxOnMouseClicked(MouseEvent mouseEvent) {

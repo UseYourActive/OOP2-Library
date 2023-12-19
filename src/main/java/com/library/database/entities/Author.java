@@ -21,6 +21,11 @@ public class Author {
     @Column(name = "name", length = 32, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
     private List<Book> books;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

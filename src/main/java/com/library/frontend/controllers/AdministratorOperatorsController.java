@@ -56,5 +56,6 @@ public class AdministratorOperatorsController implements Controller{
     }
     @FXML
     public void removeOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
 }

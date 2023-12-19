@@ -4,6 +4,8 @@ import com.library.database.enums.Rating;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -33,9 +35,9 @@ public class Reader {
     @Column(name = "email", length = 32, unique = true)
     private String email;
 
-    @OneToOne
+    @OneToMany()
     @JoinColumn(name = "book_form")
-    private BookForm bookForm;
+    private List<BookForm> bookForms;
 
     @Column(name = "reader_rating")
     @Enumerated(EnumType.STRING)
@@ -43,7 +45,7 @@ public class Reader {
 
     @Override
     public String toString() {
-        return String.format("Id: %d, First Name: %s, Middle Name: %s, Last Name: %s, Phone Number: %s, Email: %s, Book Form Id: %d, Rating: %s",
-                id, firstName, middleName, lastName, phoneNumber, email, bookForm.getId(), rating.getDisplayValue());
+        return String.format("Id: %d, First Name: %s, Middle Name: %s, Last Name: %s, Phone Number: %s, Email: %s, Rating: %s",
+                id, firstName, middleName, lastName, phoneNumber, email, rating.getDisplayValue());
     }
 }

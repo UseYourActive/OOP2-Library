@@ -1,5 +1,7 @@
 package com.library.backend.services;
 
+import com.library.database.repositories.AuthorRepository;
+import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
 import lombok.Getter;
@@ -20,9 +22,9 @@ public class ServiceFactory {
             Service service;
 
             switch (getServiceType(serviceClass)) {
-                case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance()));
+                case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance(), AuthorRepository.getInstance(), BookFormRepository.getInstance()));
                 case ACCESS_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
-                case REGISTER_SERVICE -> service= serviceClass.cast(new RegisterService(UserRepository.getInstance()));
+                case REGISTER_SERVICE -> service = serviceClass.cast(new RegisterService(UserRepository.getInstance()));
                 default -> throw new RuntimeException("There is no such enum");
             }
 

@@ -20,13 +20,11 @@ public class BookForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id")
+    @OneToMany()
     private List<Book> books;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToOne()
+    private Reader reader;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

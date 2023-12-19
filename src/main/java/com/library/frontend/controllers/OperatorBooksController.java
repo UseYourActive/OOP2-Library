@@ -1,9 +1,8 @@
 package com.library.frontend.controllers;
 
+import com.library.database.entities.Book;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 
@@ -18,7 +17,9 @@ public class OperatorBooksController implements Controller{
     @FXML public TextField searchBarTextField;
     @FXML public Button searchBookButton;
 
-    @FXML public TreeTableView booksTreeTableView;
+    @FXML public TreeTableView<Book> booksTreeTableView;
+    public TableView<Book> bookTableView;
+    public TextArea bookTextArea;
 
     @Setter
     private String stageTittle;

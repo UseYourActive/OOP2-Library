@@ -1,5 +1,6 @@
 package com.library.frontend.utils.tableViews;
 
+import com.library.database.entities.Author;
 import com.library.database.entities.Book;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
@@ -13,14 +14,19 @@ import java.time.Year;
 
 public class TableViewBuilder {
 
-    public static void buildBookTreeTableView(TreeTableView<String> bookTreeTableView){
-        TreeTableColumn<String, String> titleColumn = new TreeTableColumn<>("title");
-        TreeTableColumn<String, String> authorColumn = new TreeTableColumn<>("author");
-        TreeTableColumn<String, Year> yearColumn = new TreeTableColumn<>("Publish Year");
+    public static void buildBookTableView(TableView<Book> bookTableView){
+        TableColumn<Book, String> titleColumn = new TableColumn<>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        bookTreeTableView.getColumns().add(titleColumn);
-        bookTreeTableView.getColumns().add(authorColumn);
-        bookTreeTableView.getColumns().add(yearColumn);
+        TableColumn<Book, Integer> authorColumn = new TableColumn<>("Author");
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        TableColumn<Book, Role> publishYearColumn = new TableColumn<>("Publish Year");
+        publishYearColumn.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
+
+        bookTableView.getColumns().add(titleColumn);
+        bookTableView.getColumns().add(authorColumn);
+        bookTableView.getColumns().add(publishYearColumn);
     }
 
     public static void buildOperatorTableView(TableView<User> bookTreeTableView){

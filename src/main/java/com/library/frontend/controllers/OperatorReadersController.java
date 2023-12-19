@@ -2,9 +2,7 @@ package com.library.frontend.controllers;
 
 import com.library.database.entities.Reader;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -18,6 +16,8 @@ public class OperatorReadersController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public Button checkReaderInfoButton;
     @FXML public TreeTableView<Reader> readerTreeTableView;
+    public TextArea readerTextArea;
+    public TableView readerTableView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,5 +37,8 @@ public class OperatorReadersController implements Controller {
     }
     @FXML
     public void checkReaderInfoButtonOnMouseClicked(MouseEvent mouseEvent) {
+    }
+
+    public void readerTableViewOnClicked(MouseEvent mouseEvent) {
     }
 }

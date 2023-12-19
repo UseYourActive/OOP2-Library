@@ -35,7 +35,6 @@ public class Book {
     @Column(name = "title", length = 32, nullable = false)
     private String title;
 
-    //@Lob @Basic(fetch = LAZY)
     @Column(name = "resume", length = 512)
     private String resume;
 
@@ -47,7 +46,7 @@ public class Book {
     private String isbn;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "genres", nullable = false)
+    @Column(name = "genres")
     private Genre genre;
 
     @Enumerated(EnumType.STRING)

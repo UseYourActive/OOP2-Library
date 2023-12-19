@@ -4,6 +4,7 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import com.library.frontend.utils.SceneLoader;
@@ -54,6 +55,7 @@ public class RegisterNewBookController implements Controller {
     private Book getBook(){
         Author author = Author.builder()
                 .name(authorTextField.getText())
+                .books(new ArrayList<>())
                 .build();
 
         Genre genre=Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));

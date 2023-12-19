@@ -54,7 +54,7 @@ public class LogInController implements Controller {
 
         } catch (Exception e) {
             logger.error("Error during login", e);
-            DialogUtils.showError("Error", "An error occurred during login!", e.getMessage());
+            logInMessageLabel.setText("An error occurred during login!");
         }
     }
     @FXML
