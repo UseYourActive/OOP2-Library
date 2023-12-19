@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.time.Year;
@@ -32,24 +33,53 @@ public class RegisterNewBookController implements Controller {
     @FXML public Button cancelButton;
     @FXML public Label informationLabel;
     @FXML public TextField amountTextField;
+    @FXML public AnchorPane anchorPane;
+
+    private AdminService adminService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> genreComboBox.requestFocus());
 
+        adminService=((AdminService) ServiceFactory.getService(AdminService.class));
+
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
     }
     @FXML
     public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
-        Book book = getBook();
+        try {
+            checkInput();
 
-        ((AdminService) ServiceFactory.getService(AdminService.class)).registerBook(book);
+            Book book = getBook();
 
-        cancelButtonOnMouseClicked(mouseEvent);
+            adminService.registerBook(book);
+
+            cancelButtonOnMouseClicked(mouseEvent);
+        }catch (Exception e){
+            informationLabel.setText(e.getMessage());
+        }
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml", SceneLoader.getStage().getTitle());
+    }
+
+    private void checkInput() throws Exception {
+        if(ISBNTextField.getText().isEmpty())
+            throw new Exception("Please enter ISBN.");
+
+        if(titleTextField.getText().isEmpty())
+            throw new Exception("Please enter book title.");
+
+        if(authorTextField.getText().isEmpty())
+            throw new Exception("Please enter book author.");
+
+        if(genreComboBox.getSelectionModel().isEmpty())
+            throw new Exception("Please choose the genre of the book.");
+
+        if(yearTextField.getText().isEmpty()){
+            throw new Exception("Please enter publish year of book.");
+        }
     }
 
     private Book getBook(){
@@ -60,16 +90,28 @@ public class RegisterNewBookController implements Controller {
 
         Genre genre=Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
 
-        return Book.builder()
+        //not nullable properties are instantiated trough builder
+        Book book = Book.builder()
                 .isbn(ISBNTextField.getText())
                 .title(titleTextField.getText())
                 .author(author)
-                .publishYear(Year.parse(yearTextField.getText()))
-                .resume(resumeTextField.getText())
                 .genre(genre)
                 .bookStatus(BookStatus.AVAILABLE)
-                .amountOfCopies(Integer.valueOf(amountTextField.getText()))
                 .numberOfTimesUsed(0)
                 .build();
+
+        //nullable properties need check
+        if(!yearTextField.getText().isEmpty())
+            book.setPublishYear(Year.parse(yearTextField.getText()));
+
+        if(!resumeTextField.getText().isEmpty()) {
+            book.setResume(resumeTextField.getText());
+        }
+
+        if(!amountTextField.getText().isEmpty()){
+            book.setAmountOfCopies(Integer.valueOf(amountTextField.getText()));
+        }
+
+        return book;
     }
 }

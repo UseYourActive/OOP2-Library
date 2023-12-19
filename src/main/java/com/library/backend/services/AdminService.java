@@ -1,5 +1,6 @@
 package com.library.backend.services;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
@@ -10,21 +11,17 @@ import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AdminService implements Service {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    private final AuthorRepository authorRepository;
 
-    private final BookFormRepository bookFormRepository;
-
-    public AdminService(BookRepository bookRepository, UserRepository userRepository,AuthorRepository authorRepository,BookFormRepository bookFormRepository) {
+    public AdminService(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.authorRepository=authorRepository;
-        this.bookFormRepository=bookFormRepository;
     }
 
     public boolean archiveBook(Book book){
@@ -37,6 +34,13 @@ public class AdminService implements Service {
     }
 
     public void removeBook(Book book){ bookRepository.delete(book); }
+
+    public boolean registerOperator(User operator){
+        BCrypt.Hasher passwordEncryptor = BCrypt.with(BCrypt.Version.VERSION_2A);
+        String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, operator.getPassword().toCharArray()));
+        operator.setPassword(hashedPassword);
+
+        return userRepository.save(operator); }
 
     public void removeOperator(User operator){
         userRepository.delete(operator);

@@ -7,13 +7,16 @@ import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableViews.TableViewBuilder;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.time.Year;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,9 +28,13 @@ public class AdministratorOperatorsController implements Controller{
     @FXML public Button searchOperatorButton;
     @FXML  public TableView<User> operatorTableView;
 
+    private AdminService adminService;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> booksButton.requestFocus());
+
+        adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
         populateTableView();
     }
@@ -35,11 +42,8 @@ public class AdministratorOperatorsController implements Controller{
     private void populateTableView(){
         TableViewBuilder.buildOperatorTableView(operatorTableView);
 
-        AdminService service= (AdminService) ServiceFactory.getService(AdminService.class);
-        List<User> userList=service.getUsers();
+        List<User> userList=adminService.getUsers();
         operatorTableView.getItems().addAll(FXCollections.observableArrayList(userList));
-        operatorTableView.refresh();
-        SceneLoader.getStage().getScene().getRoot().requestLayout();
     }
 
     @FXML
@@ -55,7 +59,9 @@ public class AdministratorOperatorsController implements Controller{
     public void searchOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
     @FXML
-    public void removeOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
-
+    public void removeOperatorButtonOnMouseClicked() {
+        User operator = operatorTableView.getSelectionModel().getSelectedItem();
+        adminService.removeOperator(operator);
+        operatorTableView.refresh();
     }
 }

@@ -43,4 +43,7 @@ public class OperatorBooksController implements Controller{
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
+    @FXML
+    public void bookTableViewOnClicked() {
+    }
 }

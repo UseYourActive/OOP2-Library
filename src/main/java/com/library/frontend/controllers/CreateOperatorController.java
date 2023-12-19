@@ -1,6 +1,6 @@
 package com.library.frontend.controllers;
 
-import com.library.backend.services.RegisterService;
+import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
@@ -39,9 +39,7 @@ public class CreateOperatorController implements Controller {
                     .role(Role.OPERATOR)
                     .build();
 
-            RegisterService registerService= (RegisterService) ServiceFactory.getService(RegisterService.class);
-
-            registerService.register(user);
+            ((AdminService) ServiceFactory.getService(AdminService.class)).registerOperator(user);
 
         } catch (Exception e) {
             informationLabel.setText(e.getMessage());
