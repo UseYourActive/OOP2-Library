@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
@@ -28,38 +30,44 @@ public class RegisterNewBookController implements Controller {
 
     @FXML public Button cancelButton;
     @FXML public Label informationLabel;
+    @FXML public TextField amountTextField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> genreComboBox.requestFocus());
-        //FXCollections.observableList(Genre.stringValues)
+
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
     }
     @FXML
     public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
-        Author author = Author.builder()
-                .name(authorTextField.getText())
-                .build();
+        Book book = getBook();
 
-        Book book= Book.builder()
-                .isbn(ISBNTextField.getText())
-                .title(titleTextField.getText())
-                .author(author)
-                .publishYear(Year.parse(yearTextField.getText()))
-                .resume(resumeTextField.getText())
-                .genre(Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem())))
-                .bookStatus(BookStatus.AVAILABLE)
-                .build();
-
-        Book.setAmountOfCopies(0);
-
-        AdminService service= (AdminService) ServiceFactory.getService(AdminService.class);
-        service.registerBook(book);
+        ((AdminService) ServiceFactory.getService(AdminService.class)).registerBook(book);
 
         cancelButtonOnMouseClicked(mouseEvent);
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml", SceneLoader.getStage().getTitle());
+    }
+
+    private Book getBook(){
+        Author author = Author.builder()
+                .name(authorTextField.getText())
+                .build();
+
+        Genre genre=Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
+
+        return Book.builder()
+                .isbn(ISBNTextField.getText())
+                .title(titleTextField.getText())
+                .author(author)
+                .publishYear(Year.parse(yearTextField.getText()))
+                .resume(resumeTextField.getText())
+                .genre(genre)
+                .bookStatus(BookStatus.AVAILABLE)
+                .amountOfCopies(Integer.valueOf(amountTextField.getText()))
+                .numberOfTimesUsed(0)
+                .build();
     }
 }

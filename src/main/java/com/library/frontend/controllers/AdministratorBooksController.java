@@ -8,10 +8,7 @@ import com.library.frontend.utils.tableViews.BookTreeItem;
 import com.library.frontend.utils.tableViews.TableViewBuilder;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -31,6 +28,7 @@ public class AdministratorBooksController implements Controller {
     @FXML public Button searchBookButton;
 
     @FXML public TreeTableView<String> bookTreeTableView;
+    @FXML public TextArea resumeTextArea;
 
 
     @Override

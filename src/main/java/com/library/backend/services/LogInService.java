@@ -3,11 +3,11 @@ package com.library.backend.services;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 
-public class AccessService implements Service{
+public class LogInService implements Service{
     private final UserRepository userRepository;
 
 
-    public AccessService(UserRepository userRepository) {
+    public LogInService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

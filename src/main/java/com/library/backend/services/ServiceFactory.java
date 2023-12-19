@@ -10,7 +10,7 @@ public class ServiceFactory {
         @RequiredArgsConstructor
         private enum ServiceType {
             ADMIN_SERVICE(AdminService.class),
-            ACCESS_SERVICE(AccessService.class),
+            ACCESS_SERVICE(LogInService.class),
             REGISTER_SERVICE(RegisterService.class);
 
             private final Class<? extends Service> serviceClass;
@@ -21,7 +21,7 @@ public class ServiceFactory {
 
             switch (getServiceType(serviceClass)) {
                 case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance()));
-                case ACCESS_SERVICE -> service = serviceClass.cast(new AccessService(UserRepository.getInstance()));
+                case ACCESS_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
                 case REGISTER_SERVICE -> service= serviceClass.cast(new RegisterService(UserRepository.getInstance()));
                 default -> throw new RuntimeException("There is no such enum");
             }

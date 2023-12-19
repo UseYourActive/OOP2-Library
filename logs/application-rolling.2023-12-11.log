@@ -1,9 +1,0 @@
-2023-12-11 04:07:59.752 [INFO ] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:10:22.785 [INFO ] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:33:06.581 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:33:59.886 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:35:02.342 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:35:49.232 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:36:28.907 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:37:20.341 [%PARSER_ERROR[coloredLevel]] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml
-2023-12-11 04:44:02.523 [INFO ] [JavaFX Application Thread] com.library.frontend.utils.Form - Form loaded successfully: /views/LogInForm.fxml

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdministratorOperatorsController implements Controller{
@@ -32,11 +33,13 @@ public class AdministratorOperatorsController implements Controller{
     }
 
     private void populateTableView(){
-
         TableViewBuilder.buildOperatorTableView(operatorTableView);
 
         AdminService service= (AdminService) ServiceFactory.getService(AdminService.class);
-        operatorTableView.getItems().addAll(FXCollections.observableArrayList(service.getUsers()));
+        List<User> userList=service.getUsers();
+        operatorTableView.getItems().addAll(FXCollections.observableArrayList(userList));
+        operatorTableView.refresh();
+        SceneLoader.getStage().getScene().getRoot().requestLayout();
     }
 
     @FXML

@@ -26,7 +26,7 @@ public class Book {
     @Column(name = "amount_of_copies")
     private Integer amountOfCopies;
 
-    @Column(name = "number_of_times_used")
+    @Column(name = "number_of_times_used", nullable = false)
     private Integer numberOfTimesUsed;
 
     @Column(name = "publish_date")
@@ -35,8 +35,8 @@ public class Book {
     @Column(name = "title", length = 32, nullable = false)
     private String title;
 
-    @Lob @Basic(fetch = LAZY)
-    @Column(name = "resume", length = 512, nullable = false)
+    //@Lob @Basic(fetch = LAZY)
+    @Column(name = "resume", length = 512)
     private String resume;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -48,10 +48,10 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genres", nullable = false)
-    private List<Genre> genre;
+    private Genre genre;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "book_status", length = 16, nullable = false)
+    @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
     @Override

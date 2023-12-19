@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.RegisterNewBookController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.RegisterNewBookController">
    <children>
-      <TextField fx:id="ISBNTextField" layoutX="43.0" layoutY="21.0" prefHeight="26.0" prefWidth="316.0" promptText="ISBN" />
-      <TextField fx:id="titleTextField" layoutX="43.0" layoutY="58.0" prefHeight="26.0" prefWidth="316.0" promptText="Title" />
-      <TextField fx:id="authorTextField" layoutX="43.0" layoutY="95.0" prefHeight="26.0" prefWidth="316.0" promptText="Author" />
-      <TextField fx:id="yearTextField" layoutX="315.0" layoutY="134.0" prefHeight="26.0" prefWidth="43.0" promptText="Year" />
-      <TextArea fx:id="resumeTextField" layoutX="43.0" layoutY="189.0" prefHeight="138.0" prefWidth="316.0" promptText="Resume" />
-      <ComboBox fx:id="genreComboBox" layoutX="43.0" layoutY="134.0" prefHeight="26.0" prefWidth="201.0" promptText="Genre" />
-      <Button fx:id="registerButton" layoutX="235.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#registerButtonOnMouseClicked" text="Register" />
-      <Button fx:id="cancelButton" layoutX="311.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#cancelButtonOnMouseClicked" text="Cancel" />
-      <Label fx:id="informationLabel" layoutX="43.0" layoutY="340.0" />
+      <TextField fx:id="ISBNTextField" layoutX="42.0" layoutY="35.0" prefHeight="26.0" prefWidth="363.0" promptText="ISBN" />
+      <TextField fx:id="titleTextField" layoutX="43.0" layoutY="74.0" prefHeight="26.0" prefWidth="363.0" promptText="Title" />
+      <TextField fx:id="authorTextField" layoutX="43.0" layoutY="117.0" prefHeight="26.0" prefWidth="363.0" promptText="Author" />
+      <TextField fx:id="yearTextField" layoutX="285.0" layoutY="160.0" prefHeight="26.0" prefWidth="51.0" promptText="Year" />
+      <TextArea fx:id="resumeTextField" layoutX="43.0" layoutY="208.0" prefHeight="171.0" prefWidth="363.0" promptText="Resume" />
+      <ComboBox fx:id="genreComboBox" layoutX="43.0" layoutY="160.0" prefHeight="26.0" prefWidth="201.0" promptText="Genre" />
+      <Button fx:id="registerButton" layoutX="285.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#registerButtonOnMouseClicked" text="Register" />
+      <Button fx:id="cancelButton" layoutX="354.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#cancelButtonOnMouseClicked" text="Cancel" />
+      <Label fx:id="informationLabel" layoutX="45.0" layoutY="389.0" prefHeight="18.0" prefWidth="226.0" />
+      <TextField fx:id="amountTextField" layoutX="350.0" layoutY="160.0" prefHeight="26.0" prefWidth="59.0" promptText="Amount" />
    </children>
 </AnchorPane>

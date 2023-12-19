@@ -1,6 +1,6 @@
 package com.library.frontend.controllers;
 
-import com.library.backend.services.AccessService;
+import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.frontend.utils.DialogUtils;
@@ -39,7 +39,7 @@ public class LogInController implements Controller {
                     .password(passwordPasswordField.getText())
                     .build();
 
-            AccessService service = (AccessService) ServiceFactory.getService(AccessService.class);
+            LogInService service = (LogInService) ServiceFactory.getService(LogInService.class);
 
             User user = service.getUser(logInUser);
 
