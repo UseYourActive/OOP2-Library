@@ -4,6 +4,7 @@ import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import java.lang.reflect.Field;
 import java.time.Year;
@@ -30,7 +31,7 @@ public class Book {
     @Column(name = "number_of_times_used", nullable = false)
     private Integer numberOfTimesUsed;
 
-    @Column(name = "publish_date",nullable = false)
+    @Column(name = "publish_date")
     private Year publishYear;
 
     @Column(name = "title", length = 64, nullable = false)
@@ -43,6 +44,7 @@ public class Book {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
+    @NaturalId
     @Column(name = "isbn", length = 16, nullable = false,unique = true)
     private String isbn;
 
@@ -53,6 +55,19 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return isbn.equals(book.isbn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn);
+    }
 
     @Override
     public String toString() {
@@ -88,7 +103,12 @@ public class Book {
         //}
 //
         //return builder.toString();
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nISBN: %s\nResume:\n%s",
-                title, author,genre,publishYear, isbn,resume);
+        if(publishYear==null){
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nAvailability: %d\nISBN: %s\nResume:\n%s",
+                    title, author,genre,amountOfCopies, isbn,resume);
+        }
+
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nAvailability: %d\nISBN: %s\nResume:\n%s",
+                title, author,genre,publishYear,amountOfCopies, isbn,resume);
     }
 }

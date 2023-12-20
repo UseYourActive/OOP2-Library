@@ -61,7 +61,7 @@ public abstract class Repository<T> implements AutoCloseable {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new org.hibernate.HibernateException("Error during Hibernate transaction", exception);
+            throw new org.hibernate.HibernateException("Unable to add data to the database", exception);
         }
     }
 

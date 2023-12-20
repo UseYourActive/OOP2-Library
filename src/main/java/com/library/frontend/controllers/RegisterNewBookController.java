@@ -76,10 +76,6 @@ public class RegisterNewBookController implements Controller {
 
         if(genreComboBox.getSelectionModel().isEmpty())
             throw new Exception("Please choose the genre of the book.");
-
-        if(yearTextField.getText().isEmpty()){
-            throw new Exception("Please enter publish year of book.");
-        }
     }
 
     private Book getBook(){
@@ -98,6 +94,8 @@ public class RegisterNewBookController implements Controller {
                 .genre(genre)
                 .bookStatus(BookStatus.AVAILABLE)
                 .numberOfTimesUsed(0)
+                .resume("")
+                .amountOfCopies(0)
                 .build();
 
         //nullable properties need check

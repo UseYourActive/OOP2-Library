@@ -38,13 +38,6 @@ public class AdministratorBooksController implements Controller {
 
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
-        //Mouse click event triggers
-        //booksTableView.setOnMouseClicked(this::handleMouseClick);
-        //anchorPane.setOnMouseClicked(this::handleMouseClick);
-        //searchBookButton.setOnMouseClicked(this::handleMouseClick);
-        //resumeTextArea.setOnMouseClicked(this::handleMouseClick);
-        //scrapBookButton.setOnMouseClicked(this::handleMouseClick);
-
         resumeTextArea.setFocusTraversable(false);
 
         TableViewBuilder.buildBookTableView(booksTableView);//Load columns
@@ -75,7 +68,7 @@ public class AdministratorBooksController implements Controller {
         }
     }
 
-    private void updateTableView(List<Book> bookList){
+    private void updateTableView(Collection<Book> bookList){
         booksTableView.getItems().clear();
         resumeTextArea.clear();
         booksTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
@@ -92,7 +85,7 @@ public class AdministratorBooksController implements Controller {
     }
     @FXML
     public void scrapBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        checkAndUpdateButtons(mouseEvent);
+        //checkAndUpdateButtons(mouseEvent);
         Book selectedBook = booksTableView.getSelectionModel().getSelectedItem();
 
         if(selectedBook !=null){
@@ -105,7 +98,7 @@ public class AdministratorBooksController implements Controller {
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
 
-        List<Book> results=new ArrayList<>();
+        Set<Book> results=new HashSet<>();
         List<Book> bookList=adminService.getBooks();
         String stringToSearch=searchBookTextField.getText();
 
@@ -116,7 +109,7 @@ public class AdministratorBooksController implements Controller {
             results.addAll(bookList.stream().filter(book -> book.getTitle().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getAuthor().getName().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getGenre().getValue().contains(stringToSearch)).toList());
-            results.addAll(bookList.stream().filter(book -> book.getPublishYear().toString().contains(stringToSearch)).toList());
+            //results.addAll(bookList.stream().filter(book -> book.getPublishYear().toString().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getResume().contains(stringToSearch)).toList());
             updateTableView(results);
         }
