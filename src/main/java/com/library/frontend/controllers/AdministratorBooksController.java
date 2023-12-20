@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class AdministratorBooksController implements Controller {
@@ -39,12 +38,46 @@ public class AdministratorBooksController implements Controller {
 
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
-        TableViewBuilder.buildBookTableView(booksTableView);
-        updateTableView(adminService.getBooks());
+        //Mouse click event triggers
+        //booksTableView.setOnMouseClicked(this::handleMouseClick);
+        //anchorPane.setOnMouseClicked(this::handleMouseClick);
+        //searchBookButton.setOnMouseClicked(this::handleMouseClick);
+        //resumeTextArea.setOnMouseClicked(this::handleMouseClick);
+        //scrapBookButton.setOnMouseClicked(this::handleMouseClick);
+
+        resumeTextArea.setFocusTraversable(false);
+
+        TableViewBuilder.buildBookTableView(booksTableView);//Load columns
+        updateTableView(adminService.getBooks()); //populate table
+    }
+
+    //Mouse click event
+    private void checkAndUpdateButtons(MouseEvent mouseEvent) {
+
+        double mouseX = mouseEvent.getSceneX();
+        double mouseY = mouseEvent.getSceneY();
+
+        double textFieldMinX = booksTableView.localToScene(booksTableView.getBoundsInLocal()).getMinX();
+        double textFieldMinY = booksTableView.localToScene(booksTableView.getBoundsInLocal()).getMinY();
+        double textFieldMaxX = booksTableView.localToScene(booksTableView.getBoundsInLocal()).getMaxX();
+        double textFieldMaxY = booksTableView.localToScene(booksTableView.getBoundsInLocal()).getMaxY();
+
+        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
+            if(!booksTableView.getSelectionModel().isEmpty()){
+                scrapBookButton.setDisable(false);
+                loadBooksButton.setDisable(false);
+            }
+        }else {
+            scrapBookButton.setDisable(true);
+            loadBooksButton.setDisable(true);
+            resumeTextArea.clear();
+            booksTableView.getSelectionModel().clearSelection();
+        }
     }
 
     private void updateTableView(List<Book> bookList){
         booksTableView.getItems().clear();
+        resumeTextArea.clear();
         booksTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
     }
 
@@ -58,31 +91,35 @@ public class AdministratorBooksController implements Controller {
         SceneLoader.load(mouseEvent,"/views/addBooksScene.fxml","Register new book");
     }
     @FXML
-    public void scrapBookButtonOnMouseClicked() {
+    public void scrapBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
         Book selectedBook = booksTableView.getSelectionModel().getSelectedItem();
 
         if(selectedBook !=null){
             adminService.removeBook(selectedBook);
 
-            resumeTextArea.clear();
             updateTableView(adminService.getBooks());
         }
     }
     @FXML
-    public void searchBookButtonOnMouseClicked() {
+    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
+
         List<Book> results=new ArrayList<>();
         List<Book> bookList=adminService.getBooks();
         String stringToSearch=searchBookTextField.getText();
 
-        if(!stringToSearch.isEmpty())
+        if(stringToSearch.isEmpty())
         {
+            updateTableView(bookList);
+        }else {
             results.addAll(bookList.stream().filter(book -> book.getTitle().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getAuthor().getName().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getGenre().getValue().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getPublishYear().toString().contains(stringToSearch)).toList());
             results.addAll(bookList.stream().filter(book -> book.getResume().contains(stringToSearch)).toList());
+            updateTableView(results);
         }
-        updateTableView(results);
     }
 
     @FXML
@@ -91,18 +128,22 @@ public class AdministratorBooksController implements Controller {
     }
 
     @FXML
-    public void booksTableViewOnClicked() {
-        if(!booksTableView.getSelectionModel().isEmpty()) {
-            scrapBookButton.setDisable(false);
-            loadBooksButton.setDisable(false);
-        }
+    public void booksTableViewOnClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
+
         Book selectedBook = booksTableView.getSelectionModel().getSelectedItem();
 
         if(selectedBook!=null)
             resumeTextArea.setText(selectedBook.toString());
     }
 
-    public void anchorPaneOnMouseClicked() {
+    @FXML
+    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
         Platform.runLater(() -> anchorPane.requestFocus());
+        checkAndUpdateButtons(mouseEvent);
+    }
+
+    public void resumeTextAreaButtonOnMouseClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
     }
 }

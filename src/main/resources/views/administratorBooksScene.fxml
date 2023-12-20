@@ -14,7 +14,7 @@
       <Button fx:id="scrapBookButton" disable="true" layoutX="277.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#scrapBookButtonOnMouseClicked" prefHeight="26.0" prefWidth="197.0" text="Scrap a book" />
       <TextField fx:id="searchBookTextField" layoutX="148.0" layoutY="21.0" prefHeight="26.0" prefWidth="326.0" promptText="title, author, year, genre" />
       <Button fx:id="searchBookButton" layoutX="492.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#searchBookButtonOnMouseClicked" prefHeight="26.0" prefWidth="93.0" text="Search book" />
-      <TextArea fx:id="resumeTextArea" editable="false" layoutX="327.0" layoutY="95.0" prefHeight="294.0" prefWidth="260.0" />
+      <TextArea fx:id="resumeTextArea" editable="false" layoutX="327.0" layoutY="95.0" onMouseClicked="#resumeTextAreaButtonOnMouseClicked" prefHeight="294.0" prefWidth="260.0" />
       <TableView fx:id="booksTableView" layoutX="17.0" layoutY="95.0" onMouseClicked="#booksTableViewOnClicked" prefHeight="294.0" prefWidth="300.0" />
    </children>
 </AnchorPane>
