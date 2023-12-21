@@ -72,37 +72,6 @@ public class Book {
     @Override
     public String toString() {
 
-        //Map<Field,String> nonNullFields=new HashMap<>();
-        //List<Field> fields=  Arrays.stream(getClass().getDeclaredFields()).toList();
-        //for(Field field:fields){
-        //    if(field !=null){
-//
-        //        switch (field.getName()) {
-        //            case "title" -> nonNullFields.put(field, "Title: " + field);
-        //            case "author" -> nonNullFields.put(field, "\nAuthor: " + field);
-        //            case "genre" -> nonNullFields.put(field, "\nGenre: " + field);
-        //            case "publishYear" ->nonNullFields.put(field, "\nPublish Year: " + field);
-        //            case "isbn" -> nonNullFields.put(field, "\nISBN: " + field);
-        //            case "resume" -> nonNullFields.put(field, "\nResume: " + field);
-        //        }
-        //    }
-//
-        //    try {
-        //        if(field == bookStatus.getClass().getDeclaredField("bookStatus")){
-//
-        //        }
-        //    } catch (NoSuchFieldException e) {
-        //        throw new RuntimeException(e);
-        //    }
-        //}
-//
-        //StringBuilder builder=new StringBuilder();
-//
-        //for(Map.Entry<Field,String> entry: nonNullFields.entrySet()){
-        //    builder.append(entry.getValue());
-        //}
-//
-        //return builder.toString();
         if(publishYear==null){
             return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nAvailability: %d\nISBN: %s\nResume:\n%s",
                     title, author,genre,amountOfCopies, isbn,resume);

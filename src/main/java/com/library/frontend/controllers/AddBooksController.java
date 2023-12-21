@@ -28,6 +28,6 @@ public class AddBooksController implements Controller {
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml","Administrator");
+        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml",SceneLoader.getUsername() + "(Administrator)");
     }
 }

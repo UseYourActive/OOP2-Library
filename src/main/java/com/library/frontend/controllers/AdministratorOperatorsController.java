@@ -4,6 +4,7 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.User;
+import com.library.database.enums.Role;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableViews.TableViewBuilder;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.time.Year;
@@ -27,12 +29,13 @@ public class AdministratorOperatorsController implements Controller{
     @FXML public Button removeOperatorButton;
     @FXML public Button searchOperatorButton;
     @FXML  public TableView<User> operatorTableView;
+    @FXML public AnchorPane anchorPane;
 
     private AdminService adminService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(() -> booksButton.requestFocus());
+        booksButton.requestFocus();
 
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
@@ -42,7 +45,7 @@ public class AdministratorOperatorsController implements Controller{
 
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml",SceneLoader.getStage().getTitle());
+        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml",SceneLoader.getUsername() + "(Administrator)");
     }
 
     @FXML
@@ -64,12 +67,18 @@ public class AdministratorOperatorsController implements Controller{
 
             updateTableView(results);
         }
+        anchorPane.requestFocus();
     }
     @FXML
-    public void removeOperatorButtonOnMouseClicked() {
+    public void removeOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         User operator = operatorTableView.getSelectionModel().getSelectedItem();
-        adminService.removeOperator(operator);
-        operatorTableView.refresh();
+
+        if(operator !=null){
+            adminService.removeOperator(operator);
+            updateTableView(adminService.getUsers());
+        }
+
+        checkAndUpdateButtons(mouseEvent);
     }
 
     private void checkAndUpdateButtons(MouseEvent mouseEvent) {
@@ -84,7 +93,7 @@ public class AdministratorOperatorsController implements Controller{
 
         if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
             if(!operatorTableView.getSelectionModel().isEmpty()){
-                removeOperatorButton.setDisable(false);
+                removeOperatorButton.setDisable(!operatorTableView.getSelectionModel().getSelectedItem().getRole().equals(Role.OPERATOR));
             }
         }else {
             removeOperatorButton.setDisable(true);
@@ -96,5 +105,21 @@ public class AdministratorOperatorsController implements Controller{
     private void updateTableView(Collection<User> userList){
         operatorTableView.getItems().clear();
         operatorTableView.getItems().addAll(FXCollections.observableArrayList(userList));
+    }
+
+    @FXML
+    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
+        anchorPane.requestFocus();
+        checkAndUpdateButtons(mouseEvent);
+    }
+
+    @FXML
+    public void operatorTableViewOnMouseClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
+
+        //User selectedUser = operatorTableView.getSelectionModel().getSelectedItem();
+//
+        //if(selectedUser!=null&&selectedUser.getRole()== Role.OPERATOR)
+        //    removeOperatorButton.setDisable(true);
     }
 }

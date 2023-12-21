@@ -36,17 +36,12 @@ public class TableViewBuilder {
     public static void buildOperatorTableView(TableView<User> bookTreeTableView){
         TableColumn<User, String> usernameColumn = new TableColumn<>("Username");
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        usernameColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().divide(3));
-
-        TableColumn<User, Integer> idColumn = new TableColumn<>("ID");
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().divide(3));
+        usernameColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().divide(2));
 
         TableColumn<User, Role> roleColumn = new TableColumn<>("Role");
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
-        roleColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().divide(3));
+        roleColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().divide(2));
 
-        bookTreeTableView.getColumns().add(idColumn);
         bookTreeTableView.getColumns().add(usernameColumn);
         bookTreeTableView.getColumns().add(roleColumn);
     }

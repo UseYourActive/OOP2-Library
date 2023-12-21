@@ -61,7 +61,7 @@ public class RegisterNewBookController implements Controller {
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml", SceneLoader.getStage().getTitle());
+        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml",SceneLoader.getUsername() + "(Administrator)");
     }
 
     private void checkInput() throws Exception {

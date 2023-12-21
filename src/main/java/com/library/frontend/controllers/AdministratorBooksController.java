@@ -22,7 +22,6 @@ import java.util.*;
 public class AdministratorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
     @FXML public Button switchButton;
-    @FXML public Button scrapBookButton;
     @FXML public Button registerBookButton;
     @FXML public Button loadBooksButton;
     @FXML public TextField searchBookTextField;
@@ -30,11 +29,12 @@ public class AdministratorBooksController implements Controller {
     @FXML public TextArea resumeTextArea;
     @FXML public TableView<Book> booksTableView;
     @FXML public AnchorPane anchorPane;
+    @FXML public Button removeBookButton;
 
     private AdminService adminService;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(() -> switchButton.requestFocus());
+        switchButton.requestFocus();
 
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
@@ -57,15 +57,17 @@ public class AdministratorBooksController implements Controller {
 
         if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
             if(!booksTableView.getSelectionModel().isEmpty()){
-                scrapBookButton.setDisable(false);
+                removeBookButton.setDisable(false);
                 loadBooksButton.setDisable(false);
             }
         }else {
-            scrapBookButton.setDisable(true);
+            removeBookButton.setDisable(true);
             loadBooksButton.setDisable(true);
             resumeTextArea.clear();
             booksTableView.getSelectionModel().clearSelection();
         }
+
+        anchorPane.requestFocus();
     }
 
     private void updateTableView(Collection<Book> bookList){
@@ -83,17 +85,7 @@ public class AdministratorBooksController implements Controller {
     public void loadBooksButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent,"/views/addBooksScene.fxml","Register new book");
     }
-    @FXML
-    public void scrapBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        //checkAndUpdateButtons(mouseEvent);
-        Book selectedBook = booksTableView.getSelectionModel().getSelectedItem();
 
-        if(selectedBook !=null){
-            adminService.removeBook(selectedBook);
-
-            updateTableView(adminService.getBooks());
-        }
-    }
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
@@ -117,7 +109,7 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml", SceneLoader.getStage().getTitle());
+        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml",SceneLoader.getUsername() + "(Administrator)");
     }
 
     @FXML
@@ -137,6 +129,17 @@ public class AdministratorBooksController implements Controller {
     }
 
     public void resumeTextAreaButtonOnMouseClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
+    }
+
+    @FXML
+    public void removeBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        Book selectedBook = booksTableView.getSelectionModel().getSelectedItem();
+
+        if(selectedBook !=null){
+            adminService.removeBook(selectedBook);
+            updateTableView(adminService.getBooks());
+        }
         checkAndUpdateButtons(mouseEvent);
     }
 }

@@ -45,10 +45,11 @@ public class LogInController implements Controller {
 
             switch (user.getRole()) {
                 case ADMIN ->{
-                    SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",usernameTextField.getText() + " (Administrator)");
+                    SceneLoader.setUsername(usernameTextField.getText());
+                    SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",SceneLoader.getUsername() + " (Administrator)");
                 }
                 case OPERATOR -> {
-                    SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", usernameTextField.getText()+" (Operator)");
+                    SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
                 }
             }
 

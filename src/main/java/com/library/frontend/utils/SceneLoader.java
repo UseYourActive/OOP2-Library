@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,8 @@ public class SceneLoader {
     private static final Logger logger = LoggerFactory.getLogger(SceneLoader.class);
 
     @Getter
-    private static Stage stage;
+    @Setter
+    private static String username;
 
     private SceneLoader(){}
     public static void load(Event event, String resourceFiles, String stageTitle){
@@ -38,7 +40,6 @@ public class SceneLoader {
             stage.setResizable(false);
             stage.setTitle(stageTitle);
             stage.show();
-            SceneLoader.stage=stage;
 
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);

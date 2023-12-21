@@ -29,7 +29,7 @@ public class CreateOperatorController implements Controller {
 
     }
     @FXML
-    public void createOperatorButtonOnMouseClicked() {
+    public void createOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
             checkAllFieldsForInput();
 
@@ -44,13 +44,15 @@ public class CreateOperatorController implements Controller {
         } catch (Exception e) {
             informationLabel.setText(e.getMessage());
         }
+
+        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml",SceneLoader.getUsername()+ "(Administrator)");
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml","Administrator");
+        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml",SceneLoader.getUsername()+ "(Administrator)");
     }
     @FXML
-    public void showPasswordCheckBoxOnMouseClicked(MouseEvent mouseEvent) {
+    public void showPasswordCheckBoxOnMouseClicked() {
         if (showPasswordCheckBox.isSelected()) {
             passwordTextField.setText(passwordPasswordField.getText());
             repeatPasswordTextField.setText(repeatPasswordPasswordField.getText());
