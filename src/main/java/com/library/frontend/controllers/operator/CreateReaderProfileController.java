@@ -1,5 +1,6 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.operator;
 
+import com.library.frontend.controllers.base.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

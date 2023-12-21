@@ -1,6 +1,7 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.operator;
 
 import com.library.database.entities.Book;
+import com.library.frontend.controllers.base.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class OperatorBooksController implements Controller{
+public class OperatorBooksController implements Controller {
     @FXML public Button readersButton;
     @FXML public Button archiveButton;
     @FXML public Button lendButton;

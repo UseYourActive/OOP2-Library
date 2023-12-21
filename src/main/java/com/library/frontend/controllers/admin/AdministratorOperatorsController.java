@@ -1,9 +1,10 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
+import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -17,7 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.*;
 
-public class AdministratorOperatorsController implements Controller{
+public class AdministratorOperatorsController implements Controller {
     @FXML public Button booksButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button createOperatorButton;

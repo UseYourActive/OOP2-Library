@@ -1,7 +1,6 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.admin;
 
-import com.library.backend.services.AdminService;
-import com.library.backend.services.ServiceFactory;
+import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

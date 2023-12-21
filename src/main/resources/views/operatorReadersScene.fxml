@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.Rating?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.OperatorReadersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorReadersController">
    <children>
       <Button fx:id="booksButton" layoutX="17.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#booksButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Books" />
       <Button fx:id="createReaderButton" disable="true" layoutX="148.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#createReaderButtonOnMouseClicked" prefHeight="26.0" prefWidth="156.0" text="Create Reader" />

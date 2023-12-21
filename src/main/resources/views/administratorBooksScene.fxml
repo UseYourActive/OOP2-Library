@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.AdministratorBooksController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.admin.AdministratorBooksController">
    <children>
       <Button fx:id="switchButton" layoutX="16.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#operatorsButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Operators" />
       <Button fx:id="registerBookButton" layoutX="17.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#registerBookButtonOnMouseClicked" text="Register new book" />

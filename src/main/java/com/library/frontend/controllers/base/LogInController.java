@@ -1,9 +1,8 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.base;
 
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
-import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

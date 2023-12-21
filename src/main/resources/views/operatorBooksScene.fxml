@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.OperatorBooksController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorBooksController">
    <children>
       <Button fx:id="readersButton" layoutX="17.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#readersButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Readers" />
       <Button fx:id="archiveButton" disable="true" layoutX="17.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#archiveButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Archive" />

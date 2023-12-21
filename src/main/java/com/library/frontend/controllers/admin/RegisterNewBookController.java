@@ -1,12 +1,12 @@
-package com.library.frontend.controllers;
+package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
-import com.library.database.entities.BookForm;
 import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
+import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.validators.ISBNValidator;
 import com.library.frontend.utils.validators.Validator;
@@ -20,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.time.Year;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {

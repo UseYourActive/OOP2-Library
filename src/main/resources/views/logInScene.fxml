@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.LogInController">
+<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.base.LogInController">
    <children>
       <Button id="logInButton" fx:id="logInButton" layoutX="165.0" layoutY="332.0" mnemonicParsing="false" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="69.0" text="Log in" />
       <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="125.0" layoutY="196.0" />
