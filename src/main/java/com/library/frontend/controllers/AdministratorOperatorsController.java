@@ -2,24 +2,19 @@ package com.library.frontend.controllers;
 
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.Book;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.tableViews.TableViewBuilder;
-import javafx.application.Platform;
+import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.time.Year;
 import java.util.*;
 
 public class AdministratorOperatorsController implements Controller{
@@ -55,7 +50,7 @@ public class AdministratorOperatorsController implements Controller{
     @FXML
     public void searchOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
-
+        Set<User> results=new HashSet<>();
         List<User> userList=adminService.getUsers();
         String stringToSearch=searchBookTextField.getText();
 
@@ -63,7 +58,12 @@ public class AdministratorOperatorsController implements Controller{
         {
             updateTableView(userList);
         }else {
-            Set<User> results = new HashSet<>(userList.stream().filter(user -> user.getUsername().contains(stringToSearch)).toList());
+            results.addAll(userList.stream()
+                    .filter(user -> user.getUsername().contains(stringToSearch))
+                    .toList());
+            results.addAll(userList.stream()
+                    .filter(user-> user.getRole().toString().contains(stringToSearch))
+                    .toList());
 
             updateTableView(results);
         }

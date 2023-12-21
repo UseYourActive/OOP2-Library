@@ -4,13 +4,18 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.tableViews.TableViewBuilder;
+import com.library.frontend.utils.TableViewBuilder;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,12 +87,13 @@ public class AdministratorBooksController implements Controller {
     }
 
     @FXML
-    public void loadBooksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/addBooksScene.fxml","Register new book");
+    public void loadBooksButtonOnMouseClicked() {
+        openDialog();
     }
 
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+
         checkAndUpdateButtons(mouseEvent);
 
         Set<Book> results=new HashSet<>();
@@ -98,11 +104,23 @@ public class AdministratorBooksController implements Controller {
         {
             updateTableView(bookList);
         }else {
-            results.addAll(bookList.stream().filter(book -> book.getTitle().contains(stringToSearch)).toList());
-            results.addAll(bookList.stream().filter(book -> book.getAuthor().getName().contains(stringToSearch)).toList());
-            results.addAll(bookList.stream().filter(book -> book.getGenre().getValue().contains(stringToSearch)).toList());
-            //results.addAll(bookList.stream().filter(book -> book.getPublishYear().toString().contains(stringToSearch)).toList());
-            results.addAll(bookList.stream().filter(book -> book.getResume().contains(stringToSearch)).toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getTitle().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getAuthor().getName().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getGenre().getValue().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> Objects.nonNull(book.getPublishYear()))
+                    .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getResume().contains(stringToSearch))
+                    .toList());
+
             updateTableView(results);
         }
     }
@@ -124,12 +142,13 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
-        Platform.runLater(() -> anchorPane.requestFocus());
+        anchorPane.requestFocus();
         checkAndUpdateButtons(mouseEvent);
     }
 
-    public void resumeTextAreaButtonOnMouseClicked(MouseEvent mouseEvent) {
-        checkAndUpdateButtons(mouseEvent);
+    public void resumeTextAreaButtonOnMouseClicked() {
+        removeBookButton.setDisable(true);
+        loadBooksButton.setDisable(true);
     }
 
     @FXML
@@ -141,5 +160,40 @@ public class AdministratorBooksController implements Controller {
             updateTableView(adminService.getBooks());
         }
         checkAndUpdateButtons(mouseEvent);
+    }
+
+    private void openDialog() {
+        // Dialog window
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
+
+
+        TextField quantityField = new TextField();
+        Button increaseButton = new Button("Increase Quantity");
+
+        increaseButton.setOnAction(e -> {
+
+            Integer quantity= Integer.valueOf(quantityField.getText());
+            if(quantity>0){
+                Book book=booksTableView.getSelectionModel().getSelectedItem();
+                book.setAmountOfCopies(book.getAmountOfCopies()+ quantity);
+                ((AdminService)ServiceFactory.getService(AdminService.class)).saveBook(book);
+                updateTableView(adminService.getBooks());
+                dialogStage.close();
+            }else{
+               // ..
+            }
+
+        });
+
+        VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
+        dialogLayout.setPadding(new Insets(20));
+
+        Scene dialogScene = new Scene(dialogLayout, 250, 150);
+
+        dialogStage.setTitle("Quantity Dialog");
+        dialogStage.setScene(dialogScene);
+        dialogStage.show();
     }
 }

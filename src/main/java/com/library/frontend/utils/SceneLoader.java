@@ -22,6 +22,10 @@ public class SceneLoader {
     @Setter
     private static String username;
 
+    @Getter
+    @Setter
+    private static Stage stage;
+
     private SceneLoader(){}
     public static void load(Event event, String resourceFiles, String stageTitle){
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -40,6 +44,7 @@ public class SceneLoader {
             stage.setResizable(false);
             stage.setTitle(stageTitle);
             stage.show();
+            SceneLoader.stage=stage;
 
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);

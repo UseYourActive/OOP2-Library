@@ -29,9 +29,10 @@ public class AdminService implements Service {
         return bookRepository.save(book);
     }
 
-    public boolean registerBook(Book book){
+    public boolean saveBook(Book book){
         return bookRepository.save(book);
     }
+
 
     public void removeBook(Book book){ bookRepository.delete(book); }
 

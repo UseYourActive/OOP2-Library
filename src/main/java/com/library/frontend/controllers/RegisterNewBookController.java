@@ -8,6 +8,8 @@ import com.library.database.entities.BookForm;
 import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.validators.ISBNValidator;
+import com.library.frontend.utils.validators.Validator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -37,6 +39,8 @@ public class RegisterNewBookController implements Controller {
 
     private AdminService adminService;
 
+    private Validator validator;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> genreComboBox.requestFocus());
@@ -52,7 +56,7 @@ public class RegisterNewBookController implements Controller {
 
             Book book = getBook();
 
-            adminService.registerBook(book);
+            adminService.saveBook(book);
 
             cancelButtonOnMouseClicked(mouseEvent);
         }catch (Exception e){
@@ -67,6 +71,10 @@ public class RegisterNewBookController implements Controller {
     private void checkInput() throws Exception {
         if(ISBNTextField.getText().isEmpty())
             throw new Exception("Please enter ISBN.");
+        validator=new ISBNValidator();
+
+        if(validator.isValid(ISBNTextField.getText()))
+            throw new Exception("Please enter valid ISBN code.");
 
         if(titleTextField.getText().isEmpty())
             throw new Exception("Please enter book title.");
