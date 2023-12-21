@@ -41,3 +41,4 @@
 2023-12-21 19:00:00.602 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: a
 2023-12-21 19:00:00.845 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: a
 2023-12-21 19:06:10.253 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-21 20:22:30.802 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
