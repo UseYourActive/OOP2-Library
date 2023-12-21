@@ -23,6 +23,7 @@ dependencies {
     // Loggers - Diagnostics
     implementation 'org.slf4j:slf4j-api:2.0.9'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.14'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.4.14'
 
     // Password Hashing
     implementation 'at.favre.lib:bcrypt:0.10.2'
@@ -35,6 +36,7 @@ dependencies {
     // Postgres - Database
     implementation 'org.postgresql:postgresql:42.6.0'
 
+    // JavaFX
     implementation 'org.controlsfx:controlsfx:11.1.2'
 }
 

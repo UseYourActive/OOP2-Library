@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class SceneLoader {
-
     private static final Logger logger = LoggerFactory.getLogger(SceneLoader.class);
 
     @Getter
@@ -26,17 +25,19 @@ public class SceneLoader {
     @Setter
     private static Stage stage;
 
-    private SceneLoader(){}
-    public static void load(Event event, String resourceFiles, String stageTitle){
+    private SceneLoader() {
+    }
+
+    public static void load(Event event, String resourceFiles, String stageTitle) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        loadBackground(stage,resourceFiles,stageTitle);
+        loadBackground(stage, resourceFiles, stageTitle);
     }
 
-    public static void load(Stage stage,String resourceFiles, String stageTitle){
-        loadBackground(stage,resourceFiles,stageTitle);
+    public static void load(Stage stage, String resourceFiles, String stageTitle) {
+        loadBackground(stage, resourceFiles, stageTitle);
     }
 
-    private static void loadBackground(Stage stage, String resourceFiles, String stageTitle){
+    private static void loadBackground(Stage stage, String resourceFiles, String stageTitle) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));
             Scene scene = new Scene(root);
@@ -44,12 +45,12 @@ public class SceneLoader {
             stage.setResizable(false);
             stage.setTitle(stageTitle);
             stage.show();
-            SceneLoader.stage=stage;
+            SceneLoader.stage = stage;
 
+            logger.info("Loaded scene: {}", resourceFiles);
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);
             DialogUtils.showError("Error", "An error occurred when trying to open the new dialog window!", e.getMessage());
         }
     }
-
 }
