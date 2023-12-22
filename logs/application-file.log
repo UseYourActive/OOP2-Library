@@ -232,3 +232,534 @@ Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violate
 2023-12-21 22:29:35.725 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
 2023-12-21 22:29:35.727 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 books
 2023-12-21 22:29:35.779 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:42:27.490 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 07:42:39.678 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 07:42:39.686 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 07:42:40.821 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 07:42:40.833 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 07:42:40.834 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 07:42:40.835 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 07:42:40.835 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 07:42:40.843 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 07:42:42.226 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 07:42:44.583 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 07:42:44.637 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@1b420ab2] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 07:42:45.061 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 07:42:45.144 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 07:42:45.145 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-22 07:42:45.145 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-22 07:42:45.914 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-22 07:42:45.915 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-22 07:42:45.991 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:42:46.015 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:42:46.081 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 5 books
+2023-12-22 07:42:46.764 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:42:58.590 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity deleted successfully
+2023-12-22 07:42:58.590 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Book removed: 4124
+2023-12-22 07:42:58.598 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 4 books
+2023-12-22 07:43:00.419 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity deleted successfully
+2023-12-22 07:43:00.420 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Book removed: afsfas
+2023-12-22 07:43:00.424 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:43:03.020 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:43:03.021 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:43:03.022 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:43:03.026 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:43:03.027 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:43:03.156 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:43:08.478 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/createOperatorScene.fxml
+2023-12-22 07:43:10.941 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:43:10.942 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:43:10.943 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:43:10.948 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:43:10.949 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:43:11.122 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:43:15.202 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:43:15.206 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:43:15.207 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:43:18.656 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:43:18.660 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:43:18.661 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:43:19.616 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/createOperatorScene.fxml
+2023-12-22 07:43:20.915 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:43:20.916 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:43:20.917 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:43:20.920 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:43:20.921 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:43:21.038 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:43:21.560 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:43:21.561 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:43:21.566 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:43:21.676 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:43:31.341 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:43:35.500 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:43:52.451 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:43:57.238 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:44:21.406 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 07:44:46.255 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 07:44:46.260 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 07:44:47.206 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 07:44:47.215 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 07:44:47.216 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 07:44:47.217 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 07:44:47.218 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 07:44:47.224 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 07:44:48.320 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 07:44:50.221 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 07:44:50.266 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@38c44aa] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 07:44:50.532 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 07:44:50.609 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 07:44:50.609 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-22 07:44:50.609 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-22 07:44:51.349 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-22 07:44:51.350 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-22 07:44:51.415 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:44:51.434 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:44:51.490 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:44:52.077 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:44:57.467 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:44:57.469 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:44:57.469 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:44:57.478 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 2 users
+2023-12-22 07:44:57.478 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 users
+2023-12-22 07:44:57.618 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:45:10.058 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/createOperatorScene.fxml
+2023-12-22 07:45:16.395 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:45:17.207 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-22 07:45:17.207 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Operator registered: 12
+2023-12-22 07:45:17.223 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:45:17.224 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:45:17.225 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:45:17.230 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 3 users
+2023-12-22 07:45:17.230 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 users
+2023-12-22 07:45:17.381 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:45:24.819 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 07:45:42.390 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 07:45:52.664 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 07:45:52.671 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 07:45:53.467 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 07:45:53.474 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 07:45:53.744 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 07:45:53.753 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 07:45:53.754 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 07:45:53.755 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 07:45:53.755 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 07:45:53.760 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 07:45:54.457 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 07:45:54.467 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 07:45:54.468 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 07:45:54.469 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 07:45:54.470 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 07:45:54.477 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 07:45:55.124 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 07:45:55.611 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 07:45:57.496 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 07:45:57.557 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@1f2455aa] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 07:45:57.634 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 07:45:57.689 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@63a471b6] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 07:45:57.886 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 07:45:57.981 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 07:45:57.985 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 07:45:57.985 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 12
+2023-12-22 07:45:57.985 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 12
+2023-12-22 07:45:58.074 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 07:45:58.075 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-22 07:45:58.076 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-22 07:45:58.689 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 12
+2023-12-22 07:45:58.690 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 12
+2023-12-22 07:45:58.693 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-22 07:45:58.694 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-22 07:45:58.759 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:45:58.780 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:45:58.841 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:45:59.239 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/operatorBooksScene.fxml
+2023-12-22 07:45:59.491 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:48:29.215 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 07:49:11.461 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 07:49:11.469 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 07:49:12.479 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 07:49:12.488 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 07:49:12.489 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 07:49:12.489 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 07:49:12.489 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 07:49:12.495 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 07:49:13.591 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 07:49:15.525 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 07:49:15.569 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@75667d1] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 07:49:15.857 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 07:49:15.935 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 07:49:15.935 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-22 07:49:15.935 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-22 07:49:16.588 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-22 07:49:16.589 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-22 07:49:16.658 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:49:16.676 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:49:16.727 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:49:17.259 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:49:53.528 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:49:53.529 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:49:53.529 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:49:53.537 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 3 users
+2023-12-22 07:49:53.537 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 users
+2023-12-22 07:49:53.641 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:50:00.629 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/createOperatorScene.fxml
+2023-12-22 07:50:02.052 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:50:02.052 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:50:02.052 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:50:02.056 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 3 users
+2023-12-22 07:50:02.057 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 users
+2023-12-22 07:50:02.143 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:50:03.091 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:50:03.091 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:50:03.093 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:50:03.191 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 07:50:04.147 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:50:04.147 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:50:04.148 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:50:04.151 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 3 users
+2023-12-22 07:50:04.152 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 users
+2023-12-22 07:50:04.231 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:50:05.700 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/createOperatorScene.fxml
+2023-12-22 07:50:40.046 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:50:40.046 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
+2023-12-22 07:50:40.047 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding all users
+2023-12-22 07:50:40.050 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Found 3 users
+2023-12-22 07:50:40.051 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 users
+2023-12-22 07:50:40.165 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorOperatorsScene.fxml
+2023-12-22 07:50:42.552 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 07:50:42.553 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 07:50:42.556 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 07:50:42.640 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 08:32:23.511 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 08:32:30.133 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 08:32:30.140 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 08:32:31.145 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 08:32:31.154 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 08:32:31.154 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 08:32:31.155 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 08:32:31.155 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 08:32:31.161 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 08:32:32.364 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 08:32:34.203 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 08:32:34.262 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@12f61e83] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 08:32:34.579 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 08:32:34.661 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:32:34.662 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-22 08:32:34.662 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-22 08:32:35.352 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-22 08:32:35.353 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-22 08:32:35.426 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-22 08:32:35.448 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-22 08:32:35.505 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 3 books
+2023-12-22 08:32:36.122 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-22 08:39:33.241 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-22 08:39:42.320 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.Exception: Please enter your password!
+	at com.library.frontend.controllers.base.LogInController.checkInput(LogInController.java:72)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:34)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:39:44.854 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-22 08:39:44.862 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-22 08:39:45.908 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-22 08:39:45.915 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-22 08:39:45.917 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-22 08:39:45.918 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-22 08:39:45.918 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-22 08:39:45.924 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-22 08:39:47.112 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-22 08:39:49.000 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-22 08:39:49.070 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@1c1d779] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-22 08:39:49.378 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-22 08:39:49.449 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:39:49.449 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: saf
+2023-12-22 08:39:49.449 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: saf
+2023-12-22 08:39:50.223 [ERROR] [JavaFX Application Thread] c.l.d.repositories.UserRepository - User not found with username: saf
+2023-12-22 08:39:50.224 [ERROR] [JavaFX Application Thread] c.l.backend.services.LogInService - User not found: saf
+2023-12-22 08:39:50.224 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.RuntimeException: User not found
+	at com.library.backend.services.LogInService.lambda$getUser$0(LogInService.java:24)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.library.backend.services.LogInService.getUser(LogInService.java:22)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:39:54.976 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:39:54.976 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: saf
+2023-12-22 08:39:54.976 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: saf
+2023-12-22 08:39:54.980 [ERROR] [JavaFX Application Thread] c.l.d.repositories.UserRepository - User not found with username: saf
+2023-12-22 08:39:54.982 [ERROR] [JavaFX Application Thread] c.l.backend.services.LogInService - User not found: saf
+2023-12-22 08:39:54.982 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.RuntimeException: User not found
+	at com.library.backend.services.LogInService.lambda$getUser$0(LogInService.java:24)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.library.backend.services.LogInService.getUser(LogInService.java:22)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:39:58.848 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:39:58.849 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: saf
+2023-12-22 08:39:58.850 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: saf
+2023-12-22 08:39:58.853 [ERROR] [JavaFX Application Thread] c.l.d.repositories.UserRepository - User not found with username: saf
+2023-12-22 08:39:58.853 [ERROR] [JavaFX Application Thread] c.l.backend.services.LogInService - User not found: saf
+2023-12-22 08:39:58.854 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.RuntimeException: User not found
+	at com.library.backend.services.LogInService.lambda$getUser$0(LogInService.java:24)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.library.backend.services.LogInService.getUser(LogInService.java:22)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:40:02.465 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:40:02.465 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: saf
+2023-12-22 08:40:02.466 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: saf
+2023-12-22 08:40:02.469 [ERROR] [JavaFX Application Thread] c.l.d.repositories.UserRepository - User not found with username: saf
+2023-12-22 08:40:02.469 [ERROR] [JavaFX Application Thread] c.l.backend.services.LogInService - User not found: saf
+2023-12-22 08:40:02.469 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.RuntimeException: User not found
+	at com.library.backend.services.LogInService.lambda$getUser$0(LogInService.java:24)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.library.backend.services.LogInService.getUser(LogInService.java:22)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:40:06.480 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-22 08:40:06.481 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: safafafsaf
+2023-12-22 08:40:06.481 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: safafafsaf
+2023-12-22 08:40:06.485 [ERROR] [JavaFX Application Thread] c.l.d.repositories.UserRepository - User not found with username: safafafsaf
+2023-12-22 08:40:06.485 [ERROR] [JavaFX Application Thread] c.l.backend.services.LogInService - User not found: safafafsaf
+2023-12-22 08:40:06.486 [ERROR] [JavaFX Application Thread] c.l.f.c.base.LogInController - Error during login
+java.lang.RuntimeException: User not found
+	at com.library.backend.services.LogInService.lambda$getUser$0(LogInService.java:24)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.library.backend.services.LogInService.getUser(LogInService.java:22)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)

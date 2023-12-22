@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="404.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.base.LogInController">
+
+<AnchorPane id="accessPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="386.0" style="-fx-background-color: E3A054; -fx-border-width: 7; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.base.LogInController">
    <children>
-      <Button id="logInButton" fx:id="logInButton" layoutX="165.0" layoutY="332.0" mnemonicParsing="false" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="69.0" text="Log in" />
-      <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="125.0" layoutY="196.0" />
-      <PasswordField id="passwordPasswordField" fx:id="passwordPasswordField" layoutX="125.0" layoutY="236.0" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="125.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="168.0" fitWidth="187.0" layoutX="109.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/library-logo-for-server-login-page-using-letters-B-and-A.png" />
          </image>
       </ImageView>
-      <Label layoutX="46.0" layoutY="199.0" text="Username">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="48.0" layoutY="239.0" text="Password">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label id="logInMessageLabel" fx:id="logInMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="127.0" layoutY="286.0" prefHeight="34.0" prefWidth="150.0" textAlignment="CENTER" />
-      <Hyperlink fx:id="forgotPasswordHyperlink" layoutX="178.0" layoutY="262.0" onMouseClicked="#forgotPasswordHyperlinkOnMouseClicked" text="Forgot password" textFill="#290cb9" />
+      <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="118.0" layoutY="203.0" prefHeight="26.0" prefWidth="150.0" promptText="Enter Username" style="-fx-background-radius: 5;" />
+      <PasswordField id="passwordPasswordField" fx:id="passwordPasswordField" layoutX="118.0" layoutY="243.0" prefHeight="26.0" prefWidth="150.0" promptText="Enter Password" style="-fx-background-radius: 5;" />
+
+      <Button id="logInButton" fx:id="logInButton" layoutX="153.0" layoutY="321.0" mnemonicParsing="false" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Log in">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+
+      <Label id="logInMessageLabel" fx:id="logInMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="118.0" layoutY="277.0" prefHeight="34.0" prefWidth="150.0" textAlignment="CENTER" />
    </children>
 </AnchorPane>

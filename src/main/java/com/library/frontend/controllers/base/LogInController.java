@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.base;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
@@ -19,7 +20,6 @@ import java.util.ResourceBundle;
 public class LogInController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
     @FXML private Button logInButton;
-    @FXML private Hyperlink forgotPasswordHyperlink;
     @FXML private Label logInMessageLabel;
     @FXML private TextField usernameTextField;
     @FXML private PasswordField passwordPasswordField;
@@ -57,10 +57,6 @@ public class LogInController implements Controller {
             logInMessageLabel.setText("An error occurred during login!");
         }
     }
-    @FXML
-    public void forgotPasswordHyperlinkOnMouseClicked(MouseEvent mouseEvent) {
-    }
-
 
     //Try to move the logic inside a class
     private void checkInput() throws Exception {
