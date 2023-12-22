@@ -763,3 +763,4 @@ java.lang.RuntimeException: User not found
 	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-22 08:44:39.106 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
