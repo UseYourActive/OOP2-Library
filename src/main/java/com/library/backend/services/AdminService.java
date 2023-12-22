@@ -23,7 +23,7 @@ public class AdminService implements Service {
         this.userRepository = userRepository;
     }
 
-    public boolean archiveBook(Book book) {
+    public void archiveBook(Book book) {
         book.setBookStatus(BookStatus.ARCHIVED);
         boolean result = bookRepository.save(book);
         if (result) {
@@ -31,17 +31,15 @@ public class AdminService implements Service {
         } else {
             logger.error("Failed to archive book: {}", book.getTitle());
         }
-        return result;
     }
 
-    public boolean saveBook(Book book) {
+    public void saveBook(Book book) {
         boolean result = bookRepository.save(book);
         if (result) {
             logger.info("Book saved: {}", book.getTitle());
         } else {
             logger.error("Failed to save book: {}", book.getTitle());
         }
-        return result;
     }
 
     public void removeBook(Book book) {
@@ -49,7 +47,7 @@ public class AdminService implements Service {
         logger.info("Book removed: {}", book.getTitle());
     }
 
-    public boolean registerOperator(User operator) {
+    public void registerOperator(User operator) {
         BCrypt.Hasher passwordEncryptor = BCrypt.with(BCrypt.Version.VERSION_2A);
         String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, operator.getPassword().toCharArray()));
         operator.setPassword(hashedPassword);
@@ -60,7 +58,6 @@ public class AdminService implements Service {
         } else {
             logger.error("Failed to register operator: {}", operator.getUsername());
         }
-        return result;
     }
 
     public void removeOperator(User operator) {
