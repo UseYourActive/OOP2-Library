@@ -1,6 +1,7 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -25,8 +26,10 @@ public class CreateReaderProfileController implements Controller {
     }
     @FXML
     public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");
     }
 }

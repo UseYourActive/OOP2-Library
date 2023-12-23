@@ -2,6 +2,7 @@ package com.library.frontend.controllers.operator;
 
 import com.library.database.entities.Book;
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeView;
@@ -14,8 +15,7 @@ import java.util.ResourceBundle;
 
 public class ReaderInfoController implements Controller {
     @FXML public TreeView<Book> bookFormTreeView;
-    @FXML
-    public Button goBackButton;
+    @FXML public Button goBackButton;
     @FXML public Text readerNamesText;
     @FXML public Text phoneNumberText;
     @FXML public Text emailText;
@@ -27,5 +27,6 @@ public class ReaderInfoController implements Controller {
     }
     @FXML
     public void goBackButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");
     }
 }

@@ -20,6 +20,16 @@ public class OperatorService implements Service {
         this.readerRepository = readerRepository;
     }
 
+    public void LendBook(Book book) {
+        book.setBookStatus(BookStatus.LENT);
+        boolean result = bookRepository.save(book);
+        if (result) {
+            logger.info("Book lent: {}", book.getTitle());
+        } else {
+            logger.error("Failed to lent book: {}", book.getTitle());
+        }
+    }
+
     public void archiveBook(Book book) {
         book.setBookStatus(BookStatus.ARCHIVED);
         boolean result = bookRepository.save(book);

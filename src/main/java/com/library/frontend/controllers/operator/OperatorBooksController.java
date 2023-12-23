@@ -13,8 +13,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class OperatorBooksController implements Controller {
     @FXML public Button readersButton;
@@ -82,7 +81,32 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        Set<Book> results = new HashSet<>();
+        List<Book> bookList = operatorService.getAllBooks();
+        String stringToSearch = searchBarTextField.getText();
 
+        if (stringToSearch.isEmpty()) {
+            updateTableView(bookList);
+        } else {
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getTitle().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getAuthor().getName().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getGenre().getValue().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> Objects.nonNull(book.getPublishYear()))
+                    .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
+                    .toList());
+            results.addAll(bookList.stream()
+                    .filter(book -> book.getResume().contains(stringToSearch))
+                    .toList());
+
+            updateTableView(results);
+        }
     }
 
     @FXML
@@ -94,4 +118,29 @@ public class OperatorBooksController implements Controller {
         bookTableView.getItems().clear();
         bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
     }
+
+//    private void checkAndUpdateButtons(MouseEvent mouseEvent) {
+//
+//        double mouseX = mouseEvent.getSceneX();
+//        double mouseY = mouseEvent.getSceneY();
+//
+//        double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
+//        double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
+//        double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
+//        double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
+//
+//        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
+//            if(!bookTableView.getSelectionModel().isEmpty()){
+//                removeBookButton.setDisable(false);
+//                loadBooksButton.setDisable(false);
+//            }
+//        }else {
+//            removeBookButton.setDisable(true);
+//            loadBooksButton.setDisable(true);
+//            resumeTextArea.clear();
+//            bookTableView.getSelectionModel().clearSelection();
+//        }
+//
+//        anchorPane.requestFocus();
+//    }
 }

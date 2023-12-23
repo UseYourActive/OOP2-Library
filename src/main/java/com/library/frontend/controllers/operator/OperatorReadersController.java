@@ -53,10 +53,6 @@ public class OperatorReadersController implements Controller {
     public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
 
     }
-    @FXML
-    public void checkReaderInfoButtonOnMouseClicked(MouseEvent mouseEvent) {
-
-    }
 
     public void readerTableViewOnClicked(MouseEvent mouseEvent) {
 

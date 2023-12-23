@@ -3,6 +3,7 @@ package com.library.frontend.controllers.operator;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -17,7 +18,6 @@ public class LendingBookReadingRoomController implements Controller {
     @FXML public TextField readerSearchBarTextField;
     @FXML public Button searchReaderButton;
     @FXML public Button lendButton;
-
     @FXML public Button cancelButton;
     @FXML public ListView<Book> bookListView;
     @FXML public TreeTableView<Reader> readerTreeTableView;
@@ -28,11 +28,14 @@ public class LendingBookReadingRoomController implements Controller {
     }
     @FXML
     public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
     @FXML
     public void lendButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", "Operator books scene");
     }
 }

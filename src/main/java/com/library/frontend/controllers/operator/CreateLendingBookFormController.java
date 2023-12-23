@@ -3,6 +3,7 @@ package com.library.frontend.controllers.operator;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -34,5 +35,6 @@ public class CreateLendingBookFormController implements Controller {
     }
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", "Operator books scene");
     }
 }
