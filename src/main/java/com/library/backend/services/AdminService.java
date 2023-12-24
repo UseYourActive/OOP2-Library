@@ -9,11 +9,11 @@ import com.library.database.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AdminService implements Service {
-    private final Logger logger = LoggerFactory.getLogger(AdminService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
@@ -24,22 +24,11 @@ public class AdminService implements Service {
     }
 
     public void archiveBook(Book book) {
-        book.setBookStatus(BookStatus.ARCHIVED);
-        boolean result = bookRepository.save(book);
-        if (result) {
-            logger.info("Book archived: {}", book.getTitle());
-        } else {
-            logger.error("Failed to archive book: {}", book.getTitle());
-        }
+        updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
     public void saveBook(Book book) {
-        boolean result = bookRepository.save(book);
-        if (result) {
-            logger.info("Book saved: {}", book.getTitle());
-        } else {
-            logger.error("Failed to save book: {}", book.getTitle());
-        }
+        performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
     }
 
     public void removeBook(Book book) {
@@ -48,16 +37,9 @@ public class AdminService implements Service {
     }
 
     public void registerOperator(User operator) {
-        BCrypt.Hasher passwordEncryptor = BCrypt.with(BCrypt.Version.VERSION_2A);
-        String hashedPassword = Arrays.toString(passwordEncryptor.hash(12, operator.getPassword().toCharArray()));
-        operator.setPassword(hashedPassword);
+        hashAndSetPassword(operator);
 
-        boolean result = userRepository.save(operator);
-        if (result) {
-            logger.info("Operator registered: {}", operator.getUsername());
-        } else {
-            logger.error("Failed to register operator: {}", operator.getUsername());
-        }
+        performRepositoryOperation(() -> userRepository.save(operator), "registered", operator.getUsername());
     }
 
     public void removeOperator(User operator) {
@@ -67,13 +49,41 @@ public class AdminService implements Service {
 
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
-        logger.info("Retrieved {} users", users.size());
+        logEntityRetrieval("users", users.size());
         return users;
     }
 
     public List<Book> getBooks() {
         List<Book> books = bookRepository.findAll();
-        logger.info("Retrieved {} books", books.size());
+        logEntityRetrieval("books", books.size());
         return books;
+    }
+
+    private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
+        T result = repositoryOperation.get();
+        if (result != null) {
+            logger.info("{} {} successfully: {}", entityName, action, entityName);
+        } else {
+            logger.error("Failed to {} {}: {}", action, entityName, entityName);
+        }
+    }
+
+    private void logEntityRetrieval(String entityName, int size) {
+        logger.info("Retrieved {} {}: {}", size, entityName, (size == 1 ? "entity" : "entities"));
+    }
+
+    private void hashAndSetPassword(User user) {
+        BCrypt.Hasher hasher = BCrypt.withDefaults();
+        String hashedPassword = hasher.hashToString(12, user.getPassword().toCharArray());
+        user.setPassword(hashedPassword);
+    }
+
+    private void updateBookStatus(Book book, BookStatus newStatus, String action) {
+        if (book != null) {
+            book.setBookStatus(newStatus);
+            performRepositoryOperation(() -> bookRepository.save(book), action, book.getTitle());
+        } else {
+            logger.error("Cannot update book status. Book is null.");
+        }
     }
 }

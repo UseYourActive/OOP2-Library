@@ -33,6 +33,9 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
 
+    // Googles Guava API
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
+
     // Postgres - Database
     implementation 'org.postgresql:postgresql:42.6.0'
 

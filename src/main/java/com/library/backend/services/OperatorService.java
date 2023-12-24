@@ -1,5 +1,7 @@
 package com.library.backend.services;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookStatus;
@@ -11,36 +13,24 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class OperatorService implements Service {
-    private final Logger logger = LoggerFactory.getLogger(OperatorService.class);
+    private static final Logger logger = LoggerFactory.getLogger(OperatorService.class);
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
 
     public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository) {
-        this.bookRepository = bookRepository;
-        this.readerRepository = readerRepository;
+        this.bookRepository = Preconditions.checkNotNull(bookRepository, "BookRepository cannot be null");
+        this.readerRepository = Preconditions.checkNotNull(readerRepository, "ReaderRepository cannot be null");
     }
 
-    public void LendBook(Book book) {
-        book.setBookStatus(BookStatus.LENT);
-        boolean result = bookRepository.save(book);
-        if (result) {
-            logger.info("Book lent: {}", book.getTitle());
-        } else {
-            logger.error("Failed to lent book: {}", book.getTitle());
-        }
+    public void lendBook(Book book) {
+        updateBookStatus(book, BookStatus.LENT, "lent");
     }
 
     public void archiveBook(Book book) {
-        book.setBookStatus(BookStatus.ARCHIVED);
-        boolean result = bookRepository.save(book);
-        if (result) {
-            logger.info("Book archived: {}", book.getTitle());
-        } else {
-            logger.error("Failed to archive book: {}", book.getTitle());
-        }
+        updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
-    public List<Reader> getAllReaders(){
+    public List<Reader> getAllReaders() {
         return readerRepository.findAll();
     }
 
@@ -49,10 +39,27 @@ public class OperatorService implements Service {
     }
 
     public void createReader(Reader reader) {
+        Preconditions.checkNotNull(reader, "Reader cannot be null");
         readerRepository.save(reader);
     }
 
     public void removeReader(Reader reader) {
+        Preconditions.checkNotNull(reader, "Reader cannot be null");
         readerRepository.delete(reader);
+    }
+
+    private void updateBookStatus(Book book, BookStatus newStatus, String action) {
+        Preconditions.checkNotNull(book, "Book cannot be null");
+        book.setBookStatus(newStatus);
+        boolean result = bookRepository.save(book);
+        if (result) {
+            logger.info("Book {} successfully: {}", action, book.getTitle());
+        } else {
+            logger.error("Failed to {} book: {}", action, book.getTitle());
+        }
+    }
+
+    private void logReaders(List<Reader> readers) {
+        logger.info("Readers: {}", Joiner.on(", ").join(readers));
     }
 }
