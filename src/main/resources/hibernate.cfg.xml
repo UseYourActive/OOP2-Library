@@ -22,5 +22,6 @@
         <mapping class="com.library.database.entities.User"/>
         <mapping class="com.library.database.entities.Reader"/>
         <mapping class="com.library.database.entities.EventNotification"/>
+        <mapping class="com.library.database.entities.BookInventory"/>
     </session-factory>
 </hibernate-configuration>

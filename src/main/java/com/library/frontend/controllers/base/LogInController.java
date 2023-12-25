@@ -41,10 +41,10 @@ public class LogInController implements Controller {
             LogInService service = (LogInService) ServiceFactory.getService(LogInService.class);
 
             User user = service.getUser(logInUser);
+            SceneLoader.setUsername(usernameTextField.getText());
 
             switch (user.getRole()) {
                 case ADMIN ->{
-                    SceneLoader.setUsername(usernameTextField.getText());
                     SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",SceneLoader.getUsername() + " (Administrator)");
                 }
                 case OPERATOR -> {

@@ -35,7 +35,7 @@ public class AdministratorOperatorsController implements Controller {
 
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
-        TableViewBuilder.buildOperatorTableView(operatorTableView);//Load columns
+        TableViewBuilder.createOperatorTableViewColumns(operatorTableView);//Load columns
         updateTableView(adminService.getUsers()); //populate table
     }
 
@@ -60,10 +60,10 @@ public class AdministratorOperatorsController implements Controller {
             updateTableView(userList);
         }else {
             results.addAll(userList.stream()
-                    .filter(user -> user.getUsername().contains(stringToSearch))
+                    .filter(user -> user.getUsername().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
             results.addAll(userList.stream()
-                    .filter(user-> user.getRole().toString().contains(stringToSearch))
+                    .filter(user-> user.getRole().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
 
             updateTableView(results);

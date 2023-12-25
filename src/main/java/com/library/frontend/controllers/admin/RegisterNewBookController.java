@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
-    @FXML public TextField ISBNTextField;
     @FXML public TextField titleTextField;
     @FXML public TextField authorTextField;
     @FXML public TextField yearTextField;
@@ -38,7 +37,6 @@ public class RegisterNewBookController implements Controller {
 
     private AdminService adminService;
 
-    private Validator validator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,13 +66,6 @@ public class RegisterNewBookController implements Controller {
     }
 
     private void checkInput() throws Exception {
-        if(ISBNTextField.getText().isEmpty())
-            throw new Exception("Please enter ISBN.");
-        validator=new ISBNValidator();
-
-        if(validator.isValid(ISBNTextField.getText()))
-            throw new Exception("Please enter valid ISBN code.");
-
         if(titleTextField.getText().isEmpty())
             throw new Exception("Please enter book title.");
 
@@ -95,7 +86,6 @@ public class RegisterNewBookController implements Controller {
 
         //not nullable properties are instantiated trough builder
         Book book = Book.builder()
-                .isbn(ISBNTextField.getText())
                 .title(titleTextField.getText())
                 .author(author)
                 .genre(genre)

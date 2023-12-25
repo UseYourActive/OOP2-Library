@@ -18,7 +18,9 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books")
+@Table(name = "books", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"title", "author_id", "publish_date"})
+})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +46,6 @@ public class Book {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @NaturalId
-    @Column(name = "isbn", length = 16, nullable = false,unique = true)
-    private String isbn;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "genres")
     private Genre genre;
@@ -56,28 +54,17 @@ public class Book {
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return isbn.equals(book.isbn);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(isbn);
-    }
 
     @Override
     public String toString() {
 
         if(publishYear==null){
-            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nAvailability: %d\nISBN: %s\nResume:\n%s",
-                    title, author,genre,amountOfCopies, isbn,resume);
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nAvailability: %d\nResume:\n%s",
+                    title, author,genre,amountOfCopies,resume);
         }
 
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nAvailability: %d\nISBN: %s\nResume:\n%s",
-                title, author,genre,publishYear,amountOfCopies, isbn,resume);
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nAvailability: %d\nResume:\n%s",
+                title, author,genre,publishYear,amountOfCopies,resume);
     }
 }

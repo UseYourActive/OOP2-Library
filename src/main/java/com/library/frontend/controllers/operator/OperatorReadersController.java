@@ -5,15 +5,18 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import lombok.NoArgsConstructor;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
+@NoArgsConstructor
 public class OperatorReadersController implements Controller {
     @FXML public Button booksButton;
     @FXML public Button createReaderButton;
@@ -27,6 +30,13 @@ public class OperatorReadersController implements Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+
+        booksButton.requestFocus();
+
+        readerTextArea.setFocusTraversable(false);
+
+        TableViewBuilder.createReaderTableViewColumns(readerTableView);//Load columns
+        updateTableView(operatorService.getAllReaders()); //populate table
     }
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
@@ -54,6 +64,7 @@ public class OperatorReadersController implements Controller {
 
     }
 
+    @FXML
     public void readerTableViewOnClicked(MouseEvent mouseEvent) {
 
     }

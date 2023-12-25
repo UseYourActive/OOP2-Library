@@ -10,44 +10,38 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.net.URL;
 import java.util.*;
 
+@NoArgsConstructor
 public class OperatorBooksController implements Controller {
     @FXML public Button readersButton;
     @FXML public Button archiveButton;
     @FXML public Button lendButton;
     @FXML public Button lendReadingRoomButton;
-    @FXML public TextField searchBarTextField;
+    @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
     @FXML public TableView<Book> bookTableView;
     @FXML public TextArea bookTextArea;
+    @FXML public AnchorPane anchorPane;
 
-    @Setter
-    private String stageTitle;
     private OperatorService operatorService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
-        bookTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            boolean isItemSelected = (newValue != null);
-            archiveButton.setDisable(!isItemSelected);
-            lendButton.setDisable(!isItemSelected);
-            lendReadingRoomButton.setDisable(!isItemSelected);
+        readersButton.requestFocus();
 
-            if (isItemSelected) {
-                bookTextArea.setText(newValue.toString());
-            } else {
-                bookTextArea.clear();
-            }
-        });
+        bookTextArea.setFocusTraversable(false);
 
-        TableViewBuilder.buildBookTableView(bookTableView);
+        TableViewBuilder.createBookTableViewColumns(bookTableView);
         updateTableView(operatorService.getAllBooks());
+
     }
 
     @FXML
@@ -81,28 +75,31 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        Set<Book> results = new HashSet<>();
-        List<Book> bookList = operatorService.getAllBooks();
-        String stringToSearch = searchBarTextField.getText();
+        checkAndUpdateButtons(mouseEvent);
 
-        if (stringToSearch.isEmpty()) {
+        Set<Book> results=new HashSet<>();
+        List<Book> bookList=operatorService.getAllBooks();
+        String stringToSearch=searchBookTextField.getText();
+
+        if(stringToSearch.isEmpty())
+        {
             updateTableView(bookList);
-        } else {
+        }else {
             results.addAll(bookList.stream()
-                    .filter(book -> book.getTitle().contains(stringToSearch))
+                    .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
             results.addAll(bookList.stream()
-                    .filter(book -> book.getAuthor().getName().contains(stringToSearch))
+                    .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
             results.addAll(bookList.stream()
-                    .filter(book -> book.getGenre().getValue().contains(stringToSearch))
+                    .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
             results.addAll(bookList.stream()
                     .filter(book -> Objects.nonNull(book.getPublishYear()))
                     .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
                     .toList());
             results.addAll(bookList.stream()
-                    .filter(book -> book.getResume().contains(stringToSearch))
+                    .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
                     .toList());
 
             updateTableView(results);
@@ -111,7 +108,25 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void bookTableViewOnClicked(MouseEvent mouseEvent) {
+        checkAndUpdateButtons(mouseEvent);
 
+        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+
+        if(selectedBook!=null)
+            bookTextArea.setText(selectedBook.toString());
+    }
+
+    @FXML
+    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
+        anchorPane.requestFocus();
+        checkAndUpdateButtons(mouseEvent);
+    }
+
+    @FXML
+    public void bookTextAreaOnMouseClicked() {
+        archiveButton.setDisable(true);
+        lendButton.setDisable(true);
+        lendReadingRoomButton.setDisable(true);
     }
 
     private void updateTableView(Collection<Book> bookList) {
@@ -119,28 +134,31 @@ public class OperatorBooksController implements Controller {
         bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
     }
 
-//    private void checkAndUpdateButtons(MouseEvent mouseEvent) {
-//
-//        double mouseX = mouseEvent.getSceneX();
-//        double mouseY = mouseEvent.getSceneY();
-//
-//        double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
-//        double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
-//        double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
-//        double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
-//
-//        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
-//            if(!bookTableView.getSelectionModel().isEmpty()){
-//                removeBookButton.setDisable(false);
-//                loadBooksButton.setDisable(false);
-//            }
-//        }else {
-//            removeBookButton.setDisable(true);
-//            loadBooksButton.setDisable(true);
-//            resumeTextArea.clear();
-//            bookTableView.getSelectionModel().clearSelection();
-//        }
-//
-//        anchorPane.requestFocus();
-//    }
+    private void checkAndUpdateButtons(MouseEvent mouseEvent) {
+
+        double mouseX = mouseEvent.getSceneX();
+        double mouseY = mouseEvent.getSceneY();
+
+        double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
+        double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
+        double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
+        double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
+
+        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
+            if(!bookTableView.getSelectionModel().isEmpty()){
+                archiveButton.setDisable(false);
+                lendButton.setDisable(false);
+                lendReadingRoomButton.setDisable(false);
+            }
+        }else {
+            archiveButton.setDisable(true);
+            lendButton.setDisable(true);
+            lendReadingRoomButton.setDisable(true);
+            bookTextArea.clear();
+            bookTableView.getSelectionModel().clearSelection();
+        }
+
+        anchorPane.requestFocus();
+    }
+
 }
