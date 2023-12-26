@@ -4,6 +4,7 @@ import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
+import com.library.database.entities.User;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
@@ -25,7 +26,6 @@ public class OperatorReadersController implements Controller {
     @FXML public TextArea readerTextArea;
     @FXML public TableView<Reader> readerTableView;
     private OperatorService operatorService;
-    private ContextMenu contextMenu;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,7 +38,59 @@ public class OperatorReadersController implements Controller {
         TableViewBuilder.createReaderTableViewColumns(readerTableView);
         updateTableView(operatorService.getAllReaders());
 
-        contextMenu = new ContextMenu();
+        prepareContextMenu();
+    }
+    @FXML
+    public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
+    }
+
+    @FXML
+    public void searchReaderButtonOnMouseClicked() {
+        Set<Reader> results=new HashSet<>();
+        List<Reader> readerList=operatorService.getAllReaders();
+        String stringToSearch=searchBarTextField.getText();
+
+        if(stringToSearch.isEmpty())
+        {
+            updateTableView(readerList);
+        }else {
+            results.addAll(readerList.stream()
+                    .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    .toList());
+            results.addAll(readerList.stream()
+                    .filter(reader-> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    .toList());
+            results.addAll(readerList.stream()
+                    .filter(reader-> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    .toList());
+            results.addAll(readerList.stream()
+                    .filter(reader-> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    .toList());
+
+            results.addAll(readerList.stream()
+                    .filter(reader-> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
+                    .toList());
+
+            updateTableView(results);
+        }
+    }
+
+    @FXML
+    public void readerTableViewOnClicked() {
+        Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
+
+        if(selectedReader!=null)
+            readerTextArea.setText(selectedReader.toString());
+    }
+
+    private void updateTableView(Collection<Reader> readerList) {
+        readerTableView.getItems().clear();
+        readerTableView.getItems().addAll(FXCollections.observableArrayList(readerList));
+    }
+
+    private void prepareContextMenu(){
+        ContextMenu contextMenu = new ContextMenu();
 
         MenuItem createReader = new MenuItem("Create Reader");
         MenuItem removeReader = new MenuItem("Remove Reader");
@@ -50,55 +102,12 @@ public class OperatorReadersController implements Controller {
         createReader.setOnAction(this::createReader);
         removeReader.setOnAction(this::removeReader);
     }
-    @FXML
-    public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
-    }
 
-    @FXML
-    public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
-        List<Reader> results = new ArrayList<>();
-        List<Reader> readerList = operatorService.getAllReaders();
-        String stringToSearch = searchReaderButton.getText();
-
-        if (stringToSearch.isEmpty()) {
-            updateTableView(readerList);
-        } else {
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getPhoneNumber().contains(stringToSearch))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-
-            updateTableView(results);
-        }
-    }
-
-    @FXML
-    public void readerTableViewOnClicked(MouseEvent mouseEvent) {
-
-    }
-
-    private void updateTableView(Collection<Reader> readerList) {
-        readerTableView.getItems().clear();
-        readerTableView.getItems().addAll(FXCollections.observableArrayList(readerList));
-    }
-
-    public void createReader(ActionEvent actionEvent){
+    private void createReader(ActionEvent actionEvent){
         SceneLoader.load("/views/createReaderProfileScene.fxml", SceneLoader.getUsername() +" (Operator)");
     }
 
-    public void removeReader(ActionEvent actionEvent){
+    private void removeReader(ActionEvent actionEvent){
         Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
         if (selectedReader != null) {

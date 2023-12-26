@@ -3,8 +3,10 @@ package com.library.backend.services;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookInventory;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.ReaderRepository;
 import org.slf4j.Logger;
@@ -17,9 +19,12 @@ public class OperatorService implements Service {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
 
-    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository) {
+    private final BookInventoryRepository bookInventoryRepository;
+
+    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository,BookInventoryRepository bookInventoryRepository) {
         this.bookRepository = Preconditions.checkNotNull(bookRepository, "BookRepository cannot be null");
         this.readerRepository = Preconditions.checkNotNull(readerRepository, "ReaderRepository cannot be null");
+        this.bookInventoryRepository=Preconditions.checkNotNull(bookInventoryRepository,"BookInventoryRepository cannot be null");
     }
 
     public void lendBook(Book book) {
@@ -36,6 +41,12 @@ public class OperatorService implements Service {
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
+    }
+
+    public List<BookInventory> getAllBookInventories() {
+        List<BookInventory> inventories = bookInventoryRepository.findAll();
+        //logEntityRetrieval("book_inventories", inventories.size());
+        return inventories;
     }
 
     public void createReader(Reader reader) {

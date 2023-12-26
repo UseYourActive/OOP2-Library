@@ -43,31 +43,6 @@ public class TableViewBuilder {
         }
     }
 
-    public static void createBookTableViewColumns(TableView<Book> bookTableView) {
-        try {
-            TableColumn<Book, String> titleTableColumn = new TableColumn<>("Title");
-            titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-            titleTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
-
-            TableColumn<Book, Integer> authorTableColumn = new TableColumn<>("Author");
-            authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-            authorTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
-
-            TableColumn<Book, Genre> genreTableColumn = new TableColumn<>("Genre");
-            genreTableColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-            genreTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
-
-            bookTableView.getColumns().add(titleTableColumn);
-            bookTableView.getColumns().add(authorTableColumn);
-            bookTableView.getColumns().add(genreTableColumn);
-
-            logger.info("Book table view created successfully");
-        } catch (Exception e) {
-            logger.error("Failed to create book table view: {}", e.getMessage());
-            throw e;
-        }
-    }
-
     public static void createOperatorTableViewColumns(TableView<User> bookTreeTableView) {
         try {
             TableColumn<User, String> usernameColumn = new TableColumn<>("Username");
@@ -92,26 +67,19 @@ public class TableViewBuilder {
         try {
             TableColumn<Reader, String> firstNameColumn = new TableColumn<>("First Name");
             firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-            readerTableView.getColumns().add(firstNameColumn);
+            firstNameColumn.prefWidthProperty().bind(readerTableView.widthProperty().divide(3));
 
             TableColumn<Reader, String> lastNameColumn = new TableColumn<>("Last Name");
             lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-            readerTableView.getColumns().add(lastNameColumn);
+            lastNameColumn.prefWidthProperty().bind(readerTableView.widthProperty().divide(3));
 
             TableColumn<Reader, String> emailColumn = new TableColumn<>("Email");
             emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+            emailColumn.prefWidthProperty().bind(readerTableView.widthProperty().divide(3));
+
+            readerTableView.getColumns().add(firstNameColumn);
+            readerTableView.getColumns().add(lastNameColumn);
             readerTableView.getColumns().add(emailColumn);
-
-            TableColumn<Reader, String> phoneNumberColumn = new TableColumn<>("Phone Number");
-            phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-            readerTableView.getColumns().add(phoneNumberColumn);
-
-            TableColumn<Reader, String> ratingColumn = new TableColumn<>("Rating");
-            ratingColumn.setCellValueFactory(cellData -> {
-                Rating rating = cellData.getValue().getRating();
-                return new SimpleStringProperty(rating != null ? rating.toString() : "");
-            });
-            readerTableView.getColumns().add(ratingColumn);
 
             logger.info("Reader table view columns created successfully");
         } catch (Exception e) {

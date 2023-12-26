@@ -3,23 +3,18 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.base.Controller;
-import com.library.frontend.utils.GlobalContextMenu;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Window;
 import lombok.NoArgsConstructor;
-import org.hibernate.mapping.Collection;
 
 import java.net.URL;
 import java.util.*;
@@ -29,39 +24,25 @@ public class OperatorBooksController implements Controller {
     @FXML public Button readersButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
-    @FXML public TableView<Book> bookTableView;
+    @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public TextArea bookTextArea;
     @FXML public AnchorPane anchorPane;
     private OperatorService operatorService;
-
-    private ContextMenu contextMenu;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
-        bookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         readersButton.requestFocus();
 
         bookTextArea.setFocusTraversable(false);
 
-        TableViewBuilder.createBookTableViewColumns(bookTableView);
-        updateTableView(operatorService.getAllBooks());
+        TableViewBuilder.createInventoryTableViewColumns(inventoryTableView);
+        updateTableView(operatorService.getAllBookInventories());
 
-        contextMenu = new ContextMenu();
-
-        MenuItem archiveItem = new MenuItem("Archive book");
-        MenuItem lendBookItem = new MenuItem("Lend book");
-        MenuItem lendReadingRoomBookItem = new MenuItem("Lend book for reading room");
-
-        contextMenu.getItems().addAll(archiveItem, lendBookItem, lendReadingRoomBookItem);
-
-        bookTableView.setContextMenu(contextMenu);
-
-        archiveItem.setOnAction(this::archiveSelectedBooks);
-        lendBookItem.setOnAction(this::lendSelectedBooks);
-        lendReadingRoomBookItem.setOnAction(this::lendReadingRoomSelectedBooks);
+        prepareContextMenu();
     }
 
     @FXML
@@ -72,30 +53,32 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        List<Book> results = new ArrayList<>();
-        List<Book> bookList = operatorService.getAllBooks();
+    public void searchBookButtonOnMouseClicked() {
+        List<BookInventory> results = new ArrayList<>();
+        List<BookInventory> inventories = operatorService.getAllBookInventories();
         String stringToSearch = searchBookTextField.getText();
-
         if (stringToSearch.isEmpty()) {
-            updateTableView(bookList);
+            updateTableView(inventories);
         } else {
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> Objects.nonNull(book.getPublishYear()))
-                    .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
+
+            for(BookInventory inventory:inventories){
+                Book book=inventory.getBook();
+
+                if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if(book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if(book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if(book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if( book.getPublishYear()!=null && book.getPublishYear().toString().contains(stringToSearch))
+                    results.add(inventory);
+            }
 
             updateTableView(results);
         }
@@ -103,48 +86,50 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void bookTableViewOnClicked() {
-        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        BookInventory selectedInventory= inventoryTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedBook != null)
-            bookTextArea.setText(selectedBook.toString());
+        if (selectedInventory != null)
+            bookTextArea.setText(selectedInventory.toString());
     }
 
-    @FXML
-    public void anchorPaneOnMouseClicked() {
-      //    //anchorPane.requestFocus();
-      //    checkAndUpdateButtons(mouseEvent);
+    private void prepareContextMenu(){
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem archiveItem = new MenuItem("Archive book");
+        MenuItem lendBookItem = new MenuItem("Lend book");
+        MenuItem lendReadingRoomBookItem = new MenuItem("Lend book for reading room");
+
+        contextMenu.getItems().addAll(archiveItem, lendBookItem, lendReadingRoomBookItem);
+
+        inventoryTableView.setContextMenu(contextMenu);
+
+        archiveItem.setOnAction(this::archiveSelectedBooks);
+        lendBookItem.setOnAction(this::lendSelectedBooks);
+        lendReadingRoomBookItem.setOnAction(this::lendReadingRoomSelectedBooks);
     }
 
-    @FXML
-    public void bookTextAreaOnMouseClicked() {
-    //    archiveButton.setDisable(true);
-    //    lendButton.setDisable(true);
-    //    lendReadingRoomButton.setDisable(true);
+    private void updateTableView(List<BookInventory> inventories) {
+        inventoryTableView.getItems().clear();
+        inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
     }
 
-
-    private void updateTableView(List<Book> bookList) {
-          bookTableView.getItems().clear();
-          bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
-    }
-
-    public void archiveSelectedBooks(ActionEvent actionEvent) {
-        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+    private void archiveSelectedBooks(ActionEvent actionEvent) {
+        Book selectedBook = inventoryTableView.getSelectionModel().getSelectedItem().getBook();
 
         if (selectedBook != null) {
             operatorService.archiveBook(selectedBook);
-            updateTableView(operatorService.getAllBooks());
+            updateTableView(operatorService.getAllBookInventories());
             bookTextArea.clear();
         } else {
             bookTextArea.setText("No book selected to archive");
         }
     }
 
-    public void lendSelectedBooks(ActionEvent actionEvent) {
+    private void lendSelectedBooks(ActionEvent actionEvent) {
 
     }
 
-    public void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
+    private void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
         SceneLoader.load("/views/lendingBookReadingRoomScene.fxml","Lending book for reading room");
     }
 }

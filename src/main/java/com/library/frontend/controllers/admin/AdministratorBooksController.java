@@ -5,9 +5,11 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,13 +28,11 @@ import java.util.*;
 public class AdministratorBooksController implements Controller {
     @FXML public Button operatorsButton;
     @FXML public Button registerBookButton;
-    @FXML public Button loadBooksButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
     @FXML public TextArea bookTextArea;
     @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public AnchorPane anchorPane;
-    @FXML public Button removeBookButton;
 
     private AdminService adminService;
     @Override
@@ -43,58 +43,18 @@ public class AdministratorBooksController implements Controller {
 
         bookTextArea.setFocusTraversable(false);
 
+        inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         TableViewBuilder.createInventoryTableViewColumns(inventoryTableView);
-        //TableViewBuilder.createBookTableViewColumns(bookTableView);//Load columns
+
         updateTableView(adminService.getAllBookInventories()); //populate table
+
+        prepareContextMenu();
     }
 
-    @FXML
-    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
-    }
 
-    @FXML
-    public void loadBooksButtonOnMouseClicked() {
-        // Dialog window
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
-
-
-        TextField quantityField = new TextField();
-        Button increaseButton = new Button("Increase Quantity");
-
-        increaseButton.setOnAction(e -> {
-
-            int quantity= Integer.parseInt(quantityField.getText());
-            if(quantity>0){
-                BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
-                bookInventory.setQuantity(quantity);
-                ((AdminService)ServiceFactory.getService(AdminService.class)).saveInventory(bookInventory);
-
-                //Book book=bookTableView.getSelectionModel().getSelectedItem();
-                //((AdminService)ServiceFactory.getService(AdminService.class)).saveBook(book,quantity);
-                updateTableView(adminService.getAllBookInventories());
-                dialogStage.close();
-            }else{
-                // ..
-            }
-
-        });
-
-        VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
-        dialogLayout.setPadding(new Insets(20));
-
-        Scene dialogScene = new Scene(dialogLayout, 250, 150);
-
-        dialogStage.setTitle("Quantity Dialog");
-        dialogStage.setScene(dialogScene);
-        dialogStage.show();
-    }
-
-    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        checkAndUpdateButtons(mouseEvent);
-        Set<BookInventory> results = new HashSet<>();
+    public void searchBookButtonOnMouseClicked() {
+        List<BookInventory> results = new ArrayList<>();
         List<BookInventory> inventories = adminService.getAllBookInventories();
         String stringToSearch = searchBookTextField.getText();
         if (stringToSearch.isEmpty()) {
@@ -120,60 +80,9 @@ public class AdministratorBooksController implements Controller {
                     results.add(inventory);
             }
 
-
-            //results.addAll(bookList.stream()
-            //        .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-            //        .toList());
-            //results.addAll(bookList.stream()
-            //        .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
-            //        .toList());
-            //results.addAll(bookList.stream()
-            //        .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
-            //        .toList());
-            //results.addAll(bookList.stream()
-            //        .filter(book -> Objects.nonNull(book.getPublishYear()))
-            //        .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
-            //        .toList());
-            //results.addAll(bookList.stream()
-            //        .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-            //        .toList());
             updateTableView(results);
         }
     }
-
-    //@FXML
-    //public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-//
-    //    checkAndUpdateButtons(mouseEvent);
-//
-    //    Set<Book> results=new HashSet<>();
-    //    List<Book> bookList=adminService.getAllBooks();
-    //    String stringToSearch=searchBookTextField.getText();
-//
-    //    if(stringToSearch.isEmpty())
-    //    {
-    //        updateTableView(bookList);
-    //    }else {
-    //        results.addAll(bookList.stream()
-    //                .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-    //                .toList());
-    //        results.addAll(bookList.stream()
-    //                .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
-    //                .toList());
-    //        results.addAll(bookList.stream()
-    //                .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
-    //                .toList());
-    //        results.addAll(bookList.stream()
-    //                .filter(book -> Objects.nonNull(book.getPublishYear()))
-    //                .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
-    //                .toList());
-    //        results.addAll(bookList.stream()
-    //                .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-    //                .toList());
-//
-    //        updateTableView(results);
-    //    }
-    //}
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
@@ -181,70 +90,97 @@ public class AdministratorBooksController implements Controller {
     }
 
     @FXML
-    public void booksTableViewOnClicked(MouseEvent mouseEvent) {
-        checkAndUpdateButtons(mouseEvent);
+    public void booksTableViewOnClicked() {
+        BookInventory selectedInventory= inventoryTableView.getSelectionModel().getSelectedItem();
 
-        //Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
-        BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
+        if(selectedInventory!=null)
+            bookTextArea.setText(selectedInventory.toString());
 
-
-        if(bookInventory!=null)
-            bookTextArea.setText(bookInventory.toString());
     }
 
     @FXML
-    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
+    public void anchorPaneOnMouseClicked() {
         anchorPane.requestFocus();
-        checkAndUpdateButtons(mouseEvent);
+        inventoryTableView.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    public void resumeTextAreaOnMouseClicked() {
-        removeBookButton.setDisable(true);
-        loadBooksButton.setDisable(true);
+    private void prepareContextMenu(){
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem removeBookItem = new MenuItem("Remove book/s");
+        MenuItem addExistingBookItem = new MenuItem("Add book/s");
+
+        contextMenu.getItems().addAll(removeBookItem, addExistingBookItem);
+
+        inventoryTableView.setContextMenu(contextMenu);
+
+        removeBookItem.setOnAction(this::removeSelectedBooks);
+        addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
     }
 
-    @FXML
-    public void removeBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        //Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
-        BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
-
-        if(bookInventory !=null){
-            adminService.removeBook(bookInventory);
-            updateTableView(adminService.getAllBookInventories());
-        }
-        checkAndUpdateButtons(mouseEvent);
-    }
-
-    private void checkAndUpdateButtons(MouseEvent mouseEvent) {
-
-        double mouseX = mouseEvent.getSceneX();
-        double mouseY = mouseEvent.getSceneY();
-
-        double textFieldMinX = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMinX();
-        double textFieldMinY = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMinY();
-        double textFieldMaxX = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMaxX();
-        double textFieldMaxY = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMaxY();
-
-        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
-            if(!inventoryTableView.getSelectionModel().isEmpty()){
-                removeBookButton.setDisable(false);
-                loadBooksButton.setDisable(false);
-            }
-        }else {
-            removeBookButton.setDisable(true);
-            loadBooksButton.setDisable(true);
-            bookTextArea.clear();
-            inventoryTableView.getSelectionModel().clearSelection();
-        }
-
-        anchorPane.requestFocus();
-    }
-
-    private void updateTableView(Collection<BookInventory> inventories){
-
+    private void updateTableView(List<BookInventory> inventories){
         inventoryTableView.getItems().clear();
         bookTextArea.clear();
         inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
+    }
+
+    private void removeSelectedBooks(ActionEvent actionEvent){
+        List<BookInventory> inventories= inventoryTableView.getSelectionModel().getSelectedItems();
+
+        if(!inventories.isEmpty()){
+            if(DialogUtils.showConfirmation("Confirmation","Are you sure you want to delete these book/s")){
+                for(BookInventory bookInventory:inventories){
+                    adminService.removeBook(bookInventory);
+                    updateTableView(adminService.getAllBookInventories());
+                }
+            }
+        }else {
+            DialogUtils.showInfo("Information","Please select a book!");
+        }
+    }
+
+    private void setQuantityOnSelectedBook(ActionEvent actionEvent) {
+
+        if(!inventoryTableView.getSelectionModel().isEmpty()) {
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
+
+
+            TextField quantityField = new TextField();
+            Button increaseButton = new Button("Increase Quantity");
+
+            //Button logic
+            increaseButton.setOnAction(e -> {
+
+                int quantity = Integer.parseInt(quantityField.getText());
+                if (quantity > 0) {
+                    BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+                    bookInventory.setQuantity(quantity);
+                    ((AdminService) ServiceFactory.getService(AdminService.class)).saveInventory(bookInventory);
+
+                    updateTableView(adminService.getAllBookInventories());
+                    dialogStage.close();
+                } else {
+                    DialogUtils.showInfo("Error","Please enter valid quantity number!");
+                }
+            });
+
+            VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
+            dialogLayout.setPadding(new Insets(20));
+
+            Scene dialogScene = new Scene(dialogLayout, 250, 150);
+
+            dialogStage.setTitle("Set quantity");
+            dialogStage.setScene(dialogScene);
+            dialogStage.show();
+        }else{
+            DialogUtils.showInfo("Information","Please select a book!");
+        }
+    }
+
+    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
     }
 }

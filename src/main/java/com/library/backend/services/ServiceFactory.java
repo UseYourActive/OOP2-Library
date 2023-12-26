@@ -28,7 +28,7 @@ public class ServiceFactory {
             switch (getServiceType(serviceClass)) {
                 case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance(), BookInventoryRepository.getInstance()));
                 case LOG_IN_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
-                case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance()));
+                case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance(),BookInventoryRepository.getInstance()));
                 default -> throw new RuntimeException("There is no such enum");
             }
             logger.info("Service {} created successfully", serviceClass.getSimpleName());
