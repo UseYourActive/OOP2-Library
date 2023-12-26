@@ -37,6 +37,11 @@ public class SceneLoader {
         loadBackground(stage, resourceFiles, stageTitle);
     }
 
+    public static void load(Scene scene, String resourceFiles, String stageTitle) {
+        Stage stage = (Stage) scene.getWindow();
+        loadBackground(stage, resourceFiles, stageTitle);
+    }
+
     private static void loadBackground(Stage stage, String resourceFiles, String stageTitle) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));
