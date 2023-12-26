@@ -52,8 +52,9 @@ public class RegisterNewBookController implements Controller {
             checkInput();
 
             Book book = getBook();
+            int quantity=getQuantity();
 
-            adminService.saveBook(book);
+            adminService.saveBook(book,quantity);
 
             cancelButtonOnMouseClicked(mouseEvent);
         }catch (Exception e){
@@ -76,6 +77,12 @@ public class RegisterNewBookController implements Controller {
             throw new Exception("Please choose the genre of the book.");
     }
 
+    private int getQuantity(){
+        if(amountTextField.getText().isEmpty())
+            return 0;
+        else
+            return Integer.parseInt(amountTextField.getText());
+    }
     private Book getBook(){
         Author author = Author.builder()
                 .name(authorTextField.getText())
@@ -92,7 +99,6 @@ public class RegisterNewBookController implements Controller {
                 .bookStatus(BookStatus.AVAILABLE)
                 .numberOfTimesUsed(0)
                 .resume("")
-                .amountOfCopies(0)
                 .build();
 
         //nullable properties need check
@@ -101,10 +107,6 @@ public class RegisterNewBookController implements Controller {
 
         if(!resumeTextField.getText().isEmpty()) {
             book.setResume(resumeTextField.getText());
-        }
-
-        if(!amountTextField.getText().isEmpty()){
-            book.setAmountOfCopies(Integer.valueOf(amountTextField.getText()));
         }
 
         return book;

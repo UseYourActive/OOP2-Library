@@ -27,9 +27,6 @@ public class Book {
     @Column(name = "book_id")
     private Long id;
 
-    @Column(name = "amount_of_copies")
-    private Integer amountOfCopies;
-
     @Column(name = "number_of_times_used", nullable = false)
     private Integer numberOfTimesUsed;
 
@@ -55,16 +52,15 @@ public class Book {
     private BookStatus bookStatus;
 
 
-
     @Override
     public String toString() {
 
         if(publishYear==null){
-            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nAvailability: %d\nResume:\n%s",
-                    title, author,genre,amountOfCopies,resume);
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nStatus: %s\nResume:\n%s",
+                    title, author,genre,bookStatus,resume);
         }
 
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nAvailability: %d\nResume:\n%s",
-                title, author,genre,publishYear,amountOfCopies,resume);
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nStatus: %s\nResume:\n%s",
+                title, author,genre,publishYear,bookStatus,resume);
     }
 }

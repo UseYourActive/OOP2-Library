@@ -1,5 +1,6 @@
 package com.library.backend.services;
 
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.ReaderRepository;
 import com.library.database.repositories.UserRepository;
@@ -25,7 +26,7 @@ public class ServiceFactory {
 
         try {
             switch (getServiceType(serviceClass)) {
-                case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance()));
+                case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance(), BookInventoryRepository.getInstance()));
                 case LOG_IN_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
                 case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance()));
                 default -> throw new RuntimeException("There is no such enum");

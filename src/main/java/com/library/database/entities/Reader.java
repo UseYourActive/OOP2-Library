@@ -2,6 +2,7 @@ package com.library.database.entities;
 
 import com.library.database.enums.Rating;
 import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 import lombok.*;
 
 import java.util.List;
@@ -9,10 +10,13 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-@Table(name = "readers")
-@AllArgsConstructor
+@Table(name = "readers", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"first_name", "middle_name", "last_name"})
+})
+
 public class Reader {
     @Id
     @Column(name = "reader_id")

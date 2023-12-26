@@ -18,7 +18,7 @@ public class Author {
     @Column(name = "author_id")
     private Long id;
 
-    @Column(name = "name", length = 32, nullable = false)
+    @Column(name = "name", length = 32, nullable = false,unique = true)
     private String name;
 
     @OneToMany(mappedBy = "author", orphanRemoval = true)

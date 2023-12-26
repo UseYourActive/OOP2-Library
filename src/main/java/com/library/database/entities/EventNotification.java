@@ -28,10 +28,10 @@ public class EventNotification {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "message", nullable = false, length = 255)
+    @Column(name = "message", nullable = false)
     private String message;
 
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "timestamp", nullable = false,unique = true)
     private LocalDateTime timestamp;
 
     @Enumerated(EnumType.STRING)

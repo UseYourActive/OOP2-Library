@@ -30,6 +30,6 @@ public class BookForm {
     @Enumerated(EnumType.STRING)
     private BookFormStatus status;
 
-    @Column(name = "date_of_creation")
+    @Column(name = "date_of_creation",unique = true)
     private LocalDate dateOfCreation;
 }

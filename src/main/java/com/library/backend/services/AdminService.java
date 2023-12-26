@@ -2,8 +2,10 @@ package com.library.backend.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookInventory;
 import com.library.database.entities.User;
 import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -18,20 +20,36 @@ public class AdminService implements Service {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    public AdminService(BookRepository bookRepository, UserRepository userRepository) {
+    private final BookInventoryRepository bookInventoryRepository;
+
+    public AdminService(BookRepository bookRepository, UserRepository userRepository,BookInventoryRepository bookInventoryRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.bookInventoryRepository=bookInventoryRepository;
     }
 
     public void archiveBook(Book book) {
         updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
-    public void saveBook(Book book) {
-        performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
+    public void saveInventory(BookInventory bookInventory){
+        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "");
     }
 
-    public void removeBook(Book book) {
+    public void saveBook(Book book,Integer quantity) {
+
+        BookInventory bookInventory= BookInventory.builder()
+                .book(book)
+                .quantity(quantity)
+                .build();
+
+        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", book.getTitle());
+
+        //performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
+    }
+
+    public void removeBook(BookInventory inventory) {
+        Book book=inventory.getBook();
         bookRepository.delete(book);
         logger.info("Book removed: {}", book.getTitle());
     }
@@ -47,16 +65,22 @@ public class AdminService implements Service {
         logger.info("Operator removed: {}", operator.getUsername());
     }
 
-    public List<User> getUsers() {
+    public List<User> getAllUsers() {
         List<User> users = userRepository.findAll();
         logEntityRetrieval("users", users.size());
         return users;
     }
 
-    public List<Book> getBooks() {
+    public List<Book> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         logEntityRetrieval("books", books.size());
         return books;
+    }
+
+    public List<BookInventory> getAllBookInventories() {
+        List<BookInventory> inventories = bookInventoryRepository.findAll();
+        logEntityRetrieval("book_inventories", inventories.size());
+        return inventories;
     }
 
     private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {

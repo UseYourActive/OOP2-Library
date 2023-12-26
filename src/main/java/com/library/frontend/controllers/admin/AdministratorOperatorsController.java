@@ -36,7 +36,7 @@ public class AdministratorOperatorsController implements Controller {
         adminService=(AdminService) ServiceFactory.getService(AdminService.class);
 
         TableViewBuilder.createOperatorTableViewColumns(operatorTableView);//Load columns
-        updateTableView(adminService.getUsers()); //populate table
+        updateTableView(adminService.getAllUsers()); //populate table
     }
 
     @FXML
@@ -52,7 +52,7 @@ public class AdministratorOperatorsController implements Controller {
     public void searchOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
         Set<User> results=new HashSet<>();
-        List<User> userList=adminService.getUsers();
+        List<User> userList=adminService.getAllUsers();
         String stringToSearch=searchBookTextField.getText();
 
         if(stringToSearch.isEmpty())
@@ -76,7 +76,7 @@ public class AdministratorOperatorsController implements Controller {
 
         if(operator !=null){
             adminService.removeOperator(operator);
-            updateTableView(adminService.getUsers());
+            updateTableView(adminService.getAllUsers());
         }
 
         checkAndUpdateButtons(mouseEvent);

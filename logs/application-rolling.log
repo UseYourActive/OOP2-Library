@@ -1225,3 +1225,327 @@ java.lang.RuntimeException: User not found
 2023-12-25 17:19:36.155 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service OperatorService created successfully
 2023-12-25 17:19:36.155 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Operator table view created successfully
 2023-12-25 17:19:36.211 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/operatorReadersScene.fxml
+2023-12-26 02:32:21.542 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 02:32:25.206 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 02:32:25.210 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 02:32:25.875 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 02:32:25.882 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 02:32:25.882 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 02:32:25.883 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 02:32:25.883 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 02:32:25.886 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 02:32:26.717 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 02:32:27.927 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 02:32:27.956 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@18a46ae6] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 02:32:28.234 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 02:32:28.292 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 02:32:28.293 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 02:32:28.293 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 02:32:28.693 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 02:32:28.694 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 02:32:28.738 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 02:32:28.751 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-26 02:32:29.874 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 100001 books: entities
+2023-12-26 02:32:30.332 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 03:34:53.210 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 03:43:25.993 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 03:43:26.007 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 03:43:26.877 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 03:43:26.886 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 03:43:26.886 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 03:43:26.886 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 03:43:26.886 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 03:43:26.892 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 03:43:27.879 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 03:43:29.406 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 03:43:29.445 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@5fd39a09] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 03:43:29.773 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 03:43:29.833 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 03:43:29.834 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 03:43:29.834 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 03:43:30.239 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 03:43:30.240 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 03:43:30.294 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 03:43:30.309 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-26 03:43:31.905 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 100001 books: entities
+2023-12-26 03:43:32.563 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:20:16.760 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:20:20.345 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:20:20.348 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:20:21.120 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:20:21.128 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:20:21.128 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:20:21.130 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:20:21.130 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:20:21.135 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:20:21.973 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:20:23.296 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:20:23.335 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@4bc56b2] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:20:23.589 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:20:23.646 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:20:23.646 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:20:23.646 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:20:24.125 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:20:24.125 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:20:24.142 [ERROR] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Error loading form: /views/administratorBooksScene.fxml
+javafx.fxml.LoadException: Error resolving onMouseClicked='#searchBookButtonOnMouseClicked', either the event handler is not in the Namespace or there is an error in the script.
+/C:/Users/Donkov/IdeaProjects/OOP2-Library/build/resources/main/views/administratorBooksScene.fxml:16
+
+	at javafx.fxml/javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2703)
+	at javafx.fxml/javafx.fxml.FXMLLoader$Element.processEventHandlerAttributes(FXMLLoader.java:621)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ValueElement.processEndElement(FXMLLoader.java:781)
+	at javafx.fxml/javafx.fxml.FXMLLoader.processEndElement(FXMLLoader.java:2924)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2639)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3331)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3287)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3255)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3227)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3203)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:3196)
+	at com.library.frontend.utils.SceneLoader.loadBackground(SceneLoader.java:42)
+	at com.library.frontend.utils.SceneLoader.load(SceneLoader.java:33)
+	at com.library.frontend.controllers.base.LogInController.logInButtonOnMouseClicked(LogInController.java:48)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3602)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3906)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-12-26 04:21:06.968 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:21:13.569 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:21:13.573 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:21:14.184 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:21:14.188 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:21:14.189 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:21:14.189 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:21:14.189 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:21:14.194 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:21:14.930 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:21:16.133 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:21:16.158 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@55cc7812] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:21:16.347 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:21:16.394 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:21:16.394 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:21:16.394 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:21:16.753 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:21:16.755 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:21:16.797 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:21:16.807 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book table view created successfully
+2023-12-26 04:21:16.818 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 0 book_inventories: entities
+2023-12-26 04:21:17.073 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:26:39.130 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:26:42.429 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:26:42.433 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:26:43.127 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:26:43.133 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:26:43.133 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:26:43.133 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:26:43.134 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:26:43.137 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:26:43.948 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:26:45.233 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:26:45.263 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@76b396c7] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:26:45.480 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:26:45.531 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:26:45.531 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:26:45.531 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:26:45.990 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:26:45.991 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:26:46.044 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:26:46.058 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:26:46.072 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 0 book_inventories: entities
+2023-12-26 04:26:46.393 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:40:54.306 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:41:01.123 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:41:01.128 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:41:02.021 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:41:02.031 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:41:02.031 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:41:02.032 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:41:02.032 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:41:02.038 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:41:03.154 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:41:04.845 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:41:04.888 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@4a5dc9a4] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:41:05.216 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:41:05.277 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:41:05.277 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:41:05.277 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:41:05.689 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:41:05.690 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:41:05.742 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:41:05.759 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:41:05.771 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 0 book_inventories: entities
+2023-12-26 04:41:06.060 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:41:08.353 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:41:08.490 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/registerNewBookScene.fxml
+2023-12-26 04:41:19.741 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 04:41:19.741 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Orozov saved successfully: Orozov
+2023-12-26 04:41:19.748 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:41:19.748 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:41:19.753 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:41:19.865 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:41:29.295 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:41:29.296 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 04:41:29.297 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService -  saved successfully: 
+2023-12-26 04:41:29.298 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:41:40.383 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:41:40.384 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 04:41:40.384 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService -  saved successfully: 
+2023-12-26 04:41:40.386 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:49:48.861 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:49:54.145 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:49:54.150 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:49:54.832 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:49:54.839 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:49:54.839 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:49:54.839 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:49:54.839 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:49:54.844 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:49:55.605 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:49:56.894 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:49:56.927 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@1e5b6e77] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:49:57.012 [WARN ] [JavaFX Application Thread] o.h.e.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
+2023-12-26 04:49:57.012 [WARN ] [JavaFX Application Thread] o.h.e.jdbc.spi.SqlExceptionHelper - constraint "ukoa0klkfqou1d3g08hp2yiinae" of relation "readers" does not exist, skipping
+2023-12-26 04:49:57.153 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:49:57.205 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:49:57.205 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:49:57.206 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:49:57.630 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:49:57.631 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:49:57.679 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:49:57.692 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:49:57.727 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:49:58.132 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:50:41.995 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:50:42.014 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 04:50:42.015 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService -  saved successfully: 
+2023-12-26 04:50:42.018 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:52:01.706 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:52:05.083 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:52:05.088 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:52:05.675 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:52:05.680 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:52:05.680 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:52:05.681 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:52:05.682 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:52:05.686 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:52:06.387 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:52:07.695 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:52:07.734 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@27d1a0d5] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:52:07.926 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:52:07.976 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:52:07.977 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:52:07.977 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:52:08.356 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:52:08.357 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:52:08.391 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:52:08.403 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:52:08.431 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:52:08.780 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:52:14.605 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:52:14.658 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 04:52:14.658 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService -  saved successfully: 
+2023-12-26 04:52:14.663 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:53:57.933 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 04:54:02.143 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 04:54:02.148 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 04:54:02.830 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 04:54:02.836 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 04:54:02.837 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 04:54:02.837 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 04:54:02.837 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 04:54:02.840 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 04:54:03.734 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 04:54:04.914 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 04:54:04.941 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@f126f72] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 04:54:05.129 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 04:54:05.180 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 04:54:05.180 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 04:54:05.180 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 04:54:05.552 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 04:54:05.553 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 04:54:05.593 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 04:54:05.606 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 04:54:05.639 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:54:06.006 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 04:54:10.244 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:54:17.770 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:54:19.027 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 04:54:20.035 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:01:59.744 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/logInScene.fxml
+2023-12-26 05:02:03.140 [INFO ] [JavaFX Application Thread] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-12-26 05:02:03.146 [INFO ] [JavaFX Application Thread] org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-12-26 05:02:04.152 [WARN ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2023-12-26 05:02:04.162 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001005: Loaded JDBC driver class: org.postgresql.Driver
+2023-12-26 05:02:04.162 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001012: Connecting with JDBC URL [jdbc:postgresql://localhost:5432/Library]
+2023-12-26 05:02:04.162 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001001: Connection properties: {password=****, user=postgres}
+2023-12-26 05:02:04.162 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001003: Autocommit mode: false
+2023-12-26 05:02:04.167 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.pooling - HHH10001115: Connection pool size: 20 (min=1)
+2023-12-26 05:02:05.246 [INFO ] [JavaFX Application Thread] o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-12-26 05:02:07.254 [INFO ] [JavaFX Application Thread] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-12-26 05:02:07.312 [INFO ] [JavaFX Application Thread] o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@75c54e74] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2023-12-26 05:02:07.684 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Hibernate initialized successfully
+2023-12-26 05:02:07.770 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service LogInService created successfully
+2023-12-26 05:02:07.771 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - Attempting to retrieve user: 123
+2023-12-26 05:02:07.771 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Finding user by username: 123
+2023-12-26 05:02:08.331 [INFO ] [JavaFX Application Thread] c.l.d.repositories.UserRepository - Successfully found user by username: 123
+2023-12-26 05:02:08.332 [INFO ] [JavaFX Application Thread] c.l.backend.services.LogInService - User retrieved successfully: 123
+2023-12-26 05:02:08.390 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 05:02:08.406 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 05:02:08.445 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:08.929 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 05:02:13.063 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:17.079 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:19.279 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:22.335 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:26.199 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 1 book_inventories: entity
+2023-12-26 05:02:28.057 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 05:02:28.184 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/registerNewBookScene.fxml
+2023-12-26 05:02:35.280 [INFO ] [JavaFX Application Thread] c.l.database.repositories.Repository - Entity saved successfully
+2023-12-26 05:02:35.280 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - afasas saved successfully: afasas
+2023-12-26 05:02:35.289 [INFO ] [JavaFX Application Thread] c.l.backend.services.ServiceFactory - Service AdminService created successfully
+2023-12-26 05:02:35.291 [INFO ] [JavaFX Application Thread] c.l.frontend.utils.TableViewBuilder - Book Inventory table view created successfully
+2023-12-26 05:02:35.293 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:02:35.389 [INFO ] [JavaFX Application Thread] c.library.frontend.utils.SceneLoader - Loaded scene: /views/administratorBooksScene.fxml
+2023-12-26 05:02:39.767 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:02:42.926 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:02:45.056 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:02:48.952 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:02:51.976 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities
+2023-12-26 05:03:00.598 [INFO ] [JavaFX Application Thread] c.l.backend.services.AdminService - Retrieved 2 book_inventories: entities

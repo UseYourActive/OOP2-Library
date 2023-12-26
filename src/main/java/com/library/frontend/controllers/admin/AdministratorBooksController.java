@@ -3,6 +3,7 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
@@ -17,8 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.*;
@@ -31,7 +30,7 @@ public class AdministratorBooksController implements Controller {
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
     @FXML public TextArea bookTextArea;
-    @FXML public TableView<Book> bookTableView;
+    @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public AnchorPane anchorPane;
     @FXML public Button removeBookButton;
 
@@ -44,8 +43,9 @@ public class AdministratorBooksController implements Controller {
 
         bookTextArea.setFocusTraversable(false);
 
-        TableViewBuilder.createBookTableViewColumns(bookTableView);//Load columns
-        updateTableView(adminService.getBooks()); //populate table
+        TableViewBuilder.createInventoryTableViewColumns(inventoryTableView);
+        //TableViewBuilder.createBookTableViewColumns(bookTableView);//Load columns
+        updateTableView(adminService.getAllBookInventories()); //populate table
     }
 
     @FXML
@@ -66,12 +66,15 @@ public class AdministratorBooksController implements Controller {
 
         increaseButton.setOnAction(e -> {
 
-            Integer quantity= Integer.valueOf(quantityField.getText());
+            int quantity= Integer.parseInt(quantityField.getText());
             if(quantity>0){
-                Book book=bookTableView.getSelectionModel().getSelectedItem();
-                book.setAmountOfCopies(book.getAmountOfCopies()+ quantity);
-                ((AdminService)ServiceFactory.getService(AdminService.class)).saveBook(book);
-                updateTableView(adminService.getBooks());
+                BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
+                bookInventory.setQuantity(quantity);
+                ((AdminService)ServiceFactory.getService(AdminService.class)).saveInventory(bookInventory);
+
+                //Book book=bookTableView.getSelectionModel().getSelectedItem();
+                //((AdminService)ServiceFactory.getService(AdminService.class)).saveBook(book,quantity);
+                updateTableView(adminService.getAllBookInventories());
                 dialogStage.close();
             }else{
                 // ..
@@ -89,39 +92,88 @@ public class AdministratorBooksController implements Controller {
         dialogStage.show();
     }
 
-    @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-
         checkAndUpdateButtons(mouseEvent);
+        Set<BookInventory> results = new HashSet<>();
+        List<BookInventory> inventories = adminService.getAllBookInventories();
+        String stringToSearch = searchBookTextField.getText();
+        if (stringToSearch.isEmpty()) {
+            updateTableView(inventories);
+        } else {
 
-        Set<Book> results=new HashSet<>();
-        List<Book> bookList=adminService.getBooks();
-        String stringToSearch=searchBookTextField.getText();
+            for(BookInventory inventory:inventories){
+                Book book=inventory.getBook();
 
-        if(stringToSearch.isEmpty())
-        {
-            updateTableView(bookList);
-        }else {
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> Objects.nonNull(book.getPublishYear()))
-                    .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
-                    .toList());
-            results.addAll(bookList.stream()
-                    .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
+                if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
 
+                if(book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if(book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if(book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    results.add(inventory);
+
+                if( book.getPublishYear()!=null && book.getPublishYear().toString().contains(stringToSearch))
+                    results.add(inventory);
+            }
+
+
+            //results.addAll(bookList.stream()
+            //        .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+            //        .toList());
+            //results.addAll(bookList.stream()
+            //        .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
+            //        .toList());
+            //results.addAll(bookList.stream()
+            //        .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
+            //        .toList());
+            //results.addAll(bookList.stream()
+            //        .filter(book -> Objects.nonNull(book.getPublishYear()))
+            //        .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
+            //        .toList());
+            //results.addAll(bookList.stream()
+            //        .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+            //        .toList());
             updateTableView(results);
         }
     }
+
+    //@FXML
+    //public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+//
+    //    checkAndUpdateButtons(mouseEvent);
+//
+    //    Set<Book> results=new HashSet<>();
+    //    List<Book> bookList=adminService.getAllBooks();
+    //    String stringToSearch=searchBookTextField.getText();
+//
+    //    if(stringToSearch.isEmpty())
+    //    {
+    //        updateTableView(bookList);
+    //    }else {
+    //        results.addAll(bookList.stream()
+    //                .filter(book -> book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+    //                .toList());
+    //        results.addAll(bookList.stream()
+    //                .filter(book -> book.getAuthor().getName().toUpperCase().contains(stringToSearch.toUpperCase()))
+    //                .toList());
+    //        results.addAll(bookList.stream()
+    //                .filter(book -> book.getGenre().getValue().toUpperCase().contains(stringToSearch.toUpperCase()))
+    //                .toList());
+    //        results.addAll(bookList.stream()
+    //                .filter(book -> Objects.nonNull(book.getPublishYear()))
+    //                .filter(book -> book.getPublishYear().toString().contains(stringToSearch))
+    //                .toList());
+    //        results.addAll(bookList.stream()
+    //                .filter(book -> book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+    //                .toList());
+//
+    //        updateTableView(results);
+    //    }
+    //}
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
@@ -132,10 +184,12 @@ public class AdministratorBooksController implements Controller {
     public void booksTableViewOnClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
 
-        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        //Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
 
-        if(selectedBook!=null)
-            bookTextArea.setText(selectedBook.toString());
+
+        if(bookInventory!=null)
+            bookTextArea.setText(bookInventory.toString());
     }
 
     @FXML
@@ -152,11 +206,12 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void removeBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        //Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        BookInventory bookInventory= inventoryTableView.getSelectionModel().getSelectedItem();
 
-        if(selectedBook !=null){
-            adminService.removeBook(selectedBook);
-            updateTableView(adminService.getBooks());
+        if(bookInventory !=null){
+            adminService.removeBook(bookInventory);
+            updateTableView(adminService.getAllBookInventories());
         }
         checkAndUpdateButtons(mouseEvent);
     }
@@ -166,13 +221,13 @@ public class AdministratorBooksController implements Controller {
         double mouseX = mouseEvent.getSceneX();
         double mouseY = mouseEvent.getSceneY();
 
-        double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
-        double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
-        double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
-        double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
+        double textFieldMinX = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMinX();
+        double textFieldMinY = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMinY();
+        double textFieldMaxX = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMaxX();
+        double textFieldMaxY = inventoryTableView.localToScene(inventoryTableView.getBoundsInLocal()).getMaxY();
 
         if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
-            if(!bookTableView.getSelectionModel().isEmpty()){
+            if(!inventoryTableView.getSelectionModel().isEmpty()){
                 removeBookButton.setDisable(false);
                 loadBooksButton.setDisable(false);
             }
@@ -180,15 +235,16 @@ public class AdministratorBooksController implements Controller {
             removeBookButton.setDisable(true);
             loadBooksButton.setDisable(true);
             bookTextArea.clear();
-            bookTableView.getSelectionModel().clearSelection();
+            inventoryTableView.getSelectionModel().clearSelection();
         }
 
         anchorPane.requestFocus();
     }
 
-    private void updateTableView(Collection<Book> bookList){
-        bookTableView.getItems().clear();
+    private void updateTableView(Collection<BookInventory> inventories){
+
+        inventoryTableView.getItems().clear();
         bookTextArea.clear();
-        bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
+        inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
     }
 }
