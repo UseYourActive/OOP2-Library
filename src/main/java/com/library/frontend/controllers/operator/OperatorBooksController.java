@@ -8,11 +8,18 @@ import com.library.frontend.utils.GlobalContextMenu;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.TableViewBuilder;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Window;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.Collection;
 
 import java.net.URL;
 import java.util.*;
@@ -29,7 +36,8 @@ public class OperatorBooksController implements Controller {
     @FXML public TextArea bookTextArea;
     @FXML public AnchorPane anchorPane;
     private OperatorService operatorService;
-    private GlobalContextMenu globalContextMenu;
+
+    private ContextMenu contextMenu;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,13 +52,20 @@ public class OperatorBooksController implements Controller {
         TableViewBuilder.createBookTableViewColumns(bookTableView);
         updateTableView(operatorService.getAllBooks());
 
-        globalContextMenu = new GlobalContextMenu();
+        contextMenu=new ContextMenu();
 
-        globalContextMenu.addAction("Archive selected book", this::archiveSelectedBook);
-        globalContextMenu.addAction("Lend selected book", this::lendSelectedBook);
-        globalContextMenu.addAction("Lend for reading room", this::lendForReadingRoom);
+        MenuItem archiveItem = new MenuItem("archive");
+        MenuItem lendBookItem = new MenuItem("lend");
+        MenuItem lendReadingRoomBookItem = new MenuItem("lend reading room");
 
-        globalContextMenu.attachToNode(bookTableView);
+        contextMenu.getItems().addAll(archiveItem,lendBookItem,lendReadingRoomBookItem);
+
+        bookTableView.setContextMenu(contextMenu);
+
+        archiveItem.setOnAction(this::archiveSelectedBooks);
+        lendBookItem.setOnAction(this::lendSelectedBooks);
+        lendReadingRoomBookItem.setOnAction(this::lendReadingRoomSelectedBooks);
+
     }
 
     @FXML
@@ -59,34 +74,34 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void archiveButtonOnMouseClicked(MouseEvent mouseEvent) {
-        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
-
-        if (selectedBook != null) {
-            operatorService.archiveBook(selectedBook);
-
-            updateTableView(operatorService.getAllBooks());
-            bookTextArea.clear();
-        } else {
-            bookTextArea.setText("No book selected to archive");
-        }
+    public void archiveButtonOnMouseClicked() {
+    //    Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+//
+    //    if (selectedBook != null) {
+    //        operatorService.archiveBook(selectedBook);
+//
+    //        updateTableView(operatorService.getAllBooks());
+    //        bookTextArea.clear();
+    //    } else {
+    //        bookTextArea.setText("No book selected to archive");
+    //    }
     }
 
     @FXML
-    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void lendButtonOnMouseClicked() {
 
     }
 
     @FXML
-    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
+    public void lendReadingRoomButtonOnMouseClicked() {
+     //   SceneLoader.load(mouseEvent, "/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
     }
 
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         checkAndUpdateButtons(mouseEvent);
 
-        Set<Book> results = new HashSet<>();
+        List<Book> results = new ArrayList<>();
         List<Book> bookList = operatorService.getAllBooks();
         String stringToSearch = searchBookTextField.getText();
 
@@ -115,8 +130,8 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void bookTableViewOnClicked(MouseEvent mouseEvent) {
-        checkAndUpdateButtons(mouseEvent);
+    public void bookTableViewOnClicked() {
+     //   checkAndUpdateButtons(mouseEvent);
 
         Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
 
@@ -125,51 +140,52 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
-        anchorPane.requestFocus();
-        checkAndUpdateButtons(mouseEvent);
+    public void anchorPaneOnMouseClicked() {
+      //    //anchorPane.requestFocus();
+      //    checkAndUpdateButtons(mouseEvent);
     }
 
     @FXML
     public void bookTextAreaOnMouseClicked() {
-        archiveButton.setDisable(true);
-        lendButton.setDisable(true);
-        lendReadingRoomButton.setDisable(true);
+    //    archiveButton.setDisable(true);
+    //    lendButton.setDisable(true);
+    //    lendReadingRoomButton.setDisable(true);
     }
 
-    private void updateTableView(Collection<Book> bookList) {
-        bookTableView.getItems().clear();
-        bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
+
+    private void updateTableView(List<Book> bookList) {
+          bookTableView.getItems().clear();
+          bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
     }
 
     private void checkAndUpdateButtons(MouseEvent mouseEvent) {
 
-        double mouseX = mouseEvent.getSceneX();
-        double mouseY = mouseEvent.getSceneY();
+    //   double mouseX = mouseEvent.getSceneX();
+    //   double mouseY = mouseEvent.getSceneY();
 
-        double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
-        double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
-        double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
-        double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
+    //   double textFieldMinX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinX();
+    //   double textFieldMinY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMinY();
+    //   double textFieldMaxX = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxX();
+    //   double textFieldMaxY = bookTableView.localToScene(bookTableView.getBoundsInLocal()).getMaxY();
 
-        if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
-            if (!bookTableView.getSelectionModel().isEmpty()) {
-                archiveButton.setDisable(false);
-                lendButton.setDisable(false);
-                lendReadingRoomButton.setDisable(false);
-            }
-        } else {
-            archiveButton.setDisable(true);
-            lendButton.setDisable(true);
-            lendReadingRoomButton.setDisable(true);
-            bookTextArea.clear();
-            bookTableView.getSelectionModel().clearSelection();
-        }
+    //   if (mouseX >= textFieldMinX && mouseX <= textFieldMaxX && mouseY >= textFieldMinY && mouseY <= textFieldMaxY) {
+    //       if (!bookTableView.getSelectionModel().isEmpty()) {
+    //           archiveButton.setDisable(false);
+    //           lendButton.setDisable(false);
+    //           lendReadingRoomButton.setDisable(false);
+    //       }
+    //   } else {
+    //       archiveButton.setDisable(true);
+    //       lendButton.setDisable(true);
+    //       lendReadingRoomButton.setDisable(true);
+    //       bookTextArea.clear();
+    //       bookTableView.getSelectionModel().clearSelection();
+    //   }
 
-        anchorPane.requestFocus();
+    //   anchorPane.requestFocus();
     }
 
-    public void archiveSelectedBook() {
+    public void archiveSelectedBooks(ActionEvent actionEvent) {
         Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
 
         if (selectedBook != null) {
@@ -181,11 +197,12 @@ public class OperatorBooksController implements Controller {
         }
     }
 
-    public void lendSelectedBook() {
+    public void lendSelectedBooks(ActionEvent actionEvent) {
 
     }
 
-    public void lendForReadingRoom() {
-        SceneLoader.load(anchorPane.getScene(), "/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
+    public void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
+        SceneLoader.load("/views/lendingBookReadingRoomScene.fxml","Lending book for reading room");
+        //SceneLoader.load(anchorPane.getScene(), "/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
     }
 }

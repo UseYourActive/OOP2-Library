@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,14 +36,25 @@ public class SceneLoader {
         loadBackground(stage, resourceFiles, stageTitle);
     }
 
+    public static void load(String resourceFiles, String stageTitle){
+       // Parent root=FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));
+       // Stage newStage = new Stage();
+       // Scene newScene = new Scene(root);
+       // newStage.setScene(newScene);
+       // newStage.setTitle("New Scene");
+       // newStage.show();
+
+        loadBackground(stage,resourceFiles,stageTitle);
+    }
+
     public static void load(Stage stage, String resourceFiles, String stageTitle) {
         loadBackground(stage, resourceFiles, stageTitle);
     }
 
-    public static void load(Scene scene, String resourceFiles, String stageTitle) {
-        Stage stage = (Stage) scene.getWindow();
-        loadBackground(stage, resourceFiles, stageTitle);
-    }
+    //public static void load(Scene scene, String resourceFiles, String stageTitle) {
+    //    Stage stage = (Stage) scene.getWindow();
+    //    loadBackground(stage, resourceFiles, stageTitle);
+    //}
 
     private static void loadBackground(Stage stage, String resourceFiles, String stageTitle) {
         try {
