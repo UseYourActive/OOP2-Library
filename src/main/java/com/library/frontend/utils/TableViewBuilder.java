@@ -5,6 +5,7 @@ import com.library.database.entities.BookInventory;
 import com.library.database.entities.Reader;
 import com.library.database.entities.User;
 import com.library.database.enums.Genre;
+import com.library.database.enums.Rating;
 import com.library.database.enums.Role;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,7 +42,6 @@ public class TableViewBuilder {
             throw e;
         }
     }
-
 
     public static void createBookTableViewColumns(TableView<Book> bookTableView) {
         try {
@@ -91,19 +91,31 @@ public class TableViewBuilder {
     public static void createReaderTableViewColumns(TableView<Reader> readerTableView){
         try {
             TableColumn<Reader, String> firstNameColumn = new TableColumn<>("First Name");
-            firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("first_name"));
-            firstNameColumn.prefWidthProperty().bind(readerTableView.widthProperty().divide(2));
-
-            TableColumn<Reader, Role> lastNameColumn = new TableColumn<>("Last name");
-            lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("last_name"));
-            lastNameColumn.prefWidthProperty().bind(readerTableView.widthProperty().divide(2));
-
+            firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             readerTableView.getColumns().add(firstNameColumn);
+
+            TableColumn<Reader, String> lastNameColumn = new TableColumn<>("Last Name");
+            lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
             readerTableView.getColumns().add(lastNameColumn);
 
-            logger.info("Operator table view created successfully");
+            TableColumn<Reader, String> emailColumn = new TableColumn<>("Email");
+            emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+            readerTableView.getColumns().add(emailColumn);
+
+            TableColumn<Reader, String> phoneNumberColumn = new TableColumn<>("Phone Number");
+            phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+            readerTableView.getColumns().add(phoneNumberColumn);
+
+            TableColumn<Reader, String> ratingColumn = new TableColumn<>("Rating");
+            ratingColumn.setCellValueFactory(cellData -> {
+                Rating rating = cellData.getValue().getRating();
+                return new SimpleStringProperty(rating != null ? rating.toString() : "");
+            });
+            readerTableView.getColumns().add(ratingColumn);
+
+            logger.info("Reader table view columns created successfully");
         } catch (Exception e) {
-            logger.error("Failed to create operator table view: {}", e.getMessage());
+            logger.error("Failed to create reader table view columns: {}", e.getMessage());
             throw e;
         }
     }
