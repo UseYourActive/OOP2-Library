@@ -7,7 +7,9 @@ import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.TableViewBuilder;
+import com.library.frontend.utils.tableviews.BookTableViewBuilder;
+import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
+import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,7 +48,8 @@ public class AdministratorBooksController implements Controller {
 
         inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        TableViewBuilder.createInventoryTableViewColumns(inventoryTableView);
+        TableViewBuilder<BookInventory> bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
+        bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);
 
         updateTableView(adminService.getAllBookInventories());
 
@@ -175,7 +178,9 @@ public class AdministratorBooksController implements Controller {
         dialogStage.initOwner(SceneLoader.getStage());
 
         TableView<Book> bookTableView = new TableView<>();
-        TableViewBuilder.createBookTableViewColumns(bookTableView);
+        TableViewBuilder<Book> bookTableViewBuilder = new BookTableViewBuilder();
+        bookTableViewBuilder.createTableViewColumns(bookTableView);
+
         bookTableView.getItems().addAll(FXCollections.observableArrayList(bookInventory.getBookList()));
 
         // Close button

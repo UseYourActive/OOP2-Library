@@ -5,7 +5,8 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.TableViewBuilder;
+import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
+import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +33,9 @@ public class AdministratorOperatorsController implements Controller {
 
         booksButton.requestFocus();
 
-        TableViewBuilder.createOperatorTableViewColumns(operatorTableView);
+        TableViewBuilder<User> operatorTableViewBuilder = new OperatorTableViewBuilder();
+        operatorTableViewBuilder.createTableViewColumns(operatorTableView);
+
         updateTableView(adminService.getAllUsers());
 
         prepareContextMenu();

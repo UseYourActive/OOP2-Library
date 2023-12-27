@@ -5,7 +5,8 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.TableViewBuilder;
+import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
+import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +35,9 @@ public class OperatorReadersController implements Controller {
 
         readerTextArea.setFocusTraversable(false);
 
-        TableViewBuilder.createReaderTableViewColumns(readerTableView);
+        TableViewBuilder<Reader> readerTableViewBuilder = new ReaderTableViewBuilder();
+        readerTableViewBuilder.createTableViewColumns(readerTableView);
+
         updateTableView(operatorService.getAllReaders());
 
         prepareContextMenu();

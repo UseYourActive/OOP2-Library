@@ -6,7 +6,8 @@ import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.TableViewBuilder;
+import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
+import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +40,9 @@ public class OperatorBooksController implements Controller {
 
         bookTextArea.setFocusTraversable(false);
 
-        TableViewBuilder.createInventoryTableViewColumns(inventoryTableView);
+        TableViewBuilder<BookInventory> bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
+        bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);
+
         updateTableView(operatorService.getAllBookInventories());
 
         prepareContextMenu();
