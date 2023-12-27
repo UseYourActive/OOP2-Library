@@ -22,13 +22,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
-@NoArgsConstructor
 public class AdministratorBooksController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
+
     @FXML public Button operatorsButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
@@ -58,177 +62,223 @@ public class AdministratorBooksController implements Controller {
 
     @FXML
     public void searchBookButtonOnMouseClicked() {
-        List<BookInventory> results = new ArrayList<>();
-        List<BookInventory> inventories = adminService.getAllBookInventories();
-        String stringToSearch = searchBookTextField.getText();
-        if (stringToSearch.isEmpty()) {
-            updateTableView(inventories);
-        } else {
+        try {
+            List<BookInventory> results = new ArrayList<>();
+            List<BookInventory> inventories = adminService.getAllBookInventories();
+            String stringToSearch = searchBookTextField.getText();
+            if (stringToSearch.isEmpty()) {
+                updateTableView(inventories);
+            } else {
 
-            for (BookInventory inventory : inventories) {
-                Book book = inventory.getBookList().get(0);
+                for (BookInventory inventory : inventories) {
+                    Book book = inventory.getBookList().get(0);
 
-                if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
-                    results.add(inventory);
+                    if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
+                        results.add(inventory);
+                }
+
+                updateTableView(results);
             }
-
-            updateTableView(results);
+        } catch (Exception e) {
+            logger.error("Error occurred during book search", e);
         }
     }
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        try {
+            SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        } catch (Exception e) {
+            logger.error("Error occurred during navigation to operators scene", e);
+        }
     }
 
     @FXML
     public void booksTableViewOnClicked(MouseEvent mouseEvent) {
-        if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
-            BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                openDialogWithTableView(selectedItem);
-            }
-        } else {
-            BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+        try {
+            if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
+                BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    openDialogWithTableView(selectedItem);
+                }
+            } else {
+                BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
 
-            if (selectedInventory != null)
-                bookTextArea.setText(selectedInventory.toString());
+                if (selectedInventory != null)
+                    bookTextArea.setText(selectedInventory.toString());
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred during handling book table view click", e);
         }
     }
 
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "LogIn");
+        try {
+            SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "LogIn");
+        } catch (Exception e) {
+            logger.error("Error occurred during logout", e);
+        }
     }
 
     @FXML
     public void anchorPaneOnMouseClicked() {
-        anchorPane.requestFocus();
-        inventoryTableView.getSelectionModel().clearSelection();
+        try {
+            anchorPane.requestFocus();
+            inventoryTableView.getSelectionModel().clearSelection();
+        } catch (Exception e) {
+            logger.error("Error occurred during handling anchor pane click", e);
+        }
     }
 
 
     private void registerNewBooks(ActionEvent mouseEvent) {
-        SceneLoader.load("/views/registerNewBookScene.fxml", "Register new book");
+        try {
+            SceneLoader.load("/views/registerNewBookScene.fxml", "Register new book");
+        } catch (Exception e) {
+            logger.error("Error occurred during navigation to register new book scene", e);
+        }
     }
 
     private void prepareContextMenu() {
-        ContextMenu contextMenu = new ContextMenu();
+        try {
+            ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem registerNewBook = new MenuItem("Register book/s");
-        MenuItem addExistingBookItem = new MenuItem("Add book/s");
-        MenuItem removeBookItem = new MenuItem("Remove book/s");
+            MenuItem registerNewBook = new MenuItem("Register book/s");
+            MenuItem addExistingBookItem = new MenuItem("Add book/s");
+            MenuItem removeBookItem = new MenuItem("Remove book/s");
 
+            contextMenu.getItems().addAll(registerNewBook, removeBookItem, addExistingBookItem);
 
-        contextMenu.getItems().addAll(registerNewBook, removeBookItem, addExistingBookItem);
+            inventoryTableView.setContextMenu(contextMenu);
 
-        inventoryTableView.setContextMenu(contextMenu);
-
-        registerNewBook.setOnAction(this::registerNewBooks);
-        removeBookItem.setOnAction(this::removeSelectedBooks);
-        addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
+            registerNewBook.setOnAction(this::registerNewBooks);
+            removeBookItem.setOnAction(this::removeSelectedBooks);
+            addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
+        } catch (Exception e) {
+            logger.error("Error occurred during context menu preparation", e);
+        }
     }
 
     private void updateTableView(List<BookInventory> inventories) {
-        inventoryTableView.getItems().clear();
-        bookTextArea.clear();
-        inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
+        try {
+            inventoryTableView.getItems().clear();
+            bookTextArea.clear();
+            inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
+        } catch (Exception e) {
+            logger.error("Error occurred during table view update", e);
+        }
     }
 
     private void removeSelectedBooks(ActionEvent actionEvent) {
-        List<BookInventory> inventories = inventoryTableView.getSelectionModel().getSelectedItems();
+        try {
+            List<BookInventory> inventories = inventoryTableView.getSelectionModel().getSelectedItems();
 
-        if (!inventories.isEmpty()) {
-            if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
-                for (BookInventory bookInventory : inventories) {
-                    adminService.removeBook(bookInventory);
-                    updateTableView(adminService.getAllBookInventories());
+            if (!inventories.isEmpty()) {
+                if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
+                    for (BookInventory bookInventory : inventories) {
+                        adminService.removeBook(bookInventory);
+                        updateTableView(adminService.getAllBookInventories());
+                    }
                 }
+            } else {
+                DialogUtils.showInfo("Information", "Please select a book!");
             }
-        } else {
-            DialogUtils.showInfo("Information", "Please select a book!");
+        } catch (Exception e) {
+            logger.error("Error occurred during removing selected books", e);
         }
     }
 
     private void setQuantityOnSelectedBook(ActionEvent actionEvent) {
-
-        if (!inventoryTableView.getSelectionModel().isEmpty()) {
-            openDialog();
-        } else {
-            DialogUtils.showInfo("Information", "Please select a book!");
+        try {
+            if (!inventoryTableView.getSelectionModel().isEmpty()) {
+                openDialog();
+            } else {
+                DialogUtils.showInfo("Information", "Please select a book!");
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred during setting quantity on selected book", e);
         }
     }
 
     private void openDialogWithTableView(BookInventory bookInventory) {
+        try {
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(SceneLoader.getStage());
 
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(SceneLoader.getStage());
+            TableView<Book> bookTableView = new TableView<>();
+            TableViewBuilder<Book> bookTableViewBuilder = new BookTableViewBuilder();
+            bookTableViewBuilder.createTableViewColumns(bookTableView);
 
-        TableView<Book> bookTableView = new TableView<>();
-        TableViewBuilder<Book> bookTableViewBuilder = new BookTableViewBuilder();
-        bookTableViewBuilder.createTableViewColumns(bookTableView);
+            bookTableView.getItems().addAll(FXCollections.observableArrayList(bookInventory.getBookList()));
 
-        bookTableView.getItems().addAll(FXCollections.observableArrayList(bookInventory.getBookList()));
+            // Close button
+            Button closeButton = new Button("Close");
+            closeButton.setOnAction(e -> dialogStage.close());
 
-        // Close button
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> dialogStage.close());
+            VBox dialogLayout = new VBox(10, new Label(bookInventory.getRepresentiveBook().getTitle()), bookTableView, closeButton);
+            dialogLayout.setPadding(new Insets(20));
 
-        VBox dialogLayout = new VBox(10, new Label(bookInventory.getRepresentiveBook().getTitle()), bookTableView, closeButton);
-        dialogLayout.setPadding(new Insets(20));
+            Scene dialogScene = new Scene(dialogLayout, 500, 600);
 
-        Scene dialogScene = new Scene(dialogLayout, 500, 600);
-
-        dialogStage.setTitle(bookInventory.getRepresentiveBook().getTitle());
-        dialogStage.setScene(dialogScene);
-        dialogStage.show();
+            dialogStage.setTitle(bookInventory.getRepresentiveBook().getTitle());
+            dialogStage.setScene(dialogScene);
+            dialogStage.show();
+        } catch (Exception e) {
+            logger.error("Error occurred during opening dialog with table view", e);
+        }
     }
 
     private void openDialog() {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(SceneLoader.getStage());
+        try {
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(SceneLoader.getStage());
 
+            TextField quantityField = new TextField();
+            Button increaseButton = new Button("Increase Quantity");
 
-        TextField quantityField = new TextField();
-        Button increaseButton = new Button("Increase Quantity");
+            increaseButton.setOnAction(e -> {
+                try {
+                    int quantity = Integer.parseInt(quantityField.getText());
+                    if (quantity > 0) {
+                        BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+                        //bookInventory.setQuantity(quantity+bookInventory.getQuantity());
+                        adminService.saveInventory(bookInventory);
 
-        increaseButton.setOnAction(e -> {
+                        updateTableView(adminService.getAllBookInventories());
+                        dialogStage.close();
+                    } else {
+                        DialogUtils.showInfo("Error", "Please enter valid quantity number!");
+                    }
+                } catch (Exception ex) {
+                    logger.error("Error occurred during setting quantity on selected book", ex);
+                }
+            });
 
-            int quantity = Integer.parseInt(quantityField.getText());
-            if (quantity > 0) {
-                BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
-                //bookInventory.setQuantity(quantity+bookInventory.getQuantity());
-                adminService.saveInventory(bookInventory);
+            VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
+            dialogLayout.setPadding(new Insets(20));
 
-                updateTableView(adminService.getAllBookInventories());
-                dialogStage.close();
-            } else {
-                DialogUtils.showInfo("Error", "Please enter valid quantity number!");
-            }
-        });
+            Scene dialogScene = new Scene(dialogLayout, 250, 150);
 
-        VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
-        dialogLayout.setPadding(new Insets(20));
-
-        Scene dialogScene = new Scene(dialogLayout, 250, 150);
-
-        dialogStage.setTitle("Set quantity");
-        dialogStage.setScene(dialogScene);
-        dialogStage.show();
+            dialogStage.setTitle("Set quantity");
+            dialogStage.setScene(dialogScene);
+            dialogStage.show();
+        } catch (Exception e) {
+            logger.error("Error occurred during opening dialog", e);
+        }
     }
-
 }

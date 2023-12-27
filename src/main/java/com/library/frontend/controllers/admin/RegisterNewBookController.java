@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.Year;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(RegisterNewBookController.class);
     @FXML public TextField titleTextField;
     @FXML public TextField authorTextField;
     @FXML public TextField yearTextField;
@@ -36,7 +39,6 @@ public class RegisterNewBookController implements Controller {
     @FXML public TextField amountTextField;
     @FXML public AnchorPane anchorPane;
     private AdminService adminService;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,13 +60,13 @@ public class RegisterNewBookController implements Controller {
             int quantity = getQuantity();
             BookInventory bookInventory = BookInventory.builder().build();
 
-            Book representiveBook = getBook();
+            Book representativeBook = getBook();
 
             boolean flag = true;
-            //Checks if there is already such inventory
-            //If true, increase the quantity
+            // Checks if there is already such inventory
+            // If true, increase the quantity
             for (BookInventory bookInventory1 : bookInventoryRepository.findAll()) {
-                if (bookInventory1.getRepresentiveBook().equals(representiveBook)) {
+                if (bookInventory1.getRepresentiveBook().equals(representativeBook)) {
 
                     for (int i = 0; i < quantity; i++) {
                         Book book = getBook();
@@ -82,7 +84,7 @@ public class RegisterNewBookController implements Controller {
                 }
             }
 
-            //If else creates new inventory
+            // If else creates new inventory
             if (flag) {
                 for (int i = 0; i < quantity; i++) {
                     Book book = getBook();
@@ -103,6 +105,7 @@ public class RegisterNewBookController implements Controller {
             cancelButtonOnMouseClicked(mouseEvent);
         } catch (Exception e) {
             informationLabel.setText(e.getMessage());
+            logger.error("Error occurred during book registration", e);
         }
     }
 
@@ -139,10 +142,9 @@ public class RegisterNewBookController implements Controller {
                         .build()
         );
 
-
         Genre genre = Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
 
-        //not nullable properties are instantiated trough builder
+        // Not nullable properties are instantiated through builder
         Book book = Book.builder()
                 .title(titleTextField.getText())
                 .author(author)
@@ -152,7 +154,7 @@ public class RegisterNewBookController implements Controller {
                 .resume("")
                 .build();
 
-        //nullable properties need check
+        // Nullable properties need a check
         if (!yearTextField.getText().isEmpty())
             book.setPublishYear(Year.parse(yearTextField.getText()));
 

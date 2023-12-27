@@ -13,13 +13,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.*;
 
-@NoArgsConstructor
 public class OperatorReadersController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(OperatorReadersController.class);
+
     @FXML public Button booksButton;
     @FXML public TextField searchBarTextField;
     @FXML public Button searchReaderButton;
@@ -46,81 +48,109 @@ public class OperatorReadersController implements Controller {
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
+            try {
+                SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
+            } catch (Exception e) {
+                logger.error("Error occurred during loading operator books scene", e);
+            }
         }
     }
 
     @FXML
     public void searchReaderButtonOnMouseClicked() {
-        Set<Reader> results = new HashSet<>();
-        List<Reader> readerList = operatorService.getAllReaders();
-        String stringToSearch = searchBarTextField.getText();
+        try {
+            Set<Reader> results = new HashSet<>();
+            List<Reader> readerList = operatorService.getAllReaders();
+            String stringToSearch = searchBarTextField.getText();
 
-        if (stringToSearch.isEmpty()) {
-            updateTableView(readerList);
-        } else {
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
+            if (stringToSearch.isEmpty()) {
+                updateTableView(readerList);
+            } else {
+                results.addAll(readerList.stream()
+                        .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
+                results.addAll(readerList.stream()
+                        .filter(reader -> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
+                results.addAll(readerList.stream()
+                        .filter(reader -> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
+                results.addAll(readerList.stream()
+                        .filter(reader -> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
 
-            results.addAll(readerList.stream()
-                    .filter(reader -> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
-                    .toList());
+                results.addAll(readerList.stream()
+                        .filter(reader -> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
+                        .toList());
 
-            updateTableView(results);
+                updateTableView(results);
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred during searching readers", e);
         }
     }
 
     @FXML
     public void readerTableViewOnClicked() {
-        Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
+        try {
+            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedReader != null)
-            readerTextArea.setText(selectedReader.toString());
+            if (selectedReader != null)
+                readerTextArea.setText(selectedReader.toString());
+        } catch (Exception e) {
+            logger.error("Error occurred during processing reader table view click", e);
+        }
     }
 
     private void updateTableView(Collection<Reader> readerList) {
-        readerTableView.getItems().clear();
-        readerTableView.getItems().addAll(FXCollections.observableArrayList(readerList));
+        try {
+            readerTableView.getItems().clear();
+            readerTableView.getItems().addAll(FXCollections.observableArrayList(readerList));
+        } catch (Exception e) {
+            logger.error("Error occurred during updating reader table view", e);
+        }
     }
 
     private void prepareContextMenu() {
-        ContextMenu contextMenu = new ContextMenu();
+        try {
+            ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem createReader = new MenuItem("Create Reader");
-        MenuItem removeReader = new MenuItem("Remove Reader");
+            MenuItem createReader = new MenuItem("Create Reader");
+            MenuItem removeReader = new MenuItem("Remove Reader");
 
-        contextMenu.getItems().addAll(createReader, removeReader);
+            contextMenu.getItems().addAll(createReader, removeReader);
 
-        readerTableView.setContextMenu(contextMenu);
+            readerTableView.setContextMenu(contextMenu);
 
-        createReader.setOnAction(this::createReader);
-        removeReader.setOnAction(this::removeReader);
+            createReader.setOnAction(this::createReader);
+            removeReader.setOnAction(this::removeReader);
+        } catch (Exception e) {
+            logger.error("Error occurred during preparing context menu", e);
+        }
     }
 
     private void createReader(ActionEvent actionEvent) {
-        SceneLoader.load("/views/createReaderProfileScene.fxml", SceneLoader.getUsername() + " (Operator)");
+        try {
+            SceneLoader.load("/views/createReaderProfileScene.fxml", SceneLoader.getUsername() + " (Operator)");
+        } catch (Exception e) {
+            logger.error("Error occurred during loading create reader profile scene", e);
+        }
     }
 
     private void removeReader(ActionEvent actionEvent) {
-        Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
+        try {
+            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedReader != null) {
-            operatorService.removeReader(selectedReader);
+            if (selectedReader != null) {
+                operatorService.removeReader(selectedReader);
 
-            updateTableView(operatorService.getAllReaders());
-            readerTextArea.clear();
-        } else {
-            readerTextArea.setText("No reader selected to remove");
+                updateTableView(operatorService.getAllReaders());
+                readerTextArea.clear();
+            } else {
+                readerTextArea.setText("No reader selected to remove");
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred during removing selected reader", e);
         }
     }
 }

@@ -13,11 +13,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.*;
 
 public class AdministratorOperatorsController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsController.class);
+
     @FXML public Button booksButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button createOperatorButton;
@@ -54,30 +58,33 @@ public class AdministratorOperatorsController implements Controller {
 
     @FXML
     public void operatorTableViewOnMouseClicked() {
-
+        // Handle mouse click on table view if needed
     }
 
     @FXML
     public void searchOperatorButtonOnMouseClicked() {
-        Set<User> results = new HashSet<>();
-        List<User> userList = adminService.getAllUsers();
-        String stringToSearch = searchBookTextField.getText();
+        try {
+            Set<User> results = new HashSet<>();
+            List<User> userList = adminService.getAllUsers();
+            String stringToSearch = searchBookTextField.getText();
 
-        if (stringToSearch.isEmpty()) {
-            updateTableView(userList);
-        } else {
-            results.addAll(userList.stream()
-                    .filter(user -> user.getUsername().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
-            results.addAll(userList.stream()
-                    .filter(user -> user.getRole().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    .toList());
+            if (stringToSearch.isEmpty()) {
+                updateTableView(userList);
+            } else {
+                results.addAll(userList.stream()
+                        .filter(user -> user.getUsername().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
+                results.addAll(userList.stream()
+                        .filter(user -> user.getRole().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        .toList());
 
-            updateTableView(results);
+                updateTableView(results);
+            }
+            anchorPane.requestFocus();
+        } catch (Exception e) {
+            logger.error("Error occurred during operator search", e);
         }
-        anchorPane.requestFocus();
     }
-
 
     private void prepareContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
@@ -94,15 +101,23 @@ public class AdministratorOperatorsController implements Controller {
     }
 
     private void createOperator(ActionEvent actionEvent) {
-        SceneLoader.load("/views/createOperatorScene.fxml", "Create operator");
+        try {
+            SceneLoader.load("/views/createOperatorScene.fxml", "Create operator");
+        } catch (Exception e) {
+            logger.error("Error occurred during operator creation", e);
+        }
     }
 
     private void removeSelectedOperator(ActionEvent mouseEvent) {
-        User operator = operatorTableView.getSelectionModel().getSelectedItem();
+        try {
+            User operator = operatorTableView.getSelectionModel().getSelectedItem();
 
-        if (operator != null) {
-            adminService.removeOperator(operator);
-            updateTableView(adminService.getAllUsers());
+            if (operator != null) {
+                adminService.removeOperator(operator);
+                updateTableView(adminService.getAllUsers());
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred during operator removal", e);
         }
     }
 
