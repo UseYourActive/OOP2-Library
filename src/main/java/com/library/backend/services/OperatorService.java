@@ -32,7 +32,7 @@ public class OperatorService implements Service {
         Preconditions.checkNotNull(reader, "Reader cannot be null");
 
         if (book.getBookStatus() == BookStatus.AVAILABLE) {
-            book.setBookStatus(BookStatus.LENT);
+            book.setBookStatus(BookStatus.IN_READING_ROOM);
 
             boolean result = bookRepository.save(book);
             if (result) {

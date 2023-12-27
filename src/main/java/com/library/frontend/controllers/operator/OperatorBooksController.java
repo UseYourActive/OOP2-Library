@@ -62,22 +62,22 @@ public class OperatorBooksController implements Controller {
                 updateTableView(inventories);
             } else {
 
-                for(BookInventory inventory:inventories){
-                    Book book=inventory.getBookList().get(0);
+                for (BookInventory inventory : inventories) {
+                    Book book = inventory.getBookList().get(0);
 
-                    if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
                         results.add(inventory);
 
-                    if(book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
                         results.add(inventory);
 
-                    if(book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
                         results.add(inventory);
 
-                    if(book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                    if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
                         results.add(inventory);
 
-                    if( book.getPublishYear()!=null && book.getPublishYear().toString().contains(stringToSearch))
+                    if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
                         results.add(inventory);
                 }
 
@@ -88,13 +88,13 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void bookTableViewOnClicked() {
-        BookInventory selectedInventory= inventoryTableView.getSelectionModel().getSelectedItem();
+        BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
 
         if (selectedInventory != null)
             bookTextArea.setText(selectedInventory.toString());
     }
 
-    private void prepareContextMenu(){
+    private void prepareContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem archiveItem = new MenuItem("Archive book");

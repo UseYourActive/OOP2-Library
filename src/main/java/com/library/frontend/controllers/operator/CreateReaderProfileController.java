@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CreateReaderProfileController implements Controller {
@@ -30,6 +29,7 @@ public class CreateReaderProfileController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
     }
+
     @FXML
     public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
         String firstName = firstNameTextField.getText();
@@ -50,6 +50,7 @@ public class CreateReaderProfileController implements Controller {
 
         operatorService.createReader(reader);
     }
+
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");

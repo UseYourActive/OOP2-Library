@@ -22,13 +22,13 @@ public class CreateOperatorController implements Controller {
     @FXML public TextField repeatPasswordTextField;
     @FXML public PasswordField passwordPasswordField;
     @FXML public PasswordField repeatPasswordPasswordField;
-
-    @FXML  public Label informationLabel;
+    @FXML public Label informationLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+
     @FXML
     public void createOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
@@ -46,12 +46,14 @@ public class CreateOperatorController implements Controller {
             informationLabel.setText(e.getMessage());
         }
 
-        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml",SceneLoader.getUsername()+ "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
+
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorOperatorsScene.fxml",SceneLoader.getUsername()+ "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
+
     @FXML
     public void showPasswordCheckBoxOnMouseClicked() {
         if (showPasswordCheckBox.isSelected()) {

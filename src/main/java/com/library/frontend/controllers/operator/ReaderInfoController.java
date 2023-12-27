@@ -23,8 +23,9 @@ public class ReaderInfoController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+
     }
+
     @FXML
     public void goBackButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");

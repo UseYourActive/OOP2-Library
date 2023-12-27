@@ -22,7 +22,6 @@ import java.net.URL;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
@@ -32,12 +31,10 @@ public class RegisterNewBookController implements Controller {
     @FXML public TextArea resumeTextField;
     @FXML public ComboBox<Genre> genreComboBox;
     @FXML public Button registerButton;
-
     @FXML public Button cancelButton;
     @FXML public Label informationLabel;
     @FXML public TextField amountTextField;
     @FXML public AnchorPane anchorPane;
-
     private AdminService adminService;
 
 
@@ -45,27 +42,28 @@ public class RegisterNewBookController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> genreComboBox.requestFocus());
 
-        adminService=((AdminService) ServiceFactory.getService(AdminService.class));
+        adminService = ((AdminService) ServiceFactory.getService(AdminService.class));
 
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
     }
+
     @FXML
     public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
             checkInput();
 
-            BookInventoryRepository bookInventoryRepository=BookInventoryRepository.getInstance();
+            BookInventoryRepository bookInventoryRepository = BookInventoryRepository.getInstance();
 
-            List<Book> bookList=new ArrayList<>();
-            int quantity=getQuantity();
-            BookInventory bookInventory= BookInventory.builder().build();
+            List<Book> bookList = new ArrayList<>();
+            int quantity = getQuantity();
+            BookInventory bookInventory = BookInventory.builder().build();
 
             Book representiveBook = getBook();
 
-            boolean flag=true;
+            boolean flag = true;
             //Checks if there is already such inventory
             //If true, increase the quantity
-            for(BookInventory bookInventory1:bookInventoryRepository.findAll()){
+            for (BookInventory bookInventory1 : bookInventoryRepository.findAll()) {
                 if (bookInventory1.getRepresentiveBook().equals(representiveBook)) {
 
                     for (int i = 0; i < quantity; i++) {
@@ -85,7 +83,7 @@ public class RegisterNewBookController implements Controller {
             }
 
             //If else creates new inventory
-            if(flag) {
+            if (flag) {
                 for (int i = 0; i < quantity; i++) {
                     Book book = getBook();
 
@@ -103,44 +101,46 @@ public class RegisterNewBookController implements Controller {
             }
 
             cancelButtonOnMouseClicked(mouseEvent);
-        }catch (Exception e){
+        } catch (Exception e) {
             informationLabel.setText(e.getMessage());
         }
     }
+
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/administratorBooksScene.fxml",SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
 
     private void checkInput() throws Exception {
-        if(titleTextField.getText().isEmpty())
+        if (titleTextField.getText().isEmpty())
             throw new Exception("Please enter book title.");
 
-        if(authorTextField.getText().isEmpty())
+        if (authorTextField.getText().isEmpty())
             throw new Exception("Please enter book author.");
 
-        if(genreComboBox.getSelectionModel().isEmpty())
+        if (genreComboBox.getSelectionModel().isEmpty())
             throw new Exception("Please choose the genre of the book.");
     }
 
-    private int getQuantity(){
-        if(amountTextField.getText().isEmpty())
+    private int getQuantity() {
+        if (amountTextField.getText().isEmpty())
             return 1;
         else
             return Integer.parseInt(amountTextField.getText());
     }
-    private Book getBook(){
-        AuthorRepository authorRepository=AuthorRepository.getInstance();
 
-        Author author=authorRepository.findByName(authorTextField.getText()).orElseGet(()->
-                     Author.builder()
-                    .name(authorTextField.getText())
-                    .books(new ArrayList<>())
-                    .build()
+    private Book getBook() {
+        AuthorRepository authorRepository = AuthorRepository.getInstance();
+
+        Author author = authorRepository.findByName(authorTextField.getText()).orElseGet(() ->
+                Author.builder()
+                        .name(authorTextField.getText())
+                        .books(new ArrayList<>())
+                        .build()
         );
 
 
-        Genre genre=Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
+        Genre genre = Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
 
         //not nullable properties are instantiated trough builder
         Book book = Book.builder()
@@ -153,10 +153,10 @@ public class RegisterNewBookController implements Controller {
                 .build();
 
         //nullable properties need check
-        if(!yearTextField.getText().isEmpty())
+        if (!yearTextField.getText().isEmpty())
             book.setPublishYear(Year.parse(yearTextField.getText()));
 
-        if(!resumeTextField.getText().isEmpty()) {
+        if (!resumeTextField.getText().isEmpty()) {
             book.setResume(resumeTextField.getText());
         }
 

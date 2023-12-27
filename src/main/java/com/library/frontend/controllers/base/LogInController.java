@@ -28,6 +28,7 @@ public class LogInController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> usernameTextField.requestFocus());
     }
+
     @FXML
     public void logInButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -45,11 +46,11 @@ public class LogInController implements Controller {
                 SceneLoader.setUsername(usernameTextField.getText());
 
                 switch (user.getRole()) {
-                    case ADMIN ->{
-                        SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",SceneLoader.getUsername() + " (Administrator)");
+                    case ADMIN -> {
+                        SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml", SceneLoader.getUsername() + " (Administrator)");
                     }
                     case OPERATOR -> {
-                        SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
+                        SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
                     }
                 }
 

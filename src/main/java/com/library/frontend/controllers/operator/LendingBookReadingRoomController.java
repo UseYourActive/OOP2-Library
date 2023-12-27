@@ -25,19 +25,12 @@ import java.util.ResourceBundle;
 public class LendingBookReadingRoomController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(LendingBookReadingRoomController.class);
 
-    @FXML
-    public TextField readerSearchBarTextField;
-    @FXML
-    public Button searchReaderButton;
-    @FXML
-    public Button lendButton;
-    @FXML
-    public Button cancelButton;
-    @FXML
-    public ListView<Book> bookListView;
-    @FXML
-    public ListView<Reader> readerListView;
-    private OperatorService operatorService;
+    @FXML public TextField readerSearchBarTextField;
+    @FXML public Button searchReaderButton;
+    @FXML public Button lendButton;
+    @FXML public Button cancelButton;
+    @FXML public ListView<Book> bookListView;
+    @FXML public ListView<Reader> readerListView;private OperatorService operatorService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

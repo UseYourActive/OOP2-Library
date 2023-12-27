@@ -18,10 +18,8 @@ import org.slf4j.LoggerFactory;
 public class TableViewBuilder {
     private static final Logger logger = LoggerFactory.getLogger(TableViewBuilder.class);
 
-
     public static void createBookTableViewColumns(TableView<Book> bookTableView){
         try {
-
             TableColumn<Book, Long> titleTableColumn = new TableColumn<>("Id");
             titleTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
             titleTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
@@ -46,7 +44,6 @@ public class TableViewBuilder {
     }
     public static void createInventoryTableViewColumns(TableView<BookInventory> inventoryTableView) {
         try {
-
             TableColumn<BookInventory, String> titleTableColumn = new TableColumn<>("Title");
             titleTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentiveBook().getTitle()));
             titleTableColumn.prefWidthProperty().bind(inventoryTableView.widthProperty().divide(3));

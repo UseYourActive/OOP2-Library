@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 public class CreateLendingBookFormController implements Controller {
     @FXML public TextField readerSearchBarTextField;
     @FXML public Button lendButton;
-
     @FXML public Button cancelButton;
     @FXML public Button searchReaderButton;
     @FXML public ListView<Book> bookListView;
@@ -29,10 +28,13 @@ public class CreateLendingBookFormController implements Controller {
     }
     @FXML
     public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
     @FXML
     public void lendButtonOnMouseClicked(MouseEvent mouseEvent) {
+
     }
+
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", "Operator books scene");

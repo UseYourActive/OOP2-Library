@@ -4,13 +4,9 @@ import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
-import java.lang.reflect.Field;
 import java.time.Year;
 import java.util.*;
-
-import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter

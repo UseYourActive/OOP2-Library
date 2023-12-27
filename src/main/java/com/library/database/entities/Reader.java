@@ -2,7 +2,6 @@ package com.library.database.entities;
 
 import com.library.database.enums.Rating;
 import jakarta.persistence.*;
-import jakarta.validation.Constraint;
 import lombok.*;
 
 import java.util.List;
