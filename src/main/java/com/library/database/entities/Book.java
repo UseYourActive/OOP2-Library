@@ -70,11 +70,11 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(publishYear, book.publishYear) && title.equals(book.title) && Objects.equals(resume, book.resume) && author.equals(book.author) && genre == book.genre && inventory.equals(book.inventory);
+        return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(publishYear, title, resume, author, genre, inventory);
+        return Objects.hash(title, resume, author, genre);
     }
 }

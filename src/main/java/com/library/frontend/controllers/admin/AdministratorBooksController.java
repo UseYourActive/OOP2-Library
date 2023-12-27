@@ -28,12 +28,12 @@ import java.util.*;
 @NoArgsConstructor
 public class AdministratorBooksController implements Controller {
     @FXML public Button operatorsButton;
-    @FXML public Button registerBookButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
     @FXML public TextArea bookTextArea;
     @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public AnchorPane anchorPane;
+    @FXML public Button logOutButton;
 
     private AdminService adminService;
     @Override
@@ -106,7 +106,10 @@ public class AdministratorBooksController implements Controller {
         }
     }
 
-
+    @FXML
+    public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/logInScene.fxml","LogIn");
+    }
 
     @FXML
     public void anchorPaneOnMouseClicked() {
@@ -114,21 +117,24 @@ public class AdministratorBooksController implements Controller {
         inventoryTableView.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
+
+    private void registerNewBooks(ActionEvent mouseEvent) {
+        SceneLoader.load("/views/registerNewBookScene.fxml","Register new book");
     }
 
     private void prepareContextMenu(){
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem removeBookItem = new MenuItem("Remove book/s");
+        MenuItem registerNewBook = new MenuItem("Register book/s");
         MenuItem addExistingBookItem = new MenuItem("Add book/s");
+        MenuItem removeBookItem = new MenuItem("Remove book/s");
 
-        contextMenu.getItems().addAll(removeBookItem, addExistingBookItem);
+
+        contextMenu.getItems().addAll(registerNewBook,removeBookItem, addExistingBookItem);
 
         inventoryTableView.setContextMenu(contextMenu);
 
+        registerNewBook.setOnAction(this::registerNewBooks);
         removeBookItem.setOnAction(this::removeSelectedBooks);
         addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
     }

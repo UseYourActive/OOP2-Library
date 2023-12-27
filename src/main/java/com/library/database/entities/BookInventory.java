@@ -44,12 +44,12 @@ public class BookInventory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookInventory that = (BookInventory) o;
-        return bookList.equals(that.bookList) && representiveBook.equals(that.representiveBook);
+        return representiveBook.equals(that.representiveBook);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookList, representiveBook);
+        return Objects.hash(representiveBook);
     }
 
     public boolean addBook(Book book){

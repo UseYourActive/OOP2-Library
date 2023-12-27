@@ -54,44 +54,55 @@ public class RegisterNewBookController implements Controller {
         try {
             checkInput();
 
+            BookInventoryRepository bookInventoryRepository=BookInventoryRepository.getInstance();
+
             List<Book> bookList=new ArrayList<>();
             int quantity=getQuantity();
             BookInventory bookInventory= BookInventory.builder().build();
 
-            for(int i=0;i<quantity;i++){
-                Book book = getBook();
+            Book representiveBook = getBook();
 
-
-
-                bookInventory.setRepresentiveBook(book);
-                book.setInventory(bookInventory);
-                adminService.saveBook(book);
-                bookList.add(book);
-            }
-
-            bookInventory.setBookList(bookList);
-
-            BookInventoryRepository bookInventoryRepository=BookInventoryRepository.getInstance();
-
-            boolean flag=false;
-
+            boolean flag=true;
+            //Checks if there is already such inventory
+            //If true, increase the quantity
             for(BookInventory bookInventory1:bookInventoryRepository.findAll()){
-                if (bookInventory1.equals(bookInventory)) {
-                    flag = true;
+                if (bookInventory1.getRepresentiveBook().equals(representiveBook)) {
+
+                    for (int i = 0; i < quantity; i++) {
+                        Book book = getBook();
+
+                        book.setInventory(bookInventory1);
+
+                        adminService.saveBook(book);
+
+                        bookInventory1.addBook(book);
+                    }
+                    adminService.saveInventory(bookInventory1);
+
+                    flag = false;
                     break;
                 }
             }
 
-            if(!flag){
+            //If else creates new inventory
+            if(flag) {
+                for (int i = 0; i < quantity; i++) {
+                    Book book = getBook();
+
+                    bookInventory.setRepresentiveBook(book);
+                    book.setInventory(bookInventory);
+
+                    adminService.saveBook(book);
+
+                    bookList.add(book);
+                }
+
+                bookInventory.setBookList(bookList);
+
                 adminService.saveInventory(bookInventory);
             }
 
-
-            //if(!bookInventoryRepository.findAll().contains(bookInventory)){
-            //   adminService.saveInventory(bookInventory);
-            //}
-
-            cancelButton.fire();
+            cancelButtonOnMouseClicked(mouseEvent);
         }catch (Exception e){
             informationLabel.setText(e.getMessage());
         }
