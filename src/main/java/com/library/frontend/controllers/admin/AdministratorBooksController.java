@@ -189,7 +189,7 @@ public class AdministratorBooksController implements Controller {
             if (!inventories.isEmpty()) {
                 if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
                     for (BookInventory bookInventory : inventories) {
-                        adminService.removeBook(bookInventory);
+                        adminService.removeInventory(bookInventory);
                         updateTableView(adminService.getAllBookInventories());
                     }
                 }

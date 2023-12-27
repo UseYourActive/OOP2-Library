@@ -34,12 +34,11 @@ public class AdminService implements Service {
         performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
     }
 
-    public void removeBook(BookInventory inventory) {
-        //Book book=inventory.getBook();
-        //bookRepository.delete(book);
+    public void removeBook(Book book) {
 
-        bookInventoryRepository.delete(inventory);
-       // logger.info("Book removed: {}", book.getTitle());
+        bookRepository.delete(book);
+        //bookInventoryRepository.delete(inventory);
+        logger.info("Book removed: {}", book.getTitle());
     }
 
     public List<Book> getAllBooks() {
@@ -77,6 +76,11 @@ public class AdminService implements Service {
         performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "");
     }
 
+    public void removeInventory(BookInventory bookInventory){
+        bookInventoryRepository.delete(bookInventory);
+        performRepositoryOperation(() -> bookInventoryRepository.delete(bookInventory), "saved", "");
+    }
+
 
     private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
         T result = repositoryOperation.get();
@@ -84,6 +88,15 @@ public class AdminService implements Service {
             logger.info("{} {} successfully: {}", entityName, action, entityName);
         } else {
             logger.error("Failed to {} {}: {}", action, entityName, entityName);
+        }
+    }
+
+    private  void performRepositoryOperation(Runnable repositoryOperation, String action, String entityName) {
+        try{
+            repositoryOperation.run();
+            logger.info("{} {} successfully: {}", entityName, action, entityName);
+        }catch (Exception e){
+            logger.error("Failed to {} {}: {}", action, entityName, e.getMessage());
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.*;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "book_id",unique = true)
+    @Column(name = "book_id")
     private Long id;
 
     @Column(name = "number_of_times_used", nullable = false)
@@ -33,7 +33,7 @@ public class Book {
     @Column(name = "resume", length = 512)
     private String resume;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
@@ -45,7 +45,7 @@ public class Book {
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
 

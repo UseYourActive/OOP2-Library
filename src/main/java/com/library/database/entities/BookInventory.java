@@ -14,17 +14,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "book_inventories")
 public class BookInventory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "inventory_id")
+    @Column(name ="inventory_id")
     private Long id;
 
-
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Book> bookList;
+    private List<Book> bookList; //Collection of multiple books with identical title,author and genre
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id", nullable = false,unique = true)
+    @OneToOne
+    @JoinColumn(name = "book_id")
     private Book representiveBook; // Represents one book from the bookList
 
     @Override
