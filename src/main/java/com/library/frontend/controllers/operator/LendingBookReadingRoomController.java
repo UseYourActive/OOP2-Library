@@ -83,7 +83,7 @@ public class LendingBookReadingRoomController implements Controller {
         Reader selectedReader = readerListView.getSelectionModel().getSelectedItem();
 
         if (selectedBook != null && selectedReader != null) {
-            operatorService.lendBookToReader(selectedBook, selectedReader);
+            operatorService.lendBookToReaderForReadingRoom(selectedBook, selectedReader);
             updateTableView(operatorService.getAllReaders());
             updateAvailableBooksListView();
             logger.info("Book successfully lent to reader: {} - {}", selectedReader.getFirstName() + " " + selectedReader.getMiddleName() + " " + selectedReader.getLastName(), selectedBook.getTitle());

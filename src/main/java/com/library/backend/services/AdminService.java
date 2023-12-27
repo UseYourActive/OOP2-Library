@@ -16,10 +16,8 @@ import java.util.function.Supplier;
 
 public class AdminService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
-
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-
     private final BookInventoryRepository bookInventoryRepository;
 
     public AdminService(BookRepository bookRepository, UserRepository userRepository,BookInventoryRepository bookInventoryRepository) {
