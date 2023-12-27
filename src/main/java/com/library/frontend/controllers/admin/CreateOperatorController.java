@@ -41,7 +41,7 @@ public class CreateOperatorController implements Controller {
                     .build();
 
             ((AdminService) ServiceFactory.getService(AdminService.class)).registerOperator(user);
-
+            cancelButton.fire();
         } catch (Exception e) {
             informationLabel.setText(e.getMessage());
         }

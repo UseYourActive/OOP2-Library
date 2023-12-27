@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -19,21 +19,40 @@ public class BookInventory {
     @Column(name = "inventory_id")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinColumn(name = "book_id", nullable = false,unique = true)
-    private Book book;
 
-    @Column(name="quantity")
-    private Integer quantity;
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Book> bookList;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id", nullable = false,unique = true)
+    private Book representiveBook; // Represents one book from the bookList
 
     @Override
     public String toString(){
-        if(book.getPublishYear()==null){
+
+        if(representiveBook.getPublishYear()==null){
             return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: - \nStatus: %s\nResume:\n%s",
-                    book.getTitle(), book.getAuthor(),book.getGenre(),quantity,book.getBookStatus(),book.getResume());
+                    representiveBook.getTitle(), representiveBook.getAuthor(), representiveBook.getGenre(),bookList.size(), representiveBook.getBookStatus(),representiveBook.getResume());
         }
 
         return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: %s\nStatus: %s\nResume:\n%s",
-                book.getTitle(), book.getAuthor(),book.getGenre(),quantity,book.getPublishYear(),book.getBookStatus(),book.getResume());
+                representiveBook.getTitle(), representiveBook.getAuthor(),representiveBook.getGenre(),bookList.size(),representiveBook.getPublishYear(),representiveBook.getBookStatus(),representiveBook.getResume());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookInventory that = (BookInventory) o;
+        return bookList.equals(that.bookList) && representiveBook.equals(that.representiveBook);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookList, representiveBook);
+    }
+
+    public boolean addBook(Book book){
+        return bookList.add(book);
     }
 }

@@ -63,7 +63,7 @@ public class OperatorBooksController implements Controller {
             } else {
 
                 for(BookInventory inventory:inventories){
-                    Book book=inventory.getBook();
+                    Book book=inventory.getBookList().get(0);
 
                     if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
                         results.add(inventory);
@@ -116,7 +116,7 @@ public class OperatorBooksController implements Controller {
     }
 
     private void archiveSelectedBooks(ActionEvent actionEvent) {
-        Book selectedBook = inventoryTableView.getSelectionModel().getSelectedItem().getBook();
+        Book selectedBook = inventoryTableView.getSelectionModel().getSelectedItem().getBookList().get(0);
 
         if (selectedBook != null) {
             operatorService.archiveBook(selectedBook);

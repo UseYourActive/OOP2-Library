@@ -4,12 +4,13 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
+import com.library.database.repositories.AuthorRepository;
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.frontend.controllers.base.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.validators.ISBNValidator;
-import com.library.frontend.utils.validators.Validator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,6 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
@@ -51,12 +54,44 @@ public class RegisterNewBookController implements Controller {
         try {
             checkInput();
 
-            Book book = getBook();
+            List<Book> bookList=new ArrayList<>();
             int quantity=getQuantity();
+            BookInventory bookInventory= BookInventory.builder().build();
 
-            adminService.saveBook(book,quantity);
+            for(int i=0;i<quantity;i++){
+                Book book = getBook();
 
-            cancelButtonOnMouseClicked(mouseEvent);
+
+
+                bookInventory.setRepresentiveBook(book);
+                book.setInventory(bookInventory);
+                adminService.saveBook(book);
+                bookList.add(book);
+            }
+
+            bookInventory.setBookList(bookList);
+
+            BookInventoryRepository bookInventoryRepository=BookInventoryRepository.getInstance();
+
+            boolean flag=false;
+
+            for(BookInventory bookInventory1:bookInventoryRepository.findAll()){
+                if (bookInventory1.equals(bookInventory)) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(!flag){
+                adminService.saveInventory(bookInventory);
+            }
+
+
+            //if(!bookInventoryRepository.findAll().contains(bookInventory)){
+            //   adminService.saveInventory(bookInventory);
+            //}
+
+            cancelButton.fire();
         }catch (Exception e){
             informationLabel.setText(e.getMessage());
         }
@@ -79,15 +114,20 @@ public class RegisterNewBookController implements Controller {
 
     private int getQuantity(){
         if(amountTextField.getText().isEmpty())
-            return 0;
+            return 1;
         else
             return Integer.parseInt(amountTextField.getText());
     }
     private Book getBook(){
-        Author author = Author.builder()
-                .name(authorTextField.getText())
-                .books(new ArrayList<>())
-                .build();
+        AuthorRepository authorRepository=AuthorRepository.getInstance();
+
+        Author author=authorRepository.findByName(authorTextField.getText()).orElseGet(()->
+                     Author.builder()
+                    .name(authorTextField.getText())
+                    .books(new ArrayList<>())
+                    .build()
+        );
+
 
         Genre genre=Genre.getValueOf(String.valueOf(genreComboBox.getSelectionModel().getSelectedItem()));
 

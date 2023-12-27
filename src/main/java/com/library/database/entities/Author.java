@@ -21,7 +21,7 @@ public class Author {
     @Column(name = "name", length = 32, nullable = false,unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "author", orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
 
     @Override

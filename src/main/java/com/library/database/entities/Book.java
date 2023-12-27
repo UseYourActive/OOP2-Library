@@ -18,13 +18,11 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"title", "author_id", "publish_date"})
-})
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "book_id")
+    @Column(name = "book_id",unique = true)
     private Long id;
 
     @Column(name = "number_of_times_used", nullable = false)
@@ -39,7 +37,7 @@ public class Book {
     @Column(name = "resume", length = 512)
     private String resume;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
@@ -51,8 +49,9 @@ public class Book {
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Reader lentToReader;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
+    private BookInventory inventory;
 
     @Override
     public String toString() {
@@ -64,5 +63,18 @@ public class Book {
 
         return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nStatus: %s\nResume:\n%s",
                 title, author,genre,publishYear,bookStatus,resume);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(publishYear, book.publishYear) && title.equals(book.title) && Objects.equals(resume, book.resume) && author.equals(book.author) && genre == book.genre && inventory.equals(book.inventory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(publishYear, title, resume, author, genre, inventory);
     }
 }

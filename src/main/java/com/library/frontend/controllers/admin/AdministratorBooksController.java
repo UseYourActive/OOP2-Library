@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -52,7 +53,7 @@ public class AdministratorBooksController implements Controller {
         prepareContextMenu();
     }
 
-
+    @FXML
     public void searchBookButtonOnMouseClicked() {
         List<BookInventory> results = new ArrayList<>();
         List<BookInventory> inventories = adminService.getAllBookInventories();
@@ -62,7 +63,7 @@ public class AdministratorBooksController implements Controller {
         } else {
 
             for(BookInventory inventory:inventories){
-                Book book=inventory.getBook();
+                Book book=inventory.getBookList().get(0);
 
                 if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
                     results.add(inventory);
@@ -90,18 +91,32 @@ public class AdministratorBooksController implements Controller {
     }
 
     @FXML
-    public void booksTableViewOnClicked() {
-        BookInventory selectedInventory= inventoryTableView.getSelectionModel().getSelectedItem();
+    public void booksTableViewOnClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2&&mouseEvent.getButton()== MouseButton.PRIMARY) { // Check for double-click
+            BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                openDialogWithTableView(selectedItem); // Open dialog with another TableView
+            }
+        }
+        else {
+            BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
 
-        if(selectedInventory!=null)
-            bookTextArea.setText(selectedInventory.toString());
-
+            if (selectedInventory != null)
+                bookTextArea.setText(selectedInventory.toString());
+        }
     }
+
+
 
     @FXML
     public void anchorPaneOnMouseClicked() {
         anchorPane.requestFocus();
         inventoryTableView.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
     }
 
     private void prepareContextMenu(){
@@ -128,7 +143,7 @@ public class AdministratorBooksController implements Controller {
         List<BookInventory> inventories= inventoryTableView.getSelectionModel().getSelectedItems();
 
         if(!inventories.isEmpty()){
-            if(DialogUtils.showConfirmation("Confirmation","Are you sure you want to delete these book/s")){
+            if(DialogUtils.showConfirmation("Confirmation","Are you sure you want to delete these book/s from the database ?")){
                 for(BookInventory bookInventory:inventories){
                     adminService.removeBook(bookInventory);
                     updateTableView(adminService.getAllBookInventories());
@@ -142,45 +157,69 @@ public class AdministratorBooksController implements Controller {
     private void setQuantityOnSelectedBook(ActionEvent actionEvent) {
 
         if(!inventoryTableView.getSelectionModel().isEmpty()) {
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
-
-
-            TextField quantityField = new TextField();
-            Button increaseButton = new Button("Increase Quantity");
-
-            //Button logic
-            increaseButton.setOnAction(e -> {
-
-                int quantity = Integer.parseInt(quantityField.getText());
-                if (quantity > 0) {
-                    BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
-                    bookInventory.setQuantity(quantity);
-                    ((AdminService) ServiceFactory.getService(AdminService.class)).saveInventory(bookInventory);
-
-                    updateTableView(adminService.getAllBookInventories());
-                    dialogStage.close();
-                } else {
-                    DialogUtils.showInfo("Error","Please enter valid quantity number!");
-                }
-            });
-
-            VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
-            dialogLayout.setPadding(new Insets(20));
-
-            Scene dialogScene = new Scene(dialogLayout, 250, 150);
-
-            dialogStage.setTitle("Set quantity");
-            dialogStage.setScene(dialogScene);
-            dialogStage.show();
+            openDialog();
         }else{
             DialogUtils.showInfo("Information","Please select a book!");
         }
     }
 
-    public void registerBookButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/registerNewBookScene.fxml","Register new book");
+    private void openDialogWithTableView(BookInventory bookInventory) {
+
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
+
+        TableView<Book> bookTableView = new TableView<>();
+        TableViewBuilder.createBookTableViewColumns(bookTableView);//Load columns
+        bookTableView.getItems().addAll(FXCollections.observableArrayList(bookInventory.getBookList()));//Populate tableView
+
+        // Close button
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> dialogStage.close());
+
+        VBox dialogLayout = new VBox(10,new Label(bookInventory.getRepresentiveBook().getTitle()), bookTableView, closeButton);
+        dialogLayout.setPadding(new Insets(20));
+
+        Scene dialogScene = new Scene(dialogLayout, 500, 600);
+
+        dialogStage.setTitle(bookInventory.getRepresentiveBook().getTitle());
+        dialogStage.setScene(dialogScene);
+        dialogStage.show();
     }
+
+    private void openDialog(){
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(SceneLoader.getStage());  // Set the owner window
+
+
+        TextField quantityField = new TextField();
+        Button increaseButton = new Button("Increase Quantity");
+
+        //Button logic
+        increaseButton.setOnAction(e -> {
+
+            int quantity = Integer.parseInt(quantityField.getText());
+            if (quantity > 0) {
+                BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+                //bookInventory.setQuantity(quantity+bookInventory.getQuantity());
+                adminService.saveInventory(bookInventory);
+
+                updateTableView(adminService.getAllBookInventories());
+                dialogStage.close();
+            } else {
+                DialogUtils.showInfo("Error","Please enter valid quantity number!");
+            }
+        });
+
+        VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
+        dialogLayout.setPadding(new Insets(20));
+
+        Scene dialogScene = new Scene(dialogLayout, 250, 150);
+
+        dialogStage.setTitle("Set quantity");
+        dialogStage.setScene(dialogScene);
+        dialogStage.show();
+    }
+
 }

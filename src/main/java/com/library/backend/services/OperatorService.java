@@ -33,7 +33,6 @@ public class OperatorService implements Service {
 
         if (book.getBookStatus() == BookStatus.AVAILABLE) {
             book.setBookStatus(BookStatus.LENT);
-            book.setLentToReader(reader);
 
             boolean result = bookRepository.save(book);
             if (result) {

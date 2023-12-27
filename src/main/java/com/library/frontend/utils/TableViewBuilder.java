@@ -1,8 +1,10 @@
 package com.library.frontend.utils;
 
+import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.Reader;
 import com.library.database.entities.User;
+import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import com.library.database.enums.Role;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,18 +18,45 @@ import org.slf4j.LoggerFactory;
 public class TableViewBuilder {
     private static final Logger logger = LoggerFactory.getLogger(TableViewBuilder.class);
 
+
+    public static void createBookTableViewColumns(TableView<Book> bookTableView){
+        try {
+
+            TableColumn<Book, Long> titleTableColumn = new TableColumn<>("Id");
+            titleTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
+            titleTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
+
+            TableColumn<Book, Integer> authorTableColumn = new TableColumn<>("Times used");
+            authorTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNumberOfTimesUsed())); // Assuming getAuthor() returns a String
+            authorTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
+
+            TableColumn<Book, BookStatus> genreTableColumn = new TableColumn<>("Status");
+            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getBookStatus()));
+            genreTableColumn.prefWidthProperty().bind(bookTableView.widthProperty().divide(3));
+
+            bookTableView.getColumns().add(titleTableColumn);
+            bookTableView.getColumns().add(authorTableColumn);
+            bookTableView.getColumns().add(genreTableColumn);
+
+            logger.info("Book Inventory table view created successfully");
+        } catch (Exception e) {
+            logger.error("Failed to create book inventory table view: {}", e.getMessage());
+            throw e;
+        }
+    }
     public static void createInventoryTableViewColumns(TableView<BookInventory> inventoryTableView) {
         try {
+
             TableColumn<BookInventory, String> titleTableColumn = new TableColumn<>("Title");
-            titleTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBook().getTitle()));
+            titleTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentiveBook().getTitle()));
             titleTableColumn.prefWidthProperty().bind(inventoryTableView.widthProperty().divide(3));
 
             TableColumn<BookInventory, String> authorTableColumn = new TableColumn<>("Author");
-            authorTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBook().getAuthor().toString())); // Assuming getAuthor() returns a String
+            authorTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentiveBook().getAuthor().toString())); // Assuming getAuthor() returns a String
             authorTableColumn.prefWidthProperty().bind(inventoryTableView.widthProperty().divide(3));
 
             TableColumn<BookInventory, Genre> genreTableColumn = new TableColumn<>("Genre");
-            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getBook().getGenre()));
+            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRepresentiveBook().getGenre()));
             genreTableColumn.prefWidthProperty().bind(inventoryTableView.widthProperty().divide(3));
 
             inventoryTableView.getColumns().add(titleTableColumn);

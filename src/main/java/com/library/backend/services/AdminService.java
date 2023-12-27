@@ -11,7 +11,9 @@ import com.library.database.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class AdminService implements Service {
@@ -32,26 +34,22 @@ public class AdminService implements Service {
         updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
-    public void saveInventory(BookInventory bookInventory){
-        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "");
-    }
-
-    public void saveBook(Book book,Integer quantity) {
-
-        BookInventory bookInventory= BookInventory.builder()
-                .book(book)
-                .quantity(quantity)
-                .build();
-
-        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", book.getTitle());
-
-        //performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
+    public void saveBook(Book book) {
+        performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
     }
 
     public void removeBook(BookInventory inventory) {
-        Book book=inventory.getBook();
-        bookRepository.delete(book);
-        logger.info("Book removed: {}", book.getTitle());
+        //Book book=inventory.getBook();
+        //bookRepository.delete(book);
+
+        bookInventoryRepository.delete(inventory);
+       // logger.info("Book removed: {}", book.getTitle());
+    }
+
+    public List<Book> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        logEntityRetrieval("books", books.size());
+        return books;
     }
 
     public void registerOperator(User operator) {
@@ -71,17 +69,18 @@ public class AdminService implements Service {
         return users;
     }
 
-    public List<Book> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        logEntityRetrieval("books", books.size());
-        return books;
-    }
+
 
     public List<BookInventory> getAllBookInventories() {
         List<BookInventory> inventories = bookInventoryRepository.findAll();
         logEntityRetrieval("book_inventories", inventories.size());
         return inventories;
     }
+
+    public void saveInventory(BookInventory bookInventory){
+        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "");
+    }
+
 
     private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
         T result = repositoryOperation.get();
