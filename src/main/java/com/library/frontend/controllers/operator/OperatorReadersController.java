@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 
@@ -42,7 +43,9 @@ public class OperatorReadersController implements Controller {
     }
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
+        }
     }
 
     @FXML

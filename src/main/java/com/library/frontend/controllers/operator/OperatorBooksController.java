@@ -53,34 +53,36 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void searchBookButtonOnMouseClicked() {
-        List<BookInventory> results = new ArrayList<>();
-        List<BookInventory> inventories = operatorService.getAllBookInventories();
-        String stringToSearch = searchBookTextField.getText();
-        if (stringToSearch.isEmpty()) {
-            updateTableView(inventories);
-        } else {
+    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            List<BookInventory> results = new ArrayList<>();
+            List<BookInventory> inventories = operatorService.getAllBookInventories();
+            String stringToSearch = searchBookTextField.getText();
+            if (stringToSearch.isEmpty()) {
+                updateTableView(inventories);
+            } else {
 
-            for(BookInventory inventory:inventories){
-                Book book=inventory.getBook();
+                for(BookInventory inventory:inventories){
+                    Book book=inventory.getBook();
 
-                if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if(book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if(book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if(book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if(book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if(book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if(book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                    results.add(inventory);
+                    if(book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
+                        results.add(inventory);
 
-                if( book.getPublishYear()!=null && book.getPublishYear().toString().contains(stringToSearch))
-                    results.add(inventory);
+                    if( book.getPublishYear()!=null && book.getPublishYear().toString().contains(stringToSearch))
+                        results.add(inventory);
+                }
+
+                updateTableView(results);
             }
-
-            updateTableView(results);
         }
     }
 
@@ -130,6 +132,6 @@ public class OperatorBooksController implements Controller {
     }
 
     private void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
-        SceneLoader.load("/views/lendingBookReadingRoomScene.fxml","Lending book for reading room");
+        SceneLoader.load("/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
     }
 }

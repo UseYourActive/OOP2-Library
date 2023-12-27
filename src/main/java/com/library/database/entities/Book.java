@@ -51,6 +51,8 @@ public class Book {
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Reader lentToReader;
 
     @Override
     public String toString() {

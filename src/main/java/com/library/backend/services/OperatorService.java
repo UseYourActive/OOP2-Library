@@ -27,6 +27,25 @@ public class OperatorService implements Service {
         this.bookInventoryRepository=Preconditions.checkNotNull(bookInventoryRepository,"BookInventoryRepository cannot be null");
     }
 
+    public void lendBookToReader(Book book, Reader reader) {
+        Preconditions.checkNotNull(book, "Book cannot be null");
+        Preconditions.checkNotNull(reader, "Reader cannot be null");
+
+        if (book.getBookStatus() == BookStatus.AVAILABLE) {
+            book.setBookStatus(BookStatus.LENT);
+            book.setLentToReader(reader);
+
+            boolean result = bookRepository.save(book);
+            if (result) {
+                logger.info("Book successfully lent to reader: {} - {}", reader.getFirstName() + " " + reader.getMiddleName() + " " + reader.getLastName(), book.getTitle());
+            } else {
+                logger.error("Failed to lend book to reader: {} - {}", reader.getFirstName() + " " + reader.getMiddleName() + " " + reader.getLastName(), book.getTitle());
+            }
+        } else {
+            logger.warn("Cannot lend book to reader. Book status is not AVAILABLE: {}", book.getTitle());
+        }
+    }
+
     public void lendBook(Book book) {
         updateBookStatus(book, BookStatus.LENT, "lent");
     }

@@ -1,6 +1,5 @@
 package com.library.frontend.controllers.base;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
@@ -8,6 +7,7 @@ import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -30,31 +30,33 @@ public class LogInController implements Controller {
     }
     @FXML
     public void logInButtonOnMouseClicked(MouseEvent mouseEvent) {
-        try {
-            checkInput();
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            try {
+                checkInput();
 
-            User logInUser = User.builder()
-                    .username(usernameTextField.getText())
-                    .password(passwordPasswordField.getText())
-                    .build();
+                User logInUser = User.builder()
+                        .username(usernameTextField.getText())
+                        .password(passwordPasswordField.getText())
+                        .build();
 
-            LogInService service = (LogInService) ServiceFactory.getService(LogInService.class);
+                LogInService service = (LogInService) ServiceFactory.getService(LogInService.class);
 
-            User user = service.getUser(logInUser);
-            SceneLoader.setUsername(usernameTextField.getText());
+                User user = service.getUser(logInUser);
+                SceneLoader.setUsername(usernameTextField.getText());
 
-            switch (user.getRole()) {
-                case ADMIN ->{
-                    SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",SceneLoader.getUsername() + " (Administrator)");
+                switch (user.getRole()) {
+                    case ADMIN ->{
+                        SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml",SceneLoader.getUsername() + " (Administrator)");
+                    }
+                    case OPERATOR -> {
+                        SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
+                    }
                 }
-                case OPERATOR -> {
-                    SceneLoader.load(mouseEvent,"/views/operatorBooksScene.fxml", SceneLoader.getUsername() +" (Operator)");
-                }
+
+            } catch (Exception e) {
+                logger.error("Error during login", e);
+                logInMessageLabel.setText("An error occurred during login!");
             }
-
-        } catch (Exception e) {
-            logger.error("Error during login", e);
-            logInMessageLabel.setText("An error occurred during login!");
         }
     }
 

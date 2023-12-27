@@ -1,11 +1,9 @@
 package com.library.frontend.utils;
 
-import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.Reader;
 import com.library.database.entities.User;
 import com.library.database.enums.Genre;
-import com.library.database.enums.Rating;
 import com.library.database.enums.Role;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
