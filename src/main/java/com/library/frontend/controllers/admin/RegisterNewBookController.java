@@ -66,7 +66,7 @@ public class RegisterNewBookController implements Controller {
             // Checks if there is already such inventory
             // If true, increase the quantity
             for (BookInventory bookInventory1 : bookInventoryRepository.findAll()) {
-                if (bookInventory1.getRepresentiveBook().equals(representativeBook)) {
+                if (bookInventory1.getRepresentiveBook().equalsBook(representativeBook)) {
 
                     for (int i = 0; i < quantity; i++) {
                         Book book = getBook();

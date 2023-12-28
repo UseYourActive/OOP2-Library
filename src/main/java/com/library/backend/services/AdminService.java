@@ -35,10 +35,13 @@ public class AdminService implements Service {
     }
 
     public void removeBook(Book book) {
-
         bookRepository.delete(book);
-        //bookInventoryRepository.delete(inventory);
         logger.info("Book removed: {}", book.getTitle());
+    }
+
+    public void removeAll(List<Book> books){
+        bookRepository.deleteAll(books);
+        logger.info("Books removed: {}", books.size());
     }
 
     public List<Book> getAllBooks() {
@@ -65,7 +68,6 @@ public class AdminService implements Service {
     }
 
 
-
     public List<BookInventory> getAllBookInventories() {
         List<BookInventory> inventories = bookInventoryRepository.findAll();
         logEntityRetrieval("book_inventories", inventories.size());
@@ -77,8 +79,7 @@ public class AdminService implements Service {
     }
 
     public void removeInventory(BookInventory bookInventory){
-        bookInventoryRepository.delete(bookInventory);
-        performRepositoryOperation(() -> bookInventoryRepository.delete(bookInventory), "saved", "");
+        performRepositoryOperation(() -> bookInventoryRepository.delete(bookInventory), "deleted", "");
     }
 
 

@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,15 @@ public class BookRepository extends Repository<Book> {
             logger.error("Error finding book by ID: {}", id, e);
             throw e;
         }
+    }
+
+    public void deleteAll(Collection<Book> entities) throws HibernateException {
+        executeInsideTransaction(session -> {
+            for (Book entity : entities) {
+                session.remove(entity);
+                logger.info("Entity with ID {} deleted successfully", entity.getId());
+            }
+        });
     }
 
     @Override

@@ -19,7 +19,7 @@
       <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="118.0" layoutY="203.0" prefHeight="26.0" prefWidth="150.0" promptText="Enter Username" style="-fx-background-radius: 5;" />
       <PasswordField id="passwordPasswordField" fx:id="passwordPasswordField" layoutX="118.0" layoutY="243.0" prefHeight="26.0" prefWidth="150.0" promptText="Enter Password" style="-fx-background-radius: 5;" />
 
-      <Button id="logInButton" fx:id="logInButton" layoutX="153.0" layoutY="321.0" mnemonicParsing="false" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Log in">
+      <Button id="logInButton" fx:id="logInButton" layoutX="153.0" layoutY="321.0" mnemonicParsing="false" onKeyPressed="#logInButtonOnKeyPressed" onMouseClicked="#logInButtonOnMouseClicked" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Log in">
          <effect>
             <DropShadow />
          </effect>

@@ -45,7 +45,7 @@ public class Book {
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
 
@@ -61,16 +61,23 @@ public class Book {
                 title, author,genre,publishYear,bookStatus,resume);
     }
 
+
+    public boolean equalsBook(Book book){
+        if (this == book) return true;
+        if (book == null || getClass() != book.getClass()) return false;
+        return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
+        return id.equals(book.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, resume, author, genre);
+        return Objects.hash(id);
     }
 }

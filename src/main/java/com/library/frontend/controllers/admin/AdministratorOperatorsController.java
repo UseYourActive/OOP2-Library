@@ -3,7 +3,9 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
+import com.library.database.enums.Role;
 import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
@@ -113,6 +115,9 @@ public class AdministratorOperatorsController implements Controller {
             User operator = operatorTableView.getSelectionModel().getSelectedItem();
 
             if (operator != null) {
+                if(operator.getRole()==Role.ADMIN){
+                    DialogUtils.showInfo("Error","You can't remove administrators");
+                }
                 adminService.removeOperator(operator);
                 updateTableView(adminService.getAllUsers());
             }

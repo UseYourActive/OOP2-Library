@@ -10,24 +10,41 @@ import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.border.StrokeBorder;
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AdministratorBooksController implements Controller {
@@ -42,6 +59,7 @@ public class AdministratorBooksController implements Controller {
     @FXML public Button logOutButton;
     private AdminService adminService;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = (AdminService) ServiceFactory.getService(AdminService.class);
@@ -49,8 +67,6 @@ public class AdministratorBooksController implements Controller {
         operatorsButton.requestFocus();
 
         bookTextArea.setFocusTraversable(false);
-
-        inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         TableViewBuilder<BookInventory> bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
         bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);
@@ -111,7 +127,8 @@ public class AdministratorBooksController implements Controller {
             if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
                 BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
-                    openDialogWithTableView(selectedItem);
+                    SceneLoader.loadModalityDialog("/views/administratorBooksDialogScene.fxml",selectedItem.getRepresentiveBook().getTitle(),selectedItem);
+                    updateTableView(adminService.getAllBookInventories());
                 }
             } else {
                 BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
@@ -144,34 +161,6 @@ public class AdministratorBooksController implements Controller {
     }
 
 
-    private void registerNewBooks(ActionEvent mouseEvent) {
-        try {
-            SceneLoader.load("/views/registerNewBookScene.fxml", "Register new book");
-        } catch (Exception e) {
-            logger.error("Error occurred during navigation to register new book scene", e);
-        }
-    }
-
-    private void prepareContextMenu() {
-        try {
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem registerNewBook = new MenuItem("Register book/s");
-            MenuItem addExistingBookItem = new MenuItem("Add book/s");
-            MenuItem removeBookItem = new MenuItem("Remove book/s");
-
-            contextMenu.getItems().addAll(registerNewBook, removeBookItem, addExistingBookItem);
-
-            inventoryTableView.setContextMenu(contextMenu);
-
-            registerNewBook.setOnAction(this::registerNewBooks);
-            removeBookItem.setOnAction(this::removeSelectedBooks);
-            addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
-        } catch (Exception e) {
-            logger.error("Error occurred during context menu preparation", e);
-        }
-    }
-
     private void updateTableView(List<BookInventory> inventories) {
         try {
             inventoryTableView.getItems().clear();
@@ -182,19 +171,49 @@ public class AdministratorBooksController implements Controller {
         }
     }
 
-    private void removeSelectedBooks(ActionEvent actionEvent) {
+    private void prepareContextMenu() {
         try {
-            List<BookInventory> inventories = inventoryTableView.getSelectionModel().getSelectedItems();
+            ContextMenu contextMenu = new ContextMenu();
 
-            if (!inventories.isEmpty()) {
+            MenuItem registerNewBook = new MenuItem("Register book");
+            MenuItem addExistingBookItem = new MenuItem("Add books");
+            MenuItem removeBookItem = new MenuItem("Remove inventory");
+
+            contextMenu.getItems().addAll(registerNewBook, removeBookItem, addExistingBookItem);
+
+            inventoryTableView.setContextMenu(contextMenu);
+
+            registerNewBook.setOnAction(this::registerNewBook);
+            removeBookItem.setOnAction(this::removeSelectedInventory);
+            addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
+        } catch (Exception e) {
+            logger.error("Error occurred during context menu preparation", e);
+        }
+    }
+
+    private void registerNewBook(ActionEvent mouseEvent) {
+        try {
+            SceneLoader.load("/views/registerNewBookScene.fxml", "Register new book");
+        } catch (Exception e) {
+            logger.error("Error occurred during navigation to register new book scene", e);
+        }
+    }
+
+
+
+    private void removeSelectedInventory(ActionEvent actionEvent) {
+        try {
+            BookInventory inventory = inventoryTableView.getSelectionModel().getSelectedItem();
+
+            if (inventory!=null) {
                 if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
-                    for (BookInventory bookInventory : inventories) {
-                        adminService.removeInventory(bookInventory);
-                        updateTableView(adminService.getAllBookInventories());
-                    }
+
+                    adminService.removeInventory(inventory);
+
+                    updateTableView(adminService.getAllBookInventories());
                 }
             } else {
-                DialogUtils.showInfo("Information", "Please select a book!");
+                DialogUtils.showInfo("Information", "Please select an inventory!");
             }
         } catch (Exception e) {
             logger.error("Error occurred during removing selected books", e);
@@ -210,35 +229,6 @@ public class AdministratorBooksController implements Controller {
             }
         } catch (Exception e) {
             logger.error("Error occurred during setting quantity on selected book", e);
-        }
-    }
-
-    private void openDialogWithTableView(BookInventory bookInventory) {
-        try {
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(SceneLoader.getStage());
-
-            TableView<Book> bookTableView = new TableView<>();
-            TableViewBuilder<Book> bookTableViewBuilder = new BookTableViewBuilder();
-            bookTableViewBuilder.createTableViewColumns(bookTableView);
-
-            bookTableView.getItems().addAll(FXCollections.observableArrayList(bookInventory.getBookList()));
-
-            // Close button
-            Button closeButton = new Button("Close");
-            closeButton.setOnAction(e -> dialogStage.close());
-
-            VBox dialogLayout = new VBox(10, new Label(bookInventory.getRepresentiveBook().getTitle()), bookTableView, closeButton);
-            dialogLayout.setPadding(new Insets(20));
-
-            Scene dialogScene = new Scene(dialogLayout, 500, 600);
-
-            dialogStage.setTitle(bookInventory.getRepresentiveBook().getTitle());
-            dialogStage.setScene(dialogScene);
-            dialogStage.show();
-        } catch (Exception e) {
-            logger.error("Error occurred during opening dialog with table view", e);
         }
     }
 

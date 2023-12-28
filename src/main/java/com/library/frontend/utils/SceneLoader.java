@@ -1,10 +1,17 @@
 package com.library.frontend.utils;
 
+import com.library.database.entities.Book;
+import com.library.frontend.utils.tableviews.BookTableViewBuilder;
+import com.library.frontend.utils.tableviews.TableViewBuilder;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +31,10 @@ public class SceneLoader {
     @Getter
     @Setter
     private static Stage stage;
+
+    @Setter
+    @Getter
+    private static Object[] transferableObjects;
 
     private SceneLoader() {
     }
@@ -58,6 +69,26 @@ public class SceneLoader {
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);
             DialogUtils.showError("Error", "An error occurred when trying to open the new dialog window!");
+        }
+    }
+
+    public static void loadModalityDialog(String resourceFiles, String stageTitle,Object ... objects){
+        try {
+            SceneLoader.transferableObjects =objects;
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(SceneLoader.getStage());
+
+            Parent root = FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));
+            Scene dialogScene = new Scene(root);
+
+            dialogStage.setTitle(stageTitle);
+            dialogStage.setScene(dialogScene);
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            logger.error("Error occurred during opening dialog with table view", e);
         }
     }
 }

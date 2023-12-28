@@ -7,6 +7,8 @@ import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
@@ -73,6 +75,12 @@ public class LogInController implements Controller {
 
         if (passwordPasswordField.getText().isBlank()) {
             throw new Exception("Please enter your password!");
+        }
+    }
+
+    public void logInButtonOnKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode()== KeyCode.ENTER){
+            //logInButtonOnMouseClicked((MouseEvent) keyEvent);
         }
     }
 }
