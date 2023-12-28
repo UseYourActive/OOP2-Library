@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorBooksController">
    <children>
       <Button fx:id="readersButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#readersButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Readers" />

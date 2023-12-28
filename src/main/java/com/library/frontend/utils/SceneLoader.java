@@ -1,16 +1,10 @@
 package com.library.frontend.utils;
 
-import com.library.database.entities.Book;
-import com.library.frontend.utils.tableviews.BookTableViewBuilder;
-import com.library.frontend.utils.tableviews.TableViewBuilder;
-import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
