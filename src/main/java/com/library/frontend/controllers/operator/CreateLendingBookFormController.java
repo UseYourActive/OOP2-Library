@@ -1,5 +1,7 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.services.OperatorService;
+import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.base.Controller;
@@ -21,10 +23,13 @@ public class CreateLendingBookFormController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public ListView<Book> bookListView;
     @FXML public TreeTableView<Reader> readerTreeTableView;
+    private OperatorService operatorService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
+        bookListView.getItems().addAll(operatorService.getAllBooks());
     }
     @FXML
     public void searchReaderButtonOnMouseClicked(MouseEvent mouseEvent) {

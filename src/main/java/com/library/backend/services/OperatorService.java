@@ -43,36 +43,18 @@ public class OperatorService implements Service {
         }
     }
 
+    public List<Book> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        logger.info("Retrieved {} books from the repository.", books.size());
+        return books;
+    }
+
     public void lendBook(Book book) {
         updateBookStatus(book, BookStatus.LENT, "lent");
     }
 
     public void archiveBook(Book book) {
         updateBookStatus(book, BookStatus.ARCHIVED, "archived");
-    }
-
-    public List<Reader> getAllReaders() {
-        return readerRepository.findAll();
-    }
-
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
-
-    public List<BookInventory> getAllBookInventories() {
-        List<BookInventory> inventories = bookInventoryRepository.findAll();
-        //logEntityRetrieval("book_inventories", inventories.size());
-        return inventories;
-    }
-
-    public void createReader(Reader reader) {
-        Preconditions.checkNotNull(reader, "Reader cannot be null");
-        readerRepository.save(reader);
-    }
-
-    public void removeReader(Reader reader) {
-        Preconditions.checkNotNull(reader, "Reader cannot be null");
-        readerRepository.delete(reader);
     }
 
     private void updateBookStatus(Book book, BookStatus newStatus, String action) {
@@ -84,5 +66,29 @@ public class OperatorService implements Service {
         } else {
             logger.error("Failed to {} book: {}", action, book.getTitle());
         }
+    }
+
+    public List<Reader> getAllReaders() {
+        List<Reader> readers = readerRepository.findAll();
+        logger.info("Retrieved {} readers from the repository.", readers.size());
+        return readers;
+    }
+
+    public void createReader(Reader reader) {
+        Preconditions.checkNotNull(reader, "Reader cannot be null");
+        readerRepository.save(reader);
+        logger.info("Created a new reader: {}", reader);
+    }
+
+    public void removeReader(Reader reader) {
+        Preconditions.checkNotNull(reader, "Reader cannot be null");
+        readerRepository.delete(reader);
+        logger.info("Removed reader: {}", reader);
+    }
+
+    public List<BookInventory> getAllBookInventories() {
+        List<BookInventory> inventories = bookInventoryRepository.findAll();
+        logger.info("Retrieved {} book inventories from the repository.", inventories.size());
+        return inventories;
     }
 }
