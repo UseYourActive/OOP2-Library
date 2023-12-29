@@ -38,11 +38,11 @@ public class SceneLoader {
         loadBackground(stage, resourceFiles, stageTitle);
     }
 
-    public static void load(String resourceFiles, String stageTitle){
-        if(stage==null)
+    public static void load(String resourceFiles, String stageTitle) {
+        if (stage == null)
             throw new RuntimeException();
 
-        loadBackground(stage,resourceFiles,stageTitle);
+        loadBackground(stage, resourceFiles, stageTitle);
     }
 
     public static void load(Stage stage, String resourceFiles, String stageTitle) {
@@ -60,16 +60,20 @@ public class SceneLoader {
             SceneLoader.stage = stage;
 
             logger.info("Loaded scene: {}", resourceFiles);
+        } catch (IllegalStateException e) {
+            logger.error("Error occurred during opening dialog with table view", e);
+        } catch (NullPointerException e) {
+            logger.error("Null Pointer occurred unexpectedly!", e);
         } catch (IOException e) {
             logger.error("Error loading form: {}", resourceFiles, e);
             DialogUtils.showError("Error", "An error occurred when trying to open the new dialog window!");
         }
     }
 
-    public static void loadModalityDialog(String resourceFiles, String stageTitle,Object ... objects){
+    public static void loadModalityDialog(String resourceFiles, String stageTitle, Object... objects) {
         try {
-            if(objects!=null)
-                SceneLoader.transferableObjects =objects;
+            if (objects != null)
+                SceneLoader.transferableObjects = objects;
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -82,8 +86,13 @@ public class SceneLoader {
             dialogStage.setScene(dialogScene);
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
-        } catch (Exception e) {
-            logger.error("Error occurred during opening dialog with table view", e);
+        } catch (IllegalStateException e) {
+            logger.error("Error occurred during opening dialog with table view!", e);
+        } catch (NullPointerException e) {
+            logger.error("Null Pointer occurred unexpectedly!", e);
+        } catch (IOException e) {
+            logger.error("Error loading form: {}", resourceFiles, e);
+            DialogUtils.showError("Error", "An error occurred when trying to open the new dialog window!");
         }
     }
 }

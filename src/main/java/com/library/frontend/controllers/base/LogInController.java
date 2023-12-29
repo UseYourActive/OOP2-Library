@@ -1,5 +1,7 @@
 package com.library.frontend.controllers.base;
 
+import com.library.backend.exception.IncorrectInputException;
+import com.library.backend.exception.UserNotFoundException;
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
@@ -15,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +31,12 @@ public class LogInController implements Controller {
     @FXML private Label logInMessageLabel;
     @FXML private TextField usernameTextField;
     @FXML private PasswordField passwordPasswordField;
+    private LogInService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> usernameTextField.requestFocus());
+        service = (LogInService) ServiceFactory.getService(LogInService.class);
     }
 
     @FXML
@@ -45,8 +50,6 @@ public class LogInController implements Controller {
                         .password(passwordPasswordField.getText())
                         .build();
 
-                LogInService service = (LogInService) ServiceFactory.getService(LogInService.class);
-
                 User user = service.getUser(logInUser);
                 SceneLoader.setUsername(usernameTextField.getText());
 
@@ -59,25 +62,31 @@ public class LogInController implements Controller {
                     }
                 }
 
-            } catch (Exception e) {
-                logger.error("Error during login", e);
-                logInMessageLabel.setText("An error occurred during login!");
+            } catch (UserNotFoundException e) {
+                logger.error(e.getMessage());
+                logInMessageLabel.setText("User not found!");
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+                logInMessageLabel.setText("Error loading the database!");
+            } catch (IncorrectInputException e) {
+                logger.error(e.getMessage());
+                logInMessageLabel.setText("Invalid user input!");
             }
         }
     }
 
     //Try to move the logic inside a class
-    private void checkInput() throws Exception {
+    private void checkInput() throws IncorrectInputException {
         if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
-            throw new Exception("Please enter username\nand password!");
+            throw new IncorrectInputException("Please enter username\nand password!");
         }
 
         if (usernameTextField.getText().isBlank()) {
-            throw new Exception("Please enter your username!");
+            throw new IncorrectInputException("Please enter your username!");
         }
 
         if (passwordPasswordField.getText().isBlank()) {
-            throw new Exception("Please enter your password!");
+            throw new IncorrectInputException("Please enter your password!");
         }
     }
 

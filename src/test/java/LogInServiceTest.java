@@ -29,7 +29,7 @@ public class LogInServiceTest {
     }
 
     @Test
-    public void testGetUser() {
+    public void testGetUser() throws UserNotFoundException {
         // Arrange
         User testUser = new User();
         testUser.setUsername("testUser");
@@ -100,7 +100,7 @@ public class LogInServiceTest {
     }
 
     @Test
-    public void testGetUserWithExistingUsername() {
+    public void testGetUserWithExistingUsername() throws UserNotFoundException {
         // Arrange
         User testUser = new User();
         testUser.setUsername("existingUser");
@@ -131,7 +131,7 @@ public class LogInServiceTest {
     }
 
     @Test
-    public void testGetUserWithValidCredentials() {
+    public void testGetUserWithValidCredentials() throws UserNotFoundException {
         // Arrange
         User testUser = new User();
         testUser.setUsername("validUser");

@@ -1,7 +1,9 @@
 package com.library.backend.services;
 
+import com.library.backend.exception.UserNotFoundException;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +16,14 @@ public class LogInService implements Service {
         this.userRepository = userRepository;
     }
 
-    public User getUser(User user) {
+    public User getUser(User user) throws UserNotFoundException, HibernateException {
         String username = user.getUsername();
         logger.info("Attempting to retrieve user: {}", username);
 
         User retrievedUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     logger.error("User not found: {}", username);
-                    return new RuntimeException("User not found");
+                    return new UserNotFoundException("User not found");
                 });
 
         logger.info("User retrieved successfully: {}", retrievedUser.getUsername());
