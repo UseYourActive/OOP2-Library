@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.admin;
 
+import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.PatternSyntaxException;
 
 public class CreateOperatorController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(CreateOperatorController.class);
@@ -50,15 +52,9 @@ public class CreateOperatorController implements Controller {
 
             ((AdminService) ServiceFactory.getService(AdminService.class)).registerOperator(user);
             cancelButton.fire();
-        } catch (IllegalArgumentException e) {
-            informationLabel.setText("Please fill out all fields!");
-            logger.warn("User failed to create due to missing fields", e);
-        } catch (ValidationException e) {
+        } catch (IncorrectInputException | PatternSyntaxException | ValidationException e) {
             informationLabel.setText(e.getMessage());
-            logger.warn("User failed to create due to validation exception", e);
-        } catch (Exception e) {
-            informationLabel.setText("An unexpected error occurred.");
-            logger.error("Unexpected error occurred during user creation", e);
+            logger.error("User failed to create due to missing fields", e);
         }
 
         SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
@@ -94,7 +90,7 @@ public class CreateOperatorController implements Controller {
         }
     }
 
-    private void checkAllFieldsForInput() throws Exception {
+    private void checkAllFieldsForInput() throws IncorrectInputException {
         String usernameTextFieldText = usernameTextField.getText();
         String pass;
         String repeatPass;
@@ -108,15 +104,15 @@ public class CreateOperatorController implements Controller {
         }
 
         if (usernameTextFieldText.isEmpty() || pass.isEmpty() || repeatPass.isEmpty()) {
-            throw new Exception("Please fill out all fields!");
+            throw new IncorrectInputException("Please fill out all fields!");
         }
 
         if (!pass.equals(repeatPass)) {
-            throw new Exception("The passwords did not match!");
+            throw new IncorrectInputException("The passwords did not match!");
         }
 
         if (!passwordValidator.isValid(pass)) {
-            throw new Exception("Password is not strong enough. It must contain at least one digit, one lowercase and one uppercase letter, and be at least 6 characters long.");
+            throw new IncorrectInputException("Password is not strong enough. It must contain at least one digit, one lowercase and one uppercase letter, and be at least 6 characters long.");
         }
     }
 }

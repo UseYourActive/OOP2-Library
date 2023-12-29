@@ -55,7 +55,7 @@ public class LogInServiceTest {
         when(userRepository.findByUsername("nonExistentUser")).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername("nonExistentUser");
     }
 
@@ -66,7 +66,7 @@ public class LogInServiceTest {
         testUser.setUsername(null);
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername(isNull());
     }
 
@@ -81,7 +81,7 @@ public class LogInServiceTest {
         when(userRepository.findByUsername("")).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername("");
     }
 
@@ -95,7 +95,7 @@ public class LogInServiceTest {
         when(userRepository.findByUsername("   ")).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername("   ");
     }
 
@@ -126,7 +126,7 @@ public class LogInServiceTest {
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername("nonexistentUser");
     }
 
@@ -159,21 +159,21 @@ public class LogInServiceTest {
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(testUser));
+        assertThrows(UserNotFoundException.class, () -> logInService.getUser(testUser));
         verify(userRepository).findByUsername("validUser");
     }
 
     @Test
     public void testGetUserWithNullUser() {
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(null));
+        assertThrows(NullPointerException.class, () -> logInService.getUser(null));
         verify(userRepository, never()).findByUsername(anyString());
     }
 
     @Test
     public void testGetUserWithNullUserAndNullPassword() {
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> logInService.getUser(null));
+        assertThrows(NullPointerException.class, () -> logInService.getUser(null));
         verify(userRepository, never()).findByUsername(anyString());
     }
 }

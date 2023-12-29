@@ -8,9 +8,22 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code OperatorTableViewBuilder} class implements the {@link TableViewBuilder} interface
+ * to create and configure JavaFX {@link javafx.scene.control.TableView} columns for the {@link User} entity.
+ * It defines columns for operator-related properties such as username and role.
+ *
+ * @see TableViewBuilder
+ */
 public class OperatorTableViewBuilder implements TableViewBuilder<User> {
     private static final Logger logger = LoggerFactory.getLogger(OperatorTableViewBuilder.class);
 
+    /**
+     * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
+     * Defines columns for operator-related properties such as username and role.
+     *
+     * @param tableView The TableView for which columns are created and configured.
+     */
     @Override
     public void createTableViewColumns(TableView<User> tableView) {
         try {

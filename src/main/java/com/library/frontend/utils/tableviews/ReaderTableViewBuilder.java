@@ -7,9 +7,22 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code ReaderTableViewBuilder} class implements the {@link TableViewBuilder} interface
+ * to create and configure JavaFX {@link javafx.scene.control.TableView} columns for the {@link Reader} entity.
+ * It defines columns for reader-related properties such as first name, last name, and email.
+ *
+ * @see TableViewBuilder
+ */
 public class ReaderTableViewBuilder implements TableViewBuilder<Reader> {
     private static final Logger logger = LoggerFactory.getLogger(ReaderTableViewBuilder.class);
 
+    /**
+     * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
+     * Defines columns for reader-related properties such as first name, last name, and email.
+     *
+     * @param tableView The TableView for which columns are created and configured.
+     */
     @Override
     public void createTableViewColumns(TableView<Reader> tableView) {
         try {

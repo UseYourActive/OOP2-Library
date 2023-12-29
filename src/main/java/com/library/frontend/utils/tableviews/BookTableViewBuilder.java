@@ -8,27 +8,40 @@ import javafx.scene.control.TableView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code BookTableViewBuilder} class implements the {@link TableViewBuilder} interface
+ * to create and configure JavaFX {@link javafx.scene.control.TableView} columns for the {@link Book} entity.
+ * It defines columns for book properties such as ID, number of times used, and status.
+ *
+ * @see TableViewBuilder
+ */
 public class BookTableViewBuilder implements TableViewBuilder<Book> {
     private static final Logger logger = LoggerFactory.getLogger(BookTableViewBuilder.class);
 
+    /**
+     * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
+     * Defines columns for book ID, number of times used, and status.
+     *
+     * @param tableView The TableView for which columns are created and configured.
+     */
     @Override
     public void createTableViewColumns(TableView<Book> tableView) {
         try {
-            TableColumn<Book, Long> titleTableColumn = new TableColumn<>("Id");
-            titleTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
-            titleTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
+            TableColumn<Book, Long> idTableColumn = new TableColumn<>("Id");
+            idTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getId()));
+            idTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
-            TableColumn<Book, Integer> authorTableColumn = new TableColumn<>("Times used");
-            authorTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNumberOfTimesUsed()));
-            authorTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
+            TableColumn<Book, Integer> timesUsedTableColumn = new TableColumn<>("Times used");
+            timesUsedTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getNumberOfTimesUsed()));
+            timesUsedTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
-            TableColumn<Book, BookStatus> genreTableColumn = new TableColumn<>("Status");
-            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getBookStatus()));
-            genreTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
+            TableColumn<Book, BookStatus> statusTableColumn = new TableColumn<>("Status");
+            statusTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getBookStatus()));
+            statusTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
-            tableView.getColumns().add(titleTableColumn);
-            tableView.getColumns().add(authorTableColumn);
-            tableView.getColumns().add(genreTableColumn);
+            tableView.getColumns().add(idTableColumn);
+            tableView.getColumns().add(timesUsedTableColumn);
+            tableView.getColumns().add(statusTableColumn);
 
             logger.info("Book Inventory table view created successfully");
         } catch (Exception e) {

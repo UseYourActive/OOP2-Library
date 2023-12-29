@@ -120,7 +120,7 @@ public class AuthorRepository extends Repository<Author> {
      * @param resultType The type of the result expected.
      * @param <T>        The type of the result.
      * @return An {@code Optional} containing the result of the query, or empty if no result is found.
-     * @throws HibernateException If an error occurs during the Hibernate operation.
+     * @throws HibernateException             If an error occurs during the Hibernate operation.
      */
     private <T> Optional<T> executeQuery(String query, String paramName, String paramValue, Class<T> resultType) throws HibernateException {
         try {
