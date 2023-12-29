@@ -49,7 +49,7 @@ public class OperatorReadersController implements Controller {
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
-                SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
+                SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
             } catch (Exception e) {
                 logger.error("Error occurred during loading operator books scene", e);
             }
@@ -131,7 +131,7 @@ public class OperatorReadersController implements Controller {
 
     private void createReader(ActionEvent actionEvent) {
         try {
-            SceneLoader.load("/views/createReaderProfileScene.fxml", SceneLoader.getUsername() + " (Operator)");
+            SceneLoader.load("/views/operator/createReaderProfileScene.fxml", SceneLoader.getUsername() + " (Operator)");
         } catch (Exception e) {
             logger.error("Error occurred during loading create reader profile scene", e);
         }

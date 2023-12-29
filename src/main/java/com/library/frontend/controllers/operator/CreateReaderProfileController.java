@@ -61,7 +61,7 @@ public class CreateReaderProfileController implements Controller {
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
         } catch (Exception e) {
             logger.error("Error occurred during canceling creating reader profile", e);
         }

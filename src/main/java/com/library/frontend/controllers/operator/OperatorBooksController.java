@@ -31,6 +31,7 @@ public class OperatorBooksController implements Controller {
     @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public TextArea bookTextArea;
     @FXML public AnchorPane anchorPane;
+    @FXML private Button logOutButton;
     private OperatorService operatorService;
 
     @Override
@@ -54,7 +55,7 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void readersButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Readers");
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Readers");
         }
     }
 
@@ -153,13 +154,22 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    @FXML
+    private void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
+        try {
+            SceneLoader.load(mouseEvent, "/views/base/logInScene.fxml", "LogIn");
+        } catch (Exception e) {
+            logger.error("Error occurred during logout", e);
+        }
+    }
+
     private void lendSelectedBooks(ActionEvent actionEvent) {
         // Implement logic for lending books
     }
 
     private void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
         try {
-            SceneLoader.load("/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
+            SceneLoader.load("/views/operator/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
         } catch (Exception e) {
             logger.error("Error occurred during loading lending book for reading room scene", e);
         }

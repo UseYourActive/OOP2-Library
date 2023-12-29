@@ -61,12 +61,12 @@ public class CreateOperatorController implements Controller {
             logger.error("Unexpected error occurred during user creation", e);
         }
 
-        SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
 
     @FXML

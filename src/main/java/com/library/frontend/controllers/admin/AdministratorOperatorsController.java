@@ -49,7 +49,7 @@ public class AdministratorOperatorsController implements Controller {
 
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/administratorBooksScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUsername() + "(Administrator)");
     }
 
     @FXML
@@ -104,7 +104,7 @@ public class AdministratorOperatorsController implements Controller {
 
     private void createOperator(ActionEvent actionEvent) {
         try {
-            SceneLoader.load("/views/createOperatorScene.fxml", "Create operator");
+            SceneLoader.load("/views/admin/createOperatorScene.fxml", "Create operator");
         } catch (Exception e) {
             logger.error("Error occurred during operator creation", e);
         }

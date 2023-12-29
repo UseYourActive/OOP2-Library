@@ -28,6 +28,6 @@ public class ReaderInfoController implements Controller {
 
     @FXML
     public void goBackButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/operatorReadersScene.fxml", "Operator readers scene");
+        SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
     }
 }

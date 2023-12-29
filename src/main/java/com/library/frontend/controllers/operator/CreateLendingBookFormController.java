@@ -42,6 +42,6 @@ public class CreateLendingBookFormController implements Controller {
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/operatorBooksScene.fxml", "Operator books scene");
+        SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", "Operator books scene");
     }
 }

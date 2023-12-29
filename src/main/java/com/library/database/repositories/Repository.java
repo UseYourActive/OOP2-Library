@@ -24,7 +24,7 @@ public abstract class Repository<T> implements AutoCloseable {
 
     static {
         try {
-            Configuration configuration = new Configuration().configure();
+            Configuration configuration = new Configuration().configure("/sql/hibernate.cfg.xml");
             sessionFactory = configuration.buildSessionFactory();
             logger.info("Hibernate initialized successfully");
         } catch (Throwable ex) {

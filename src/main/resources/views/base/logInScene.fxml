@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="168.0" fitWidth="187.0" layoutX="109.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/library-logo-for-server-login-page-using-letters-B-and-A.png" />
+            <Image url="@../../images/library-logo-for-server-login-page-using-letters-B-and-A.png" />
          </image>
       </ImageView>
       <TextField id="usernameTextField" fx:id="usernameTextField" layoutX="118.0" layoutY="203.0" prefHeight="26.0" prefWidth="150.0" promptText="Enter Username" style="-fx-background-radius: 5;" />

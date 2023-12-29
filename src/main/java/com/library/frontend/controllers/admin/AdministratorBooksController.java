@@ -97,7 +97,7 @@ public class AdministratorBooksController implements Controller {
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
         } catch (Exception e) {
             logger.error("Error occurred during navigation to operators scene", e);
         }
@@ -109,7 +109,7 @@ public class AdministratorBooksController implements Controller {
             if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
                 BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
-                    SceneLoader.loadModalityDialog("/views/administratorBooksDialogScene.fxml",selectedItem.getRepresentiveBook().getTitle(),selectedItem);
+                    SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml",selectedItem.getRepresentiveBook().getTitle(),selectedItem);
                     updateTableView(adminService.getAllBookInventories());
                 }
             } else {
@@ -126,7 +126,7 @@ public class AdministratorBooksController implements Controller {
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "LogIn");
+            SceneLoader.load(mouseEvent, "/views/base/logInScene.fxml", "LogIn");
         } catch (Exception e) {
             logger.error("Error occurred during logout", e);
         }
@@ -175,7 +175,7 @@ public class AdministratorBooksController implements Controller {
 
     private void registerNewBook(ActionEvent mouseEvent) {
         try {
-            SceneLoader.load("/views/registerNewBookScene.fxml", "Register new book");
+            SceneLoader.load("/views/admin/registerNewBookScene.fxml", "Register new book");
         } catch (Exception e) {
             logger.error("Error occurred during navigation to register new book scene", e);
         }
