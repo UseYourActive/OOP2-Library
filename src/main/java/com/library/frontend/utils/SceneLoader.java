@@ -68,7 +68,8 @@ public class SceneLoader {
 
     public static void loadModalityDialog(String resourceFiles, String stageTitle,Object ... objects){
         try {
-            SceneLoader.transferableObjects =objects;
+            if(objects!=null)
+                SceneLoader.transferableObjects =objects;
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.WINDOW_MODAL);

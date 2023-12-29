@@ -26,30 +26,31 @@ public class OperatorBooksController implements Controller {
     @FXML public Button readersButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
-    @FXML public TextArea bookTextArea;
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
     @FXML public TreeTableView<Book> bookTreeTableView;
+    @FXML public ListView<Book> selectedBooksListView;
+    @FXML public Button lendButton;
+    @FXML public Button lendReadingRoomButton;
 
     private OperatorService operatorService;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
-        bookTreeTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //bookTreeTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
 
-        populateTreeTableView();
+        updateTreeTableView(operatorService.getAllBookInventories());
 
+        selectedBooksListView.setTooltip(new Tooltip("Selected books will show here"));
 
         readersButton.requestFocus();
 
-        bookTextArea.setFocusTraversable(false);
-
-        //updateTableView(operatorService.getAllBookInventories());
 
         prepareContextMenu();
     }
@@ -66,32 +67,35 @@ public class OperatorBooksController implements Controller {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
                 List<BookInventory> results = new ArrayList<>();
-                List<BookInventory> inventories = operatorService.getAllBookInventories();
+
+
                 String stringToSearch = searchBookTextField.getText();
                 if (stringToSearch.isEmpty()) {
-                    updateTableView(inventories);
+                    updateTreeTableView(operatorService.getAllBookInventories());
+
                 } else {
 
-                    for (BookInventory inventory : inventories) {
-                        Book book = inventory.getBookList().get(0);
+                    for(BookInventory bookInventory: operatorService.getAllBookInventories()){
+
+                        Book book=bookInventory.getRepresentiveBook();
 
                         if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(inventory);
+                            results.add(bookInventory);
 
                         if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(inventory);
+                            results.add(bookInventory);
 
                         if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(inventory);
+                            results.add(bookInventory);
 
                         if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(inventory);
+                            results.add(bookInventory);
 
                         if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
-                            results.add(inventory);
+                            results.add(bookInventory);
                     }
 
-                    updateTableView(results);
+                    updateTreeTableView(results);
                 }
             } catch (Exception e) {
                 logger.error("Error occurred during searching books", e);
@@ -104,105 +108,97 @@ public class OperatorBooksController implements Controller {
         SceneLoader.load(mouseEvent,"/views/base/logInScene.fxml","Log In");
     }
     @FXML
-    public void anchorPaneOnMouseClicked(MouseEvent mouseEvent) {
+    public void anchorPaneOnMouseClicked() {
         bookTreeTableView.getSelectionModel().clearSelection();
     }
 
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
-        if(!bookTreeTableView.getSelectionModel().isEmpty()&&bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
-            bookTextArea.setText(bookTreeTableView.getSelectionModel().getSelectedItem().getValue().toString());
+        try {
+            if (mouseEvent.getClickCount() == 2
+                    && mouseEvent.getButton() == MouseButton.PRIMARY
+                    &&!bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
-            for (TreeItem<Book> bookTreeItem : bookTreeTableView.getSelectionModel().getSelectedItems()) {
-                if (!bookTreeItem.isLeaf()) {
-                    bookTreeTableView.getSelectionModel().clearSelection();
-                    break;
-                }
+                SceneLoader.loadModalityDialog("/views/operator/archiveBookScene.fxml","Archive Book");
+                updateTreeTableView(operatorService.getAllBookInventories());
+            } else {
+               //if(!bookTreeTableView.getSelectionModel().isEmpty()&&bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
+               //    bookTextArea.setText(bookTreeTableView.getSelectionModel().getSelectedItem().getValue().toString());
+               //}
+
+
+                //for (TreeItem<Book> bookTreeItem : bookTreeTableView.getSelectionModel().getSelectedItems()) {
+                //    if (!bookTreeItem.isLeaf()) {
+                //        //bookTreeTableView.getSelectionModel().clearSelection();
+                //        break;
+                //    }
+                //}
             }
+        } catch (Exception e) {
+            logger.error("Error occurred during handling book table view click", e);
         }
+    }
+
+    @FXML
+    public void selectedBooksListViewOnMouseClicked(MouseEvent mouseEvent) {
+    }
+    @FXML
+    public void lendButtonOnMouseClicked() {
+        SceneLoader.loadModalityDialog("/views/operator/createLendingBookFormScene.fxml","Create Book form");
+    }
+
+    @FXML
+    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 
     private void prepareContextMenu() {
         try {
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem archiveItem = new MenuItem("Archive book");
-            MenuItem lendBookItem = new MenuItem("Lend book");
-            MenuItem lendReadingRoomBookItem = new MenuItem("Lend book for reading room");
+            MenuItem resume = new MenuItem("Register book");
 
-            contextMenu.getItems().addAll(archiveItem, lendBookItem, lendReadingRoomBookItem);
+            contextMenu.getItems().add(resume);
 
             bookTreeTableView.setContextMenu(contextMenu);
 
-            archiveItem.setOnAction(this::archiveSelectedBooks);
-            lendBookItem.setOnAction(this::lendSelectedBooks);
-            lendReadingRoomBookItem.setOnAction(this::lendReadingRoomSelectedBooks);
+            resume.setOnAction(this::showResume);
+
         } catch (Exception e) {
-            logger.error("Error occurred during preparing context menu", e);
+            logger.error("Error occurred during context menu preparation", e);
         }
     }
 
-    private void updateTableView(List<BookInventory> inventories) {
+    private void showResume(ActionEvent actionEvent){
+        SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml","Resume");
+    }
+
+
+    private void updateTreeTableView(List<BookInventory> bookInventories){
         try {
-            //bookTreeTableView.getRoot().getChildren().clear();
-            //populateTreeTableView();
-            //bookTreeTableView.getItems().clear();
-            //bookTreeTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
-        } catch (Exception e) {
-            logger.error("Error occurred during updating book table view", e);
-        }
-    }
+            //Creating the parents
+            bookTreeTableView.getRoot().getChildren().clear();
+            for(BookInventory bookInventory: bookInventories){
 
-    private void archiveSelectedBooks(ActionEvent actionEvent) {
-      //try {
-      //    Book selectedBook = bookTreeTableView.getSelectionModel().getSelectedItem().getBookList().get(0);
+                Book parentBook=Book.builder()
+                        .id(bookInventory.getRepresentiveBook().getId())
+                        .title(bookInventory.getRepresentiveBook().getTitle()+" "+bookInventory.getRepresentiveBook().getAuthor())
+                        .build();
 
-      //    if (selectedBook != null) {
-      //        operatorService.archiveBook(selectedBook);
-      //        updateTableView(operatorService.getAllBookInventories());
-      //        bookTextArea.clear();
-      //    } else {
-      //        bookTextArea.setText("No book selected to archive");
-      //    }
-      //} catch (Exception e) {
-      //    logger.error("Error occurred during archiving selected books", e);
-      //}
-    }
+                TreeItem<Book> parent =new TreeItem<>(parentBook);
 
-    private void lendSelectedBooks(ActionEvent actionEvent) {
-        // Implement logic for lending books
-    }
+                //Creating the children
+                for(Book book:bookInventory.getBookList()){
 
-    private void lendReadingRoomSelectedBooks(ActionEvent actionEvent) {
-        //try {
-        //    SceneLoader.load("/views/lendingBookReadingRoomScene.fxml", "Lending book for reading room");
-        //} catch (Exception e) {
-        //    logger.error("Error occurred during loading lending book for reading room scene", e);
-        //}
-    }
+                    TreeItem<Book> child=new TreeItem<>(book);
 
+                    parent.getChildren().add(child);//Adding child to the root element
+                }
 
-
-    private void populateTreeTableView(){
-        //Creating the parents
-        for(BookInventory bookInventory: operatorService.getAllBookInventories()){
-
-            Book parentBook=Book.builder()
-                    .title(bookInventory.getRepresentiveBook().getTitle()+" "+bookInventory.getRepresentiveBook().getAuthor())
-                    .build();
-
-            TreeItem<Book> parent =new TreeItem<>(parentBook);
-
-            //Creating the children
-            for(Book book:bookInventory.getBookList()){
-
-                TreeItem<Book> child=new TreeItem<>(book);
-
-                parent.getChildren().add(child);//Adding child to the root element
+                bookTreeTableView.getRoot().getChildren().add(parent);
             }
-
-            bookTreeTableView.getRoot().getChildren().add(parent);
+        } catch (Exception e) {
+            logger.error("Error occurred during updating book tree table view", e);
         }
-
     }
+
 }

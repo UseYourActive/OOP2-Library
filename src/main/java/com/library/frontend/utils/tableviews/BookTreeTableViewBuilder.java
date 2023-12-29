@@ -7,6 +7,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 
+import java.time.Year;
+
 public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book>{
 
     @Override
@@ -14,17 +16,18 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book>{
         //Creating default root node
         TreeItem<Book> root = new TreeItem<>();
 
-        //Creating a column
         TreeTableColumn<Book, String> titleColumn = new TreeTableColumn<>("Book");
-        //Defining cell content
-        titleColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) ->
-                new ReadOnlyStringWrapper(p.getValue().getValue().getTitle())); // Adjust this based on Book attributes
-        titleColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.60));
-        titleColumn.setResizable(false);
+        setNonNullColumnPreferences(bookTreeTableView,titleColumn,0.3);
 
-        //Creating a column
+        TreeTableColumn<Book, String> authorColumn = new TreeTableColumn<>("Author");
+        setNonNullColumnPreferences(bookTreeTableView,authorColumn,0.2);
+
+        TreeTableColumn<Book, String> genreColumn = new TreeTableColumn<>("Genre");
+        setNonNullColumnPreferences(bookTreeTableView,genreColumn,0.2);
+
+
+
         TreeTableColumn<Book, String> bookStatusColumn = new TreeTableColumn<>("Status");
-        //Defining cell content
         bookStatusColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
             BookStatus bookStatus = p.getValue().getValue().getBookStatus();
             if (bookStatus != null) {
@@ -33,12 +36,11 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book>{
                 return new ReadOnlyStringWrapper("");
             }
         }); // Adjust this based on Book attributes
-        bookStatusColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));
+        bookStatusColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         bookStatusColumn.setResizable(false);
 
-        //Creating a column
+
         TreeTableColumn<Book, String> numberOfTimesUsedColumn = new TreeTableColumn<>("Times used");
-        //Defining cell content
         numberOfTimesUsedColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
             Integer numberOfTimesUsed = p.getValue().getValue().getNumberOfTimesUsed();
             if (numberOfTimesUsed != null) {
@@ -47,15 +49,39 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book>{
                 return new ReadOnlyStringWrapper("");
             }
         }); // Adjust this based on Book attributes
-        numberOfTimesUsedColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));
+        numberOfTimesUsedColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         numberOfTimesUsedColumn.setResizable(false);
+
+        TreeTableColumn<Book, String> publishedYearColumn = new TreeTableColumn<>("Year");
+        numberOfTimesUsedColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            Year publishedYear = p.getValue().getValue().getPublishYear();
+            if (publishedYear != null) {
+                return new ReadOnlyStringWrapper(publishedYear.toString());
+            } else {
+                return new ReadOnlyStringWrapper("");
+            }
+        }); // Adjust this based on Book attributes
+        numberOfTimesUsedColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
+        numberOfTimesUsedColumn.setResizable(false);
+
 
         bookTreeTableView.setRoot(root);
         bookTreeTableView.setShowRoot(false); // Hide the default root node
         bookTreeTableView.getColumns().add(titleColumn);
+        bookTreeTableView.getColumns().add(authorColumn);
+        bookTreeTableView.getColumns().add(genreColumn);
         bookTreeTableView.getColumns().add(bookStatusColumn);
+        bookTreeTableView.getColumns().add(publishedYearColumn);
         bookTreeTableView.getColumns().add(numberOfTimesUsedColumn);
 
-
     }
+
+    //Defining cell content
+    private void setNonNullColumnPreferences(TreeTableView<Book> treeTableView,TreeTableColumn<Book, String> column,Double multiplier){
+        column.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue().getTitle())); // Adjust this based on Book attributes
+        column.prefWidthProperty().bind(treeTableView.widthProperty().multiply(multiplier));
+        column.setResizable(false);
+    }
+
 }
