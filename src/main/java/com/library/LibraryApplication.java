@@ -10,16 +10,7 @@ public class LibraryApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        SceneLoader.load(stage, "/views/base/logInScene.fxml", "Library");
-
-        //Form form = new Form(stage, "/views/logInScene.fxml", "Library");
-        //form.load();
-
-        //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/logInScene.fxml")));
-        //Scene scene=new Scene(root);
-        //stage.setScene(scene);
-        //stage.show();
-
+        SceneLoader.load(stage,"/views/base/logInScene.fxml", "Library");
     }
 
     public static void main(String[] args) {
