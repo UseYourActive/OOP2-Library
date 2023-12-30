@@ -1,5 +1,7 @@
 package com.library.database.repositories;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -50,11 +52,14 @@ import java.util.function.Consumer;
  * @see Configuration
  * @see LoggerFactory
  */
+@Getter
+@Setter
 public abstract class Repository<T> implements AutoCloseable {
     private static final SessionFactory sessionFactory;
     private static final ThreadLocal<Session> threadLocalSession = new ThreadLocal<>();
     private static final Logger logger = LoggerFactory.getLogger(Repository.class);
     protected Session session;
+    protected Transaction transaction;
 
     protected Repository() {
         this.session = getThreadLocalSession();
@@ -118,7 +123,7 @@ public abstract class Repository<T> implements AutoCloseable {
      * @throws HibernateException If an error occurs during the Hibernate transaction.
      */
     protected final void actionInsideOfTransaction(Consumer<Session> action) throws org.hibernate.HibernateException {
-        Transaction transaction = session.getTransaction();
+        transaction = session.getTransaction();
         try {
             transaction.begin();
             action.accept(session);
@@ -160,9 +165,10 @@ public abstract class Repository<T> implements AutoCloseable {
      * @param object The entity to be deleted.
      * @throws HibernateException If an error occurs during the Hibernate operation.
      */
-    public final void delete(T object) throws org.hibernate.HibernateException {
+    public final boolean delete(T object) throws org.hibernate.HibernateException {
         actionInsideOfTransaction(session -> session.remove(object));
         logger.info("Entity deleted successfully");
+        return true;
     }
 
     /**
@@ -185,8 +191,9 @@ public abstract class Repository<T> implements AutoCloseable {
      * @param object The entity to be updated.
      * @throws HibernateException If an error occurs during the Hibernate operation.
      */
-    public final void update(T object) throws org.hibernate.HibernateException {
+    public final boolean update(T object) throws org.hibernate.HibernateException {
         actionInsideOfTransaction(session -> session.merge(object));
         logger.info("Entity updated successfully");
+        return true;
     }
 }

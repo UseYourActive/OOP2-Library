@@ -43,9 +43,10 @@ public class CustomHighlightingLoggerName extends ForegroundCompositeConverterBa
      * @return The ANSI color code for the foreground color.
      */
     @Override
-    protected String getForegroundColorCode(ILoggingEvent event) {
+    public String getForegroundColorCode(ILoggingEvent event) {
         String loggerName = event.getLoggerName();
-        return loggerName.contains("important") ? ANSIConstants.YELLOW_FG : ANSIConstants.DEFAULT_FG;
+
+        return (loggerName != null && loggerName.contains("important")) ? ANSIConstants.YELLOW_FG : ANSIConstants.DEFAULT_FG;
     }
 }
 

@@ -46,8 +46,13 @@ public class CustomHighlightingThread extends ForegroundCompositeConverterBase<I
      * @return The ANSI color code for the foreground color based on the thread name.
      */
     @Override
-    protected String getForegroundColorCode(ILoggingEvent event) {
+    public String getForegroundColorCode(ILoggingEvent event) {
         String threadName = event.getThreadName();
+
+        if (threadName == null) {
+            return ANSIConstants.DEFAULT_FG;
+        }
+
         return threadName.contains("background") ? ANSIConstants.BLUE_FG : ANSIConstants.DEFAULT_FG;
     }
 }

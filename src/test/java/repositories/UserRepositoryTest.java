@@ -1,3 +1,5 @@
+package repositories;
+
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import org.hibernate.Session;

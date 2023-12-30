@@ -1,3 +1,5 @@
+package services;
+
 import com.library.backend.exception.UserNotFoundException;
 import com.library.backend.services.LogInService;
 import com.library.database.entities.User;
@@ -10,9 +12,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class LogInServiceTest {

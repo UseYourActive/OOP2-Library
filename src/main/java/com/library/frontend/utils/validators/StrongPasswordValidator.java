@@ -12,13 +12,15 @@ import java.util.regex.PatternSyntaxException;
  *     <li>At least one uppercase character [A-Z]</li>
  *     <li>No whitespace allowed</li>
  *     <li>Minimum length of 6 characters</li>
+ *     <li>Maximum length of 20 characters</li> <!-- Added maximum length -->
  * </ul>
  * This class uses a regular expression pattern to perform the validation.
  *
  * @see Validator
  */
 public final class StrongPasswordValidator implements Validator {
-    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
+    // Updated regular expression pattern with a maximum length of 20 characters
+    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$";
 
     /**
      * Checks if the provided password meets the strong password criteria.

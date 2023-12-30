@@ -45,12 +45,17 @@ public class CustomHighlightingMessage extends ForegroundCompositeConverterBase<
      * @return The ANSI color code for the foreground color based on the log level.
      */
     @Override
-    protected String getForegroundColorCode(ILoggingEvent event) {
+    public String getForegroundColorCode(ILoggingEvent event) {
         Level level = event.getLevel();
-        return switch (level.toInt()) {
-            case Level.ERROR_INT -> ANSIConstants.RED_FG;
-            case Level.WARN_INT -> ANSIConstants.YELLOW_FG;
-            default -> ANSIConstants.DEFAULT_FG;
-        };
+
+        if (level != null) {
+            return switch (level.toInt()) {
+                case Level.ERROR_INT -> ANSIConstants.RED_FG;
+                case Level.WARN_INT -> ANSIConstants.YELLOW_FG;
+                default -> ANSIConstants.DEFAULT_FG;
+            };
+        }
+
+        return ANSIConstants.DEFAULT_FG;
     }
 }

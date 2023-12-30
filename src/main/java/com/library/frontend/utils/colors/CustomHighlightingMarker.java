@@ -52,8 +52,9 @@ public class CustomHighlightingMarker extends ForegroundCompositeConverterBase<I
      * marker.
      */
     @Override
-    protected String getForegroundColorCode(ILoggingEvent event) {
+    public String getForegroundColorCode(ILoggingEvent event) {
         List<Marker> markerList = event.getMarkerList();
+
         return markerList != null && markerList.contains(MarkerFactory.getMarker("highlight")) ?
                 ANSIConstants.YELLOW_FG : ANSIConstants.DEFAULT_FG;
     }

@@ -45,12 +45,13 @@ public class CustomHighlightingTimestamp extends ForegroundCompositeConverterBas
      * @return The ANSI color code for the foreground color based on the log level.
      */
     @Override
-    protected String getForegroundColorCode(ILoggingEvent event) {
+    public String getForegroundColorCode(ILoggingEvent event) {
         Level level = event.getLevel();
-        return switch (level.toInt()) {
+
+        return (level != null) ? switch (level.toInt()) {
             case Level.ERROR_INT -> ANSIConstants.RED_FG;
             case Level.WARN_INT -> ANSIConstants.YELLOW_FG;
             default -> ANSIConstants.MAGENTA_FG;
-        };
+        } : ANSIConstants.MAGENTA_FG;
     }
 }
