@@ -9,7 +9,7 @@ import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import com.library.database.repositories.AuthorRepository;
 import com.library.database.repositories.BookInventoryRepository;
-import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

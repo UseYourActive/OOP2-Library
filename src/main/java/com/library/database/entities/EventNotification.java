@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * <p>
  * This class is annotated with JPA annotations for entity mapping and is designed to be used with a relational database.
  *
- * @see Entity
+ * @see DBEntity
  * @see Table
  * @see Column
  * @see GeneratedValue
@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
         @Index(name = "idx_user_id", columnList = "user_id"),
         @Index(name = "idx_timestamp", columnList = "timestamp")
 })
-public class EventNotification {
+public class EventNotification implements DBEntity{
     /**
      * The unique identifier for the event notification.
      */

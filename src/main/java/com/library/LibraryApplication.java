@@ -10,7 +10,7 @@ public class LibraryApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        SceneLoader.load(stage,"/views/base/logInScene.fxml", "Library");
+        SceneLoader.load(stage, "/views/logInScene.fxml", "Library");
     }
 
     public static void main(String[] args) {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+
 <AnchorPane prefHeight="423.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.ResumeShowController">
    <children>
-      <TextArea editable="false" layoutX="14.0" layoutY="19.0" prefHeight="362.0" prefWidth="395.0" />
+      <TextArea fx:id="textArea" editable="false" layoutX="14.0" layoutY="19.0" prefHeight="362.0" prefWidth="395.0" />
       <Button fx:id="closeButton" layoutX="186.0" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#closeButtonOnMouseClicked" text="Close" />
    </children>
 </AnchorPane>

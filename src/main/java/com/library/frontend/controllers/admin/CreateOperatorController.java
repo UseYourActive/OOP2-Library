@@ -5,7 +5,7 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
-import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.validators.StrongPasswordValidator;
 import com.library.frontend.utils.validators.Validator;

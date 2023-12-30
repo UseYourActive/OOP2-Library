@@ -19,8 +19,8 @@ import lombok.Setter;
  * @see lombok.Getter
  * @see lombok.Setter
  */
-@Getter
-public enum Rating {
+
+public enum ReaderRating {
     /**
      * No rating.
      */
@@ -59,12 +59,14 @@ public enum Rating {
     /**
      * The display value of the rating.
      */
+    @Getter
     private final String displayValue;
 
     /**
      * The integer value of the rating.
      */
     @Setter
+    @Getter
     private Integer value;
 
     /**
@@ -78,7 +80,7 @@ public enum Rating {
      * @param displayValue The display value of the rating.
      * @param value        The integer value of the rating.
      */
-    Rating(String displayValue, Integer value) {
+    ReaderRating(String displayValue, Integer value) {
         this.displayValue = displayValue;
         this.value = value;
     }
@@ -113,20 +115,20 @@ public enum Rating {
         }
     }
 
-    /**
-     * Gets the current Rating based on the current integer value.
-     *
-     * @return The current Rating.
-     * @throws IllegalStateException If no matching Rating is found for the current value.
-     */
-    public Rating getCurrentRating() throws IllegalStateException {
-        for (Rating rating : Rating.values()) {
-            if (rating.getValue().equals(value)) {
-                return rating;
-            }
-        }
-
-        throw new IllegalStateException("No matching Rating for value: " + value);
-    }
+   // /**
+   //  * Gets the current Rating based on the current integer value.
+   //  *
+   //  * @return The current Rating.
+   //  * @throws IllegalStateException If no matching Rating is found for the current value.
+   //  */
+   // public ReaderRating getCurrentRating() throws IllegalStateException {
+   //     for (ReaderRating readerRating : ReaderRating.values()) {
+   //         if (readerRating.getValue().equals(value)) {
+   //             return readerRating;
+   //         }
+   //     }
+//
+   //     throw new IllegalStateException("No matching Rating for value: " + value);
+   // }
 }
 

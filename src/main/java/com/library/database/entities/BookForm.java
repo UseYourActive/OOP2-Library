@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "book_forms")
-public class BookForm {
+public class BookForm implements DBEntity{
     @Id
     @Column(name = "form_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
-import com.library.database.enums.Rating;
-import com.library.frontend.controllers.base.Controller;
+import com.library.database.enums.ReaderRating;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,7 +49,7 @@ public class CreateReaderProfileController implements Controller {
                     .email(email)
                     .phoneNumber(phoneNumber)
                     .bookForms(Lists.newArrayList())
-                    .rating(Rating.THREE_STAR)
+                    .rating(ReaderRating.THREE_STAR)
                     .build();
 
             operatorService.createReader(reader);

@@ -7,7 +7,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorReadersController">
    <children>
       <Button fx:id="booksButton" layoutX="17.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#booksButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Books" />
-      <TextField fx:id="searchBarTextField" layoutX="17.0" layoutY="68.0" prefHeight="32.0" prefWidth="420.0" promptText="name, phone, email, rating" />
+      <TextField fx:id="searchBarTextField" layoutX="17.0" layoutY="68.0" prefHeight="32.0" prefWidth="420.0" promptText="name, phone, email, readerRating" />
       <Button fx:id="searchReaderButton" layoutX="446.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#searchReaderButtonOnMouseClicked" prefHeight="32.0" prefWidth="93.0" text="Search reader" />
       <Rating disable="true" layoutX="580.0" layoutY="71.0" />
       <TextArea fx:id="readerTextArea" editable="false" layoutX="539.0" layoutY="114.0" prefHeight="300.0" prefWidth="257.0" />

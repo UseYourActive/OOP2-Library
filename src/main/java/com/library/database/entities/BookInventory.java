@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "book_inventories")
-public class BookInventory {
+public class BookInventory implements DBEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

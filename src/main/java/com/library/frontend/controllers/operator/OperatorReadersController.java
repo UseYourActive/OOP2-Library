@@ -3,7 +3,7 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
-import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;

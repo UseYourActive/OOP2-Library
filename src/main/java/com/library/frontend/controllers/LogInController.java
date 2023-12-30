@@ -1,4 +1,4 @@
-package com.library.frontend.controllers.base;
+package com.library.frontend.controllers;
 
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.exception.UserNotFoundException;

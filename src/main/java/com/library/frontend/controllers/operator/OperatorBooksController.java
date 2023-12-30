@@ -4,9 +4,10 @@ import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
-import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,9 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class OperatorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(OperatorBooksController.class);
@@ -34,13 +33,15 @@ public class OperatorBooksController implements Controller {
     @FXML public Button lendReadingRoomButton;
 
     private OperatorService operatorService;
-
+    private Set<Book> selectedBooks;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
-        //bookTreeTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        selectedBooks=new HashSet<>();
+
+        selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
@@ -105,7 +106,7 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/base/logInScene.fxml","Log In");
+        SceneLoader.load(mouseEvent, "/views/logInScene.fxml","Log In");
     }
     @FXML
     public void anchorPaneOnMouseClicked() {
@@ -115,24 +116,23 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            if (mouseEvent.getClickCount() == 2
-                    && mouseEvent.getButton() == MouseButton.PRIMARY
-                    &&!bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
+            if(bookTreeTableView.getSelectionModel()!=null&&bookTreeTableView.getSelectionModel().getSelectedItem()!=null)
+            {
+                if (mouseEvent.getClickCount() == 2
+                        && mouseEvent.getButton() == MouseButton.PRIMARY
+                        && !bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
-                SceneLoader.loadModalityDialog("/views/operator/archiveBookScene.fxml","Archive Book");
-                updateTreeTableView(operatorService.getAllBookInventories());
-            } else {
-               //if(!bookTreeTableView.getSelectionModel().isEmpty()&&bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
-               //    bookTextArea.setText(bookTreeTableView.getSelectionModel().getSelectedItem().getValue().toString());
-               //}
+                    SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml","Resume",bookTreeTableView.getSelectionModel().getSelectedItem().getValue().getResume());
 
+                }
 
-                //for (TreeItem<Book> bookTreeItem : bookTreeTableView.getSelectionModel().getSelectedItems()) {
-                //    if (!bookTreeItem.isLeaf()) {
-                //        //bookTreeTableView.getSelectionModel().clearSelection();
-                //        break;
-                //    }
-                //}
+                if(bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()){
+
+                    Book selectedBook= bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
+                    selectedBooks.add(selectedBook);
+                    selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
+                }
+                bookTreeTableView.getSelectionModel().clearSelection();
             }
         } catch (Exception e) {
             logger.error("Error occurred during handling book table view click", e);
@@ -140,15 +140,22 @@ public class OperatorBooksController implements Controller {
     }
 
     @FXML
-    public void selectedBooksListViewOnMouseClicked(MouseEvent mouseEvent) {
+    public void selectedBooksListViewOnMouseClicked() {
+        try {
+            if(selectedBooksListView.getSelectionModel()!=null){
+                selectedBooks.remove(selectedBooksListView.getSelectionModel().getSelectedItem());
+                selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
+            }
+        }catch (Exception e){
+            logger.error("Error occurred during handling book table view click", e);
+        }
     }
     @FXML
     public void lendButtonOnMouseClicked() {
-        SceneLoader.loadModalityDialog("/views/operator/createLendingBookFormScene.fxml","Create Book form");
-    }
+        if(selectedBooks.isEmpty()){
+            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",selectedBooks);
+        }
 
-    @FXML
-    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 
     private void prepareContextMenu() {
@@ -182,6 +189,7 @@ public class OperatorBooksController implements Controller {
                 Book parentBook=Book.builder()
                         .id(bookInventory.getRepresentiveBook().getId())
                         .title(bookInventory.getRepresentiveBook().getTitle()+" "+bookInventory.getRepresentiveBook().getAuthor())
+                        .resume(bookInventory.getRepresentiveBook().getResume())
                         .build();
 
                 TreeItem<Book> parent =new TreeItem<>(parentBook);

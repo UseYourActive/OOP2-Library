@@ -10,7 +10,7 @@ import lombok.*;
  * This class is annotated with JPA annotations for entity mapping and is designed to be used with a
  * relational database.
  *
- * @see Entity
+ * @see DBEntity
  * @see Table
  * @see Column
  * @see GeneratedValue
@@ -29,7 +29,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
-public class User {
+public class User implements DBEntity{
     /**
      * The unique identifier for the user.
      */

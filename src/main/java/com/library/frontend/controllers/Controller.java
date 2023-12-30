@@ -1,4 +1,4 @@
-package com.library.frontend.controllers.base;
+package com.library.frontend.controllers;
 
 import javafx.fxml.Initializable;
 

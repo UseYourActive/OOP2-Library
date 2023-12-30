@@ -4,7 +4,7 @@ import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
-import com.library.frontend.controllers.base.Controller;
+import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;

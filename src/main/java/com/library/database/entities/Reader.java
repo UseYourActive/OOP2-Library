@@ -1,6 +1,6 @@
 package com.library.database.entities;
 
-import com.library.database.enums.Rating;
+import com.library.database.enums.ReaderRating;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * This class is annotated with JPA annotations for entity mapping and is designed to be used with a
  * relational database.
  *
- * @see Entity
+ * @see DBEntity
  * @see Table
  * @see Column
  * @see GeneratedValue
@@ -36,7 +36,7 @@ import java.util.List;
 @Table(name = "readers", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"first_name", "middle_name", "last_name"})
 })
-public class Reader {
+public class Reader implements DBEntity{
     /**
      * The unique identifier for the reader.
      */
@@ -88,7 +88,7 @@ public class Reader {
      */
     @Column(name = "reader_rating")
     @Enumerated(EnumType.STRING)
-    private Rating rating;
+    private ReaderRating rating;
 
     /**
      * Overrides the default {@code toString()} method to provide a formatted string representation
