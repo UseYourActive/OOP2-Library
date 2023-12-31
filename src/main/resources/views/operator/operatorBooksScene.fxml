@@ -14,7 +14,7 @@
       <Button fx:id="logOutButton" layoutX="793.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#logOutButtonOnMouseClicked" prefHeight="26.0" prefWidth="110.0" text="Log out" />
       <TreeTableView fx:id="bookTreeTableView" layoutX="11.0" layoutY="74.0" onMouseClicked="#bookTreeTableViewOnMouseClicked" prefHeight="412.0" prefWidth="645.0" />
       <ListView fx:id="selectedBooksListView" layoutX="667.0" layoutY="74.0" onMouseClicked="#selectedBooksListViewOnMouseClicked" prefHeight="376.0" prefWidth="236.0" />
-      <Button layoutX="667.0" layoutY="27.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Inbox" />
+      <Button fx:id="inboxButton" layoutX="667.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#inboxButtonOnMouseClicked" prefHeight="26.0" prefWidth="110.0" text="Inbox" />
       <Button fx:id="lendButton" layoutX="667.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#lendButtonOnMouseClicked" prefHeight="26.0" prefWidth="236.0" text="Lend" />
    </children>
 </AnchorPane>

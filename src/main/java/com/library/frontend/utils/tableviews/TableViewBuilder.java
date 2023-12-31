@@ -1,6 +1,12 @@
 package com.library.frontend.utils.tableviews;
 
+import com.library.frontend.controllers.admin.AdministratorBooksController;
+import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 
 /**
  * The {@code TableViewBuilder} interface defines a contract for classes responsible
@@ -38,6 +44,7 @@ import javafx.scene.control.TableView;
  * @see javafx.scene.control.TableView
  */
 public interface TableViewBuilder<T> {
+    Logger logger = LoggerFactory.getLogger(TableViewBuilder.class);
     /**
      * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
      * Implementing classes should define the columns and their properties based on the data type {@code T}.
@@ -45,5 +52,14 @@ public interface TableViewBuilder<T> {
      * @param tableView The TableView for which columns are created and configured.
      */
     void createTableViewColumns(TableView<T> tableView);
+
+    default void updateTableView(TableView<T> tableView, Collection<T> collection) {
+        try {
+            tableView.getItems().clear();
+            tableView.getItems().addAll(FXCollections.observableArrayList(collection));
+        } catch (Exception e) {
+            logger.error("Error occurred during table view update", e);
+        }
+    }
 }
 

@@ -115,20 +115,20 @@ public enum ReaderRating {
         }
     }
 
-   // /**
-   //  * Gets the current Rating based on the current integer value.
-   //  *
-   //  * @return The current Rating.
-   //  * @throws IllegalStateException If no matching Rating is found for the current value.
-   //  */
-   // public ReaderRating getCurrentRating() throws IllegalStateException {
-   //     for (ReaderRating readerRating : ReaderRating.values()) {
-   //         if (readerRating.getValue().equals(value)) {
-   //             return readerRating;
-   //         }
-   //     }
-//
-   //     throw new IllegalStateException("No matching Rating for value: " + value);
-   // }
+   /**
+    * Gets the current Rating based on the current integer value.
+    *
+    * @return The current Rating.
+    * @throws IllegalStateException If no matching Rating is found for the current value.
+    */
+   private ReaderRating setCurrentRating() throws IllegalStateException {
+       for (ReaderRating readerRating : ReaderRating.values()) {
+           if (readerRating.getValue().equals(value)) {
+               return readerRating;
+           }
+       }
+
+       throw new IllegalStateException("No matching Rating for value: " + value);
+   }
 }
 

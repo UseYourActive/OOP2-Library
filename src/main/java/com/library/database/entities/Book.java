@@ -24,7 +24,7 @@ public class Book implements DBEntity{
     @Column(name = "number_of_times_used", nullable = false)
     private Integer numberOfTimesUsed;
 
-    @Column(name = "publish_date")
+    @Column(name = "publish_year")
     private Year publishYear;
 
     @Column(name = "title", length = 64, nullable = false)

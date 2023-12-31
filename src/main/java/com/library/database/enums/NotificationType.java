@@ -22,10 +22,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum NotificationType {
-    /**
-     * Notification related to a user profile request.
-     */
-    USER_PROFILE_REQUEST("User profile request"),
 
     /**
      * Notification related to the archiving of a book.

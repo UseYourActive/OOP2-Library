@@ -5,7 +5,6 @@ import com.library.database.enums.ExpirationPolicy;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,10 +21,10 @@ public class BookForm implements DBEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany()
+    @OneToMany
     private List<Book> books;
 
-    @OneToOne()
+    @ManyToOne
     private Reader reader;
 
     @Column(name = "status",nullable = false)
@@ -38,7 +37,12 @@ public class BookForm implements DBEntity{
     @Column(name = "expiration",nullable = false)
     private ExpirationPolicy expirationPolicy;
 
-    public boolean isExpired(){
+    @Override
+    public String toString() {
+        return reader.getFirstName()+" "+status+" "+ books.stream().map(Book::toString);
+    }
+
+    public boolean isOverdue(){
         if(expirationPolicy.equals(ExpirationPolicy.HOURS_24))
             return dateOfCreation.plusHours(expirationPolicy.getValue()).isAfter(LocalDateTime.now());
         else

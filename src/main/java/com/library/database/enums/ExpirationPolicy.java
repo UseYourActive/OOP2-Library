@@ -13,5 +13,5 @@ public enum ExpirationPolicy {
     }
 
     @Getter
-    private int value;
+    private final int value;
 }

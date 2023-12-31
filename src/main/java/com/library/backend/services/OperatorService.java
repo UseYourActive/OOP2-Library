@@ -56,6 +56,12 @@ public class OperatorService implements Service {
         return books;
     }
 
+    public List<BookForm> getAllBookForms() {
+        List<BookForm> bookForms = bookFormRepository.findAll();
+        logger.info("Retrieved {} books from the repository.", bookForms.size());
+        return bookForms;
+    }
+
     public void lendBook(Book book) {
         updateBookStatus(book, BookStatus.LENT, "lent");
     }

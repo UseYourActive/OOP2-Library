@@ -3,6 +3,7 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
@@ -34,9 +35,11 @@ public class OperatorBooksController implements Controller {
     @FXML public TreeTableView<Book> bookTreeTableView;
     @FXML public ListView<Book> selectedBooksListView;
     @FXML public Button lendButton;
+    @FXML public Button inboxButton;
 
     private OperatorService operatorService;
     private ObservableList<Book> selectedBooks;
+    private List<BookForm> overdueBookForms;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,6 +47,10 @@ public class OperatorBooksController implements Controller {
 
         selectedBooks =FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
+
+        overdueBookForms=operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
+
+
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
@@ -162,12 +169,18 @@ public class OperatorBooksController implements Controller {
     public void lendButtonOnMouseClicked() {
         if(!selectedBooks.isEmpty()){
 
-           Object[] bookArray = selectedBooks.toArray();
-           SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",bookArray);
-
+            Object[] bookArray = selectedBooks.toArray();
+            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",bookArray);
+            updateTreeTableView(operatorService.getAllBookInventories());
+            selectedBooksListView.getItems().clear();
         }
     }
 
+    @FXML
+    public void inboxButtonOnMouseClicked() {
+        Object[] objects = overdueBookForms.toArray();
+        SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml","Inbox",objects);
+    }
     private void prepareContextMenu() {
         try {
             ContextMenu contextMenu = new ContextMenu();
@@ -218,5 +231,6 @@ public class OperatorBooksController implements Controller {
             logger.error("Error occurred during updating book tree table view", e);
         }
     }
+
 
 }

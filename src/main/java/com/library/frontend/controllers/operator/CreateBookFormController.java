@@ -22,6 +22,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,8 @@ public class CreateBookFormController implements Controller {
 
     private OperatorService operatorService;
     private double selectedReaderRating;
+    private BookTableViewBuilder bookTableViewBuilder;
+    private ReaderTableViewBuilder readerTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,15 +64,15 @@ public class CreateBookFormController implements Controller {
 
         rating.setRating(ReaderRating.NONE.getValue());
 
-        BookTableViewBuilder bookTableViewBuilder=new BookTableViewBuilder();
+        bookTableViewBuilder=new BookTableViewBuilder();
         bookTableViewBuilder.createTableViewColumns(bookTableView);
 
-        ReaderTableViewBuilder readerTableViewBuilder=new ReaderTableViewBuilder();
+        readerTableViewBuilder=new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
-        updateTableView(bookTableView,selectedBooks);
+        bookTableViewBuilder.updateTableView(bookTableView,selectedBooks);
 
-        updateTableView(readerTableView,operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
 
     }
     @FXML
@@ -80,7 +83,7 @@ public class CreateBookFormController implements Controller {
             String stringToSearch = readerSearchBarTextField.getText();
 
             if (stringToSearch.isEmpty()) {
-                updateTableView(readerTableView,readerList);
+                readerTableViewBuilder.updateTableView(readerTableView,readerList);
             } else {
                 results.addAll(readerList.stream()
                         .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
@@ -99,7 +102,7 @@ public class CreateBookFormController implements Controller {
                         .filter(reader -> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
                         .toList());
 
-                updateTableView(readerTableView,results);
+                readerTableViewBuilder.updateTableView(readerTableView,results);
             }
         } catch (Exception e) {
             logger.error("Error occurred during searching readers", e);
@@ -108,6 +111,7 @@ public class CreateBookFormController implements Controller {
     @FXML
     public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws Exception {
         if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
+
             Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
 
             if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
@@ -126,7 +130,8 @@ public class CreateBookFormController implements Controller {
                         .build();
 
                 operatorService.saveNewBookForm(bookForm);
-                SceneLoader.load(mouseEvent,"/views/operator/operatorBooksScene.fxml",SceneLoader.getUsername()+"(Operator)");
+
+                ((Stage)cancelButton.getScene().getWindow()).close();
             }else{
                 DialogUtils.showInfo("Information","For normal lending reader\ncan take only AVAILABLE books.");
             }
@@ -151,8 +156,8 @@ public class CreateBookFormController implements Controller {
                     .build();
 
             operatorService.saveNewBookForm(bookForm);
-            SceneLoader.load(mouseEvent,"/views/operator/operatorBooksScene.fxml",SceneLoader.getUsername()+"(Operator)");
 
+            ((Stage)cancelButton.getScene().getWindow()).close();
         }
     }
 
@@ -173,12 +178,12 @@ public class CreateBookFormController implements Controller {
         }
     }
 
-    private <T>void updateTableView(TableView<T> tableView, Collection<T> collection) {
-        try {
-            tableView.getItems().clear();
-            tableView.getItems().addAll(FXCollections.observableArrayList(collection));
-        } catch (Exception e) {
-            logger.error("Error occurred during table view update", e);
-        }
-    }
+   //private <T>void updateTableView(TableView<T> tableView, Collection<T> collection) {
+   //    try {
+   //        tableView.getItems().clear();
+   //        tableView.getItems().addAll(FXCollections.observableArrayList(collection));
+   //    } catch (Exception e) {
+   //        logger.error("Error occurred during table view update", e);
+   //    }
+   //}
 }
