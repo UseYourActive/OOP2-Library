@@ -7,6 +7,7 @@ import com.library.database.enums.Role;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.SearchEngine;
 import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -32,10 +33,12 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
     private AdminService adminService;
+    private SearchEngine searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = (AdminService) ServiceFactory.getService(AdminService.class);
+        searchEngine = new SearchEngine();
 
         booksButton.requestFocus();
 
@@ -66,22 +69,10 @@ public class AdministratorOperatorsController implements Controller {
     @FXML
     public void searchOperatorButtonOnMouseClicked() {
         try {
-            Set<User> results = new HashSet<>();
             List<User> userList = adminService.getAllUsers();
             String stringToSearch = searchBookTextField.getText();
-
-            if (stringToSearch.isEmpty()) {
-                updateTableView(userList);
-            } else {
-                results.addAll(userList.stream()
-                        .filter(user -> user.getUsername().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(userList.stream()
-                        .filter(user -> user.getRole().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-
-                updateTableView(results);
-            }
+            Set<User> results = searchEngine.searchOperators(userList, stringToSearch);
+            updateTableView(results);
             anchorPane.requestFocus();
         } catch (Exception e) {
             logger.error("Error occurred during operator search", e);

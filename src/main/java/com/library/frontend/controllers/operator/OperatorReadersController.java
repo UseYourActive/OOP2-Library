@@ -5,6 +5,7 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.SearchEngine;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -28,16 +29,19 @@ public class OperatorReadersController implements Controller {
     @FXML public TextArea readerTextArea;
     @FXML public TableView<Reader> readerTableView;
     private OperatorService operatorService;
+    private TableViewBuilder<Reader> readerTableViewBuilder;
+    private SearchEngine searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        searchEngine = new SearchEngine();
 
         booksButton.requestFocus();
 
         readerTextArea.setFocusTraversable(false);
 
-        TableViewBuilder<Reader> readerTableViewBuilder = new ReaderTableViewBuilder();
+        readerTableViewBuilder = new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
         updateTableView(operatorService.getAllReaders());
@@ -59,32 +63,10 @@ public class OperatorReadersController implements Controller {
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
-            Set<Reader> results = new HashSet<>();
             List<Reader> readerList = operatorService.getAllReaders();
             String stringToSearch = searchBarTextField.getText();
-
-            if (stringToSearch.isEmpty()) {
-                updateTableView(readerList);
-            } else {
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
-                        .toList());
-
-                updateTableView(results);
-            }
+            Set<Reader> results = searchEngine.searchReaders(readerList, stringToSearch);
+            readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
             logger.error("Error occurred during searching readers", e);
         }

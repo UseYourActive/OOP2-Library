@@ -9,6 +9,7 @@ import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,17 +41,17 @@ public class OperatorBooksController implements Controller {
     private OperatorService operatorService;
     private ObservableList<Book> selectedBooks;
     private List<BookForm> overdueBookForms;
+    private SearchEngine searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        searchEngine = new SearchEngine();
 
         selectedBooks =FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
 
         overdueBookForms=operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
-
-
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
@@ -75,37 +76,11 @@ public class OperatorBooksController implements Controller {
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
-                List<BookInventory> results = new ArrayList<>();
+                String stringToSearch = searchBookTextField.getText().toUpperCase();
+                List<BookInventory> allBookInventories = operatorService.getAllBookInventories();
+                List<BookInventory> results = searchEngine.searchBooks(allBookInventories, stringToSearch);
 
-
-                String stringToSearch = searchBookTextField.getText();
-                if (stringToSearch.isEmpty()) {
-                    updateTreeTableView(operatorService.getAllBookInventories());
-
-                } else {
-
-                    for(BookInventory bookInventory: operatorService.getAllBookInventories()){
-
-                        Book book=bookInventory.getRepresentiveBook();
-
-                        if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(bookInventory);
-
-                        if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(bookInventory);
-
-                        if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(bookInventory);
-
-                        if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                            results.add(bookInventory);
-
-                        if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
-                            results.add(bookInventory);
-                    }
-
-                    updateTreeTableView(results);
-                }
+                updateTreeTableView(results);
             } catch (Exception e) {
                 logger.error("Error occurred during searching books", e);
             }
@@ -124,7 +99,7 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            if(bookTreeTableView.getSelectionModel()!=null&&bookTreeTableView.getSelectionModel().getSelectedItem()!=null)
+            if(bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null)
             {
                 if (mouseEvent.getClickCount() == 2
                         && mouseEvent.getButton() == MouseButton.PRIMARY
@@ -158,7 +133,7 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void selectedBooksListViewOnMouseClicked() {
         try {
-            if(selectedBooksListView.getSelectionModel()!=null){
+            if(selectedBooksListView.getSelectionModel() != null){
                 selectedBooks.remove(selectedBooksListView.getSelectionModel().getSelectedItem());
             }
         }catch (Exception e){
@@ -170,7 +145,7 @@ public class OperatorBooksController implements Controller {
         if(!selectedBooks.isEmpty()){
 
             Object[] bookArray = selectedBooks.toArray();
-            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",bookArray);
+            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form", bookArray);
             updateTreeTableView(operatorService.getAllBookInventories());
             selectedBooksListView.getItems().clear();
         }
@@ -179,13 +154,13 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void inboxButtonOnMouseClicked() {
         Object[] objects = overdueBookForms.toArray();
-        SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml","Inbox",objects);
+        SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml","Inbox", objects);
     }
     private void prepareContextMenu() {
         try {
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem resume = new MenuItem("Register book");
+            MenuItem resume = new MenuItem("Show resume");
 
             contextMenu.getItems().add(resume);
 
@@ -203,13 +178,13 @@ public class OperatorBooksController implements Controller {
     }
 
 
-    private void updateTreeTableView(List<BookInventory> bookInventories){
+    private void updateTreeTableView(List<BookInventory> bookInventories) {
         try {
             //Creating the parents
             bookTreeTableView.getRoot().getChildren().clear();
             for(BookInventory bookInventory: bookInventories){
 
-                Book parentBook=Book.builder()
+                Book parentBook = Book.builder()
                         .id(bookInventory.getRepresentiveBook().getId())
                         .title(bookInventory.getRepresentiveBook().getTitle()+" "+bookInventory.getRepresentiveBook().getAuthor())
                         .resume(bookInventory.getRepresentiveBook().getResume())

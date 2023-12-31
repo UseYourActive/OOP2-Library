@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.ReaderException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
@@ -13,6 +14,7 @@ import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import javafx.collections.FXCollections;
@@ -48,10 +50,13 @@ public class CreateBookFormController implements Controller {
     private double selectedReaderRating;
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
+    private SearchEngine searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        searchEngine = new SearchEngine();
+
         bookTableView.setMouseTransparent(true);
         bookTableView.setFocusTraversable(false);
 
@@ -75,51 +80,33 @@ public class CreateBookFormController implements Controller {
         readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
 
     }
+
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
-            Set<Reader> results = new HashSet<>();
             List<Reader> readerList = operatorService.getAllReaders();
             String stringToSearch = readerSearchBarTextField.getText();
-
-            if (stringToSearch.isEmpty()) {
-                readerTableViewBuilder.updateTableView(readerTableView,readerList);
-            } else {
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        .toList());
-
-                results.addAll(readerList.stream()
-                        .filter(reader -> reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
-                        .toList());
-
-                readerTableViewBuilder.updateTableView(readerTableView,results);
-            }
+            Set<Reader> results = searchEngine.searchReaders(readerList, stringToSearch);
+            readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
             logger.error("Error occurred during searching readers", e);
         }
     }
+
     @FXML
-    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws Exception {
+    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws ReaderException {
         if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
 
             Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
 
-            if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
-                throw new Exception("The reader is not allowed to take books anymore.");
+            if(selectedReader.getRating() == ReaderRating.ZERO_STAR)
+                throw new ReaderException("The reader is not allowed to take books anymore.");
 
-            if(bookTableView.getItems().stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE))){
+            if(bookTableView.getItems().stream()
+                    .allMatch(book -> book.getBookStatus()
+                            .equals(BookStatus.AVAILABLE))){
 
-                operatorService.changeBookStatus(bookTableView.getItems(),BookStatus.LENT);
+                operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.LENT);
 
                 BookForm bookForm = BookForm.builder()
                         .reader(selectedReader)
@@ -138,12 +125,16 @@ public class CreateBookFormController implements Controller {
         }
     }
     @FXML
-    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) throws Exception {
+    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
         if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
             Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
 
             if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
-                throw new Exception("The reader is not allowed to take books anymore.");
+                try {
+                    throw new ReaderException("The reader is not allowed to take books anymore.");
+                } catch (ReaderException e) {
+                    DialogUtils.showError("Error taking books", e.getMessage());
+                }
 
             operatorService.changeBookStatus(bookTableView.getItems(),BookStatus.ARCHIVED);
 

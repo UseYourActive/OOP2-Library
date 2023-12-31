@@ -7,6 +7,7 @@ import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.SearchEngine;
 import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -40,11 +41,13 @@ public class AdministratorBooksController implements Controller {
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
     private AdminService adminService;
+    private SearchEngine searchEngine;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = (AdminService) ServiceFactory.getService(AdminService.class);
+        searchEngine = new SearchEngine();
 
         operatorsButton.requestFocus();
 
@@ -61,34 +64,10 @@ public class AdministratorBooksController implements Controller {
     @FXML
     public void searchBookButtonOnMouseClicked() {
         try {
-            List<BookInventory> results = new ArrayList<>();
             List<BookInventory> inventories = adminService.getAllBookInventories();
             String stringToSearch = searchBookTextField.getText();
-            if (stringToSearch.isEmpty()) {
-                updateTableView(inventories);
-            } else {
-
-                for (BookInventory inventory : inventories) {
-                    Book book = inventory.getBookList().get(0);
-
-                    if (book.getTitle().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        results.add(inventory);
-
-                    if (book.getAuthor().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        results.add(inventory);
-
-                    if (book.getResume().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        results.add(inventory);
-
-                    if (book.getGenre().toString().toUpperCase().contains(stringToSearch.toUpperCase()))
-                        results.add(inventory);
-
-                    if (book.getPublishYear() != null && book.getPublishYear().toString().contains(stringToSearch))
-                        results.add(inventory);
-                }
-
-                updateTableView(results);
-            }
+            List<BookInventory> results = searchEngine.searchBooks(inventories, stringToSearch);
+            updateTableView(results);
         } catch (Exception e) {
             logger.error("Error occurred during book search", e);
         }
