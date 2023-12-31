@@ -34,7 +34,7 @@ public class CreateReaderProfileController implements Controller {
     }
 
     @FXML
-    public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void createReaderProfileButtonOnMouseClicked() {
         try {
             String firstName = firstNameTextField.getText();
             String middleName = middleNameTextField.getText();
@@ -49,7 +49,7 @@ public class CreateReaderProfileController implements Controller {
                     .email(email)
                     .phoneNumber(phoneNumber)
                     .bookForms(Lists.newArrayList())
-                    .rating(ReaderRating.THREE_STAR)
+                    .rating(ReaderRating.NONE)
                     .build();
 
             operatorService.createReader(reader);

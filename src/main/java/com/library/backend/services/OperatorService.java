@@ -2,27 +2,34 @@ package com.library.backend.services;
 
 import com.google.common.base.Preconditions;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.ReaderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class OperatorService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(OperatorService.class);
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
     private final BookInventoryRepository bookInventoryRepository;
+    private final BookFormRepository bookFormRepository;
 
-    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository,BookInventoryRepository bookInventoryRepository) {
+    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository,BookInventoryRepository bookInventoryRepository,BookFormRepository bookFormRepository) {
         this.bookRepository = Preconditions.checkNotNull(bookRepository, "BookRepository cannot be null");
         this.readerRepository = Preconditions.checkNotNull(readerRepository, "ReaderRepository cannot be null");
         this.bookInventoryRepository = Preconditions.checkNotNull(bookInventoryRepository,"BookInventoryRepository cannot be null");
+        this.bookFormRepository=Preconditions.checkNotNull(bookFormRepository,"BookFormRepository cannot be null");
     }
 
     public void lendBookToReaderForReadingRoom(Book book, Reader reader) {
@@ -66,6 +73,22 @@ public class OperatorService implements Service {
         } else {
             logger.error("Failed to {} book: {}", action, book.getTitle());
         }
+    }
+
+    public void changeBookStatus(Collection<Book> books,BookStatus status){
+
+        Set<Book> bookSet=new HashSet<>();
+        for(Book book:books){
+            book.setBookStatus(status);
+            bookSet.add(book);
+        }
+        bookRepository.saveAll(bookSet);
+    }
+
+    public void saveNewBookForm(BookForm bookForm){
+        Preconditions.checkNotNull(bookForm,"Book form cannot be null");
+        bookFormRepository.save(bookForm);
+        logger.info("Created new book form: {}", bookForm);
     }
 
     public List<Reader> getAllReaders() {

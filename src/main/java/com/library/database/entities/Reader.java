@@ -80,7 +80,6 @@ public class Reader implements DBEntity{
      * The list of book forms associated with the reader.
      */
     @OneToMany()
-    @JoinColumn(name = "book_form")
     private List<BookForm> bookForms;
 
     /**

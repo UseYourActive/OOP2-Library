@@ -4,10 +4,14 @@ import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
+import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,18 +34,16 @@ public class OperatorBooksController implements Controller {
     @FXML public TreeTableView<Book> bookTreeTableView;
     @FXML public ListView<Book> selectedBooksListView;
     @FXML public Button lendButton;
-    @FXML public Button lendReadingRoomButton;
 
     private OperatorService operatorService;
-    private Set<Book> selectedBooks;
+    private ObservableList<Book> selectedBooks;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
 
-        selectedBooks=new HashSet<>();
-
-        selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
+        selectedBooks =FXCollections.observableArrayList();
+        selectedBooksListView.setItems(selectedBooks);
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
@@ -51,7 +53,6 @@ public class OperatorBooksController implements Controller {
         selectedBooksListView.setTooltip(new Tooltip("Selected books will show here"));
 
         readersButton.requestFocus();
-
 
         prepareContextMenu();
     }
@@ -129,8 +130,16 @@ public class OperatorBooksController implements Controller {
                 if(bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()){
 
                     Book selectedBook= bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
-                    selectedBooks.add(selectedBook);
-                    selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
+                    switch (selectedBook.getBookStatus()){
+                        case LENT -> DialogUtils.showInfo("Information","This book is already given.");
+                        case DAMAGED -> DialogUtils.showInfo("Information","Damaged books are pending removal.");
+                        case IN_READING_ROOM -> DialogUtils.showInfo("Information","This book is currently used by reader.");
+                        case ARCHIVED,AVAILABLE -> {
+                            if(!selectedBooks.contains(selectedBook))
+                                selectedBooks.add(selectedBook);
+                        }
+
+                    }
                 }
                 bookTreeTableView.getSelectionModel().clearSelection();
             }
@@ -144,7 +153,6 @@ public class OperatorBooksController implements Controller {
         try {
             if(selectedBooksListView.getSelectionModel()!=null){
                 selectedBooks.remove(selectedBooksListView.getSelectionModel().getSelectedItem());
-                selectedBooksListView.setItems(FXCollections.observableArrayList(selectedBooks));
             }
         }catch (Exception e){
             logger.error("Error occurred during handling book table view click", e);
@@ -152,10 +160,12 @@ public class OperatorBooksController implements Controller {
     }
     @FXML
     public void lendButtonOnMouseClicked() {
-        if(selectedBooks.isEmpty()){
-            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",selectedBooks);
-        }
+        if(!selectedBooks.isEmpty()){
 
+           Object[] bookArray = selectedBooks.toArray();
+           SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form",bookArray);
+
+        }
     }
 
     private void prepareContextMenu() {

@@ -24,37 +24,37 @@ public enum ReaderRating {
     /**
      * No rating.
      */
-    NONE("None", 0),
+    NONE("None", -1),
 
     /**
      * Zero-star rating.
      */
-    ZERO_STAR("Zero star", 1),
+    ZERO_STAR("Zero star", 0),
 
     /**
      * One-star rating.
      */
-    ONE_STAR("One star", 2),
+    ONE_STAR("One star", 1),
 
     /**
      * Two-star rating.
      */
-    TWO_STAR("Two star", 3),
+    TWO_STAR("Two star", 2),
 
     /**
      * Three-star rating.
      */
-    THREE_STAR("Three star", 4),
+    THREE_STAR("Three star", 3),
 
     /**
      * Four-star rating.
      */
-    FOUR_STAR("Four star", 5),
+    FOUR_STAR("Four star", 4),
 
     /**
      * Five-star rating.
      */
-    FIVE_STAR("Five star", 6);
+    FIVE_STAR("Five star", 5);
 
     /**
      * The display value of the rating.
@@ -91,10 +91,10 @@ public enum ReaderRating {
     public void promote() {
         coefficient++;
 
-        if (value == 0) {
-            setValue(4);
+        if (value == -1) {
+            setValue(3);
         } else {
-            if (coefficient % 5 == 0 && value < 6) {
+            if (coefficient % 5 == 0 && value < 5) {
                 value++;
             }
         }
@@ -106,10 +106,10 @@ public enum ReaderRating {
     public void demote() {
         coefficient--;
 
-        if (value == 0) {
-            setValue(3);
+        if (value == -1) {
+            setValue(2);
         } else {
-            if (coefficient % 5 == 0 && value > 1) {
+            if (coefficient % 5 == 0 && value > 0) {
                 value--;
             }
         }

@@ -77,6 +77,15 @@ public class BookRepository extends Repository<Book> {
         }
     }
 
+    public void saveAll(Collection<Book> entities) throws HibernateException {
+        actionInsideOfTransaction(session -> {
+            for (Book entity : entities) {
+                session.persist(entity);
+                logger.info("Entity with ID {} saved successfully", entity.getId());
+            }
+        });
+    }
+
     /**
      * Delete multiple books from the database. This method encapsulates the deletion operation inside a Hibernate
      * transaction.

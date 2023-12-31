@@ -3,16 +3,22 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
+import com.library.database.enums.BookFormStatus;
+import com.library.database.enums.BookStatus;
+import com.library.database.enums.ExpirationPolicy;
 import com.library.database.enums.ReaderRating;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class CreateBookFormController implements Controller {
@@ -41,6 +49,15 @@ public class CreateBookFormController implements Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        bookTableView.setMouseTransparent(true);
+        bookTableView.setFocusTraversable(false);
+
+
+        List<Book> selectedBooks=new ArrayList<>();
+        for(Object object:SceneLoader.getTransferableObjects()){
+            if(object instanceof Book)
+                selectedBooks.add((Book) object);
+        }
 
         rating.setRating(ReaderRating.NONE.getValue());
 
@@ -50,13 +67,17 @@ public class CreateBookFormController implements Controller {
         ReaderTableViewBuilder readerTableViewBuilder=new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
+        updateTableView(bookTableView,selectedBooks);
+
+        updateTableView(readerTableView,operatorService.getAllReaders());
+
     }
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
             Set<Reader> results = new HashSet<>();
             List<Reader> readerList = operatorService.getAllReaders();
-            String stringToSearch = searchReaderButton.getText();
+            String stringToSearch = readerSearchBarTextField.getText();
 
             if (stringToSearch.isEmpty()) {
                 updateTableView(readerTableView,readerList);
@@ -85,18 +106,61 @@ public class CreateBookFormController implements Controller {
         }
     }
     @FXML
-    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws Exception {
+        if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
+            Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
 
+            if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
+                throw new Exception("The reader is not allowed to take books anymore.");
+
+            if(bookTableView.getItems().stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE))){
+
+                operatorService.changeBookStatus(bookTableView.getItems(),BookStatus.LENT);
+
+                BookForm bookForm = BookForm.builder()
+                        .reader(selectedReader)
+                        .books(bookTableView.getItems())
+                        .status(BookFormStatus.IN_USE)
+                        .expirationPolicy(ExpirationPolicy.MONTH)
+                        .dateOfCreation(LocalDateTime.now())
+                        .build();
+
+                operatorService.saveNewBookForm(bookForm);
+                SceneLoader.load(mouseEvent,"/views/operator/operatorBooksScene.fxml",SceneLoader.getUsername()+"(Operator)");
+            }else{
+                DialogUtils.showInfo("Information","For normal lending reader\ncan take only AVAILABLE books.");
+            }
+        }
+    }
+    @FXML
+    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) throws Exception {
+        if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
+            Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
+
+            if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
+                throw new Exception("The reader is not allowed to take books anymore.");
+
+            operatorService.changeBookStatus(bookTableView.getItems(),BookStatus.ARCHIVED);
+
+            BookForm bookForm = BookForm.builder()
+                    .reader(selectedReader)
+                    .books(bookTableView.getItems())
+                    .status(BookFormStatus.IN_USE)
+                    .expirationPolicy(ExpirationPolicy.HOURS_24)
+                    .dateOfCreation(LocalDateTime.now())
+                    .build();
+
+            operatorService.saveNewBookForm(bookForm);
+            SceneLoader.load(mouseEvent,"/views/operator/operatorBooksScene.fxml",SceneLoader.getUsername()+"(Operator)");
+
+        }
     }
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", "Operator books scene");
     }
-    @FXML
-    public void lendReadingRoomButtonOnMouseClicked() {
 
-    }
     @FXML
     public void ratingOnMouseClicked() {
         rating.setRating(selectedReaderRating);
@@ -109,10 +173,10 @@ public class CreateBookFormController implements Controller {
         }
     }
 
-    private <T>void updateTableView(TableView<T> tableView, Collection<T> inventories) {
+    private <T>void updateTableView(TableView<T> tableView, Collection<T> collection) {
         try {
             tableView.getItems().clear();
-            tableView.getItems().addAll(FXCollections.observableArrayList(inventories));
+            tableView.getItems().addAll(FXCollections.observableArrayList(collection));
         } catch (Exception e) {
             logger.error("Error occurred during table view update", e);
         }
