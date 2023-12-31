@@ -17,6 +17,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation group: 'org.testfx', name: 'testfx-junit5', version: '4.0.17'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.8.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
+
+    // Email sender
+    implementation 'com.sun.mail:javax.mail:1.6.2'
 
     // Lombok
     compileOnly ('org.projectlombok:lombok:1.18.30')

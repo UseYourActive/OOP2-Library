@@ -133,6 +133,7 @@ public abstract class Repository<T> implements AutoCloseable {
             logger.error("Error during Hibernate transaction", exception);
             if (transaction.isActive()) {
                 transaction.rollback();
+                logger.debug("Transaction rolled back");
             }
             throw new org.hibernate.HibernateException("Unable to add data to the database", exception);
         }
@@ -154,7 +155,6 @@ public abstract class Repository<T> implements AutoCloseable {
             }
         } catch (org.hibernate.HibernateException e) {
             logger.error("Error closing Hibernate session", e);
-            throw new org.hibernate.HibernateException("Error closing Hibernate session", e);
         }
     }
 

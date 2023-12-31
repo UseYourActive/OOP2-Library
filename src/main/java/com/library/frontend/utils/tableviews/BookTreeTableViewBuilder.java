@@ -8,6 +8,8 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Year;
 
@@ -19,6 +21,7 @@ import java.time.Year;
  * @see TreeTableViewBuilder
  */
 public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book> {
+    private static final Logger logger = LoggerFactory.getLogger(BookTreeTableViewBuilder.class);
 
     /**
      * Creates and configures the tree table columns for the specified {@link javafx.scene.control.TreeTableView}.
@@ -28,86 +31,93 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book> {
      */
     @Override
     public void createTreeTableViewColumns(TreeTableView<Book> bookTreeTableView) {
-        //Creating default root node
+        logger.info("Creating and configuring tree table columns...");
+
         TreeItem<Book> root = new TreeItem<>();
 
         TreeTableColumn<Book, String> titleColumn = new TreeTableColumn<>("Book");
-        titleColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) ->
-                new ReadOnlyStringWrapper(p.getValue().getValue().getTitle())); // Adjust this based on Book attributes
+        titleColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting title for book: {}", p.getValue().getValue().getTitle());
+            return new ReadOnlyStringWrapper(p.getValue().getValue().getTitle());
+        });
         titleColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.3));
         titleColumn.setResizable(false);
 
         TreeTableColumn<Book, String> authorColumn = new TreeTableColumn<>("Author");
         authorColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting author for book: {}", p.getValue().getValue().getAuthor());
             Author author = p.getValue().getValue().getAuthor();
             if (author != null) {
                 return new ReadOnlyStringWrapper(author.toString());
             } else {
                 return new ReadOnlyStringWrapper("");
             }
-        }); // Adjust this based on Book attributes
+        });
         authorColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));
         authorColumn.setResizable(false);
 
         TreeTableColumn<Book, String> genreColumn = new TreeTableColumn<>("Genre");
         genreColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting genre for book: {}", p.getValue().getValue().getGenre());
             Genre genre = p.getValue().getValue().getGenre();
             if (genre != null) {
                 return new ReadOnlyStringWrapper(genre.getValue());
             } else {
                 return new ReadOnlyStringWrapper("");
             }
-        }); // Adjust this based on Book attributes
+        });
         genreColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));
         genreColumn.setResizable(false);
 
         TreeTableColumn<Book, String> publishedYearColumn = new TreeTableColumn<>("Year");
         publishedYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting published year for book: {}", p.getValue().getValue().getPublishYear());
             Year publishedYear = p.getValue().getValue().getPublishYear();
             if (publishedYear != null) {
                 return new ReadOnlyStringWrapper(publishedYear.toString());
             } else {
                 return new ReadOnlyStringWrapper("");
             }
-        }); // Adjust this based on Book attributes
+        });
         publishedYearColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         publishedYearColumn.setResizable(false);
 
-
         TreeTableColumn<Book, String> bookStatusColumn = new TreeTableColumn<>("Status");
         bookStatusColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting book status for book: {}", p.getValue().getValue().getBookStatus());
             BookStatus bookStatus = p.getValue().getValue().getBookStatus();
             if (bookStatus != null) {
                 return new ReadOnlyStringWrapper(bookStatus.getDisplayValue());
             } else {
                 return new ReadOnlyStringWrapper("");
             }
-        }); // Adjust this based on Book attributes
+        });
         bookStatusColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         bookStatusColumn.setResizable(false);
 
-
         TreeTableColumn<Book, String> numberOfTimesUsedColumn = new TreeTableColumn<>("Times used");
         numberOfTimesUsedColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting number of times used for book: {}", p.getValue().getValue().getNumberOfTimesUsed());
             Integer numberOfTimesUsed = p.getValue().getValue().getNumberOfTimesUsed();
             if (numberOfTimesUsed != null) {
                 return new ReadOnlyStringWrapper(numberOfTimesUsed.toString());
             } else {
                 return new ReadOnlyStringWrapper("");
             }
-        }); // Adjust this based on Book attributes
+        });
         numberOfTimesUsedColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         numberOfTimesUsedColumn.setResizable(false);
 
 
+        logger.info("Tree table columns created and configured successfully.");
+
         bookTreeTableView.setRoot(root);
-        bookTreeTableView.setShowRoot(false); // Hide the default root node
+        bookTreeTableView.setShowRoot(false);
         bookTreeTableView.getColumns().add(titleColumn);
         bookTreeTableView.getColumns().add(authorColumn);
         bookTreeTableView.getColumns().add(genreColumn);
         bookTreeTableView.getColumns().add(publishedYearColumn);
         bookTreeTableView.getColumns().add(bookStatusColumn);
         bookTreeTableView.getColumns().add(numberOfTimesUsedColumn);
-
     }
 }
