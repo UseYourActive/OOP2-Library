@@ -34,7 +34,7 @@ public class CreateReaderProfileController implements Controller {
     }
 
     @FXML
-    public void createReaderProfileButtonOnMouseClicked() {
+    public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
             String firstName = firstNameTextField.getText();
             String middleName = middleNameTextField.getText();
@@ -56,6 +56,8 @@ public class CreateReaderProfileController implements Controller {
         } catch (Exception e) {
             logger.error("Error occurred during creating reader profile", e);
         }
+
+        SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
     }
 
     @FXML
