@@ -25,11 +25,11 @@ public class OperatorService implements Service {
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
 
-    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository,BookInventoryRepository bookInventoryRepository,BookFormRepository bookFormRepository) {
+    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookRepository = Preconditions.checkNotNull(bookRepository, "BookRepository cannot be null");
         this.readerRepository = Preconditions.checkNotNull(readerRepository, "ReaderRepository cannot be null");
-        this.bookInventoryRepository = Preconditions.checkNotNull(bookInventoryRepository,"BookInventoryRepository cannot be null");
-        this.bookFormRepository=Preconditions.checkNotNull(bookFormRepository,"BookFormRepository cannot be null");
+        this.bookInventoryRepository = Preconditions.checkNotNull(bookInventoryRepository, "BookInventoryRepository cannot be null");
+        this.bookFormRepository = Preconditions.checkNotNull(bookFormRepository, "BookFormRepository cannot be null");
     }
 
     public void lendBookToReaderForReadingRoom(Book book, Reader reader) {
@@ -57,10 +57,11 @@ public class OperatorService implements Service {
     }
 
 
-    public void saveAllBooks(List<Book> books){
+    public void saveAllBooks(List<Book> books) {
         bookRepository.saveAll(books);
     }
-    public void removeAllBookForms(List<BookForm> bookForms){
+
+    public void removeAllBookForms(List<BookForm> bookForms) {
         bookFormRepository.deleteAll(bookForms);
     }
 
@@ -89,22 +90,22 @@ public class OperatorService implements Service {
         }
     }
 
-    public void saveReader(Reader reader){
+    public void saveReader(Reader reader) {
         readerRepository.save(reader);
     }
 
-    public void changeBookStatus(Collection<Book> books,BookStatus status){
+    public void changeBookStatus(Collection<Book> books, BookStatus status) {
 
-        Set<Book> bookSet=new HashSet<>();
-        for(Book book:books){
+        Set<Book> bookSet = new HashSet<>();
+        for (Book book : books) {
             book.setBookStatus(status);
             bookSet.add(book);
         }
         bookRepository.saveAll(bookSet);
     }
 
-    public void saveNewBookForm(BookForm bookForm){
-        Preconditions.checkNotNull(bookForm,"Book form cannot be null");
+    public void saveNewBookForm(BookForm bookForm) {
+        Preconditions.checkNotNull(bookForm, "Book form cannot be null");
         bookFormRepository.save(bookForm);
         logger.info("Created new book form: {}", bookForm);
     }

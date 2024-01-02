@@ -1,13 +1,14 @@
 package services;
 
-import com.library.backend.exception.EmailException;
+import com.library.backend.exception.email.EmailException;
+import com.library.backend.exception.email.TransportException;
 import com.library.backend.services.EmailSenderService;
 import org.junit.jupiter.api.Test;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -19,7 +20,7 @@ public class EmailSenderServiceTest {
     private static final boolean TEST_USE_SSL = false;
 
     @Test
-    public void testSendEmailWithInvalidRecipient() {
+    public void testSendEmailWithInvalidRecipient() throws TransportException {
         EmailSenderService emailSenderService = new EmailSenderService(TEST_USERNAME, TEST_PASSWORD, TEST_SMTP_HOST, TEST_SMTP_PORT, TEST_USE_SSL);
         assertThrows(EmailException.class, () ->
                 emailSenderService.sendEmail("invalid-email", "Test Subject", "This is a test email.")
@@ -90,7 +91,7 @@ public class EmailSenderServiceTest {
     }
 
     @Test
-    public void testSendEmailWithInvalidRecipientAddress() {
+    public void testSendEmailWithInvalidRecipientAddress() throws TransportException {
         // Create an EmailSender
         EmailSenderService emailSenderService = new EmailSenderService(TEST_USERNAME, TEST_PASSWORD, TEST_SMTP_HOST, TEST_SMTP_PORT, TEST_USE_SSL);
 

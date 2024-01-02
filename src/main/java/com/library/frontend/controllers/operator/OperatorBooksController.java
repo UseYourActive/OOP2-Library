@@ -23,10 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class OperatorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(OperatorBooksController.class);
+
     @FXML public Button readersButton;
     @FXML public TextField searchBookTextField;
     @FXML public Button searchBookButton;
@@ -47,12 +50,12 @@ public class OperatorBooksController implements Controller {
         operatorService = ServiceFactory.getService(OperatorService.class);
         searchEngine = new BookInventorySearchEngine();
 
-        selectedBooks =FXCollections.observableArrayList();
+        selectedBooks = FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
 
-        overdueBookForms=operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
+        overdueBookForms = operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
 
-        BookTreeTableViewBuilder bookTreeTableViewBuilder=new BookTreeTableViewBuilder();
+        BookTreeTableViewBuilder bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
 
         updateTreeTableView(operatorService.getAllBookInventories());
@@ -88,8 +91,9 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/logInScene.fxml","Log In");
+        SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "Log In");
     }
+
     @FXML
     public void anchorPaneOnMouseClicked() {
         bookTreeTableView.getSelectionModel().clearSelection();
@@ -98,25 +102,25 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            if(bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null)
-            {
+            if (bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null) {
                 if (mouseEvent.getClickCount() == 2
                         && mouseEvent.getButton() == MouseButton.PRIMARY
                         && !bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
-                    SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml","Resume",bookTreeTableView.getSelectionModel().getSelectedItem().getValue().getResume());
+                    SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml", "Resume", bookTreeTableView.getSelectionModel().getSelectedItem().getValue().getResume());
 
                 }
 
-                if(bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()){
+                if (bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
-                    Book selectedBook= bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
-                    switch (selectedBook.getBookStatus()){
-                        case LENT -> DialogUtils.showInfo("Information","This book is already given.");
-                        case DAMAGED -> DialogUtils.showInfo("Information","Damaged books are pending removal.");
-                        case IN_READING_ROOM -> DialogUtils.showInfo("Information","This book is currently used by reader.");
-                        case ARCHIVED,AVAILABLE -> {
-                            if(!selectedBooks.contains(selectedBook))
+                    Book selectedBook = bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
+                    switch (selectedBook.getBookStatus()) {
+                        case LENT -> DialogUtils.showInfo("Information", "This book is already given.");
+                        case DAMAGED -> DialogUtils.showInfo("Information", "Damaged books are pending removal.");
+                        case IN_READING_ROOM ->
+                                DialogUtils.showInfo("Information", "This book is currently used by reader.");
+                        case ARCHIVED, AVAILABLE -> {
+                            if (!selectedBooks.contains(selectedBook))
                                 selectedBooks.add(selectedBook);
                         }
 
@@ -132,19 +136,20 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void selectedBooksListViewOnMouseClicked() {
         try {
-            if(selectedBooksListView.getSelectionModel() != null){
+            if (selectedBooksListView.getSelectionModel() != null) {
                 selectedBooks.remove(selectedBooksListView.getSelectionModel().getSelectedItem());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error occurred during handling book table view click", e);
         }
     }
+
     @FXML
     public void lendButtonOnMouseClicked() {
-        if(!selectedBooks.isEmpty()){
+        if (!selectedBooks.isEmpty()) {
 
             Object[] bookArray = selectedBooks.toArray();
-            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml","Create Book form", bookArray);
+            SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml", "Create Book form", bookArray);
             updateTreeTableView(operatorService.getAllBookInventories());
             selectedBooksListView.getItems().clear();
         }
@@ -153,8 +158,9 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void inboxButtonOnMouseClicked() {
         Object[] objects = overdueBookForms.toArray();
-        SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml","Inbox", objects);
+        SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml", "Inbox", objects);
     }
+
     private void prepareContextMenu() {
         try {
             ContextMenu contextMenu = new ContextMenu();
@@ -172,8 +178,8 @@ public class OperatorBooksController implements Controller {
         }
     }
 
-    private void showResume(ActionEvent actionEvent){
-        SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml","Resume");
+    private void showResume(ActionEvent actionEvent) {
+        SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml", "Resume");
     }
 
 
@@ -181,20 +187,20 @@ public class OperatorBooksController implements Controller {
         try {
             //Creating the parents
             bookTreeTableView.getRoot().getChildren().clear();
-            for(BookInventory bookInventory: bookInventories){
+            for (BookInventory bookInventory : bookInventories) {
 
                 Book parentBook = Book.builder()
                         .id(bookInventory.getRepresentiveBook().getId())
-                        .title(bookInventory.getRepresentiveBook().getTitle()+" "+bookInventory.getRepresentiveBook().getAuthor())
+                        .title(bookInventory.getRepresentiveBook().getTitle() + " " + bookInventory.getRepresentiveBook().getAuthor())
                         .resume(bookInventory.getRepresentiveBook().getResume())
                         .build();
 
-                TreeItem<Book> parent =new TreeItem<>(parentBook);
+                TreeItem<Book> parent = new TreeItem<>(parentBook);
 
                 //Creating the children
-                for(Book book:bookInventory.getBookList()){
+                for (Book book : bookInventory.getBookList()) {
 
-                    TreeItem<Book> child=new TreeItem<>(book);
+                    TreeItem<Book> child = new TreeItem<>(book);
 
                     parent.getChildren().add(child);//Adding child to the root element
                 }

@@ -1,6 +1,5 @@
 package com.library.database.repositories;
 
-import com.library.database.entities.BookForm;
 import com.library.database.entities.DBEntity;
 import lombok.Getter;
 import lombok.Setter;

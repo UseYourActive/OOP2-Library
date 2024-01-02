@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 public class CreateReaderProfileController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(CreateReaderProfileController.class);
+
     @FXML public TextField firstNameTextField;
     @FXML public TextField middleNameTextField;
     @FXML public TextField lastNameTextField;
@@ -26,6 +27,7 @@ public class CreateReaderProfileController implements Controller {
     @FXML public TextField emailTextField;
     @FXML public Button createReaderProfileButton;
     @FXML public Button cancelButton;
+
     private OperatorService operatorService;
 
     @Override

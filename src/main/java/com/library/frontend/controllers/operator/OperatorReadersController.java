@@ -4,14 +4,12 @@ import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
-import com.library.database.enums.BookFormStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.engines.ReaderSearchEngine;
 import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -21,8 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class OperatorReadersController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(OperatorReadersController.class);
@@ -32,6 +31,7 @@ public class OperatorReadersController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public TableView<Reader> readerTableView;
     @FXML public ListView<BookForm> bookFormListView;
+
     private OperatorService operatorService;
     private TableViewBuilder<Reader> readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
@@ -46,7 +46,7 @@ public class OperatorReadersController implements Controller {
         readerTableViewBuilder = new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
-        readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
 
         prepareContextMenu();
     }
@@ -77,12 +77,12 @@ public class OperatorReadersController implements Controller {
     @FXML
     public void readerTableViewOnClicked() {
         try {
-            TableView.TableViewSelectionModel<Reader> selectionModel=readerTableView.getSelectionModel();
+            TableView.TableViewSelectionModel<Reader> selectionModel = readerTableView.getSelectionModel();
 
-            if(selectionModel!=null) {
+            if (selectionModel != null) {
                 Reader selectedReader = selectionModel.getSelectedItem();
 
-                if(selectedReader!=null) {
+                if (selectedReader != null) {
                     bookFormListView.getItems().setAll(selectedReader.getBookForms());
                 }
             }
@@ -93,14 +93,14 @@ public class OperatorReadersController implements Controller {
 
     @FXML
     public void bookFormListViewOnMouseClicked() {
-        MultipleSelectionModel<BookForm> selectionModel=bookFormListView.getSelectionModel();
+        MultipleSelectionModel<BookForm> selectionModel = bookFormListView.getSelectionModel();
 
-        if(selectionModel!=null){
-            BookForm selectedBookForm= selectionModel.getSelectedItem();
+        if (selectionModel != null) {
+            BookForm selectedBookForm = selectionModel.getSelectedItem();
 
-            String sceneTittle=selectedBookForm.getStatus().getDisplayValue()+selectedBookForm.getDateOfCreation();
+            String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + selectedBookForm.getDateOfCreation();
 
-            SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml",sceneTittle,selectedBookForm);
+            SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
         }
     }
 
@@ -138,7 +138,7 @@ public class OperatorReadersController implements Controller {
 
                 operatorService.removeReader(selectedReader);
 
-                readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
+                readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
                 bookFormListView.getItems().clear();
             }
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.library.backend.services;
 
-import com.library.backend.exception.EmailException;
+import com.library.backend.exception.email.EmailException;
+import com.library.backend.exception.email.TransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +31,12 @@ import java.util.Properties;
  * </pre>
  * In this example, an {@code EmailSender} instance is created with the necessary email configuration,
  * and the {@code sendEmail} method is used to send an email. If the email is sent successfully,
- * the log will indicate success; otherwise, an {@link com.library.backend.exception.EmailException EmailException}
+ * the log will indicate success; otherwise, an {@link EmailException EmailException}
  * is thrown with details about the failure.
  * <p>
  * The {@code EmailSender} class supports both standard SMTP and SMTP with SSL connections.
  *
- * @see com.library.backend.exception.EmailException
+ * @see EmailException
  */
 public class EmailSenderService {
     private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
@@ -55,7 +56,7 @@ public class EmailSenderService {
      * @param smtpPort The SMTP server port.
      * @param useSSL   True if SSL should be used, false otherwise.
      */
-    public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL) {
+    public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL) throws TransportException {
         this.username = username;
         this.password = password;
         this.smtpHost = smtpHost;
@@ -67,12 +68,12 @@ public class EmailSenderService {
     /**
      * Constructs an {@code EmailSender} instance with the specified email configuration and pre-initialized transport.
      *
-     * @param username   The username for authentication.
-     * @param password   The password for authentication.
-     * @param smtpHost   The SMTP server host.
-     * @param smtpPort   The SMTP server port.
-     * @param useSSL     True if SSL should be used, false otherwise.
-     * @param transport  Pre-initialized Transport for sending emails.
+     * @param username  The username for authentication.
+     * @param password  The password for authentication.
+     * @param smtpHost  The SMTP server host.
+     * @param smtpPort  The SMTP server port.
+     * @param useSSL    True if SSL should be used, false otherwise.
+     * @param transport Pre-initialized Transport for sending emails.
      */
     public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL, Transport transport) {
         this.username = username;
@@ -93,7 +94,7 @@ public class EmailSenderService {
      */
     public void sendEmail(String to, String subject, String body) throws EmailException {
         if (transport == null) {
-            throw new EmailException("Transport is not set. Cannot send email.");
+            throw new TransportException("Transport is not set. Cannot send email.");
         }
 
         Properties props = getProperties();
@@ -154,7 +155,7 @@ public class EmailSenderService {
      * @return A configured {@link Transport} object for sending emails.
      * @throws RuntimeException If an error occurs while initializing the Transport object.
      */
-    private Transport initializeTransport() {
+    private Transport initializeTransport() throws TransportException {
         Properties props = getProperties();
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -166,7 +167,7 @@ public class EmailSenderService {
         try {
             return session.getTransport("smtp");
         } catch (NoSuchProviderException e) {
-            throw new RuntimeException("Error initializing Transport", e);
+            throw new TransportException("Error initializing Transport", e);
         }
     }
 }

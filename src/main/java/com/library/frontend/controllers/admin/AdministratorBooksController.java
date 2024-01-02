@@ -40,6 +40,7 @@ public class AdministratorBooksController implements Controller {
     @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
+
     private AdminService adminService;
     private SearchEngine<BookInventory> searchEngine;
 
@@ -88,7 +89,7 @@ public class AdministratorBooksController implements Controller {
             if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
                 BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
-                    SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml",selectedItem.getRepresentiveBook().getTitle(),selectedItem);
+                    SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml", selectedItem.getRepresentiveBook().getTitle(), selectedItem);
                     updateTableView(adminService.getAllBookInventories());
                 }
             } else {
@@ -161,12 +162,11 @@ public class AdministratorBooksController implements Controller {
     }
 
 
-
     private void removeSelectedInventory(ActionEvent actionEvent) {
         try {
             BookInventory inventory = inventoryTableView.getSelectionModel().getSelectedItem();
 
-            if (inventory!=null) {
+            if (inventory != null) {
                 if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
 
                     adminService.removeInventory(inventory);

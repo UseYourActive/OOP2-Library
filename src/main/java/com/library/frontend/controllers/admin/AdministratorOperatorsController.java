@@ -21,7 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class AdministratorOperatorsController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsController.class);
@@ -33,6 +35,7 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public Button searchOperatorButton;
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
+
     private AdminService adminService;
     private SearchEngine<User> searchEngine;
 
@@ -107,8 +110,8 @@ public class AdministratorOperatorsController implements Controller {
             User operator = operatorTableView.getSelectionModel().getSelectedItem();
 
             if (operator != null) {
-                if(operator.getRole()==Role.ADMIN){
-                    DialogUtils.showInfo("Error","You can't remove administrators");
+                if (operator.getRole() == Role.ADMIN) {
+                    DialogUtils.showInfo("Error", "You can't remove administrators");
                 }
                 adminService.removeOperator(operator);
                 updateTableView(adminService.getAllUsers());

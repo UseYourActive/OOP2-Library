@@ -1,6 +1,5 @@
 package com.library.frontend.utils.tableviews;
 
-import com.library.frontend.controllers.admin.AdministratorBooksController;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
 import org.slf4j.Logger;

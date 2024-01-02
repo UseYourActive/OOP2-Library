@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(RegisterNewBookController.class);
+
     @FXML public TextField titleTextField;
     @FXML public TextField authorTextField;
     @FXML public TextField yearTextField;
@@ -38,6 +39,7 @@ public class RegisterNewBookController implements Controller {
     @FXML public Label informationLabel;
     @FXML public TextField amountTextField;
     @FXML public AnchorPane anchorPane;
+
     private AdminService adminService;
 
     @Override

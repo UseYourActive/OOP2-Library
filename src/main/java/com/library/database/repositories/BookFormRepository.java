@@ -1,12 +1,10 @@
 package com.library.database.repositories;
 
-import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

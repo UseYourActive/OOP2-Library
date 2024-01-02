@@ -9,11 +9,15 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.controlsfx.control.Rating;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ReaderInfoController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(ReaderInfoController.class);
+
     @FXML public TreeView<Book> bookFormTreeView;
     @FXML public Button goBackButton;
     @FXML public Text readerNamesText;

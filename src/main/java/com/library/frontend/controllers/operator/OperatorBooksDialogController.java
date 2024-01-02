@@ -25,8 +25,10 @@ import java.util.ResourceBundle;
 
 public class OperatorBooksDialogController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(OperatorBooksDialogController.class);
+
     @FXML private Button closeButton;
     @FXML private TableView<Book> bookTableView;
+
     private OperatorService operatorService;
 
     @Override
@@ -39,11 +41,11 @@ public class OperatorBooksDialogController implements Controller {
         TableViewBuilder<Book> tableViewBuilder = new BookTableViewBuilder();
         tableViewBuilder.createTableViewColumns(bookTableView);
 
-        BookInventory bookInventory= (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
+        BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Error idk"));
 
-        List<Book> bookList= bookInventory.getBookList();
+        List<Book> bookList = bookInventory.getBookList();
 
         updateTableView(bookList);
     }
@@ -55,7 +57,7 @@ public class OperatorBooksDialogController implements Controller {
 
     @FXML
     private void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
-        ((Stage)closeButton.getScene().getWindow()).close();
+        ((Stage) closeButton.getScene().getWindow()).close();
     }
 
     private void updateTableView(List<Book> bookList) {
@@ -66,21 +68,4 @@ public class OperatorBooksDialogController implements Controller {
             logger.error("Error occurred during table view update", e);
         }
     }
-
-//    private void prepareContextMenu(){
-//        try {
-//            ContextMenu contextMenu = new ContextMenu();
-//
-//            MenuItem removeBookItem = new MenuItem("Remove book");
-//
-//            contextMenu.getItems().add(removeBookItem);
-//
-//            bookTableView.setContextMenu(contextMenu);
-//
-//            removeBookItem.setOnAction(this::removeSelectedBooks);
-//
-//        } catch (Exception e) {
-//            logger.error("Error occurred during context menu preparation", e);
-//        }
-//    }
 }

@@ -29,7 +29,10 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class CreateBookFormController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
@@ -59,22 +62,22 @@ public class CreateBookFormController implements Controller {
 
 
         List<Book> selectedBooks = new ArrayList<>();
-        for(Object object:SceneLoader.getTransferableObjects()){
-            if(object instanceof Book)
+        for (Object object : SceneLoader.getTransferableObjects()) {
+            if (object instanceof Book)
                 selectedBooks.add((Book) object);
         }
 
         rating.setRating(ReaderRating.NONE.getValue());
 
-        bookTableViewBuilder=new BookTableViewBuilder();
+        bookTableViewBuilder = new BookTableViewBuilder();
         bookTableViewBuilder.createTableViewColumns(bookTableView);
 
-        readerTableViewBuilder=new ReaderTableViewBuilder();
+        readerTableViewBuilder = new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
-        bookTableViewBuilder.updateTableView(bookTableView,selectedBooks);
+        bookTableViewBuilder.updateTableView(bookTableView, selectedBooks);
 
-        readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
 
     }
 
@@ -92,16 +95,16 @@ public class CreateBookFormController implements Controller {
 
     @FXML
     public void lendButtonOnMouseClicked() throws ReaderException {
-        if(readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem()!=null){
+        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
+            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-            if(selectedReader.getRating() == ReaderRating.ZERO_STAR)
+            if (selectedReader.getRating() == ReaderRating.ZERO_STAR)
                 throw new ReaderException("The reader is not allowed to take books anymore.");
 
-            if(bookTableView.getItems().stream()
+            if (bookTableView.getItems().stream()
                     .allMatch(book -> book.getBookStatus()
-                            .equals(BookStatus.AVAILABLE))){
+                            .equals(BookStatus.AVAILABLE))) {
 
                 operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.LENT);
 
@@ -119,25 +122,26 @@ public class CreateBookFormController implements Controller {
 
                 operatorService.saveReader(selectedReader);
 
-                ((Stage)cancelButton.getScene().getWindow()).close();
-            }else{
-                DialogUtils.showInfo("Information","For normal lending reader\ncan take only AVAILABLE books.");
+                ((Stage) cancelButton.getScene().getWindow()).close();
+            } else {
+                DialogUtils.showInfo("Information", "For normal lending reader\ncan take only AVAILABLE books.");
             }
         }
     }
+
     @FXML
     public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
-        if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
-            Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
+        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
+            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-            if(selectedReader.getRating()==ReaderRating.ZERO_STAR)
+            if (selectedReader.getRating() == ReaderRating.ZERO_STAR)
                 try {
                     throw new ReaderException("The reader is not allowed to take books anymore.");
                 } catch (ReaderException e) {
                     DialogUtils.showError("Error taking books", e.getMessage());
                 }
 
-            operatorService.changeBookStatus(bookTableView.getItems(),BookStatus.ARCHIVED);
+            operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.ARCHIVED);
 
             BookForm bookForm = BookForm.builder()
                     .reader(selectedReader)
@@ -149,7 +153,7 @@ public class CreateBookFormController implements Controller {
 
             operatorService.saveNewBookForm(bookForm);
 
-            ((Stage)cancelButton.getScene().getWindow()).close();
+            ((Stage) cancelButton.getScene().getWindow()).close();
         }
     }
 
@@ -162,20 +166,12 @@ public class CreateBookFormController implements Controller {
     public void ratingOnMouseClicked() {
         rating.setRating(selectedReaderRating);
     }
+
     @FXML
     public void readerTableViewOnMouseClicked() {
-        if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
-            selectedReaderRating=readerTableView.getSelectionModel().getSelectedItem().getRating().getValue();
+        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
+            selectedReaderRating = readerTableView.getSelectionModel().getSelectedItem().getRating().getValue();
             rating.setRating(selectedReaderRating);
         }
     }
-
-   //private <T>void updateTableView(TableView<T> tableView, Collection<T> collection) {
-   //    try {
-   //        tableView.getItems().clear();
-   //        tableView.getItems().addAll(FXCollections.observableArrayList(collection));
-   //    } catch (Exception e) {
-   //        logger.error("Error occurred during table view update", e);
-   //    }
-   //}
 }

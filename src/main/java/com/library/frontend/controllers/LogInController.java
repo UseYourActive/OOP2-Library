@@ -1,7 +1,7 @@
 package com.library.frontend.controllers;
 
 import com.library.backend.exception.IncorrectInputException;
-import com.library.backend.exception.UserNotFoundException;
+import com.library.backend.exception.users.UserNotFoundException;
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
@@ -27,10 +27,12 @@ import java.util.ResourceBundle;
 @NoArgsConstructor
 public class LogInController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
+
     @FXML private Button logInButton;
     @FXML private Label logInMessageLabel;
     @FXML private TextField usernameTextField;
     @FXML private PasswordField passwordPasswordField;
+
     private LogInService service;
 
     @Override
@@ -91,7 +93,7 @@ public class LogInController implements Controller {
     }
 
     public void logInButtonOnKeyPressed(KeyEvent keyEvent) {
-        if(keyEvent.getCode()== KeyCode.ENTER){
+        if (keyEvent.getCode() == KeyCode.ENTER) {
             //logInButtonOnMouseClicked((MouseEvent) keyEvent);
         }
     }

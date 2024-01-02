@@ -1,9 +1,6 @@
 package tableviews;
 
-import com.library.database.entities.Author;
 import com.library.database.entities.Book;
-import com.library.database.enums.BookStatus;
-import com.library.database.enums.Genre;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import com.library.frontend.utils.tableviews.TreeTableViewBuilder;
 import javafx.scene.control.TreeTableColumn;

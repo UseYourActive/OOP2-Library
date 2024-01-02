@@ -72,10 +72,12 @@ public class ServiceFactory {
 
         try {
             switch (getServiceType(serviceClass)) {
-                case ADMIN_SERVICE -> service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance(), BookInventoryRepository.getInstance()));
+                case ADMIN_SERVICE ->
+                        service = serviceClass.cast(new AdminService(BookRepository.getInstance(), UserRepository.getInstance(), BookInventoryRepository.getInstance()));
                 case LOG_IN_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
-                case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance(),BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));
-                default -> throw new NonExistentServiceException("There is no such enum");
+                case OPERATOR_SERVICE ->
+                        service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance(), BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));
+                default -> throw new NonExistentServiceException("There is no such enum!");
             }
             logger.info("Service {} created successfully", serviceClass.getSimpleName());
         } catch (NonExistentServiceException e) {
@@ -96,7 +98,7 @@ public class ServiceFactory {
      *
      * @param serviceClass The class object representing the service for which to determine the type.
      * @return The {@code ServiceType} associated with the specified service class, or {@code null} if
-     *         the service class is not supported.
+     * the service class is not supported.
      */
     private static ServiceType getServiceType(Class<? extends Service> serviceClass) {
         ServiceType processorType = null;

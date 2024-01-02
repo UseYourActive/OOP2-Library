@@ -1,6 +1,6 @@
 package com.library.backend.services;
 
-import com.library.backend.exception.UserNotFoundException;
+import com.library.backend.exception.users.UserNotFoundException;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import org.hibernate.HibernateException;
@@ -32,13 +32,13 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * In this example, the {@code LogInService} instance is created, and the {@code getUser} method is
  * used to retrieve a user by username. If the user is found, the retrieved user is returned; otherwise,
- * a {@link com.library.backend.exception.UserNotFoundException UserNotFoundException} is thrown.
+ * a {@link UserNotFoundException UserNotFoundException} is thrown.
  * <p>
  * The {@code LogInService} class implements the {@link com.library.backend.services.Service Service}
  * interface, providing a common interface for various services in the application.
  *
  * @see com.library.backend.services.Service
- * @see com.library.backend.exception.UserNotFoundException
+ * @see UserNotFoundException
  * @see com.library.database.entities.User
  * @see com.library.database.repositories.UserRepository
  */

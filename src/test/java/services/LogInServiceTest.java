@@ -1,6 +1,6 @@
 package services;
 
-import com.library.backend.exception.UserNotFoundException;
+import com.library.backend.exception.users.UserNotFoundException;
 import com.library.backend.services.LogInService;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;

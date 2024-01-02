@@ -1,4 +1,4 @@
-package com.library.backend.exception;
+package com.library.backend.exception.users;
 
 import lombok.experimental.StandardException;
 
