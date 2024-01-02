@@ -86,21 +86,8 @@ public class BookRepository extends Repository<Book> {
         });
     }
 
-    /**
-     * Delete multiple books from the database. This method encapsulates the deletion operation inside a Hibernate
-     * transaction.
-     *
-     * @param entities The collection of books to be deleted.
-     * @throws HibernateException If an error occurs during the Hibernate operation.
-     */
-    public void deleteAll(Collection<Book> entities) throws HibernateException {
-        actionInsideOfTransaction(session -> {
-            for (Book entity : entities) {
-                session.remove(entity);
-                logger.info("Entity with ID {} deleted successfully", entity.getId());
-            }
-        });
-    }
+
+
 
     /**
      * Retrieve and return a list of all books. This method uses Hibernates HQL (Hibernate Query Language) to execute

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.CheckListView?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.BookFormShowController">
+   <children>
+      <Button fx:id="returnButton" layoutX="387.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#returnButtonOnMouseClicked" text="Return" />
+      <Button fx:id="closeButton" layoutX="541.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#closeButtonOnMouseClicked" text="Close" />
+      <Button fx:id="notifyButton" layoutX="445.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#notifyButtonOnMouseClicked" text="Notify reader" />
+      <Label fx:id="readerLabel" layoutX="33.0" layoutY="35.0" text="Reader" />
+      <Label layoutX="84.0" layoutY="352.0" prefHeight="43.0" prefWidth="289.0" text="Note: Before returning please select all books that are damaged and are incapable of further use " textAlignment="CENTER" underline="true" wrapText="true" />
+      <CheckListView fx:id="bookCheckListView" layoutX="209.0" layoutY="21.0" onMouseClicked="#bookCheckListViewOnMouseClicked" prefHeight="331.0" prefWidth="377.0" />
+   </children>
+</AnchorPane>

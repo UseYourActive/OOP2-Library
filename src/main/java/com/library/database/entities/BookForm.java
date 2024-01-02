@@ -1,7 +1,6 @@
 package com.library.database.entities;
 
 import com.library.database.enums.BookFormStatus;
-import com.library.database.enums.ExpirationPolicy;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +23,7 @@ public class BookForm implements DBEntity{
     @OneToMany
     private List<Book> books;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Reader reader;
 
     @Column(name = "status",nullable = false)
@@ -34,8 +33,8 @@ public class BookForm implements DBEntity{
     @Column(name = "date_of_creation",nullable = false,unique = true)
     private LocalDateTime dateOfCreation;
 
-    @Column(name = "expiration",nullable = false)
-    private ExpirationPolicy expirationPolicy;
+    @Column(name = "date_of_expiration",nullable = false)
+    private LocalDateTime expirationDate;
 
     @Override
     public String toString() {
@@ -43,9 +42,10 @@ public class BookForm implements DBEntity{
     }
 
     public boolean isOverdue(){
-        if(expirationPolicy.equals(ExpirationPolicy.HOURS_24))
-            return dateOfCreation.plusHours(expirationPolicy.getValue()).isAfter(LocalDateTime.now());
-        else
-            return dateOfCreation.plusMonths(expirationPolicy.getValue()).isAfter(LocalDateTime.now());
+        return dateOfCreation.isAfter(expirationDate);
+    }
+
+    public boolean isPresent(){
+        return this.status.equals(BookFormStatus.IN_USE);
     }
 }

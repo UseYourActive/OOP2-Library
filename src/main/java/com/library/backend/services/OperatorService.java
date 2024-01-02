@@ -56,6 +56,14 @@ public class OperatorService implements Service {
         return books;
     }
 
+
+    public void saveAllBooks(List<Book> books){
+        bookRepository.saveAll(books);
+    }
+    public void removeAllBookForms(List<BookForm> bookForms){
+        bookFormRepository.deleteAll(bookForms);
+    }
+
     public List<BookForm> getAllBookForms() {
         List<BookForm> bookForms = bookFormRepository.findAll();
         logger.info("Retrieved {} books from the repository.", bookForms.size());
@@ -79,6 +87,10 @@ public class OperatorService implements Service {
         } else {
             logger.error("Failed to {} book: {}", action, book.getTitle());
         }
+    }
+
+    public void saveReader(Reader reader){
+        readerRepository.save(reader);
     }
 
     public void changeBookStatus(Collection<Book> books,BookStatus status){

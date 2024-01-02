@@ -19,4 +19,5 @@ package com.library.database.entities;
  * @see java.lang.Object#hashCode()
  */
 public interface DBEntity {
+    Long getId();
 }

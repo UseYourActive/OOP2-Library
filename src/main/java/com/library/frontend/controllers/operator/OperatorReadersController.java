@@ -2,7 +2,9 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
+import com.library.database.enums.BookFormStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.engines.ReaderSearchEngine;
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 public class OperatorReadersController implements Controller {
@@ -27,25 +30,23 @@ public class OperatorReadersController implements Controller {
     @FXML public Button booksButton;
     @FXML public TextField searchBarTextField;
     @FXML public Button searchReaderButton;
-    @FXML public TextArea readerTextArea;
     @FXML public TableView<Reader> readerTableView;
+    @FXML public ListView<BookForm> bookFormListView;
     private OperatorService operatorService;
     private TableViewBuilder<Reader> readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        operatorService = ServiceFactory.getService(OperatorService.class);
         searchEngine = new ReaderSearchEngine();
 
         booksButton.requestFocus();
 
-        readerTextArea.setFocusTraversable(false);
-
         readerTableViewBuilder = new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
-        updateTableView(operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
 
         prepareContextMenu();
     }
@@ -76,21 +77,30 @@ public class OperatorReadersController implements Controller {
     @FXML
     public void readerTableViewOnClicked() {
         try {
-            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
+            TableView.TableViewSelectionModel<Reader> selectionModel=readerTableView.getSelectionModel();
 
-            if (selectedReader != null)
-                readerTextArea.setText(selectedReader.toString());
+            if(selectionModel!=null) {
+                Reader selectedReader = selectionModel.getSelectedItem();
+
+                if(selectedReader!=null) {
+                    bookFormListView.getItems().setAll(selectedReader.getBookForms());
+                }
+            }
         } catch (Exception e) {
             logger.error("Error occurred during processing reader table view click", e);
         }
     }
 
-    private void updateTableView(Collection<Reader> readerList) {
-        try {
-            readerTableView.getItems().clear();
-            readerTableView.getItems().addAll(FXCollections.observableArrayList(readerList));
-        } catch (Exception e) {
-            logger.error("Error occurred during updating reader table view", e);
+    @FXML
+    public void bookFormListViewOnMouseClicked() {
+        MultipleSelectionModel<BookForm> selectionModel=bookFormListView.getSelectionModel();
+
+        if(selectionModel!=null){
+            BookForm selectedBookForm= selectionModel.getSelectedItem();
+
+            String sceneTittle=selectedBookForm.getStatus().getDisplayValue()+selectedBookForm.getDateOfCreation();
+
+            SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml",sceneTittle,selectedBookForm);
         }
     }
 
@@ -125,15 +135,15 @@ public class OperatorReadersController implements Controller {
             Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
             if (selectedReader != null) {
+
                 operatorService.removeReader(selectedReader);
 
-                updateTableView(operatorService.getAllReaders());
-                readerTextArea.clear();
-            } else {
-                readerTextArea.setText("No reader selected to remove");
+                readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
+                bookFormListView.getItems().clear();
             }
         } catch (Exception e) {
             logger.error("Error occurred during removing selected reader", e);
         }
     }
+
 }

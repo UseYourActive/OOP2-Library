@@ -1,5 +1,7 @@
 package com.library.database.repositories;
 
+import com.library.database.entities.BookForm;
+import com.library.database.entities.DBEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.HibernateException;
@@ -10,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -54,7 +57,7 @@ import java.util.function.Consumer;
  */
 @Getter
 @Setter
-public abstract class Repository<T> implements AutoCloseable {
+public abstract class Repository<T extends DBEntity> implements AutoCloseable {
     private static final SessionFactory sessionFactory;
     private static final ThreadLocal<Session> threadLocalSession = new ThreadLocal<>();
     private static final Logger logger = LoggerFactory.getLogger(Repository.class);
@@ -195,5 +198,21 @@ public abstract class Repository<T> implements AutoCloseable {
         actionInsideOfTransaction(session -> session.merge(object));
         logger.info("Entity updated successfully");
         return true;
+    }
+
+    /**
+     * Delete multiple entities from the database. This method encapsulates the deletion operation inside a Hibernate
+     * transaction.
+     *
+     * @param entities The collection of books to be deleted.
+     * @throws HibernateException If an error occurs during the Hibernate operation.
+     */
+    public final void deleteAll(Collection<T> entities) throws HibernateException {
+        actionInsideOfTransaction(session -> {
+            for (T entity : entities) {
+                session.remove(entity);
+                logger.info("Entity with ID {} deleted successfully", entity.getId());
+            }
+        });
     }
 }

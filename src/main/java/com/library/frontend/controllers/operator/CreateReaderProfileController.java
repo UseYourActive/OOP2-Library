@@ -30,7 +30,7 @@ public class CreateReaderProfileController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        operatorService = ServiceFactory.getService(OperatorService.class);
     }
 
     @FXML

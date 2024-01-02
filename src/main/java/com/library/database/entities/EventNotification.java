@@ -1,6 +1,5 @@
 package com.library.database.entities;
 
-import com.library.database.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,10 +63,5 @@ public class EventNotification implements DBEntity{
     @Column(name = "timestamp", nullable = false, unique = true)
     private LocalDateTime timestamp;
 
-    /**
-     * The type of the event notification.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "notification_type", length = 20, nullable = false)
-    private NotificationType notificationType;
+
 }

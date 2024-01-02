@@ -42,9 +42,8 @@ public class RegisterNewBookController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        adminService = ServiceFactory.getService(AdminService.class);
         Platform.runLater(() -> genreComboBox.requestFocus());
-
-        adminService = ((AdminService) ServiceFactory.getService(AdminService.class));
 
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
     }

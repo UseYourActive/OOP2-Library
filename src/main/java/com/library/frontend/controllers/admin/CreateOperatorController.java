@@ -2,6 +2,7 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.AdminService;
+import com.library.backend.services.Service;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
@@ -33,9 +34,11 @@ public class CreateOperatorController implements Controller {
     @FXML public PasswordField repeatPasswordPasswordField;
     @FXML public Label informationLabel;
     private Validator passwordValidator;
+    private AdminService adminService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        adminService=ServiceFactory.getService(AdminService.class);
         passwordValidator = new StrongPasswordValidator();
     }
 
@@ -50,7 +53,7 @@ public class CreateOperatorController implements Controller {
                     .role(Role.OPERATOR)
                     .build();
 
-            ((AdminService) ServiceFactory.getService(AdminService.class)).registerOperator(user);
+            adminService.registerOperator(user);
             cancelButton.fire();
         } catch (IncorrectInputException | PatternSyntaxException | ValidationException e) {
             informationLabel.setText(e.getMessage());

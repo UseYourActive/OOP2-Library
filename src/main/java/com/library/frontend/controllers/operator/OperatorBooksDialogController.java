@@ -31,7 +31,7 @@ public class OperatorBooksDialogController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        operatorService = ServiceFactory.getService(OperatorService.class);
 
         bookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 

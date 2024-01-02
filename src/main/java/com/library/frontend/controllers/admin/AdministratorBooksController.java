@@ -46,7 +46,7 @@ public class AdministratorBooksController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adminService = (AdminService) ServiceFactory.getService(AdminService.class);
+        adminService = ServiceFactory.getService(AdminService.class);
         searchEngine = new BookInventorySearchEngine();
 
         operatorsButton.requestFocus();

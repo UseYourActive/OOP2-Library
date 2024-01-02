@@ -67,8 +67,8 @@ public class ServiceFactory {
      * @throws NonExistentServiceException If the provided service class is not supported by the factory.
      *                                     This exception is thrown when there is no matching enum value.
      */
-    public static Service getService(Class<? extends Service> serviceClass) {
-        Service service = null;
+    public static <T extends Service> T getService(Class<T> serviceClass) {
+        T service = null;
 
         try {
             switch (getServiceType(serviceClass)) {

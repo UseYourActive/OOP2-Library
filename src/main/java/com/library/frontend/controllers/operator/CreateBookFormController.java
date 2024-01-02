@@ -8,7 +8,6 @@ import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
-import com.library.database.enums.ExpirationPolicy;
 import com.library.database.enums.ReaderRating;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
@@ -52,7 +51,7 @@ public class CreateBookFormController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
+        operatorService = ServiceFactory.getService(OperatorService.class);
         searchEngine = new ReaderSearchEngine();
 
         bookTableView.setMouseTransparent(true);
@@ -92,7 +91,7 @@ public class CreateBookFormController implements Controller {
     }
 
     @FXML
-    public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws ReaderException {
+    public void lendButtonOnMouseClicked() throws ReaderException {
         if(readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem()!=null){
 
             Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
@@ -110,11 +109,15 @@ public class CreateBookFormController implements Controller {
                         .reader(selectedReader)
                         .books(bookTableView.getItems())
                         .status(BookFormStatus.IN_USE)
-                        .expirationPolicy(ExpirationPolicy.MONTH)
+                        .expirationDate(LocalDateTime.now().plusMonths(1))
                         .dateOfCreation(LocalDateTime.now())
                         .build();
 
                 operatorService.saveNewBookForm(bookForm);
+
+                selectedReader.getBookForms().add(bookForm);
+
+                operatorService.saveReader(selectedReader);
 
                 ((Stage)cancelButton.getScene().getWindow()).close();
             }else{
@@ -140,7 +143,7 @@ public class CreateBookFormController implements Controller {
                     .reader(selectedReader)
                     .books(bookTableView.getItems())
                     .status(BookFormStatus.IN_USE)
-                    .expirationPolicy(ExpirationPolicy.HOURS_24)
+                    .expirationDate(LocalDateTime.now().plusHours(12))
                     .dateOfCreation(LocalDateTime.now())
                     .build();
 

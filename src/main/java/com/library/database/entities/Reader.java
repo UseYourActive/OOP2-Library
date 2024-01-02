@@ -79,7 +79,7 @@ public class Reader implements DBEntity{
     /**
      * The list of book forms associated with the reader.
      */
-    @OneToMany()
+    @OneToMany(mappedBy = "reader",cascade = CascadeType.ALL)
     private List<BookForm> bookForms;
 
     /**
@@ -99,5 +99,9 @@ public class Reader implements DBEntity{
     public String toString() {
         return String.format("Id: %d, First Name: %s, Middle Name: %s, Last Name: %s, Phone Number: %s, Email: %s, Rating: %s",
                 id, firstName, middleName, lastName, phoneNumber, email, rating.getDisplayValue());
+    }
+
+    public String getFullName(){
+        return firstName+" "+middleName+" "+lastName;
     }
 }
