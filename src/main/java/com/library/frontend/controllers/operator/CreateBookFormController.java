@@ -14,13 +14,12 @@ import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.SearchEngine;
+import com.library.frontend.utils.engines.ReaderSearchEngine;
+import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -50,18 +48,18 @@ public class CreateBookFormController implements Controller {
     private double selectedReaderRating;
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
-    private SearchEngine searchEngine;
+    private SearchEngine<Reader> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
-        searchEngine = new SearchEngine();
+        searchEngine = new ReaderSearchEngine();
 
         bookTableView.setMouseTransparent(true);
         bookTableView.setFocusTraversable(false);
 
 
-        List<Book> selectedBooks=new ArrayList<>();
+        List<Book> selectedBooks = new ArrayList<>();
         for(Object object:SceneLoader.getTransferableObjects()){
             if(object instanceof Book)
                 selectedBooks.add((Book) object);
@@ -86,7 +84,7 @@ public class CreateBookFormController implements Controller {
         try {
             List<Reader> readerList = operatorService.getAllReaders();
             String stringToSearch = readerSearchBarTextField.getText();
-            Set<Reader> results = searchEngine.searchReaders(readerList, stringToSearch);
+            Collection<Reader> results = searchEngine.search(readerList, stringToSearch);
             readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
             logger.error("Error occurred during searching readers", e);
@@ -95,7 +93,7 @@ public class CreateBookFormController implements Controller {
 
     @FXML
     public void lendButtonOnMouseClicked(MouseEvent mouseEvent) throws ReaderException {
-        if(readerTableView.getSelectionModel()!=null&&readerTableView.getSelectionModel().getSelectedItem()!=null){
+        if(readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem()!=null){
 
             Reader selectedReader=readerTableView.getSelectionModel().getSelectedItem();
 

@@ -5,15 +5,14 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
-import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.SearchEngine;
+import com.library.frontend.utils.engines.BookInventorySearchEngine;
+import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -41,12 +40,12 @@ public class OperatorBooksController implements Controller {
     private OperatorService operatorService;
     private ObservableList<Book> selectedBooks;
     private List<BookForm> overdueBookForms;
-    private SearchEngine searchEngine;
+    private SearchEngine<BookInventory> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
-        searchEngine = new SearchEngine();
+        searchEngine = new BookInventorySearchEngine();
 
         selectedBooks =FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
@@ -78,9 +77,9 @@ public class OperatorBooksController implements Controller {
             try {
                 String stringToSearch = searchBookTextField.getText().toUpperCase();
                 List<BookInventory> allBookInventories = operatorService.getAllBookInventories();
-                List<BookInventory> results = searchEngine.searchBooks(allBookInventories, stringToSearch);
+                Collection<BookInventory> results = searchEngine.search(allBookInventories, stringToSearch);
 
-                updateTreeTableView(results);
+                updateTreeTableView(results.stream().toList());
             } catch (Exception e) {
                 logger.error("Error occurred during searching books", e);
             }

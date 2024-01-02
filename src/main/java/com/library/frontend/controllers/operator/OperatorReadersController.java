@@ -5,7 +5,8 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.SearchEngine;
+import com.library.frontend.utils.engines.ReaderSearchEngine;
+import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -30,12 +31,12 @@ public class OperatorReadersController implements Controller {
     @FXML public TableView<Reader> readerTableView;
     private OperatorService operatorService;
     private TableViewBuilder<Reader> readerTableViewBuilder;
-    private SearchEngine searchEngine;
+    private SearchEngine<Reader> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = (OperatorService) ServiceFactory.getService(OperatorService.class);
-        searchEngine = new SearchEngine();
+        searchEngine = new ReaderSearchEngine();
 
         booksButton.requestFocus();
 
@@ -65,7 +66,7 @@ public class OperatorReadersController implements Controller {
         try {
             List<Reader> readerList = operatorService.getAllReaders();
             String stringToSearch = searchBarTextField.getText();
-            Set<Reader> results = searchEngine.searchReaders(readerList, stringToSearch);
+            Collection<Reader> results = searchEngine.search(readerList, stringToSearch);
             readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
             logger.error("Error occurred during searching readers", e);

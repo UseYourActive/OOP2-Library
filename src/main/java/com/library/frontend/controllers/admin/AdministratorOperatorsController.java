@@ -7,7 +7,8 @@ import com.library.database.enums.Role;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.SearchEngine;
+import com.library.frontend.utils.engines.OperatorSearchEngine;
+import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -33,12 +34,12 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
     private AdminService adminService;
-    private SearchEngine searchEngine;
+    private SearchEngine<User> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = (AdminService) ServiceFactory.getService(AdminService.class);
-        searchEngine = new SearchEngine();
+        searchEngine = new OperatorSearchEngine();
 
         booksButton.requestFocus();
 
@@ -71,7 +72,7 @@ public class AdministratorOperatorsController implements Controller {
         try {
             List<User> userList = adminService.getAllUsers();
             String stringToSearch = searchBookTextField.getText();
-            Set<User> results = searchEngine.searchOperators(userList, stringToSearch);
+            Collection<User> results = searchEngine.search(userList, stringToSearch);
             updateTableView(results);
             anchorPane.requestFocus();
         } catch (Exception e) {

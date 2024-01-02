@@ -2,12 +2,12 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.SearchEngine;
+import com.library.frontend.utils.engines.BookInventorySearchEngine;
+import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,13 +41,13 @@ public class AdministratorBooksController implements Controller {
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
     private AdminService adminService;
-    private SearchEngine searchEngine;
+    private SearchEngine<BookInventory> searchEngine;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = (AdminService) ServiceFactory.getService(AdminService.class);
-        searchEngine = new SearchEngine();
+        searchEngine = new BookInventorySearchEngine();
 
         operatorsButton.requestFocus();
 
@@ -66,8 +66,8 @@ public class AdministratorBooksController implements Controller {
         try {
             List<BookInventory> inventories = adminService.getAllBookInventories();
             String stringToSearch = searchBookTextField.getText();
-            List<BookInventory> results = searchEngine.searchBooks(inventories, stringToSearch);
-            updateTableView(results);
+            Collection<BookInventory> results = searchEngine.search(inventories, stringToSearch);
+            updateTableView(results.stream().toList());
         } catch (Exception e) {
             logger.error("Error occurred during book search", e);
         }
