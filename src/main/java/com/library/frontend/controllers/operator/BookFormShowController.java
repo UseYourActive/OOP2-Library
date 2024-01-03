@@ -11,12 +11,12 @@ import com.library.database.entities.Reader;
 import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.tableviews.HiddenCheckBoxListCell;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.IndexedCheckModel;
@@ -129,6 +129,7 @@ public class BookFormShowController implements Controller {
         try {
             emailSenderService.sendEmail(reader.getEmail(), "Return of books", "");
             logger.info("Notification sent to reader: {}", reader.getEmail());
+            DialogUtils.showConfirmation("Email result", "An email notifying the user has been sent!");
         } catch (EmailException e) {
             logger.error("Error sending notification email", e);
         }
