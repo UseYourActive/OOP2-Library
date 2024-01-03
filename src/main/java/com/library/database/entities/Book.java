@@ -53,12 +53,12 @@ public class Book implements DBEntity{
     public String toString() {
 
         if(publishYear==null){
-            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nStatus: %s\nResume:\n%s",
-                    title, author,genre,bookStatus,resume);
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nResume:\n%s",
+                    title, author,genre,resume);
         }
 
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nStatus: %s\nResume:\n%s",
-                title, author,genre,publishYear,bookStatus,resume);
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nResume:\n%s",
+                title, author,genre,publishYear,resume);
     }
 
 

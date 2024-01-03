@@ -6,6 +6,7 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.validators.StrongPasswordValidator;
 import com.library.frontend.utils.validators.Validator;
@@ -54,13 +55,15 @@ public class CreateOperatorController implements Controller {
                     .build();
 
             adminService.registerOperator(user);
-            cancelButton.fire();
-        } catch (IncorrectInputException | PatternSyntaxException | ValidationException e) {
+
+            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        } catch (PatternSyntaxException | ValidationException e) {
             informationLabel.setText(e.getMessage());
             logger.error("User failed to create due to missing fields", e);
         }
-
-        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        catch (IncorrectInputException e){
+            informationLabel.setText(e.getMessage());
+        }
     }
 
     @FXML
@@ -115,7 +118,7 @@ public class CreateOperatorController implements Controller {
         }
 
         if (!passwordValidator.isValid(pass)) {
-            throw new IncorrectInputException("Password is not strong enough. It must contain at least one digit, one lowercase and one uppercase letter, and be at least 6 characters long.");
+            throw new IncorrectInputException("Password is not strong enough.");
         }
     }
 }

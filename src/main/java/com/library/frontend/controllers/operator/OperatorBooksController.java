@@ -63,8 +63,6 @@ public class OperatorBooksController implements Controller {
         selectedBooksListView.setTooltip(new Tooltip("Selected books will show here"));
 
         readersButton.requestFocus();
-
-        prepareContextMenu();
     }
 
     @FXML
@@ -91,7 +89,9 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "Log In");
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "Log In");
+        }
     }
 
     @FXML
@@ -111,7 +111,7 @@ public class OperatorBooksController implements Controller {
 
                 }
 
-                if (bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY&&bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
                     Book selectedBook = bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
                     switch (selectedBook.getBookStatus()) {
@@ -161,26 +161,6 @@ public class OperatorBooksController implements Controller {
         SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml", "Inbox", objects);
     }
 
-    private void prepareContextMenu() {
-        try {
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem resume = new MenuItem("Show resume");
-
-            contextMenu.getItems().add(resume);
-
-            bookTreeTableView.setContextMenu(contextMenu);
-
-            resume.setOnAction(this::showResume);
-
-        } catch (Exception e) {
-            logger.error("Error occurred during context menu preparation", e);
-        }
-    }
-
-    private void showResume(ActionEvent actionEvent) {
-        SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml", "Resume");
-    }
 
 
     private void updateTreeTableView(List<BookInventory> bookInventories) {

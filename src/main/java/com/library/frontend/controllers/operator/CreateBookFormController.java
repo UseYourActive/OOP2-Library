@@ -17,10 +17,9 @@ import com.library.frontend.utils.engines.ReaderSearchEngine;
 import com.library.frontend.utils.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
@@ -78,7 +77,6 @@ public class CreateBookFormController implements Controller {
         bookTableViewBuilder.updateTableView(bookTableView, selectedBooks);
 
         readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
-
     }
 
     @FXML

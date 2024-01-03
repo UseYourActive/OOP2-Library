@@ -30,14 +30,13 @@ public class AdministratorOperatorsController implements Controller {
 
     @FXML public Button booksButton;
     @FXML public TextField searchBookTextField;
-    @FXML public Button createOperatorButton;
-    @FXML public Button removeOperatorButton;
     @FXML public Button searchOperatorButton;
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
 
     private AdminService adminService;
     private SearchEngine<User> searchEngine;
+    private TableViewBuilder<User> operatorTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,10 +45,10 @@ public class AdministratorOperatorsController implements Controller {
 
         booksButton.requestFocus();
 
-        TableViewBuilder<User> operatorTableViewBuilder = new OperatorTableViewBuilder();
+        operatorTableViewBuilder = new OperatorTableViewBuilder();
         operatorTableViewBuilder.createTableViewColumns(operatorTableView);
 
-        updateTableView(adminService.getAllUsers());
+        operatorTableViewBuilder.updateTableView(operatorTableView,adminService.getAllUsers());
 
         prepareContextMenu();
     }
@@ -76,7 +75,7 @@ public class AdministratorOperatorsController implements Controller {
             List<User> userList = adminService.getAllUsers();
             String stringToSearch = searchBookTextField.getText();
             Collection<User> results = searchEngine.search(userList, stringToSearch);
-            updateTableView(results);
+            operatorTableViewBuilder.updateTableView(operatorTableView,results);
             anchorPane.requestFocus();
         } catch (Exception e) {
             logger.error("Error occurred during operator search", e);
@@ -112,17 +111,14 @@ public class AdministratorOperatorsController implements Controller {
             if (operator != null) {
                 if (operator.getRole() == Role.ADMIN) {
                     DialogUtils.showInfo("Error", "You can't remove administrators");
+                }else{
+                    adminService.removeOperator(operator);
+                    operatorTableViewBuilder.updateTableView(operatorTableView,adminService.getAllUsers());
                 }
-                adminService.removeOperator(operator);
-                updateTableView(adminService.getAllUsers());
             }
         } catch (Exception e) {
             logger.error("Error occurred during operator removal", e);
         }
     }
 
-    private void updateTableView(Collection<User> userList) {
-        operatorTableView.getItems().clear();
-        operatorTableView.getItems().addAll(FXCollections.observableArrayList(userList));
-    }
 }
