@@ -1,5 +1,6 @@
 package com.library.backend.services;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.exception.users.UserNotFoundException;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
@@ -69,6 +70,8 @@ public class LogInService implements Service {
      */
     public User getUser(User user) throws UserNotFoundException, HibernateException {
         String username = user.getUsername();
+        String providedPassword = user.getPassword();
+
         logger.info("Attempting to retrieve user: {}", username);
 
         User retrievedUser = userRepository.findByUsername(username)
@@ -77,8 +80,23 @@ public class LogInService implements Service {
                     return new UserNotFoundException("User not found");
                 });
 
-        logger.info("User retrieved successfully: {}", retrievedUser.getUsername());
+        String storedPassword = retrievedUser.getPassword();
 
-        return retrievedUser;
+        if (isPasswordMatch(providedPassword, storedPassword)) {
+            logger.info("User retrieved successfully: {}", retrievedUser.getUsername());
+            return retrievedUser;
+        } else {
+            logger.error("Invalid password for user: {}", username);
+            throw new UserNotFoundException("Invalid password");
+        }
+    }
+
+    private boolean isPasswordMatch(String providedPassword, String storedPassword) {
+        if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$")) {
+            BCrypt.Result result = BCrypt.verifyer().verify(providedPassword.toCharArray(), storedPassword);
+            return result.verified;
+        } else {
+            return providedPassword.equals(storedPassword);
+        }
     }
 }

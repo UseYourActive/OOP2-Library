@@ -1,5 +1,8 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.email.EmailException;
+import com.library.backend.exception.email.TransportException;
+import com.library.backend.services.EmailSenderService;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
@@ -36,6 +39,7 @@ public class BookFormShowController implements Controller {
     private BookForm bookForm;
     private Reader reader;
     private OperatorService operatorService;
+    private EmailSenderService emailSenderService;
 
     // Database updates overtime .. Best to execute when the app is started
     static {
@@ -49,7 +53,14 @@ public class BookFormShowController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.info("Initializing BookFormShowController");
         operatorService = ServiceFactory.getService(OperatorService.class);
+
+        try {
+            emailSenderService = new EmailSenderService("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq", "smtp.gmail.com", "587", false);
+        } catch (TransportException e) {
+            logger.error("Couldn't send email", e);
+        }
 
         Object obj = SceneLoader.getTransferableObjects()[0];
         if (obj instanceof BookForm)
@@ -101,14 +112,19 @@ public class BookFormShowController implements Controller {
 
     @FXML
     public void closeButtonOnMouseClicked() {
-        ((Stage) closeButton.getScene().getWindow()).close();
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
         logger.info("BookFormShow window closed.");
     }
 
     @FXML
     public void notifyButtonOnMouseClicked(MouseEvent mouseEvent) {
-        // sending email to reader bookForm.getReader()
-        logger.info("Notification sent to reader: {}", reader.getEmail());
+        try {
+            emailSenderService.sendEmail(reader.getEmail(), "Return of books", "");
+            logger.info("Notification sent to reader: {}", reader.getEmail());
+        } catch (EmailException e) {
+            logger.error("Error sending notification email", e);
+        }
     }
 
     @FXML

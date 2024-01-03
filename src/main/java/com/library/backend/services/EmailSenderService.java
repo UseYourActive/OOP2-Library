@@ -38,7 +38,7 @@ import java.util.Properties;
  *
  * @see EmailException
  */
-public class EmailSenderService {
+public class EmailSenderService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
     private final String username;
     private final String password;
