@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import org.controlsfx.control.Rating;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,9 @@ public class OperatorReadersController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public TableView<Reader> readerTableView;
     @FXML public ListView<BookForm> bookFormListView;
+    public Rating readerRating;
 
+    private int ratingValue;
     private OperatorService operatorService;
     private TableViewBuilder<Reader> readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
@@ -84,6 +87,8 @@ public class OperatorReadersController implements Controller {
 
                 if (selectedReader != null) {
                     bookFormListView.getItems().setAll(selectedReader.getBookForms());
+                    ratingValue=selectedReader.getRating().getValue();
+                    readerRating.setRating(ratingValue);
                 }
             }
         } catch (Exception e) {
@@ -101,6 +106,7 @@ public class OperatorReadersController implements Controller {
             String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + selectedBookForm.getDateOfCreation();
 
             SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
+            readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
         }
     }
 
@@ -146,4 +152,7 @@ public class OperatorReadersController implements Controller {
         }
     }
 
+    public void readerRatingOnMouseClicked(MouseEvent mouseEvent) {
+        readerRating.setRating(ratingValue);
+    }
 }

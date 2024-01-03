@@ -11,6 +11,7 @@ import com.library.database.entities.Reader;
 import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.tableviews.HiddenCheckBoxListCell;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,6 +35,7 @@ public class BookFormShowController implements Controller {
     @FXML public Button closeButton;
     @FXML public Button notifyButton;
     @FXML public CheckListView<Book> bookCheckListView;
+    @FXML public Label noteLabel;
     @FXML public Label readerLabel;
 
     private BookForm bookForm;
@@ -68,20 +70,23 @@ public class BookFormShowController implements Controller {
 
         reader = bookForm.getReader();
 
+        readerLabel.setText(reader.getFullName().replace(' ', '\n'));
+
+        bookCheckListView.getItems().setAll(bookForm.getBooks());
+
         if (!bookForm.isPresent()) {
             returnButton.setVisible(false);
             returnButton.setDisable(true);
             notifyButton.setVisible(false);
             notifyButton.setDisable(true);
+            noteLabel.setVisible(false);
+            noteLabel.setDisable(true);
+            bookCheckListView.setCellFactory(param -> new HiddenCheckBoxListCell<>());
         }
-
-        readerLabel.setText(reader.getFullName().replace(' ', '\n'));
-
-        bookCheckListView.getItems().setAll(bookForm.getBooks());
     }
 
     @FXML
-    public void returnButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void returnButtonOnMouseClicked() {
         IndexedCheckModel<Book> checkModel = bookCheckListView.getCheckModel();
 
         List<Book> booksToReturn = new ArrayList<>();
@@ -98,9 +103,9 @@ public class BookFormShowController implements Controller {
         operatorService.saveAllBooks(booksToReturn);
 
         if (bookForm.isOverdue()) {
-            reader.getRating().demote();
+            reader.demote();
         } else {
-            reader.getRating().promote();
+            reader.promote();
         }
 
         bookForm.setStatus(BookFormStatus.RETURNED);
@@ -108,6 +113,8 @@ public class BookFormShowController implements Controller {
         operatorService.saveReader(reader);
 
         logger.info("Books returned successfully by reader: {}", reader.getFullName());
+
+        closeButtonOnMouseClicked();
     }
 
     @FXML
@@ -118,7 +125,7 @@ public class BookFormShowController implements Controller {
     }
 
     @FXML
-    public void notifyButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void notifyButtonOnMouseClicked() {
         try {
             emailSenderService.sendEmail(reader.getEmail(), "Return of books", "");
             logger.info("Notification sent to reader: {}", reader.getEmail());
@@ -127,8 +134,4 @@ public class BookFormShowController implements Controller {
         }
     }
 
-    @FXML
-    public void bookCheckListViewOnMouseClicked(MouseEvent mouseEvent) {
-        // Any specific behavior for bookCheckListView click event
-    }
 }

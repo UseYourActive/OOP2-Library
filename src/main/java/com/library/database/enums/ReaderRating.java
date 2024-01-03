@@ -13,8 +13,8 @@ import lombok.Setter;
  * demoted based on a coefficient, and specific rules are applied to adjust the rating values. The enum includes methods
  * to retrieve the current rating based on the current integer value.</p>
  *
- * <p>The enum also includes a setter for the value, allowing external modification of the rating value. The {@link #promote()}
- * and {@link #demote()} methods adjust the rating value based on the coefficient and specific rules for rating changes.</p>
+ * <p>The enum also includes a setter for the value, allowing external modification of the rating value. The {@link #increase()}
+ * and {@link #decrease()} methods adjust the rating value based on the coefficient and specific rules for rating changes.</p>
  *
  * @see lombok.Getter
  * @see lombok.Setter
@@ -63,16 +63,20 @@ public enum ReaderRating {
     private final String displayValue;
 
     /**
-     * The integer value of the rating.
+     * The default value of the rating.
      */
-    @Setter
     @Getter
-    private Integer value;
+    private final int value;
+
+    /**
+     * The current value used to determine current rating.
+     */
+    private int currentValue;
 
     /**
      * The coefficient used to determine rating changes over time.
      */
-    private Integer coefficient = 0;
+    private int coefficient = 0;
 
     /**
      * Constructs a new Rating with the specified display value and integer value.
@@ -85,45 +89,36 @@ public enum ReaderRating {
         this.value = value;
     }
 
-    /**
-     * Promotes the rating based on the coefficient and specific rules for rating changes.
-     */
-    public void promote() {
+
+    public void increase() {
         coefficient++;
 
         if (value == -1) {
-            setValue(3);
+            currentValue=3;
         } else {
-            if (coefficient % 5 == 0 && value < 5) {
-                value++;
+            if (coefficient % 5 == 0 && currentValue < 5) {
+                currentValue++;
             }
         }
     }
 
-    /**
-     * Demotes the rating based on the coefficient and specific rules for rating changes.
-     */
-    public void demote() {
+
+    public void decrease() {
         coefficient--;
 
         if (value == -1) {
-            setValue(2);
+            currentValue=2;
         } else {
-            if (coefficient % 5 == 0 && value > 0) {
-                value--;
+            if (coefficient % 5 == 0 && currentValue > 0) {
+                currentValue--;
             }
         }
     }
 
-   /**
-    * Gets the current Rating based on the current integer value.
-    *
-    * @return The current Rating.
-    * @throws IllegalStateException If no matching Rating is found for the current value.
-    */
-   private ReaderRating setCurrentRating() throws IllegalStateException {
+
+   public ReaderRating getNewRating() throws IllegalStateException {
        for (ReaderRating readerRating : ReaderRating.values()) {
-           if (readerRating.getValue().equals(value)) {
+           if (readerRating.getValue()==currentValue) {
                return readerRating;
            }
        }

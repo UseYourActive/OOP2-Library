@@ -53,6 +53,8 @@ public class OperatorBooksController implements Controller {
         selectedBooks = FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
 
+        //rating
+
         overdueBookForms = operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder = new BookTreeTableViewBuilder();

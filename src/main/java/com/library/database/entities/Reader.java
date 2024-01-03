@@ -101,6 +101,17 @@ public class Reader implements DBEntity{
                 id, firstName, middleName, lastName, phoneNumber, email, rating.getDisplayValue());
     }
 
+    public void promote(){
+        rating.increase();
+        rating=rating.getNewRating();
+    }
+
+    public void demote(){
+        rating.decrease();
+        rating=rating.getNewRating();
+    }
+
+
     public String getFullName(){
         return firstName+" "+middleName+" "+lastName;
     }
