@@ -16,7 +16,6 @@ import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.IndexedCheckModel;
@@ -43,7 +42,7 @@ public class BookFormShowController implements Controller {
     private OperatorService operatorService;
     private EmailSenderService emailSenderService;
 
-    // Database updates overtime .. Best to execute when the app is started
+    // Database updates overtime ... Best to execute when the app is started
     static {
         OperatorService service = ServiceFactory.getService(OperatorService.class);
 

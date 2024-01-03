@@ -49,6 +49,16 @@ public class Book implements DBEntity{
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
 
+    //Cloning constructor
+    public Book(Book book) {
+        this.publishYear = book.publishYear;
+        this.title = book.title;
+        this.resume = book.resume;
+        this.author = book.author;
+        this.genre = book.genre;
+        this.inventory = book.inventory;
+    }
+
     @Override
     public String toString() {
 
@@ -59,13 +69,6 @@ public class Book implements DBEntity{
 
         return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nResume:\n%s",
                 title, author,genre,publishYear,resume);
-    }
-
-
-    public boolean equalsBook(Book book){
-        if (this == book) return true;
-        if (book == null || getClass() != book.getClass()) return false;
-        return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
     }
 
     @Override
@@ -80,4 +83,12 @@ public class Book implements DBEntity{
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public boolean equalsBook(Book book){
+        if (this == book) return true;
+        if (book == null || getClass() != book.getClass()) return false;
+        return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
+    }
+
+
 }

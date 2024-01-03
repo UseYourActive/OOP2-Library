@@ -139,7 +139,7 @@ public class CreateBookFormController implements Controller {
                     DialogUtils.showError("Error taking books", e.getMessage());
                 }
 
-            operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.ARCHIVED);
+            operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.IN_READING_ROOM);
 
             BookForm bookForm = BookForm.builder()
                     .reader(selectedReader)

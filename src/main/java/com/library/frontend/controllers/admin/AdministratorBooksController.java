@@ -2,7 +2,9 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
+import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
+import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -206,12 +208,27 @@ public class AdministratorBooksController implements Controller {
                 try {
                     int quantity = Integer.parseInt(quantityField.getText());
                     if (quantity > 0) {
-                        BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
-                        //bookInventory.setQuantity(quantity+bookInventory.getQuantity());
-                        adminService.saveInventory(bookInventory);
 
-                        updateTableView(adminService.getAllBookInventories());
-                        dialogStage.close();
+                        if(inventoryTableView.getSelectionModel()!=null) {
+                            BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+
+                            Book representiveBook=bookInventory.getRepresentiveBook();
+
+                            for (int i = 0; i < quantity; i++) {
+                                Book book = new Book(representiveBook);
+                                book.setBookStatus(BookStatus.AVAILABLE);
+                                book.setNumberOfTimesUsed(0);
+
+
+                                adminService.saveBook(book);
+                                bookInventory.addBook(book);
+                            }
+
+                            adminService.saveInventory(bookInventory);
+
+                            updateTableView(adminService.getAllBookInventories());
+                            dialogStage.close();
+                        }
                     } else {
                         DialogUtils.showInfo("Error", "Please enter valid quantity number!");
                     }
