@@ -1,8 +1,7 @@
-package com.library.backend.services.testing;
+package com.library.backend.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.google.common.base.Preconditions;
-import com.library.backend.services.Service;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import org.slf4j.Logger;
