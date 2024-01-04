@@ -3,7 +3,9 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
+import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -29,28 +31,27 @@ public class AdministratorBooksDialogController implements Controller {
     @FXML public Button closeButton;
 
     private AdminService adminService;
+    private BookInventory bookInventory;
+    private BookTableViewBuilder tableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = ServiceFactory.getService(AdminService.class);
 
+        bookInventory= (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects()).findFirst().orElseThrow(RuntimeException::new);
+
         bookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         prepareContextMenu();
-        TableViewBuilder<Book> tableViewBuilder = new BookTableViewBuilder();
+
+        tableViewBuilder = new BookTableViewBuilder();
         tableViewBuilder.createTableViewColumns(bookTableView);
 
         BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects()).findFirst().orElseThrow(RuntimeException::new);
 
         List<Book> bookList = bookInventory.getBookList();
 
-        updateTableView(bookList);
-    }
-
-
-    @FXML
-    public void bookTableViewOnMouseClicked() {
-
+        tableViewBuilder.updateTableView(bookTableView,bookList);
     }
 
     @FXML
@@ -58,29 +59,48 @@ public class AdministratorBooksDialogController implements Controller {
         ((Stage) closeButton.getScene().getWindow()).close();
     }
 
-    private void updateTableView(List<Book> bookList) {
-        try {
-            bookTableView.getItems().clear();
-            bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
-        } catch (Exception e) {
-            logger.error("Error occurred during table view update", e);
-        }
-    }
-
     private void prepareContextMenu() {
         try {
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem removeBookItem = new MenuItem("Remove book");
+            MenuItem archiveBook = new MenuItem("Archive book");
+            MenuItem removeBook = new MenuItem("Remove book");
 
-            contextMenu.getItems().add(removeBookItem);
+            contextMenu.getItems().add(archiveBook);
+            contextMenu.getItems().add(removeBook);
+
+            archiveBook.setOnAction(this::archiveSelectedBooks);
+            removeBook.setOnAction(this::removeSelectedBooks);
 
             bookTableView.setContextMenu(contextMenu);
 
-            removeBookItem.setOnAction(this::removeSelectedBooks);
-
         } catch (Exception e) {
             logger.error("Error occurred during context menu preparation", e);
+        }
+    }
+
+    private void archiveSelectedBooks(ActionEvent actionEvent){
+        try {
+            List<Book> booksToArchive = bookTableView.getSelectionModel().getSelectedItems();
+
+            if(!booksToArchive.isEmpty()){
+
+                if(!booksToArchive.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE))){
+                    DialogUtils.showInfo("Information","Please choose only AVAILABLE books");
+                }
+                else if(DialogUtils.showConfirmation("Archiving books","Are you sure you want to archive selected book/s ?")) {
+
+                    for (Book book : booksToArchive) {
+                        book.setBookStatus(BookStatus.ARCHIVED);
+                        adminService.saveBook(book);
+                    }
+
+                    tableViewBuilder.updateTableView(bookTableView,adminService.getAllBookInventories().stream().filter(bI ->bI.equals(bookInventory)).findFirst().orElseThrow().getBookList());
+                }
+            }
+
+        }catch (Exception e){
+            logger.error("Error occurred during removing selected books", e);
         }
     }
 
@@ -88,18 +108,23 @@ public class AdministratorBooksDialogController implements Controller {
         try {
             List<Book> booksToRemove = bookTableView.getSelectionModel().getSelectedItems();
 
-            BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects()).findFirst().orElseThrow(RuntimeException::new);
-
             if (!booksToRemove.isEmpty()) {
 
-                if (booksToRemove.size() == bookInventory.getBookList().size()) {
-                    if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete\nall books from from inventory?\nThis will resolve to removing the inventory itself")) {
+                if(!booksToRemove.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE)||book.getBookStatus().equals(BookStatus.ARCHIVED))){
+                    DialogUtils.showInfo("Information","Please choose only AVAILABLE books");
+                }else{
+
+                    if (booksToRemove.size() == bookInventory.getBookList().size()) {
+                        if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete\nall books from from inventory?\nThis will resolve to removing the inventory itself")) {
+                            updateBookForms(booksToRemove);
+                            removeBooks(bookInventory, booksToRemove);
+                            ((Stage) closeButton.getScene().getWindow()).close();//close scene
+                        }
+                    } else {
+                        updateBookForms(booksToRemove);
                         removeBooks(bookInventory, booksToRemove);
-                        ((Stage) closeButton.getScene().getWindow()).close();//close scene
+                        tableViewBuilder.updateTableView(bookTableView,bookInventory.getBookList());// updates tableView
                     }
-                } else {
-                    removeBooks(bookInventory, booksToRemove);
-                    updateTableView(bookInventory.getBookList());// updates tableView
                 }
             } else {
                 DialogUtils.showInfo("Information", "Please select an inventory!");
@@ -109,13 +134,23 @@ public class AdministratorBooksDialogController implements Controller {
         }
     }
 
+    private void updateBookForms(List<Book> books){
+
+       for(BookForm bookForm:adminService.getAllBookForms()){
+            for(Book bookToRemove:books){
+                bookForm.getBooks().remove(bookToRemove);
+            }
+            adminService.saveBookForm(bookForm);
+       }
+    }
+
     private void removeBooks(BookInventory bookInventory, List<Book> booksToRemove) {
         boolean flag = true;
 
         for (Book bookToRemove : booksToRemove) {
             if (bookInventory.getRepresentiveBook().equals(bookToRemove) && bookInventory.getBookList().size() == 1) {
                 adminService.removeInventory(bookInventory);
-                updateTableView(bookInventory.getBookList());
+                tableViewBuilder.updateTableView(bookTableView,bookInventory.getBookList());
                 flag = false;
                 break;
             }
@@ -134,7 +169,6 @@ public class AdministratorBooksDialogController implements Controller {
             }
 
             bookInventory.getBookList().remove(bookToRemove);
-
         }
 
         if (flag)

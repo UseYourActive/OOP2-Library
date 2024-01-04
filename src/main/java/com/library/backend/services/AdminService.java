@@ -2,9 +2,11 @@ package com.library.backend.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.User;
 import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
@@ -19,11 +21,13 @@ public class AdminService implements Service {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final BookInventoryRepository bookInventoryRepository;
+    private final BookFormRepository bookFormRepository;
 
-    public AdminService(BookRepository bookRepository, UserRepository userRepository,BookInventoryRepository bookInventoryRepository) {
+    public AdminService(BookRepository bookRepository, UserRepository userRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.bookInventoryRepository=bookInventoryRepository;
+        this.bookInventoryRepository = bookInventoryRepository;
+        this.bookFormRepository = bookFormRepository;
     }
 
     public void archiveBook(Book book) {
@@ -34,6 +38,13 @@ public class AdminService implements Service {
         performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
     }
 
+
+    public void saveBookForm(BookForm bookForm){
+        bookFormRepository.save(bookForm);
+    }
+    public List<BookForm> getAllBookForms(){
+        return bookFormRepository.findAll();
+    }
     public void removeBook(Book book) {
         bookRepository.delete(book);
         logger.info("Book removed: {}", book.getTitle());

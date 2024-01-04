@@ -1,11 +1,15 @@
 package com.library.frontend.utils.tableviews;
 
 import javafx.collections.FXCollections;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The {@code TableViewBuilder} interface defines a contract for classes responsible
@@ -59,6 +63,16 @@ public interface TableViewBuilder<T> {
         } catch (Exception e) {
             logger.error("Error occurred during table view update", e);
         }
+    }
+
+    default T getSelectedItem(TableView<T> tableView){
+        SelectionModel<T> selectionModel = tableView.getSelectionModel();
+        return Optional.ofNullable(selectionModel.getSelectedItem()).orElseThrow();
+    }
+
+    default List<T> getSelectedItems(TableView<T> tableView){
+        MultipleSelectionModel<T> selectionModel = Optional.ofNullable(tableView.getSelectionModel()).orElseThrow();
+        return Optional.ofNullable(selectionModel.getSelectedItems()).orElseThrow();
     }
 }
 

@@ -31,12 +31,12 @@ public class BookInventory implements DBEntity{
     public String toString(){
 
         if(representiveBook.getPublishYear()==null){
-            return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: - \nStatus: %s\nResume:\n%s",
-                    representiveBook.getTitle(), representiveBook.getAuthor(), representiveBook.getGenre(),bookList.size(), representiveBook.getBookStatus(),representiveBook.getResume());
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: - \nResume:\n%s",
+                    representiveBook.getTitle(), representiveBook.getAuthor(), representiveBook.getGenre(),bookList.size(),representiveBook.getResume());
         }
 
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: %s\nStatus: %s\nResume:\n%s",
-                representiveBook.getTitle(), representiveBook.getAuthor(),representiveBook.getGenre(),bookList.size(),representiveBook.getPublishYear(),representiveBook.getBookStatus(),representiveBook.getResume());
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\t\tQuantity: %d\nPublish Year: %s\nResume:\n%s",
+                representiveBook.getTitle(), representiveBook.getAuthor(),representiveBook.getGenre(),bookList.size(),representiveBook.getPublishYear(),representiveBook.getResume());
     }
 
     @Override

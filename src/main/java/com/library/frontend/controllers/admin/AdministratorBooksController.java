@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 public class AdministratorBooksController implements Controller {
@@ -45,6 +46,7 @@ public class AdministratorBooksController implements Controller {
 
     private AdminService adminService;
     private SearchEngine<BookInventory> searchEngine;
+    private TableViewBuilder<BookInventory> bookInventoryTableViewBuilder;
 
 
     @Override
@@ -56,7 +58,7 @@ public class AdministratorBooksController implements Controller {
 
         bookTextArea.setFocusTraversable(false);
 
-        TableViewBuilder<BookInventory> bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
+        bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
         bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);
 
         updateTableView(adminService.getAllBookInventories());
@@ -88,27 +90,28 @@ public class AdministratorBooksController implements Controller {
     @FXML
     public void booksTableViewOnClicked(MouseEvent mouseEvent) {
         try {
-            if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY) {
-                BookInventory selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml", selectedItem.getRepresentiveBook().getTitle(), selectedItem);
-                    updateTableView(adminService.getAllBookInventories());
-                }
-            } else {
-                BookInventory selectedInventory = inventoryTableView.getSelectionModel().getSelectedItem();
+            BookInventory selectedInventory= bookInventoryTableViewBuilder.getSelectedItem(inventoryTableView);
 
-                if (selectedInventory != null)
-                    bookTextArea.setText(selectedInventory.toString());
+            if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+
+                bookTextArea.setText(selectedInventory.toString());
+
+                if (mouseEvent.getClickCount() == 2) {
+                    SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml", selectedInventory.getRepresentiveBook().getTitle(), selectedInventory);
+                    bookInventoryTableViewBuilder.updateTableView(inventoryTableView, adminService.getAllBookInventories());
+                    bookTextArea.clear();
+                }
             }
-        } catch (Exception e) {
-            logger.error("Error occurred during handling book table view click", e);
-        }
+
+        } catch (NoSuchElementException ignored) {}
     }
 
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "LogIn");
+            if(mouseEvent.getButton() == MouseButton.PRIMARY){
+                SceneLoader.load(mouseEvent, "/views/logInScene.fxml", "LogIn");
+            }
         } catch (Exception e) {
             logger.error("Error occurred during logout", e);
         }
@@ -128,7 +131,7 @@ public class AdministratorBooksController implements Controller {
     private void updateTableView(List<BookInventory> inventories) {
         try {
             inventoryTableView.getItems().clear();
-            bookTextArea.clear();
+
             inventoryTableView.getItems().addAll(FXCollections.observableArrayList(inventories));
         } catch (Exception e) {
             logger.error("Error occurred during table view update", e);

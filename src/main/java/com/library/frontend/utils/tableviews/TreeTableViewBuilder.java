@@ -1,6 +1,9 @@
 package com.library.frontend.utils.tableviews;
 
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TreeTableView;
+
+import java.util.Optional;
 
 /**
  * The {@code TreeTableViewBuilder} interface defines a contract for classes responsible
@@ -46,4 +49,9 @@ public interface TreeTableViewBuilder<T> {
      * @param treeTableView The TreeTableView for which columns are created and configured.
      */
     void createTreeTableViewColumns(TreeTableView<T> treeTableView);
+
+    default TreeTableView.TreeTableViewSelectionModel<T> getSelectionModel(TreeTableView<T> treeTableView){
+        Optional<TreeTableView.TreeTableViewSelectionModel<T>> selectionModel = Optional.ofNullable(treeTableView.getSelectionModel());
+        return selectionModel.orElseThrow();
+    }
 }
