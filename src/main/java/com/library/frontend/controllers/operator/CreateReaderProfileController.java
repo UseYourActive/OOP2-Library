@@ -1,6 +1,7 @@
 package com.library.frontend.controllers.operator;
 
 import com.google.common.collect.Lists;
+import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
@@ -60,8 +61,8 @@ public class CreateReaderProfileController implements Controller {
                     .build();
 
             operatorService.createReader(reader);
-            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername()+"(Operator)");
-        } catch (Exception e) {
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername() + "(Operator)");
+        } catch (IncorrectInputException e) {
             infoLabel.setText(e.getMessage());
             //logger.error("Error occurred during creating reader profile", e);
         }
@@ -69,27 +70,23 @@ public class CreateReaderProfileController implements Controller {
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        try {
-            if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-                SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
-            }
-        } catch (Exception e) {
-            //logger.error("Error occurred during canceling creating reader profile", e);
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
         }
     }
 
-    private void checkInput() throws Exception{
-        if(firstNameTextField.getText().isEmpty())
-            throw new Exception("Please enter first name.");
+    private void checkInput() throws IncorrectInputException {
+        if (firstNameTextField.getText().isEmpty())
+            throw new IncorrectInputException("Please enter first name.");
 
-        if(middleNameTextField.getText().isEmpty())
-            throw new Exception("Please enter middle name.");
+        if (middleNameTextField.getText().isEmpty())
+            throw new IncorrectInputException("Please enter middle name.");
 
-        if(lastNameTextField.getText().isEmpty())
-            throw new Exception("Please enter last name.");
+        if (lastNameTextField.getText().isEmpty())
+            throw new IncorrectInputException("Please enter last name.");
 
-        if(phoneNumberTextField.getText().isEmpty())
-            throw new Exception("Please enter phone number.");
+        if (phoneNumberTextField.getText().isEmpty())
+            throw new IncorrectInputException("Please enter phone number.");
 
     }
 }

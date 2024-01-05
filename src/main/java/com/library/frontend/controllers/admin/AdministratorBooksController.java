@@ -128,7 +128,6 @@ public class AdministratorBooksController implements Controller {
         }
     }
 
-
     private void updateTableView(List<BookInventory> inventories) {
         try {
             inventoryTableView.getItems().clear();

@@ -1,6 +1,7 @@
-package com.library.backend.services;
+package com.library.backend.services.wait;
 
 import com.google.common.base.Preconditions;
+import com.library.backend.services.Service;
 import com.library.database.entities.BookForm;
 import com.library.database.repositories.BookFormRepository;
 import org.slf4j.Logger;

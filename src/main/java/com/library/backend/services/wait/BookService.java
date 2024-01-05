@@ -1,6 +1,7 @@
-package com.library.backend.services;
+package com.library.backend.services.wait;
 
 import com.google.common.base.Preconditions;
+import com.library.backend.services.Service;
 import com.library.database.entities.Book;
 import com.library.database.enums.BookStatus;
 import com.library.database.repositories.BookRepository;

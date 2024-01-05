@@ -1,16 +1,10 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.IncorrectInputException;
-import com.library.backend.services.AdminService;
-import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.User;
-import com.library.database.enums.Role;
+import com.library.backend.services.trying.OperatorCreationService;
+import com.library.backend.services.trying.PasswordFieldsService;
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.validators.StrongPasswordValidator;
-import com.library.frontend.utils.validators.Validator;
-import jakarta.validation.ValidationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.PatternSyntaxException;
 
 public class CreateOperatorController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(CreateOperatorController.class);
@@ -28,41 +21,35 @@ public class CreateOperatorController implements Controller {
     @FXML public Button createOperatorButton;
     @FXML public Button cancelButton;
     @FXML public CheckBox showPasswordCheckBox;
-    @FXML public TextField passwordTextField;
-    @FXML public TextField repeatPasswordTextField;
     @FXML public PasswordField passwordPasswordField;
     @FXML public PasswordField repeatPasswordPasswordField;
+    @FXML public TextField passwordTextField;
+    @FXML public TextField repeatPasswordTextField;
     @FXML public Label informationLabel;
 
-    private Validator passwordValidator;
-    private AdminService adminService;
+    private OperatorCreationService operatorCreationService;
+    private PasswordFieldsService passwordFieldsService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adminService = ServiceFactory.getService(AdminService.class);
-        passwordValidator = new StrongPasswordValidator();
+        operatorCreationService = new OperatorCreationService();
+        passwordFieldsService = new PasswordFieldsService();
     }
 
     @FXML
     public void createOperatorButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            checkAllFieldsForInput();
+            String username = usernameTextField.getText();
+            String password = passwordFieldsService.getPasswordFieldText(passwordPasswordField, passwordTextField);
+            String repeatPassword = passwordFieldsService.getPasswordFieldText(repeatPasswordPasswordField, repeatPasswordTextField);
 
-            User user = User.builder()
-                    .username(usernameTextField.getText())
-                    .password(passwordPasswordField.getText())
-                    .role(Role.OPERATOR)
-                    .build();
-
-            adminService.registerOperator(user);
+            operatorCreationService.createOperator(username, password, repeatPassword);
 
             SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
-        } catch (PatternSyntaxException | ValidationException e) {
+            logger.info("Operator creation successful for username: '{}'", username);
+        } catch (IncorrectInputException e) {
             informationLabel.setText(e.getMessage());
-            logger.error("User failed to create due to missing fields", e);
-        }
-        catch (IncorrectInputException e){
-            informationLabel.setText(e.getMessage());
+            logger.error("Error creating operator", e);
         }
     }
 
@@ -73,52 +60,8 @@ public class CreateOperatorController implements Controller {
 
     @FXML
     public void showPasswordCheckBoxOnMouseClicked() {
-        togglePasswordVisibility();
-    }
-
-    private void togglePasswordVisibility() {
-        if (showPasswordCheckBox.isSelected()) {
-            passwordTextField.setText(passwordPasswordField.getText());
-            repeatPasswordTextField.setText(repeatPasswordPasswordField.getText());
-            passwordTextField.setVisible(true);
-            passwordPasswordField.setVisible(false);
-
-            repeatPasswordTextField.setVisible(true);
-            repeatPasswordPasswordField.setVisible(false);
-        } else {
-            passwordPasswordField.setText(passwordTextField.getText());
-            repeatPasswordPasswordField.setText(repeatPasswordTextField.getText());
-            passwordTextField.setVisible(false);
-            passwordPasswordField.setVisible(true);
-
-            repeatPasswordTextField.setVisible(false);
-            repeatPasswordPasswordField.setVisible(true);
-        }
-    }
-
-    private void checkAllFieldsForInput() throws IncorrectInputException {
-        String usernameTextFieldText = usernameTextField.getText();
-        String pass;
-        String repeatPass;
-
-        if (passwordPasswordField.isVisible()) {
-            pass = passwordPasswordField.getText();
-            repeatPass = repeatPasswordPasswordField.getText();
-        } else {
-            pass = passwordTextField.getText();
-            repeatPass = repeatPasswordTextField.getText();
-        }
-
-        if (usernameTextFieldText.isEmpty() || pass.isEmpty() || repeatPass.isEmpty()) {
-            throw new IncorrectInputException("Please fill out all fields!");
-        }
-
-        if (!pass.equals(repeatPass)) {
-            throw new IncorrectInputException("The passwords did not match!");
-        }
-
-        if (!passwordValidator.isValid(pass)) {
-            throw new IncorrectInputException("Password is not strong enough.");
-        }
+        boolean showPassword = showPasswordCheckBox.isSelected();
+        passwordFieldsService.updatePasswordFieldsVisibility(showPassword, passwordPasswordField, passwordTextField);
+        passwordFieldsService.updatePasswordFieldsVisibility(showPassword, repeatPasswordPasswordField, repeatPasswordTextField);
     }
 }

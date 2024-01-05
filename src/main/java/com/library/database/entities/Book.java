@@ -50,7 +50,7 @@ public class Book implements DBEntity{
     private BookInventory inventory;
 
     //@ManyToOne
-    private BookForm bookForm;
+    //private BookForm bookForm;
 
     //Cloning constructor
     public Book(Book book) {
