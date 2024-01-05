@@ -12,7 +12,7 @@
       <Button fx:id="booksButton" layoutX="17.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#booksButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Books" />
       <TextField fx:id="searchBarTextField" layoutX="17.0" layoutY="68.0" prefHeight="32.0" prefWidth="420.0" promptText="name, phone, email, readerRating" />
       <Button fx:id="searchReaderButton" layoutX="446.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#searchReaderButtonOnMouseClicked" prefHeight="32.0" prefWidth="93.0" text="Search reader" />
-      <Rating fx:id="readerRating" layoutX="596.0" layoutY="68.0" onMouseClicked="#readerRatingOnMouseClicked" prefHeight="32.0" prefWidth="172.0" rating="0.0" />
+      <Rating fx:id="readerRating" disable="true" layoutX="596.0" layoutY="68.0" onMouseClicked="#readerRatingOnMouseClicked" prefHeight="32.0" prefWidth="172.0" rating="0.0" />
       <TableView fx:id="readerTableView" layoutX="17.0" layoutY="114.0" onMouseClicked="#readerTableViewOnClicked" prefHeight="355.0" prefWidth="522.0" />
       <ListView fx:id="bookFormListView" layoutX="551.0" layoutY="114.0" onMouseClicked="#bookFormListViewOnMouseClicked" prefHeight="355.0" prefWidth="258.0" />
    </children>

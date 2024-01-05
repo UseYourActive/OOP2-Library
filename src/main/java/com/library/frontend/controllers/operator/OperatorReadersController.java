@@ -3,7 +3,9 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.BookForm;
+import com.library.database.entities.EventNotification;
 import com.library.database.entities.Reader;
+import com.library.database.enums.BookFormStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import com.library.backend.engines.ReaderSearchEngine;
@@ -20,6 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,6 +43,25 @@ public class OperatorReadersController implements Controller {
     private OperatorService operatorService;
     private TableViewBuilder<Reader> readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
+
+    //// Database updates overtime ... Best to execute when the app is started
+    //static {
+    //    OperatorService service = ServiceFactory.getService(OperatorService.class);
+//
+    //    for (BookForm bookForm : service.getAllBookForms()) {
+    //        if (bookForm.isPresent() && bookForm.isOverdue()) {
+    //            bookForm.setStatus(BookFormStatus.LATE);
+    //            EventNotification eventNotification= EventNotification.builder()
+    //                    .user(SceneLoader.getUser())
+    //                    .timestamp(LocalDateTime.now())
+    //                    .message("The deadline for returning books of: "+bookForm.getReader().getFullName() + " has passed.")
+    //                    .build();
+//
+    //            service.saveEventNotification(eventNotification);
+    //            service.saveNewBookForm(bookForm);
+    //        }
+    //    }
+    //}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,7 +82,7 @@ public class OperatorReadersController implements Controller {
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
-                SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", SceneLoader.getUsername() + " (Operator)");
+                SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", SceneLoader.getUser().getUsername() + " (Operator)");
             } catch (Exception e) {
                 logger.error("Error occurred during loading operator books scene", e);
             }
@@ -89,6 +113,8 @@ public class OperatorReadersController implements Controller {
                     bookFormListView.getItems().setAll(selectedReader.getBookForms());
                     ratingValue=selectedReader.getRating().getValue();
                     readerRating.setRating(ratingValue);
+
+                    readerRating.setDisable(ratingValue == -1);
                 }
             }
         } catch (Exception e) {
@@ -103,10 +129,13 @@ public class OperatorReadersController implements Controller {
         if (selectionModel != null) {
             BookForm selectedBookForm = selectionModel.getSelectedItem();
 
-            String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + selectedBookForm.getDateOfCreation();
+            if(selectedBookForm!=null) {
+                String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + " " + selectedBookForm.getDateOfCreation().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
 
-            SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
-            readerTableViewBuilder.updateTableView(readerTableView,operatorService.getAllReaders());
+                SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
+                readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
+                bookFormListView.getItems().clear();
+            }
         }
     }
 
@@ -130,7 +159,7 @@ public class OperatorReadersController implements Controller {
 
     private void createReader(ActionEvent actionEvent) {
         try {
-            SceneLoader.load("/views/operator/createReaderProfileScene.fxml", SceneLoader.getUsername() + " (Operator)");
+            SceneLoader.load("/views/operator/createReaderProfileScene.fxml", SceneLoader.getUser().getUsername() + " (Operator)");
         } catch (Exception e) {
             logger.error("Error occurred during loading create reader profile scene", e);
         }
@@ -152,7 +181,7 @@ public class OperatorReadersController implements Controller {
         }
     }
 
-    public void readerRatingOnMouseClicked(MouseEvent mouseEvent) {
+    public void readerRatingOnMouseClicked() {
         readerRating.setRating(ratingValue);
     }
 }

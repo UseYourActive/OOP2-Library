@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,11 +42,11 @@ public class CreateBookFormController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public TableView<Book> bookTableView;
     @FXML public Button lendReadingRoomButton;
-    @FXML public Rating rating;
+    @FXML public Rating readerRating;
     @FXML public TableView<Reader> readerTableView;
 
     private OperatorService operatorService;
-    private double selectedReaderRating;
+    private double ratingValue;
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
@@ -65,7 +66,7 @@ public class CreateBookFormController implements Controller {
                 selectedBooks.add((Book) object);
         }
 
-        rating.setRating(ReaderRating.NONE.getValue());
+        readerRating.setRating(ReaderRating.NONE.getValue());
 
         bookTableViewBuilder = new BookTableViewBuilder();
         bookTableViewBuilder.createTableViewColumns(bookTableView);
@@ -131,26 +132,29 @@ public class CreateBookFormController implements Controller {
         if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
             Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-            if (selectedReader.getRating() == ReaderRating.ZERO_STAR)
-                try {
-                    throw new ReaderException("The reader is not allowed to take books anymore.");
-                } catch (ReaderException e) {
-                    DialogUtils.showError("Error taking books", e.getMessage());
-                }
+            if (selectedReader.getRating() == ReaderRating.ZERO_STAR){
+                DialogUtils.showError("Reader is not allowed to take books anymore","His rating is too low.");
+            }
+            else {
 
-            operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.IN_READING_ROOM);
+                operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.IN_READING_ROOM);
 
-            BookForm bookForm = BookForm.builder()
-                    .reader(selectedReader)
-                    .books(bookTableView.getItems())
-                    .status(BookFormStatus.IN_USE)
-                    .expirationDate(LocalDateTime.now().plusHours(12))
-                    .dateOfCreation(LocalDateTime.now())
-                    .build();
+                BookForm bookForm = BookForm.builder()
+                        .reader(selectedReader)
+                        .books(bookTableView.getItems())
+                        .status(BookFormStatus.IN_USE)
+                        .expirationDate(LocalDateTime.now().plusHours(12))
+                        .dateOfCreation(LocalDateTime.now())
+                        .build();
 
-            operatorService.saveNewBookForm(bookForm);
+                operatorService.saveNewBookForm(bookForm);
 
-            ((Stage) cancelButton.getScene().getWindow()).close();
+                selectedReader.getBookForms().add(bookForm);
+
+                operatorService.saveReader(selectedReader);
+
+                ((Stage) cancelButton.getScene().getWindow()).close();
+            }
         }
     }
 
@@ -161,14 +165,22 @@ public class CreateBookFormController implements Controller {
 
     @FXML
     public void ratingOnMouseClicked() {
-        rating.setRating(selectedReaderRating);
+        readerRating.setRating(ratingValue);
     }
 
     @FXML
     public void readerTableViewOnMouseClicked() {
-        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
-            selectedReaderRating = readerTableView.getSelectionModel().getSelectedItem().getRating().getValue();
-            rating.setRating(selectedReaderRating);
+        TableView.TableViewSelectionModel<Reader> selectionModel = readerTableView.getSelectionModel();
+
+        if (selectionModel != null) {
+            Reader selectedReader = selectionModel.getSelectedItem();
+
+            if (selectedReader != null) {
+                ratingValue=selectedReader.getRating().getValue();
+                readerRating.setRating(ratingValue);
+
+                readerRating.setDisable(ratingValue == -1);
+            }
         }
     }
 }

@@ -2,10 +2,7 @@ package com.library.backend.services.factories;
 
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.Service;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookInventoryRepository;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.ReaderRepository;
+import com.library.database.repositories.*;
 
 public class OperatorServiceFactory implements AbstractServiceFactory {
     @Override
@@ -14,7 +11,8 @@ public class OperatorServiceFactory implements AbstractServiceFactory {
                 BookRepository.getInstance(),
                 ReaderRepository.getInstance(),
                 BookInventoryRepository.getInstance(),
-                BookFormRepository.getInstance()
+                BookFormRepository.getInstance(),
+                EventNotificationRepository.getInstance()
         );
     }
 }

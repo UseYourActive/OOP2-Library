@@ -5,6 +5,8 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
+import com.library.database.entities.EventNotification;
+import com.library.database.enums.BookFormStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -22,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,8 +55,6 @@ public class OperatorBooksController implements Controller {
         selectedBooks = FXCollections.observableArrayList();
         selectedBooksListView.setItems(selectedBooks);
 
-        //rating
-
         overdueBookForms = operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
 
         BookTreeTableViewBuilder bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
@@ -64,6 +65,20 @@ public class OperatorBooksController implements Controller {
         selectedBooksListView.setTooltip(new Tooltip("Selected books will show here"));
 
         readersButton.requestFocus();
+
+        for (BookForm bookForm : operatorService.getAllBookForms()) {
+            if (bookForm.isPresent() && bookForm.isOverdue()) {
+                bookForm.setStatus(BookFormStatus.LATE);
+                EventNotification eventNotification= EventNotification.builder()
+                        .user(SceneLoader.getUser())
+                        .timestamp(LocalDateTime.now())
+                        .message("The deadline for returning books of: "+bookForm.getReader().getFullName() + " has passed.")
+                        .build();
+
+                operatorService.saveEventNotification(eventNotification);
+                operatorService.saveNewBookForm(bookForm);
+            }
+        }
     }
 
     @FXML

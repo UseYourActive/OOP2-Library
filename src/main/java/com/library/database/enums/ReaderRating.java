@@ -109,7 +109,7 @@ public enum ReaderRating {
         if (value == -1) {
             currentValue=2;
         } else {
-            if (coefficient % 5 == 0 && currentValue > 0) {
+            if ( Math.abs(coefficient) % 5 == 0 && currentValue > 0) {
                 currentValue--;
             }
         }

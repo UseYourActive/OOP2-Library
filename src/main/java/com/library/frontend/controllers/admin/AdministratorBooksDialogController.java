@@ -121,9 +121,11 @@ public class AdministratorBooksDialogController implements Controller {
                             ((Stage) closeButton.getScene().getWindow()).close();//close scene
                         }
                     } else {
-                        updateBookForms(booksToRemove);
-                        removeBooks(bookInventory, booksToRemove);
-                        tableViewBuilder.updateTableView(bookTableView,bookInventory.getBookList());// updates tableView
+                        if(DialogUtils.showConfirmation("Confirmation", "Are you sure you want\nto delete the selected books ?")) {
+                            updateBookForms(booksToRemove);
+                            removeBooks(bookInventory, booksToRemove);
+                            tableViewBuilder.updateTableView(bookTableView, bookInventory.getBookList());// updates tableView
+                        }
                     }
                 }
             } else {

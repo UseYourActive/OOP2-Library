@@ -4,6 +4,7 @@ import com.library.database.enums.BookFormStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BookForm implements DBEntity {
     }
 
     public boolean isOverdue() {
-        return dateOfCreation.isAfter(expirationDate);
+        return LocalDateTime.now().isAfter(expirationDate);
     }
 
     public boolean isPresent() {

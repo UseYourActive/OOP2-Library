@@ -1,11 +1,9 @@
 package com.library.database.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -30,6 +28,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "event_notifications", indexes = {
         @Index(name = "idx_user_id", columnList = "user_id"),
@@ -47,14 +46,14 @@ public class EventNotification implements DBEntity{
     /**
      * The user associated with the event notification.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     /**
      * The message content of the event notification (not nullable).
      */
-    @Column(name = "message", nullable = false)
+    @Column(name = "message" , nullable = false)
     private String message;
 
     /**
@@ -62,6 +61,5 @@ public class EventNotification implements DBEntity{
      */
     @Column(name = "timestamp", nullable = false, unique = true)
     private LocalDateTime timestamp;
-
 
 }

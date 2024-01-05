@@ -1,15 +1,9 @@
 package com.library.backend.services;
 
 import com.google.common.base.Preconditions;
-import com.library.database.entities.Book;
-import com.library.database.entities.BookForm;
-import com.library.database.entities.BookInventory;
-import com.library.database.entities.Reader;
+import com.library.database.entities.*;
 import com.library.database.enums.BookStatus;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookInventoryRepository;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.ReaderRepository;
+import com.library.database.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +18,14 @@ public class OperatorService implements Service {
     private final ReaderRepository readerRepository;
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
+    private final EventNotificationRepository eventNotificationRepository;
 
-    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
-        this.bookRepository = Preconditions.checkNotNull(bookRepository, "BookRepository cannot be null");
-        this.readerRepository = Preconditions.checkNotNull(readerRepository, "ReaderRepository cannot be null");
-        this.bookInventoryRepository = Preconditions.checkNotNull(bookInventoryRepository, "BookInventoryRepository cannot be null");
-        this.bookFormRepository = Preconditions.checkNotNull(bookFormRepository, "BookFormRepository cannot be null");
+    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository, EventNotificationRepository eventNotificationRepository) {
+        this.bookRepository = bookRepository;
+        this.readerRepository = readerRepository;
+        this.bookInventoryRepository = bookInventoryRepository;
+        this.bookFormRepository = bookFormRepository;
+        this.eventNotificationRepository = eventNotificationRepository;
     }
 
     public void lendBookToReaderForReadingRoom(Book book, Reader reader) {
@@ -48,6 +44,14 @@ public class OperatorService implements Service {
         } else {
             logger.warn("Cannot lend book to reader. Book status is not AVAILABLE: {}", book.getTitle());
         }
+    }
+
+    public List<EventNotification> getAllEventNotifications(){
+        return eventNotificationRepository.findAll();
+    }
+
+    public void saveEventNotification(EventNotification eventNotification){
+        eventNotificationRepository.saveNotification(eventNotification);
     }
 
     public List<Book> getAllBooks() {

@@ -7,6 +7,7 @@ import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -39,41 +40,51 @@ public class LogInController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> usernameTextField.requestFocus());
         service = ServiceFactory.getService(LogInService.class);
+
+        logInButton.setOnMouseClicked(event -> {
+            if (event.getButton().name().equals("PRIMARY")) {
+                logInButton.fire(); // Simulate button click
+            }
+        });
+
+        logInButton.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                logInButton.fire(); // Simulate button click
+            }
+        });
     }
 
     @FXML
-    public void logInButtonOnMouseClicked(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            try {
-                checkInput();
+    public void logInButtonOnAction(ActionEvent actionEvent) {
+        try {
+            checkInput();
 
-                User logInUser = User.builder()
-                        .username(usernameTextField.getText())
-                        .password(passwordPasswordField.getText())
-                        .build();
+            User logInUser = User.builder()
+                    .username(usernameTextField.getText())
+                    .password(passwordPasswordField.getText())
+                    .build();
 
-                User user = service.getUser(logInUser);
-                SceneLoader.setUsername(usernameTextField.getText());
+            User user = service.getUser(logInUser);
+            SceneLoader.setUser(user);
 
-                switch (user.getRole()) {
-                    case ADMIN -> {
-                        SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUsername() + "(Administrator)");
-                    }
-                    case OPERATOR -> {
-                        SceneLoader.load(mouseEvent, "/views/operator/operatorBooksScene.fxml", SceneLoader.getUsername() + "(Operator)");
-                    }
+            switch (user.getRole()) {
+                case ADMIN -> {
+                    SceneLoader.load(actionEvent, "/views/admin/administratorBooksScene.fxml", user.getUsername() + "(Administrator)");
                 }
-
-            } catch (UserNotFoundException e) {
-                logger.error(e.getMessage());
-                logInMessageLabel.setText("User not found!");
-            } catch (HibernateException e) {
-                logger.error(e.getMessage());
-                logInMessageLabel.setText("Error loading the database!");
-            } catch (IncorrectInputException e) {
-                logger.error(e.getMessage());
-                logInMessageLabel.setText("Invalid user input!");
+                case OPERATOR -> {
+                    SceneLoader.load(actionEvent, "/views/operator/operatorBooksScene.fxml", user.getUsername() + "(Operator)");
+                }
             }
+
+        } catch (UserNotFoundException e) {
+            logger.error(e.getMessage());
+            logInMessageLabel.setText("User not found!");
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+            logInMessageLabel.setText("Error loading the database!");
+        } catch (IncorrectInputException e) {
+            logger.error(e.getMessage());
+            logInMessageLabel.setText("Invalid user input!");
         }
     }
 
@@ -89,12 +100,6 @@ public class LogInController implements Controller {
 
         if (passwordPasswordField.getText().isBlank()) {
             throw new IncorrectInputException("Please enter your password!");
-        }
-    }
-
-    public void logInButtonOnKeyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            //logInButtonOnMouseClicked((MouseEvent) keyEvent);
         }
     }
 }

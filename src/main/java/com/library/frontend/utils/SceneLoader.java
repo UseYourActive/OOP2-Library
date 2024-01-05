@@ -1,5 +1,6 @@
 package com.library.frontend.utils;
 
+import com.library.database.entities.User;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -48,7 +49,7 @@ public class SceneLoader {
      */
     @Getter
     @Setter
-    private static String username;
+    private static User user;
 
     /**
      * The primary stage used for loading scenes.

@@ -3,6 +3,7 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
+import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
@@ -81,7 +82,7 @@ public class AdministratorBooksController implements Controller {
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
         } catch (Exception e) {
             logger.error("Error occurred during navigation to operators scene", e);
         }
@@ -174,6 +175,8 @@ public class AdministratorBooksController implements Controller {
             if (inventory != null) {
                 if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
 
+                    updateBookForms(inventory.getBookList());
+
                     adminService.removeInventory(inventory);
 
                     updateTableView(adminService.getAllBookInventories());
@@ -183,6 +186,16 @@ public class AdministratorBooksController implements Controller {
             }
         } catch (Exception e) {
             logger.error("Error occurred during removing selected books", e);
+        }
+    }
+
+    private void updateBookForms(List<Book> books){
+
+        for(BookForm bookForm:adminService.getAllBookForms()){
+            for(Book bookToRemove:books){
+                bookForm.getBooks().remove(bookToRemove);
+            }
+            adminService.saveBookForm(bookForm);
         }
     }
 

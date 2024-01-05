@@ -56,7 +56,7 @@ public class CreateOperatorController implements Controller {
 
             adminService.registerOperator(user);
 
-            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
         } catch (PatternSyntaxException | ValidationException e) {
             informationLabel.setText(e.getMessage());
             logger.error("User failed to create due to missing fields", e);
@@ -68,7 +68,7 @@ public class CreateOperatorController implements Controller {
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
     }
 
     @FXML

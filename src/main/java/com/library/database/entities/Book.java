@@ -49,6 +49,9 @@ public class Book implements DBEntity{
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
 
+    //@ManyToOne
+    private BookForm bookForm;
+
     //Cloning constructor
     public Book(Book book) {
         this.publishYear = book.publishYear;
@@ -63,12 +66,12 @@ public class Book implements DBEntity{
     public String toString() {
 
         if(publishYear==null){
-            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: - \nResume:\n%s",
-                    title, author,genre,resume);
+            return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: -\t\tTimes used %d \nResume:\n%s",
+                    title, author,genre,numberOfTimesUsed,resume);
         }
 
-        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\nResume:\n%s",
-                title, author,genre,publishYear,resume);
+        return String.format("Title: %s\nAuthor %s\nGenre: %s\nPublish Year: %s\t\tTimes used %d\nResume:\n%s",
+                title, author,genre,publishYear,numberOfTimesUsed,resume);
     }
 
     @Override

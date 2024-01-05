@@ -54,7 +54,7 @@ public class AdministratorOperatorsController implements Controller {
 
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUsername() + "(Administrator)");
+        SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUser().getUsername()+ "(Administrator)");
     }
 
     @FXML

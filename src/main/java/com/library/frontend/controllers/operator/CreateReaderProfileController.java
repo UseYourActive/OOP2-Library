@@ -9,7 +9,9 @@ import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ public class CreateReaderProfileController implements Controller {
     @FXML public TextField emailTextField;
     @FXML public Button createReaderProfileButton;
     @FXML public Button cancelButton;
+    @FXML public Label infoLabel;
 
     private OperatorService operatorService;
 
@@ -38,6 +41,8 @@ public class CreateReaderProfileController implements Controller {
     @FXML
     public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
+            checkInput();
+
             String firstName = firstNameTextField.getText();
             String middleName = middleNameTextField.getText();
             String lastName = lastNameTextField.getText();
@@ -55,19 +60,36 @@ public class CreateReaderProfileController implements Controller {
                     .build();
 
             operatorService.createReader(reader);
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername()+"(Operator)");
         } catch (Exception e) {
-            logger.error("Error occurred during creating reader profile", e);
+            infoLabel.setText(e.getMessage());
+            //logger.error("Error occurred during creating reader profile", e);
         }
-
-        SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
     }
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
+            if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+                SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
+            }
         } catch (Exception e) {
-            logger.error("Error occurred during canceling creating reader profile", e);
+            //logger.error("Error occurred during canceling creating reader profile", e);
         }
+    }
+
+    private void checkInput() throws Exception{
+        if(firstNameTextField.getText().isEmpty())
+            throw new Exception("Please enter first name.");
+
+        if(middleNameTextField.getText().isEmpty())
+            throw new Exception("Please enter middle name.");
+
+        if(lastNameTextField.getText().isEmpty())
+            throw new Exception("Please enter last name.");
+
+        if(phoneNumberTextField.getText().isEmpty())
+            throw new Exception("Please enter phone number.");
+
     }
 }

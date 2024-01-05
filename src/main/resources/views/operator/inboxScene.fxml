@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane prefHeight="387.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.InboxController">
    <children>
-      <ListView fx:id="bookFormListView" layoutX="14.0" layoutY="14.0" onMouseClicked="#bookFormListViewOnMouseClicked" prefHeight="326.0" prefWidth="328.0" />
+      <ListView fx:id="eventNotificationListView" layoutX="14.0" layoutY="14.0" onMouseClicked="#bookFormListViewOnMouseClicked" prefHeight="326.0" prefWidth="328.0" />
       <Button fx:id="closeButton" layoutX="152.0" layoutY="348.0" mnemonicParsing="false" onMouseClicked="#closeButtonOnMouseClicked" text="Close" />
    </children>
 </AnchorPane>

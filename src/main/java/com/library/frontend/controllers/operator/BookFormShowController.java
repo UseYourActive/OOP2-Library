@@ -7,6 +7,7 @@ import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
+import com.library.database.entities.EventNotification;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
@@ -24,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -43,15 +46,7 @@ public class BookFormShowController implements Controller {
     private OperatorService operatorService;
     private EmailSenderService emailSenderService;
 
-    // Database updates overtime ... Best to execute when the app is started
-    static {
-        OperatorService service = ServiceFactory.getService(OperatorService.class);
 
-        for (BookForm bookForm : service.getAllBookForms()) {
-            if (bookForm.isPresent() && bookForm.isOverdue())
-                bookForm.setStatus(BookFormStatus.LATE);
-        }
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,6 +68,10 @@ public class BookFormShowController implements Controller {
         readerLabel.setText(reader.getFullName().replace(' ', '\n'));
 
         bookCheckListView.getItems().setAll(bookForm.getBooks());
+
+        if(bookCheckListView.getItems()==null){
+            DialogUtils.showInfo("Information","Books were removed from the library");
+        }
 
         if (!bookForm.isPresent()) {
             returnButton.setVisible(false);
@@ -97,15 +96,22 @@ public class BookFormShowController implements Controller {
             else
                 book.setBookStatus(BookStatus.AVAILABLE);
 
+            book.setNumberOfTimesUsed(book.getNumberOfTimesUsed()+1);
             booksToReturn.add(book);
         }
 
         operatorService.saveAllBooks(booksToReturn);
 
+        //Reader is going to be demoted if deadline of returning books have passed
         if (bookForm.isOverdue()) {
             reader.demote();
         } else {
             reader.promote();
+        }
+
+        //For every damaged book returned reader is going to be demoted
+        for(int i=0;i<checkModel.getCheckedItems().size();i++){
+            reader.demote();
         }
 
         bookForm.setStatus(BookFormStatus.RETURNED);

@@ -4,6 +4,8 @@ import com.library.database.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * The {@code User} class represents a system user with a unique identifier, username, password, and role.
  * <p>
@@ -56,6 +58,9 @@ public class User implements DBEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 16, nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<EventNotification> eventNotifications;
 
     /**
      * Overrides the default {@code toString()} method to provide a formatted string representation
