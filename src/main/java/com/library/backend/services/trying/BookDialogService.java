@@ -18,11 +18,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class BookDialogService { // AdministratorBooksDialogController
     private static final Logger logger = LoggerFactory.getLogger(BookDialogService.class);
 
     private final AdminService adminService;
+    private BookTableViewBuilder tableViewBuilder;
 
     public BookDialogService() {
         this.adminService = ServiceFactory.getService(AdminService.class);
@@ -35,7 +37,7 @@ public class BookDialogService { // AdministratorBooksDialogController
 
         bookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        BookTableViewBuilder tableViewBuilder = new BookTableViewBuilder();
+        tableViewBuilder = new BookTableViewBuilder();
         tableViewBuilder.createTableViewColumns(bookTableView);
 
         List<Book> bookList = bookInventory.getBookList();
@@ -47,60 +49,64 @@ public class BookDialogService { // AdministratorBooksDialogController
     }
 
     public void archiveSelectedBooks(TableView<Book> bookTableView) {
-        List<Book> booksToArchive = bookTableView.getSelectionModel().getSelectedItems();
+        try {
+            List<Book> booksToArchive = tableViewBuilder.getSelectedItems(bookTableView);
 
-        if (!booksToArchive.isEmpty()) {
-            BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
-                    .findFirst()
-                    .orElseThrow(RuntimeException::new);
 
-            if (!booksToArchive.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE))) {
-                DialogUtils.showInfo("Information", "Please choose only AVAILABLE books");
-            } else if (DialogUtils.showConfirmation("Archiving books", "Are you sure you want to archive selected book/s ?")) {
-                for (Book book : booksToArchive) {
-                    book.setBookStatus(BookStatus.ARCHIVED);
-                    adminService.saveBook(book);
-                }
-
-                BookTableViewBuilder tableViewBuilder = new BookTableViewBuilder();
-                tableViewBuilder.updateTableView(bookTableView, adminService.getAllBookInventories().stream()
-                        .filter(bI -> bI.equals(bookInventory))
+            if (!booksToArchive.isEmpty()) {
+                BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
                         .findFirst()
-                        .orElseThrow()
-                        .getBookList());
+                        .orElseThrow(RuntimeException::new);
+
+                if (!booksToArchive.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE))) {
+                    DialogUtils.showInfo("Information", "Please choose only AVAILABLE books");
+                } else if (DialogUtils.showConfirmation("Archiving books", "Are you sure you want to archive selected book/s ?")) {
+                    for (Book book : booksToArchive) {
+                        book.setBookStatus(BookStatus.ARCHIVED);
+                        adminService.saveBook(book);
+                    }
+
+                    tableViewBuilder.updateTableView(bookTableView, adminService.getAllBookInventories().stream()
+                            .filter(bI -> bI.equals(bookInventory))
+                            .findFirst()
+                            .orElseThrow()
+                            .getBookList());
+                }
             }
-        }
+        }catch (NoSuchElementException ignored){}
     }
 
     public void removeSelectedBooks(TableView<Book> bookTableView, Button closeButton) {
-        List<Book> booksToRemove = bookTableView.getSelectionModel().getSelectedItems();
+        try {
+            List<Book> booksToRemove = tableViewBuilder.getSelectedItems(bookTableView);
 
-        if (!booksToRemove.isEmpty()) {
-            BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
-                    .findFirst()
-                    .orElseThrow(RuntimeException::new);
+            if (!booksToRemove.isEmpty()) {
+                BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
+                        .findFirst()
+                        .orElseThrow(RuntimeException::new);
 
-            if (!booksToRemove.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.AVAILABLE) || book.getBookStatus().equals(BookStatus.ARCHIVED))) {
-                DialogUtils.showInfo("Information", "Please choose only AVAILABLE books");
-            } else {
-                if (booksToRemove.size() == bookInventory.getBookList().size()) {
-                    if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete\nall books from from inventory?\nThis will resolve to removing the inventory itself")) {
-                        updateBookForms(booksToRemove);
-                        removeBooks(bookInventory, booksToRemove, bookTableView);
-                        ((Stage) closeButton.getScene().getWindow()).close();
-                    }
+                if (!booksToRemove.stream().allMatch(book -> book.getBookStatus().equals(BookStatus.DAMAGED) || book.getBookStatus().equals(BookStatus.ARCHIVED))) {
+                    DialogUtils.showInfo("Information", "Please choose only ARCHIVED or damaged books");
                 } else {
-                    if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want\nto delete the selected books ?")) {
-                        updateBookForms(booksToRemove);
-                        removeBooks(bookInventory, booksToRemove, bookTableView);
-                        BookTableViewBuilder tableViewBuilder = new BookTableViewBuilder();
-                        tableViewBuilder.updateTableView(bookTableView, bookInventory.getBookList());
+                    if (booksToRemove.size() == bookInventory.getBookList().size()) {
+                        if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete\nall books from from inventory?\nThis will resolve to removing the inventory itself")) {
+                            updateBookForms(booksToRemove);
+                            removeBooks(bookInventory, booksToRemove, bookTableView);
+                            ((Stage) closeButton.getScene().getWindow()).close();
+                        }
+                    } else {
+                        if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want\nto delete the selected books ?")) {
+                            updateBookForms(booksToRemove);
+                            removeBooks(bookInventory, booksToRemove, bookTableView);
+                            BookTableViewBuilder tableViewBuilder = new BookTableViewBuilder();
+                            tableViewBuilder.updateTableView(bookTableView, bookInventory.getBookList());
+                        }
                     }
                 }
+            } else {
+                DialogUtils.showInfo("Information", "Please select an inventory!");
             }
-        } else {
-            DialogUtils.showInfo("Information", "Please select an inventory!");
-        }
+        }catch (NoSuchElementException ignored){}
     }
 
     private void updateBookForms(List<Book> books) {

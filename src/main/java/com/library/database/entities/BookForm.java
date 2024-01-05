@@ -21,7 +21,12 @@ public class BookForm implements DBEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "book_forms_books",
+            joinColumns = @JoinColumn(name = "form_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     private List<Book> books;
 
     @ManyToOne(cascade = CascadeType.REMOVE)

@@ -69,7 +69,6 @@ public class ServiceFactory {
      */
     public static <T extends Service> T getService(Class<T> serviceClass) {
         T service = null;
-
         try {
             switch (getServiceType(serviceClass)) {
                 case ADMIN_SERVICE ->

@@ -49,9 +49,6 @@ public class Book implements DBEntity{
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
 
-    //@ManyToOne
-    //private BookForm bookForm;
-
     //Cloning constructor
     public Book(Book book) {
         this.publishYear = book.publishYear;
