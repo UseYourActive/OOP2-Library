@@ -44,25 +44,6 @@ public class OperatorReadersController implements Controller {
     private TableViewBuilder<Reader> readerTableViewBuilder;
     private SearchEngine<Reader> searchEngine;
 
-    //// Database updates overtime ... Best to execute when the app is started
-    //static {
-    //    OperatorService service = ServiceFactory.getService(OperatorService.class);
-//
-    //    for (BookForm bookForm : service.getAllBookForms()) {
-    //        if (bookForm.isPresent() && bookForm.isOverdue()) {
-    //            bookForm.setStatus(BookFormStatus.LATE);
-    //            EventNotification eventNotification= EventNotification.builder()
-    //                    .user(SceneLoader.getUser())
-    //                    .timestamp(LocalDateTime.now())
-    //                    .message("The deadline for returning books of: "+bookForm.getReader().getFullName() + " has passed.")
-    //                    .build();
-//
-    //            service.saveEventNotification(eventNotification);
-    //            service.saveNewBookForm(bookForm);
-    //        }
-    //    }
-    //}
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = ServiceFactory.getService(OperatorService.class);
@@ -132,11 +113,16 @@ public class OperatorReadersController implements Controller {
             if(selectedBookForm!=null) {
                 String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + " " + selectedBookForm.getDateOfCreation().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
 
-                SceneLoader.loadModalityDialog("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
+                SceneLoader.load("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
                 readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
                 bookFormListView.getItems().clear();
             }
         }
+    }
+
+    @FXML
+    public void readerRatingOnMouseClicked() {
+        readerRating.setRating(ratingValue);
     }
 
     private void prepareContextMenu() {
@@ -181,7 +167,5 @@ public class OperatorReadersController implements Controller {
         }
     }
 
-    public void readerRatingOnMouseClicked() {
-        readerRating.setRating(ratingValue);
-    }
+
 }

@@ -26,18 +26,16 @@ public class ContextMenuService {
         return contextMenu;
     }
 
-    public static ContextMenu createBookContextMenu(TableView<Book> bookTableView,
-                                                    EventHandler<ActionEvent> archiveHandler,
-                                                    EventHandler<ActionEvent> removeHandler) {
+    public static ContextMenu createBookContextMenu(TableView<Book> bookTableView, EventHandler<ActionEvent> removeHandler) {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem archiveBook = new MenuItem("Archive book");
         MenuItem removeBook = new MenuItem("Remove book");
 
-        archiveBook.setOnAction(archiveHandler);
         removeBook.setOnAction(removeHandler);
 
         contextMenu.getItems().addAll(archiveBook, removeBook);
+
 
         return contextMenu;
     }

@@ -30,11 +30,7 @@ public class AdministratorBooksDialogController implements Controller {
         bookTableView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
         bookDialogService.initialize(bookTableView);
 
-        ContextMenu contextMenu = ContextMenuService.createBookContextMenu(
-                bookTableView,
-                this::archiveSelectedBooks,
-                this::removeSelectedBooks
-        );
+        ContextMenu contextMenu = ContextMenuService.createBookContextMenu(bookTableView, this::removeSelectedBooks);
         bookTableView.setContextMenu(contextMenu);
     }
 

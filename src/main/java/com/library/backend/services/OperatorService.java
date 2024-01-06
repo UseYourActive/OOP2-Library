@@ -54,6 +54,10 @@ public class OperatorService implements Service {
         eventNotificationRepository.saveNotification(eventNotification);
     }
 
+    public void saveBook(Book book){
+        bookRepository.save(book);
+    }
+
     public List<Book> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         logger.info("Retrieved {} books from the repository.", books.size());

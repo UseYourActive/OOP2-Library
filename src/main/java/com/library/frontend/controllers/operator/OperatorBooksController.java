@@ -7,14 +7,18 @@ import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.EventNotification;
 import com.library.database.enums.BookFormStatus;
+import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.backend.engines.BookInventorySearchEngine;
 import com.library.backend.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
+import com.library.frontend.utils.tableviews.ContextMenuBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -25,9 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class OperatorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(OperatorBooksController.class);
@@ -46,6 +48,7 @@ public class OperatorBooksController implements Controller {
     private ObservableList<Book> selectedBooks;
     private List<BookForm> overdueBookForms;
     private SearchEngine<BookInventory> searchEngine;
+    private BookTreeTableViewBuilder bookTreeTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,7 +60,7 @@ public class OperatorBooksController implements Controller {
 
         overdueBookForms = operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
 
-        BookTreeTableViewBuilder bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
+        bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
 
         updateTreeTableView(operatorService.getAllBookInventories());
@@ -79,6 +82,8 @@ public class OperatorBooksController implements Controller {
                 operatorService.saveNewBookForm(bookForm);
             }
         }
+
+        bookTreeTableView.setContextMenu(getBookInventoryTreeTableContextMenu());
     }
 
     @FXML
@@ -118,6 +123,9 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
+            if(!bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView).isLeaf())
+                bookTreeTableView.getSelectionModel().clearSelection();
+
             if (bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null) {
                 if (mouseEvent.getClickCount() == 2
                         && mouseEvent.getButton() == MouseButton.PRIMARY
@@ -141,8 +149,9 @@ public class OperatorBooksController implements Controller {
                         }
 
                     }
+
                 }
-                bookTreeTableView.getSelectionModel().clearSelection();
+
             }
         } catch (Exception e) {
             logger.error("Error occurred during handling book table view click", e);
@@ -206,6 +215,26 @@ public class OperatorBooksController implements Controller {
         } catch (Exception e) {
             logger.error("Error occurred during updating book tree table view", e);
         }
+    }
+
+    private ContextMenu getBookInventoryTreeTableContextMenu(){
+        Map<String, EventHandler<ActionEvent>> menuItems=new HashMap<>();
+
+        menuItems.put("Archive book",this::archiveBook);
+
+        return ContextMenuBuilder.prepareContextMenu(menuItems);
+    }
+
+    private void archiveBook(ActionEvent actionEvent){
+        TreeItem<Book> bookTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);
+
+        Book book = bookTreeItem.getValue();
+
+        book.setBookStatus(BookStatus.ARCHIVED);
+
+        operatorService.saveBook(book);
+
+        updateTreeTableView(operatorService.getAllBookInventories());
     }
 
 

@@ -103,12 +103,16 @@ public class Reader implements DBEntity{
 
     public void promote(){
         rating.increase();
-        rating=rating.getNewRating();
+        int currentRatingValue=rating.getCurrentValue();
+        rating=rating.getNewRating(currentRatingValue);
+        rating.setCurrentValue(currentRatingValue);
     }
 
     public void demote(){
         rating.decrease();
-        rating=rating.getNewRating();
+        int currentRatingValue=rating.getCurrentValue();
+        rating=rating.getNewRating(currentRatingValue);
+        rating.setCurrentValue(currentRatingValue);
     }
 
 

@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.admin;
 
+import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.AdminService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
@@ -11,10 +12,12 @@ import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.backend.engines.BookInventorySearchEngine;
 import com.library.backend.engines.SearchEngine;
+import com.library.frontend.utils.tableviews.ContextMenuBuilder;
 import com.library.frontend.utils.tableviews.InventoryTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -29,10 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AdministratorBooksController implements Controller {
     private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
@@ -46,46 +46,39 @@ public class AdministratorBooksController implements Controller {
     @FXML public Button logOutButton;
 
     private AdminService adminService;
-    private SearchEngine<BookInventory> searchEngine;
     private TableViewBuilder<BookInventory> bookInventoryTableViewBuilder;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adminService = ServiceFactory.getService(AdminService.class);
-        searchEngine = new BookInventorySearchEngine();
+
 
         operatorsButton.requestFocus();
-
         bookTextArea.setFocusTraversable(false);
 
         bookInventoryTableViewBuilder = new InventoryTableViewBuilder();
         bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);
 
-        updateTableView(adminService.getAllBookInventories());
+        inventoryTableView.setContextMenu(getBookInventoryContextMenu());
 
-        prepareContextMenu();
+        updateTableView(adminService.getAllBookInventories());
     }
 
     @FXML
     public void searchBookButtonOnMouseClicked() {
         try {
-            List<BookInventory> inventories = adminService.getAllBookInventories();
             String stringToSearch = searchBookTextField.getText();
-            Collection<BookInventory> results = searchEngine.search(inventories, stringToSearch);
+            Collection<BookInventory> results = adminService.searchBookInventory(stringToSearch);
             updateTableView(results.stream().toList());
-        } catch (Exception e) {
-            logger.error("Error occurred during book search", e);
+        }catch (SearchEngineException e){
+            DialogUtils.showInfo("Error ","BookInventory not found!");
         }
     }
 
     @FXML
     public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
-        try {
-            SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
-        } catch (Exception e) {
-            logger.error("Error occurred during navigation to operators scene", e);
-        }
+        SceneLoader.load(mouseEvent, "/views/admin/administratorOperatorsScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
     }
 
     @FXML
@@ -138,32 +131,17 @@ public class AdministratorBooksController implements Controller {
         }
     }
 
-    private void prepareContextMenu() {
-        try {
-            ContextMenu contextMenu = new ContextMenu();
+    private ContextMenu getBookInventoryContextMenu() {
+        Map<String, EventHandler<ActionEvent>> stringEventHandlerMap=new HashMap<>();
+        stringEventHandlerMap.put("Register book",this::registerNewBook);
+        stringEventHandlerMap.put("Add books",this::setQuantityOnSelectedBook);
+        stringEventHandlerMap.put("Remove inventory",this::removeSelectedInventory);
 
-            MenuItem registerNewBook = new MenuItem("Register book");
-            MenuItem addExistingBookItem = new MenuItem("Add books");
-            MenuItem removeBookItem = new MenuItem("Remove inventory");
-
-            contextMenu.getItems().addAll(registerNewBook, removeBookItem, addExistingBookItem);
-
-            inventoryTableView.setContextMenu(contextMenu);
-
-            registerNewBook.setOnAction(this::registerNewBook);
-            removeBookItem.setOnAction(this::removeSelectedInventory);
-            addExistingBookItem.setOnAction(this::setQuantityOnSelectedBook);
-        } catch (Exception e) {
-            logger.error("Error occurred during context menu preparation", e);
-        }
+        return ContextMenuBuilder.prepareContextMenu(stringEventHandlerMap);
     }
 
     private void registerNewBook(ActionEvent mouseEvent) {
-        try {
-            SceneLoader.load("/views/admin/registerNewBookScene.fxml", "Register new book");
-        } catch (Exception e) {
-            logger.error("Error occurred during navigation to register new book scene", e);
-        }
+        SceneLoader.load("/views/admin/registerNewBookScene.fxml", "Register new book");
     }
 
 
@@ -200,68 +178,11 @@ public class AdministratorBooksController implements Controller {
 
     private void setQuantityOnSelectedBook(ActionEvent actionEvent) {
         try {
-            if (!inventoryTableView.getSelectionModel().isEmpty()) {
-                openDialog();
-            } else {
-                DialogUtils.showInfo("Information", "Please select a book!");
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred during setting quantity on selected book", e);
-        }
-    }
+           BookInventory bookInventory=bookInventoryTableViewBuilder.getSelectedItem(inventoryTableView);
+           SceneLoader.loadModalityDialog("/views/admin/addBookQuantityScene.fxml","Add books",bookInventory);
 
-    private void openDialog() {
-        try {
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(SceneLoader.getStage());
-
-            TextField quantityField = new TextField();
-            Button increaseButton = new Button("Increase Quantity");
-
-            increaseButton.setOnAction(e -> {
-                try {
-                    int quantity = Integer.parseInt(quantityField.getText());
-                    if (quantity > 0) {
-
-                        if(inventoryTableView.getSelectionModel()!=null) {
-                            BookInventory bookInventory = inventoryTableView.getSelectionModel().getSelectedItem();
-
-                            Book representiveBook=bookInventory.getRepresentiveBook();
-
-                            for (int i = 0; i < quantity; i++) {
-                                Book book = new Book(representiveBook);
-                                book.setBookStatus(BookStatus.AVAILABLE);
-                                book.setNumberOfTimesUsed(0);
-
-
-                                adminService.saveBook(book);
-                                bookInventory.addBook(book);
-                            }
-
-                            adminService.saveInventory(bookInventory);
-
-                            updateTableView(adminService.getAllBookInventories());
-                            dialogStage.close();
-                        }
-                    } else {
-                        DialogUtils.showInfo("Error", "Please enter valid quantity number!");
-                    }
-                } catch (Exception ex) {
-                    logger.error("Error occurred during setting quantity on selected book", ex);
-                }
-            });
-
-            VBox dialogLayout = new VBox(10, new Label("Enter quantity:"), quantityField, increaseButton);
-            dialogLayout.setPadding(new Insets(20));
-
-            Scene dialogScene = new Scene(dialogLayout, 250, 150);
-
-            dialogStage.setTitle("Set quantity");
-            dialogStage.setScene(dialogScene);
-            dialogStage.show();
-        } catch (Exception e) {
-            logger.error("Error occurred during opening dialog", e);
+        } catch (NoSuchElementException e) {
+            DialogUtils.showInfo("Information", "Please select a book!");
         }
     }
 }

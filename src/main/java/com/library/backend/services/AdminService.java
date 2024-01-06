@@ -1,6 +1,9 @@
 package com.library.backend.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.library.backend.engines.BookInventorySearchEngine;
+import com.library.backend.engines.SearchEngine;
+import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
@@ -13,6 +16,7 @@ import com.library.database.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -36,6 +40,13 @@ public class AdminService implements Service {
 
     public void saveBook(Book book) {
         performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
+    }
+
+    public Collection<BookInventory> searchBookInventory(String string) throws SearchEngineException {
+
+        List<BookInventory> inventories = bookInventoryRepository.findAll();
+        SearchEngine<BookInventory> searchEngine = new BookInventorySearchEngine();
+        return searchEngine.search(inventories, string);
     }
 
 

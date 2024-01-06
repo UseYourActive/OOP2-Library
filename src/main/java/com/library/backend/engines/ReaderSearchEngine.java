@@ -32,7 +32,9 @@ public class ReaderSearchEngine implements SearchEngine<Reader> {
                             reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()) ||
                             reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()) ||
                             reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()) ||
-                            reader.getPhoneNumber().contains(stringToSearch.toUpperCase()))
+                            reader.getPhoneNumber().contains(stringToSearch.toUpperCase()) ||
+                            reader.getRating().getDisplayValue().toUpperCase().contains(stringToSearch.toUpperCase())
+                    )
                     .collect(Collectors.toSet());
         } catch (Exception e) {
             logger.error("Error occurred during reader search", e);

@@ -1,8 +1,10 @@
 package com.library.frontend.utils.tableviews;
 
-import javafx.scene.control.SelectionModel;
-import javafx.scene.control.TreeTableView;
+import javafx.collections.FXCollections;
+import javafx.scene.control.*;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,8 +52,13 @@ public interface TreeTableViewBuilder<T> {
      */
     void createTreeTableViewColumns(TreeTableView<T> treeTableView);
 
-    default TreeTableView.TreeTableViewSelectionModel<T> getSelectionModel(TreeTableView<T> treeTableView){
-        Optional<TreeTableView.TreeTableViewSelectionModel<T>> selectionModel = Optional.ofNullable(treeTableView.getSelectionModel());
-        return selectionModel.orElseThrow();
+    default TreeItem<T> getSelectedItem(TreeTableView<T> tableView){
+        TreeTableView.TreeTableViewSelectionModel<T> selectionModel = tableView.getSelectionModel();
+        return  Optional.ofNullable(selectionModel.getSelectedItem()).orElseThrow();
+    }
+
+    default List<TreeItem<T>> getSelectedItems(TreeTableView<T> tableView){
+        TreeTableView.TreeTableViewSelectionModel<T> selectionModel = Optional.ofNullable(tableView.getSelectionModel()).orElseThrow();
+        return Optional.ofNullable(selectionModel.getSelectedItems()).orElseThrow();
     }
 }

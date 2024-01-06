@@ -18,6 +18,7 @@ import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.IndexedCheckModel;
@@ -85,7 +86,7 @@ public class BookFormShowController implements Controller {
     }
 
     @FXML
-    public void returnButtonOnMouseClicked() {
+    public void returnButtonOnMouseClicked(MouseEvent mouseEvent) {
         IndexedCheckModel<Book> checkModel = bookCheckListView.getCheckModel();
 
         List<Book> booksToReturn = new ArrayList<>();
@@ -98,7 +99,19 @@ public class BookFormShowController implements Controller {
 
             book.setNumberOfTimesUsed(book.getNumberOfTimesUsed()+1);
             booksToReturn.add(book);
+
+            if(book.getNumberOfTimesUsed()==50){
+                EventNotification eventNotification= EventNotification.builder()
+                        .user(SceneLoader.getUser())
+                        .timestamp(LocalDateTime.now())
+                        .message("50 readers already used this book. Consider archiving soon.")
+                        .build();
+
+                operatorService.saveEventNotification(eventNotification);
+            }
+
         }
+
 
         operatorService.saveAllBooks(booksToReturn);
 
@@ -120,14 +133,12 @@ public class BookFormShowController implements Controller {
 
         logger.info("Books returned successfully by reader: {}", reader.getFullName());
 
-        closeButtonOnMouseClicked();
+        closeButtonOnMouseClicked(mouseEvent);
     }
 
     @FXML
-    public void closeButtonOnMouseClicked() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-        logger.info("BookFormShow window closed.");
+    public void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
+        SceneLoader.load(mouseEvent,"/views/operator/operatorReadersScene.fxml",SceneLoader.getUser().getUsername()+"(Operator)");
     }
 
     @FXML

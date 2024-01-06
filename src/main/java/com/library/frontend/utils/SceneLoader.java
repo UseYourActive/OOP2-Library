@@ -75,7 +75,10 @@ public class SceneLoader {
      * @param resourceFiles The FXML resource file for the scene.
      * @param stageTitle    The title of the stage.
      */
-    public static void load(Event event, String resourceFiles, String stageTitle) {
+    public static void load(Event event, String resourceFiles, String stageTitle,Object ... objects) {
+        if (objects != null)
+            SceneLoader.transferableObjects = objects;
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         loadBackground(stage, resourceFiles, stageTitle);
     }
@@ -86,9 +89,12 @@ public class SceneLoader {
      * @param resourceFiles The FXML resource file for the scene.
      * @param stageTitle    The title of the stage.
      */
-    public static void load(String resourceFiles, String stageTitle) {
+    public static void load(String resourceFiles, String stageTitle,Object ... objects) {
         if (stage == null)
             throw new RuntimeException();
+
+        if (objects != null)
+            SceneLoader.transferableObjects = objects;
 
         loadBackground(stage, resourceFiles, stageTitle);
     }
@@ -100,7 +106,10 @@ public class SceneLoader {
      * @param resourceFiles The FXML resource file for the scene.
      * @param stageTitle    The title of the stage.
      */
-    public static void load(Stage stage, String resourceFiles, String stageTitle) {
+    public static void load(Stage stage, String resourceFiles, String stageTitle,Object ... objects) {
+        if (objects != null)
+            SceneLoader.transferableObjects = objects;
+
         loadBackground(stage, resourceFiles, stageTitle);
     }
 

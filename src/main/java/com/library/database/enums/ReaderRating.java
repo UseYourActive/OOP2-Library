@@ -71,12 +71,14 @@ public enum ReaderRating {
     /**
      * The current value used to determine current rating.
      */
+    @Setter
+    @Getter
     private int currentValue;
 
     /**
      * The coefficient used to determine rating changes over time.
      */
-    private int coefficient = 0;
+    private double coefficient = 0;
 
     /**
      * Constructs a new Rating with the specified display value and integer value.
@@ -116,9 +118,9 @@ public enum ReaderRating {
     }
 
 
-   public ReaderRating getNewRating() throws IllegalStateException {
+   public ReaderRating getNewRating(int currentValue) throws IllegalStateException {
        for (ReaderRating readerRating : ReaderRating.values()) {
-           if (readerRating.getValue()==currentValue) {
+           if (readerRating.value==currentValue) {
                return readerRating;
            }
        }
