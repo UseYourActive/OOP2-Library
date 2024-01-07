@@ -19,13 +19,19 @@ public class OperatorService implements Service {
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
     private final EventNotificationRepository eventNotificationRepository;
+    private final ReaderRatingRepository readerRatingRepository;
 
-    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository, EventNotificationRepository eventNotificationRepository) {
+    public OperatorService(BookRepository bookRepository, ReaderRepository readerRepository, BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository, EventNotificationRepository eventNotificationRepository, ReaderRatingRepository readerRatingRepository) {
         this.bookRepository = bookRepository;
         this.readerRepository = readerRepository;
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookFormRepository = bookFormRepository;
         this.eventNotificationRepository = eventNotificationRepository;
+        this.readerRatingRepository = readerRatingRepository;
+    }
+
+    public void saveRating(ReaderRating readerRating){
+        readerRatingRepository.save(readerRating);
     }
 
     public void lendBookToReaderForReadingRoom(Book book, Reader reader) {
@@ -106,6 +112,7 @@ public class OperatorService implements Service {
 
         Set<Book> bookSet = new HashSet<>();
         for (Book book : books) {
+            book.updatePreviousBookStatus();
             book.setBookStatus(status);
             bookSet.add(book);
         }

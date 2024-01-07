@@ -5,7 +5,8 @@ import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Reader;
-import com.library.database.enums.ReaderRating;
+import com.library.database.entities.ReaderRating;
+import com.library.database.enums.Ratings;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CreateReaderProfileController implements Controller {
@@ -50,6 +52,14 @@ public class CreateReaderProfileController implements Controller {
             String phoneNumber = phoneNumberTextField.getText();
             String email = emailTextField.getText();
 
+            ReaderRating readerRating= ReaderRating.builder()
+                    .rating(Ratings.NONE)
+                    .currentValue(-1)
+                    .coefficient(0)
+                    //.readers(new ArrayList<>())
+                    .build();
+
+
             Reader reader = Reader.builder()
                     .firstName(firstName)
                     .middleName(middleName)
@@ -57,9 +67,12 @@ public class CreateReaderProfileController implements Controller {
                     .email(email)
                     .phoneNumber(phoneNumber)
                     .bookForms(Lists.newArrayList())
-                    .rating(ReaderRating.NONE)
+                    .readerRating(readerRating)
                     .build();
 
+           // readerRating.getReaders().add(reader);
+
+            //operatorService.saveRating(readerRating);
             operatorService.createReader(reader);
             SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername() + "(Operator)");
         } catch (IncorrectInputException e) {

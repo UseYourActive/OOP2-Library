@@ -84,7 +84,8 @@ public class ServiceFactory {
                                 ReaderRepository.getInstance(),
                                 BookInventoryRepository.getInstance(),
                                 BookFormRepository.getInstance(),
-                                EventNotificationRepository.getInstance()));
+                                EventNotificationRepository.getInstance(),
+                                ReaderRatingRepository.getInstance()));
                 default -> throw new NonExistentServiceException("There is no such enum!");
             }
             logger.info("Service {} created successfully", serviceClass.getSimpleName());

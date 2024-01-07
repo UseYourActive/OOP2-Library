@@ -8,7 +8,7 @@ import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
 import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
-import com.library.database.enums.ReaderRating;
+import com.library.database.enums.Ratings;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
 import com.library.frontend.utils.DialogUtils;
@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +41,7 @@ public class CreateBookFormController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public TableView<Book> bookTableView;
     @FXML public Button lendReadingRoomButton;
-    @FXML public Rating readerRating;
+    @FXML public Rating readerRatingControl;
     @FXML public TableView<Reader> readerTableView;
 
     private OperatorService operatorService;
@@ -66,7 +65,7 @@ public class CreateBookFormController implements Controller {
                 selectedBooks.add((Book) object);
         }
 
-        readerRating.setRating(ReaderRating.NONE.getValue());
+        readerRatingControl.setRating(Ratings.NONE.getValue());
 
         bookTableViewBuilder = new BookTableViewBuilder();
         bookTableViewBuilder.createTableViewColumns(bookTableView);
@@ -97,7 +96,7 @@ public class CreateBookFormController implements Controller {
 
             Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-            if (selectedReader.getRating() == ReaderRating.ZERO_STAR)
+            if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR)
                 throw new ReaderException("The reader is not allowed to take books anymore.");
 
             if (bookTableView.getItems().stream()
@@ -132,7 +131,7 @@ public class CreateBookFormController implements Controller {
         if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
             Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
 
-            if (selectedReader.getRating() == ReaderRating.ZERO_STAR){
+            if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR){
                 DialogUtils.showError("Reader is not allowed to take books anymore","His rating is too low.");
             }
             else {
@@ -165,7 +164,7 @@ public class CreateBookFormController implements Controller {
 
     @FXML
     public void ratingOnMouseClicked() {
-        readerRating.setRating(ratingValue);
+        readerRatingControl.setRating(ratingValue);
     }
 
     @FXML
@@ -176,10 +175,10 @@ public class CreateBookFormController implements Controller {
             Reader selectedReader = selectionModel.getSelectedItem();
 
             if (selectedReader != null) {
-                ratingValue=selectedReader.getRating().getValue();
-                readerRating.setRating(ratingValue);
+                ratingValue=selectedReader.getReaderRating().getRating().getValue();
+                readerRatingControl.setRating(ratingValue);
 
-                readerRating.setDisable(ratingValue == -1);
+                readerRatingControl.setDisable(ratingValue == -1);
             }
         }
     }

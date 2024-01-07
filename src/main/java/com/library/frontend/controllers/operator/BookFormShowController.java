@@ -95,7 +95,15 @@ public class BookFormShowController implements Controller {
             if (checkModel.getCheckedItems().contains(book))
                 book.setBookStatus(BookStatus.DAMAGED);
             else
-                book.setBookStatus(BookStatus.AVAILABLE);
+            {
+                if(book.getPreviousBookStatus()==null)
+                    throw new RuntimeException("Failed to return books");
+
+                if(book.getPreviousBookStatus()==BookStatus.ARCHIVED)
+                    book.setBookStatus(BookStatus.ARCHIVED);
+                else
+                    book.setBookStatus(BookStatus.AVAILABLE);
+            }
 
             book.setNumberOfTimesUsed(book.getNumberOfTimesUsed()+1);
             booksToReturn.add(book);

@@ -37,7 +37,7 @@ public class OperatorReadersController implements Controller {
     @FXML public Button searchReaderButton;
     @FXML public TableView<Reader> readerTableView;
     @FXML public ListView<BookForm> bookFormListView;
-    public Rating readerRating;
+    public Rating readerRatingControl;
 
     private int ratingValue;
     private OperatorService operatorService;
@@ -92,10 +92,10 @@ public class OperatorReadersController implements Controller {
 
                 if (selectedReader != null) {
                     bookFormListView.getItems().setAll(selectedReader.getBookForms());
-                    ratingValue=selectedReader.getRating().getValue();
-                    readerRating.setRating(ratingValue);
+                    ratingValue=selectedReader.getReaderRating().getRating().getValue();
+                    readerRatingControl.setRating(ratingValue);
 
-                    readerRating.setDisable(ratingValue == -1);
+                    readerRatingControl.setDisable(ratingValue == -1);
                 }
             }
         } catch (Exception e) {
@@ -122,7 +122,7 @@ public class OperatorReadersController implements Controller {
 
     @FXML
     public void readerRatingOnMouseClicked() {
-        readerRating.setRating(ratingValue);
+        readerRatingControl.setRating(ratingValue);
     }
 
     private void prepareContextMenu() {

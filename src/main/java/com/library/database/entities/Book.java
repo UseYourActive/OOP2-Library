@@ -45,6 +45,10 @@ public class Book implements DBEntity{
     @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "previous_book_status")
+    private BookStatus previousBookStatus;
+
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
     private BookInventory inventory;
@@ -88,6 +92,10 @@ public class Book implements DBEntity{
         if (this == book) return true;
         if (book == null || getClass() != book.getClass()) return false;
         return title.equals(book.title) && resume.equals(book.resume) && author.equals(book.author) && genre == book.genre;
+    }
+
+    public void updatePreviousBookStatus(){
+        previousBookStatus=bookStatus;
     }
 
 

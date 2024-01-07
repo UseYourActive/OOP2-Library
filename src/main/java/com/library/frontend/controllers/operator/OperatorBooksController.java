@@ -153,9 +153,7 @@ public class OperatorBooksController implements Controller {
                 }
 
             }
-        } catch (Exception e) {
-            logger.error("Error occurred during handling book table view click", e);
-        }
+        } catch (NoSuchElementException ignored) {}
     }
 
     @FXML

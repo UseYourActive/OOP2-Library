@@ -1,7 +1,6 @@
 package com.library.database.enums;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The {@code Rating} enum represents different rating levels that can be assigned to items in a library system.
@@ -20,7 +19,7 @@ import lombok.Setter;
  * @see lombok.Setter
  */
 
-public enum ReaderRating {
+public enum Ratings {
     /**
      * No rating.
      */
@@ -71,14 +70,14 @@ public enum ReaderRating {
     /**
      * The current value used to determine current rating.
      */
-    @Setter
-    @Getter
-    private int currentValue;
+    //@Setter
+    //@Getter
+    //private int currentValue;
 
     /**
      * The coefficient used to determine rating changes over time.
      */
-    private double coefficient = 0;
+    //private double coefficient = 0;
 
     /**
      * Constructs a new Rating with the specified display value and integer value.
@@ -86,46 +85,46 @@ public enum ReaderRating {
      * @param displayValue The display value of the rating.
      * @param value        The integer value of the rating.
      */
-    ReaderRating(String displayValue, Integer value) {
+    Ratings(String displayValue, Integer value) {
         this.displayValue = displayValue;
         this.value = value;
     }
 
 
-    public void increase() {
-        coefficient++;
-
-        if (value == -1) {
-            currentValue=3;
-        } else {
-            if (coefficient % 5 == 0 && currentValue < 5) {
-                currentValue++;
-            }
-        }
-    }
-
-
-    public void decrease() {
-        coefficient--;
-
-        if (value == -1) {
-            currentValue=2;
-        } else {
-            if ( Math.abs(coefficient) % 5 == 0 && currentValue > 0) {
-                currentValue--;
-            }
-        }
-    }
-
-
-   public ReaderRating getNewRating(int currentValue) throws IllegalStateException {
-       for (ReaderRating readerRating : ReaderRating.values()) {
-           if (readerRating.value==currentValue) {
-               return readerRating;
-           }
-       }
-
-       throw new IllegalStateException("No matching Rating for value: " + value);
-   }
+   // public void increase() {
+   //     coefficient++;
+//
+   //     if (value == -1) {
+   //         currentValue=3;
+   //     } else {
+   //         if (coefficient % 5 == 0 && currentValue < 5) {
+   //             currentValue++;
+   //         }
+   //     }
+   // }
+//
+//
+   // public void decrease() {
+   //     coefficient--;
+//
+   //     if (value == -1) {
+   //         currentValue=2;
+   //     } else {
+   //         if ( Math.abs(coefficient) % 5 == 0 && currentValue > 0) {
+   //             currentValue--;
+   //         }
+   //     }
+   // }
+//
+//
+   //public ReaderRating getNewRating(int currentValue) throws IllegalStateException {
+   //    for (ReaderRating readerRating : ReaderRating.values()) {
+   //        if (readerRating.value==currentValue) {
+   //            return readerRating;
+   //        }
+   //    }
+//
+   //    throw new IllegalStateException("No matching Rating for value: " + value);
+   //}
 }
 

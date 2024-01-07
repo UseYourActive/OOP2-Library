@@ -12,7 +12,8 @@ public class OperatorServiceFactory implements AbstractServiceFactory {
                 ReaderRepository.getInstance(),
                 BookInventoryRepository.getInstance(),
                 BookFormRepository.getInstance(),
-                EventNotificationRepository.getInstance()
+                EventNotificationRepository.getInstance(),
+                ReaderRatingRepository.getInstance()
         );
     }
 }

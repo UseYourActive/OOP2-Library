@@ -1,6 +1,6 @@
 package com.library.database.entities;
 
-import com.library.database.enums.ReaderRating;
+import com.library.database.enums.Ratings;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -82,12 +82,10 @@ public class Reader implements DBEntity{
     @OneToMany(mappedBy = "reader",cascade = CascadeType.ALL)
     private List<BookForm> bookForms;
 
-    /**
-     * The rating of the reader.
-     */
-    @Column(name = "reader_rating")
-    @Enumerated(EnumType.STRING)
-    private ReaderRating rating;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rating_id", nullable = false)
+    private ReaderRating readerRating;
 
     /**
      * Overrides the default {@code toString()} method to provide a formatted string representation
@@ -98,21 +96,23 @@ public class Reader implements DBEntity{
     @Override
     public String toString() {
         return String.format("Id: %d, First Name: %s, Middle Name: %s, Last Name: %s, Phone Number: %s, Email: %s, Rating: %s",
-                id, firstName, middleName, lastName, phoneNumber, email, rating.getDisplayValue());
+                id, firstName, middleName, lastName, phoneNumber, email, readerRating);
     }
 
     public void promote(){
-        rating.increase();
-        int currentRatingValue=rating.getCurrentValue();
-        rating=rating.getNewRating(currentRatingValue);
-        rating.setCurrentValue(currentRatingValue);
+        readerRating.increase();
+        readerRating.updateRating();
+        //int currentRatingValue=rating.getCurrentValue();
+        //rating=rating.getNewRating(currentRatingValue);
+        //rating.setCurrentValue(currentRatingValue);
     }
 
     public void demote(){
-        rating.decrease();
-        int currentRatingValue=rating.getCurrentValue();
-        rating=rating.getNewRating(currentRatingValue);
-        rating.setCurrentValue(currentRatingValue);
+        readerRating.decrease();
+        readerRating.updateRating();
+        //int currentRatingValue=rating.getCurrentValue();
+        //rating=rating.getNewRating(currentRatingValue);
+        //rating.setCurrentValue(currentRatingValue);
     }
 
 
