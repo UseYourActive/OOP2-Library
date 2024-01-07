@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
  * Implementing classes should provide specific business logic for their respective services.
  *
  * @see com.library.backend.services.Service
- * @see com.library.backend.services.AdminService
  * @see com.library.backend.services.LogInService
  * @see com.library.backend.services.OperatorService
  */
@@ -47,7 +46,8 @@ public class ServiceFactory {
     @Getter
     @RequiredArgsConstructor
     private enum ServiceType {
-        ADMIN_SERVICE(AdminService.class),
+        //ADMIN_SERVICE(AdminService.class),
+
         LOG_IN_SERVICE(LogInService.class),
         OPERATOR_SERVICE(OperatorService.class);
         private final Class<? extends Service> serviceClass;
@@ -71,12 +71,7 @@ public class ServiceFactory {
         T service = null;
         try {
             switch (getServiceType(serviceClass)) {
-                case ADMIN_SERVICE ->
-                        service = serviceClass.cast(new AdminService(
-                                BookRepository.getInstance(),
-                                UserRepository.getInstance(),
-                                BookInventoryRepository.getInstance(),
-                                BookFormRepository.getInstance()));
+
                 case LOG_IN_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
                 case OPERATOR_SERVICE ->
                         service = serviceClass.cast(new OperatorService(
