@@ -18,7 +18,7 @@ import java.util.List;
 public class OperatorReadersService implements Service {
     private final static Logger logger = LoggerFactory.getLogger(OperatorReadersService.class);
     private final ReaderRepository readerRepository;
-    private SearchEngine<Reader> readerSearchEngine;
+    @Setter private SearchEngine<Reader> readerSearchEngine;
     @Setter
     @Getter
     private double ratingValue;

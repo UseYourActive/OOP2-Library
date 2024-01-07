@@ -1,7 +1,4 @@
-package services;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+package services.admin;
 
 import com.library.backend.exception.InvalidQuantityException;
 import com.library.backend.exception.ObjectCannotBeNullException;
@@ -14,6 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 public class AddBookQuantityServiceTest {
     private AddBookQuantityService service;

@@ -1,4 +1,4 @@
-package services;
+package services.admin;
 
 import com.library.backend.services.admin.AdministratorBooksDialogService;
 import com.library.database.entities.Book;
@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 class AdministratorBooksDialogServiceTest {

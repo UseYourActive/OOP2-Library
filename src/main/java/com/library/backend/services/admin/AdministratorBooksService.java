@@ -10,6 +10,7 @@ import com.library.database.entities.BookInventory;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class AdministratorBooksService implements Service {
     private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
-    private final SearchEngine<BookInventory> searchEngine;
+    @Setter private SearchEngine<BookInventory> searchEngine;
 
     public AdministratorBooksService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookInventoryRepository = bookInventoryRepository;

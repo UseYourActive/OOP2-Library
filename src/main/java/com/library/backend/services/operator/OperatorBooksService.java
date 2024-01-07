@@ -19,6 +19,7 @@ import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +33,10 @@ public class OperatorBooksService implements Service {
     private final BookInventoryRepository bookInventoryRepository;
     private final EventNotificationRepository eventNotificationRepository;
     private final BookRepository bookRepository;
-    @Getter
-    private ObservableList<Book> selectedBooks;
-    private SearchEngine<BookInventory> bookInventorySearchEngine;
-    @Getter
-    private List<BookForm> overdueBookForms;
+    @Setter private SearchEngine<BookInventory> bookInventorySearchEngine;
+
+    @Getter private ObservableList<Book> selectedBooks;
+    @Getter private List<BookForm> overdueBookForms;
 
     public OperatorBooksService(BookFormRepository bookFormRepository, BookInventoryRepository bookInventoryRepository, EventNotificationRepository eventNotificationRepository, BookRepository bookRepository) {
         this.bookFormRepository = bookFormRepository;

@@ -30,7 +30,9 @@ public class CreateBookFormService implements Service {
     private final ReaderRepository readerRepository;
     private final BookFormRepository bookFormRepository;
     private final BookRepository bookRepository;
-    private final SearchEngine<Reader> readerSearchEngine;
+    @Getter
+    @Setter
+    private SearchEngine<Reader> readerSearchEngine;
 
     @Setter
     @Getter

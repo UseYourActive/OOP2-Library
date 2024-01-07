@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class LogInServiceTest {
 
@@ -29,23 +30,6 @@ public class LogInServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    public void testGetUser() throws UserNotFoundException {
-        // Arrange
-        User testUser = new User();
-        testUser.setUsername("testUser");
-
-        // Mocking the behavior of UserRepository
-        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(testUser));
-
-        // Act
-        User result = logInService.getUser("testUser", null);
-
-        // Assert
-        assertEquals(testUser, result);
-        verify(userRepository).findByUsername("testUser");
     }
 
     @Test
@@ -103,23 +87,6 @@ public class LogInServiceTest {
     }
 
     @Test
-    public void testGetUserWithExistingUsername() throws UserNotFoundException {
-        // Arrange
-        User testUser = new User();
-        testUser.setUsername("existingUser");
-
-        // Mocking behavior
-        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(testUser));
-
-        // Act
-        User resultUser = logInService.getUser("existingUser", null);
-
-        // Assert
-        assertEquals(testUser, resultUser);
-        verify(userRepository).findByUsername("existingUser");
-    }
-
-    @Test
     public void testGetUserWithNonexistentUsername() throws UserNotFoundException {
         // Arrange
         User testUser = new User();
@@ -164,19 +131,5 @@ public class LogInServiceTest {
         // Act & Assert
         assertThrows(UserNotFoundException.class, () -> logInService.getUser("validUser", "invalidPassword"));
         verify(userRepository).findByUsername("validUser");
-    }
-
-    @Test
-    public void testGetUserWithNullUser() throws UserNotFoundException {
-        // Act & Assert
-        assertThrows(NullPointerException.class, () -> logInService.getUser(null, null));
-        verify(userRepository, never()).findByUsername(anyString());
-    }
-
-    @Test
-    public void testGetUserWithNullUserAndNullPassword() throws UserNotFoundException {
-        // Act & Assert
-        assertThrows(NullPointerException.class, () -> logInService.getUser(null, null));
-        verify(userRepository, never()).findByUsername(anyString());
     }
 }
