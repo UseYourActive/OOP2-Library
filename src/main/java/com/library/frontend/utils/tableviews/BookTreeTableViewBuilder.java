@@ -66,7 +66,7 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book> {
                 return new ReadOnlyStringWrapper("");
             }
         });
-        genreColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));
+        genreColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         genreColumn.setResizable(false);
 
         TreeTableColumn<Book, String> publishedYearColumn = new TreeTableColumn<>("Year");
@@ -81,6 +81,14 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book> {
         });
         publishedYearColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
         publishedYearColumn.setResizable(false);
+
+        TreeTableColumn<Book, String> idColumn = new TreeTableColumn<>("ID");
+        idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
+            logger.debug("Getting book status for book: {}", p.getValue().getValue().getBookStatus());
+            return new ReadOnlyStringWrapper(p.getValue().getValue().getId().toString());
+        });
+        idColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));
+        idColumn.setResizable(false);
 
         TreeTableColumn<Book, String> bookStatusColumn = new TreeTableColumn<>("Status");
         bookStatusColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> p) -> {
@@ -117,6 +125,7 @@ public class BookTreeTableViewBuilder implements TreeTableViewBuilder<Book> {
         bookTreeTableView.getColumns().add(authorColumn);
         bookTreeTableView.getColumns().add(genreColumn);
         bookTreeTableView.getColumns().add(publishedYearColumn);
+        bookTreeTableView.getColumns().add(idColumn);
         bookTreeTableView.getColumns().add(bookStatusColumn);
         bookTreeTableView.getColumns().add(numberOfTimesUsedColumn);
     }

@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The {@code EventNotification} class represents a notification associated with an event for a specific user.
@@ -62,4 +63,9 @@ public class EventNotification implements DBEntity{
     @Column(name = "timestamp", nullable = false, unique = true)
     private LocalDateTime timestamp;
 
+
+    @Override
+    public String toString() {
+        return timestamp.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))+ " "+message;
+    }
 }

@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -108,11 +109,11 @@ public class BookFormShowController implements Controller {
             book.setNumberOfTimesUsed(book.getNumberOfTimesUsed()+1);
             booksToReturn.add(book);
 
-            if(book.getNumberOfTimesUsed()==50){
+            if(book.getPreviousBookStatus()!=BookStatus.ARCHIVED&&book.getNumberOfTimesUsed()==50){
                 EventNotification eventNotification= EventNotification.builder()
                         .user(SceneLoader.getUser())
                         .timestamp(LocalDateTime.now())
-                        .message("50 readers already used this book. Consider archiving soon.")
+                        .message("("+LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))+")"+"Consider archiving of: "+book.getTitle()+"("+book.getId()+")")
                         .build();
 
                 operatorService.saveEventNotification(eventNotification);
@@ -154,9 +155,9 @@ public class BookFormShowController implements Controller {
         try {
             emailSenderService.sendEmail(reader.getEmail(), "Return of books", "");
             logger.info("Notification sent to reader: {}", reader.getEmail());
-            DialogUtils.showConfirmation("Email result", "An email notifying the user has been sent!");
+            DialogUtils.showInfo("Email result", "An email notifying the user has been sent!");
         } catch (EmailException e) {
-            logger.error("Error sending notification email", e);
+            DialogUtils.showError("Email result", "This email no longer exists!");
         }
     }
 
