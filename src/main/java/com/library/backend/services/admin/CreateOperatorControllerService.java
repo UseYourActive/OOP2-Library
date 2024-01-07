@@ -21,14 +21,17 @@ public class CreateOperatorControllerService implements Service {
         strongPasswordValidator = new StrongPasswordValidator();
     }
 
-    //TODO да се прави проверка при създаване на нов потребител, дали той вече съществува в системата
     public void createOperator(String username, String password, String repeatPassword) throws UserExistException, IncorrectInputException, UserNotFoundException {
         try {
             checkOperatorFieldsInput(username, password, repeatPassword);
 
-            //if (userRepository.findByUsername(username).isPresent())
-            //    throw new UserExistException("User with this username already exists");
+            if (userRepository.findByUsername(username).isPresent())
+                   throw new UserExistException("User with this username already exists");
 
+        } catch (IncorrectInputException e) {
+            logger.error("Input validation failed during operator creation", e);
+            throw e;
+        }catch (UserNotFoundException ignored){
             User operator = User.builder()
                     .username(username)
                     .password(password)
@@ -37,9 +40,6 @@ public class CreateOperatorControllerService implements Service {
 
             userRepository.save(operator);
             logger.info("Operator creation successful for username: '{}'", username);
-        } catch (IncorrectInputException e) {
-            logger.error("Input validation failed during operator creation", e);
-            throw e;
         }
     }
 
