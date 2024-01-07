@@ -13,11 +13,9 @@ import com.library.database.enums.BookFormStatus;
 import com.library.database.enums.BookStatus;
 import com.library.database.enums.Ratings;
 import com.library.database.repositories.*;
-import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

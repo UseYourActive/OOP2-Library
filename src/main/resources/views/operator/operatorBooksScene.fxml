@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="509.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorBooksController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="509.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.OperatorBooksController">
    <children>
       <Button fx:id="readersButton" layoutX="11.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#readersButtonOnMouseClicked" prefHeight="26.0" prefWidth="92.0" text="Readers" />
       <TextField fx:id="searchBookTextField" layoutX="110.0" layoutY="27.0" prefHeight="26.0" prefWidth="425.0" promptText="title, author, year, genre" />

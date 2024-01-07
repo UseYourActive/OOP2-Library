@@ -1,15 +1,11 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.email.EmailException;
-import com.library.backend.services.EmailSenderService;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
-import com.library.database.entities.EventNotification;
 import com.library.database.entities.Reader;
-import com.library.database.enums.BookFormStatus;
-import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -64,6 +60,10 @@ public class BookFormShowController implements Controller {
             noteLabel.setVisible(false);
             noteLabel.setDisable(true);
             bookCheckListView.setCellFactory(param -> new HiddenCheckBoxListCell<>());
+        }
+
+        if(bookCheckListView.getItems().isEmpty()){
+            DialogUtils.showInfo("Information","Books were removed from this ");
         }
     }
 

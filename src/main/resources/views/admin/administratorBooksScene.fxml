@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="452.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.admin.AdministratorBooksController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="452.0" prefWidth="755.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.admin.AdministratorBooksController">
    <children>
       <Button fx:id="operatorsButton" layoutX="16.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#operatorsButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Operators" />
       <Button fx:id="logOutButton" layoutX="618.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#logOutButtonOnMouseClicked" prefHeight="26.0" prefWidth="122.0" text="Log Out" />

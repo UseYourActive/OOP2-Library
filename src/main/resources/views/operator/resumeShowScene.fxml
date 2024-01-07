@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="423.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.ResumeShowController">
+<AnchorPane prefHeight="423.0" prefWidth="425.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.ResumeShowController">
    <children>
       <TextArea fx:id="textArea" editable="false" layoutX="14.0" layoutY="19.0" prefHeight="362.0" prefWidth="395.0" />
       <Button fx:id="closeButton" layoutX="186.0" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#closeButtonOnMouseClicked" text="Close" />

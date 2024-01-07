@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.Rating?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.CreateBookFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="603.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.CreateBookFormController">
    <children>
       <TextField fx:id="readerSearchBarTextField" layoutX="115.0" layoutY="211.0" prefHeight="26.0" prefWidth="372.0" promptText="First name, Middle name, Last name" />
       <Button fx:id="searchReaderButton" layoutX="495.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#searchReaderButtonOnMouseClicked" text="Search reader" />

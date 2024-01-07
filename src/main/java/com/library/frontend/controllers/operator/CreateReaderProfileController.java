@@ -1,12 +1,8 @@
 package com.library.frontend.controllers.operator;
 
-import com.google.common.collect.Lists;
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.Reader;
-import com.library.database.entities.ReaderRating;
-import com.library.database.enums.Ratings;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
@@ -15,8 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;

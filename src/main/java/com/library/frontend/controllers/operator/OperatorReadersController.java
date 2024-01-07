@@ -1,7 +1,5 @@
 package com.library.frontend.controllers.operator;
 
-import com.library.backend.engines.ReaderSearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
@@ -20,8 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import org.controlsfx.control.Rating;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;

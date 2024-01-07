@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="417.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.CreateReaderProfileController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="417.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.operator.CreateReaderProfileController">
    <children>
       <TextField fx:id="firstNameTextField" layoutX="168.0" layoutY="66.0" prefHeight="26.0" prefWidth="190.0" />
       <TextField fx:id="middleNameTextField" layoutX="168.0" layoutY="100.0" prefHeight="26.0" prefWidth="190.0" />
