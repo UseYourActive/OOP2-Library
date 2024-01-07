@@ -1,6 +1,7 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.InvalidQuantityException;
+import com.library.backend.exception.ObjectCannotBeNullException;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.AddBookQuantityControllerService;
 import com.library.database.entities.BookInventory;
@@ -35,7 +36,11 @@ public class AddBookQuantityController implements Controller {
         try {
             service.increaseBookQuantity(quantityTextField.getText(), bookInventory);
         } catch (InvalidQuantityException e) {
-            DialogUtils.showError("Invalid quantity exception", e.getMessage());
+            DialogUtils.showError("Invalid quantity exception!", e.getMessage());
+        } catch (NumberFormatException e) {
+            DialogUtils.showError("Only numbers are allowed!", e.getMessage());
+        } catch (ObjectCannotBeNullException e) {
+            DialogUtils.showError("Object was not found!", e.getMessage());
         }
         ((Stage) addButton.getScene().getWindow()).close();
     }

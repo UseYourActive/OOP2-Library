@@ -1,8 +1,8 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.ReaderException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.operator.CreateBookFormControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.database.enums.Ratings;
@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.*;
 
 public class CreateBookFormController implements Controller {
-
     @FXML public TextField readerSearchBarTextField;
     @FXML public Button lendButton;
     @FXML public Button cancelButton;
@@ -34,14 +33,13 @@ public class CreateBookFormController implements Controller {
     @FXML public Rating readerRatingControl;
     @FXML public TableView<Reader> readerTableView;
 
-    private OperatorService operatorService;
-
+    private CreateBookFormControllerService service;
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = ServiceFactory.getService(OperatorService.class);
+        service = ServiceFactory.getService(CreateBookFormControllerService.class);
 
         bookTableView.setMouseTransparent(true);
         bookTableView.setFocusTraversable(false);
@@ -63,33 +61,33 @@ public class CreateBookFormController implements Controller {
 
         bookTableViewBuilder.updateTableView(bookTableView, selectedBooks);
 
-        readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());
     }
 
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
             String stringToSearch = readerSearchBarTextField.getText();
-            Collection<Reader> results = operatorService.searchReader(stringToSearch);
+            Collection<Reader> results = service.searchReader(stringToSearch);
             readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
-            DialogUtils.showInfo("Information","Reader not found!");
+            DialogUtils.showInfo("Information", "Reader not found!");
         }
     }
 
     @FXML
-    public void lendButtonOnMouseClicked(){
+    public void lendButtonOnMouseClicked() {
 
         try {
             Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);
             List<Book> bookList = bookTableView.getItems();
 
-            operatorService.lendBooks(selectedReader, bookList);
+            service.lendBooks(selectedReader, bookList);
 
             ((Stage) cancelButton.getScene().getWindow()).close();
-        }catch (NoSuchElementException ignored){}
-        catch (ReaderException e){
-            DialogUtils.showInfo("Information",e.getMessage());
+        } catch (NoSuchElementException ignored) {
+        } catch (ReaderException e) {
+            DialogUtils.showInfo("Information", e.getMessage());
         }
     }
 
@@ -99,11 +97,12 @@ public class CreateBookFormController implements Controller {
             Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);
             List<Book> books = bookTableView.getItems();
 
-            operatorService.lendReadingRoomBooks(selectedReader, books);
+            service.lendReadingRoomBooks(selectedReader, books);
             ((Stage) cancelButton.getScene().getWindow()).close();
-        }catch(ReaderException e){
-            DialogUtils.showError("Information",e.getMessage());
-        }catch (NoSuchElementException ignored){}
+        } catch (ReaderException e) {
+            DialogUtils.showError("Information", e.getMessage());
+        } catch (NoSuchElementException ignored) {
+        }
     }
 
     @FXML
@@ -115,20 +114,21 @@ public class CreateBookFormController implements Controller {
 
     @FXML
     public void ratingOnMouseClicked() {
-        readerRatingControl.setRating(operatorService.getRatingValue());
+        readerRatingControl.setRating(service.getRatingValue());
     }
 
     @FXML
     public void readerTableViewOnMouseClicked() {
-        try{
-            Reader selectedReader= readerTableViewBuilder.getSelectedItem(readerTableView);
+        try {
+            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);
 
-            operatorService.setRatingValue(selectedReader.getReaderRating().getRating().getValue());
+            service.setRatingValue(selectedReader.getReaderRating().getRating().getValue());
 
-            double value= operatorService.getRatingValue();
+            double value = service.getRatingValue();
             readerRatingControl.setRating(value);
             readerRatingControl.setDisable(value == -1);
 
-        }catch (NoSuchElementException ignored){}
+        } catch (NoSuchElementException ignored) {
+        }
     }
 }

@@ -1,8 +1,9 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.ReturnBookException;
 import com.library.backend.exception.email.EmailException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.operator.BookFormShowControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BookFormShowController implements Controller {
-
     @FXML public Button returnButton;
     @FXML public Button closeButton;
     @FXML public Button notifyButton;
@@ -33,14 +33,13 @@ public class BookFormShowController implements Controller {
 
     private BookForm bookForm;
     private Reader reader;
-    private OperatorService operatorService;
+    private BookFormShowControllerService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        service = ServiceFactory.getService(BookFormShowControllerService.class);
 
-        operatorService = ServiceFactory.getService(OperatorService.class);
-
-        operatorService.loadEmailSettings("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq");
+        service.loadEmailSettings("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq");
 
         getTransferObjects();
 
@@ -48,8 +47,8 @@ public class BookFormShowController implements Controller {
 
         bookCheckListView.getItems().setAll(bookForm.getBooks());
 
-        if(bookCheckListView.getItems()==null){
-            DialogUtils.showInfo("Information","Books were removed from the library");
+        if (bookCheckListView.getItems() == null) {
+            DialogUtils.showInfo("Information", "Books were removed from the library");
         }
 
         if (!bookForm.isPresent()) {
@@ -61,19 +60,19 @@ public class BookFormShowController implements Controller {
             noteLabel.setDisable(true);
             bookCheckListView.setCellFactory(param -> new HiddenCheckBoxListCell<>());
         }
-
-        if(bookCheckListView.getItems().isEmpty()){
-            DialogUtils.showInfo("Information","Books were removed from this ");
-        }
     }
 
     @FXML
     public void returnButtonOnMouseClicked(MouseEvent mouseEvent) {
         IndexedCheckModel<Book> checkModel = bookCheckListView.getCheckModel();
-        List<Book> damagedBooks= checkModel.getCheckedItems();
-        List<Book> allBooks= bookCheckListView.getItems();
+        List<Book> damagedBooks = checkModel.getCheckedItems();
+        List<Book> allBooks = bookCheckListView.getItems();
 
-        operatorService.returnBooks(bookForm,damagedBooks,allBooks);
+        try {
+            service.returnBooks(bookForm, damagedBooks, allBooks);
+        } catch (ReturnBookException e) {
+            DialogUtils.showError("No previous book", e.getMessage());
+        }
 
         closeButtonOnMouseClicked(mouseEvent);
     }
@@ -91,7 +90,7 @@ public class BookFormShowController implements Controller {
             String message = "You need to return books";
             String subject = "Return of books";
 
-            operatorService.sendEmail(reader,subject,message);
+            service.sendEmail(reader, subject, message);
 
             DialogUtils.showInfo("Email result", "An email notifying the user has been sent!");
         } catch (EmailException e) {
@@ -99,11 +98,10 @@ public class BookFormShowController implements Controller {
         }
     }
 
-    private void getTransferObjects(){
+    private void getTransferObjects() {
         Object obj = SceneLoader.getTransferableObjects()[0];
         if (obj instanceof BookForm)
             bookForm = (BookForm) obj;
         reader = bookForm.getReader();
     }
-
 }

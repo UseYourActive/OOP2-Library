@@ -1,8 +1,8 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.operator.OperatorReadersControllerService;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
 import com.library.frontend.controllers.Controller;
@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OperatorReadersController implements Controller {
-
     @FXML public Button booksButton;
     @FXML public TextField searchBarTextField;
     @FXML public Button searchReaderButton;
@@ -32,19 +31,19 @@ public class OperatorReadersController implements Controller {
     @FXML public ListView<BookForm> bookFormListView;
     @FXML public Rating readerRatingControl;
 
-    private OperatorService operatorService;
+    private OperatorReadersControllerService service;
     private TableViewBuilder<Reader> readerTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = ServiceFactory.getService(OperatorService.class);
+        service = ServiceFactory.getService(OperatorReadersControllerService.class);
 
         booksButton.requestFocus();
 
         readerTableViewBuilder = new ReaderTableViewBuilder();
         readerTableViewBuilder.createTableViewColumns(readerTableView);
 
-        readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
+        readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());
 
         readerTableView.setContextMenu(getContextMenu());
     }
@@ -60,11 +59,11 @@ public class OperatorReadersController implements Controller {
     public void searchReaderButtonOnMouseClicked() {
         try {
             String stringToSearch = searchBarTextField.getText();
-            Collection<Reader> results = operatorService.searchReader(stringToSearch);
+            Collection<Reader> results = service.searchReader(stringToSearch);
             readerTableViewBuilder.updateTableView(readerTableView, results);
 
         } catch (SearchEngineException e) {
-            DialogUtils.showInfo("Information","Reader not found");
+            DialogUtils.showInfo("Information", "Reader not found");
         }
     }
 
@@ -75,12 +74,13 @@ public class OperatorReadersController implements Controller {
 
             bookFormListView.getItems().setAll(selectedReader.getBookForms());
 
-            operatorService.setRatingValue(selectedReader.getReaderRating().getRating().getValue());
-            readerRatingControl.setRating(operatorService.getRatingValue());
+            service.setRatingValue(selectedReader.getReaderRating().getRating().getValue());
+            readerRatingControl.setRating(service.getRatingValue());
 
-            readerRatingControl.setDisable(operatorService.getRatingValue() == -1);
+            readerRatingControl.setDisable(service.getRatingValue() == -1);
 
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+        }
     }
 
     @FXML
@@ -90,11 +90,11 @@ public class OperatorReadersController implements Controller {
         if (selectionModel != null) {
             BookForm selectedBookForm = selectionModel.getSelectedItem();
 
-            if(selectedBookForm!=null) {
+            if (selectedBookForm != null) {
                 String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + " " + selectedBookForm.getDateOfCreation().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
 
                 SceneLoader.load("/views/operator/bookFormShowScene.fxml", sceneTittle, selectedBookForm);
-                readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
+                readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());
                 bookFormListView.getItems().clear();
             }
         }
@@ -102,16 +102,16 @@ public class OperatorReadersController implements Controller {
 
     @FXML
     public void readerRatingOnMouseClicked() {
-        readerRatingControl.setRating(operatorService.getRatingValue());
+        readerRatingControl.setRating(service.getRatingValue());
     }
 
     private ContextMenu getContextMenu() {
-            Map<String, EventHandler<ActionEvent>> menuItems=new HashMap<>();
+        Map<String, EventHandler<ActionEvent>> menuItems = new HashMap<>();
 
-            menuItems.put("Create Reader",this::createReader);
-            menuItems.put("Remove Reader",this::removeReader);
+        menuItems.put("Create Reader", this::createReader);
+        menuItems.put("Remove Reader", this::removeReader);
 
-            return ContextMenuBuilder.prepareContextMenu(menuItems);
+        return ContextMenuBuilder.prepareContextMenu(menuItems);
     }
 
     private void createReader(ActionEvent actionEvent) {
@@ -124,11 +124,10 @@ public class OperatorReadersController implements Controller {
 
         if (selectedReader != null) {
 
-            operatorService.removeReader(selectedReader);
+            service.removeReader(selectedReader);
 
-            readerTableViewBuilder.updateTableView(readerTableView, operatorService.getAllReaders());
+            readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());
             bookFormListView.getItems().clear();
         }
     }
-
 }

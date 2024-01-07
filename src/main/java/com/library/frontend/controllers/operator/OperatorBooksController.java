@@ -1,8 +1,8 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.operator.OperatorBooksControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.Controller;
@@ -33,28 +33,28 @@ public class OperatorBooksController implements Controller {
     @FXML public Button lendButton;
     @FXML public Button inboxButton;
 
-    private OperatorService operatorService;
+    private OperatorBooksControllerService service;
     private BookTreeTableViewBuilder bookTreeTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = ServiceFactory.getService(OperatorService.class);
+        service = ServiceFactory.getService(OperatorBooksControllerService.class);
 
-        operatorService.initializeSelectedBooks();
-        selectedBooksListView.setItems(operatorService.getSelectedBooks());
+        service.initializeSelectedBooks();
+        selectedBooksListView.setItems(service.getSelectedBooks());
 
-        operatorService.setAllOverdueBooks();
+        service.setAllOverdueBooks();
 
         bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
 
-        updateTreeTableView(operatorService.getAllBookInventories());
+        updateTreeTableView(service.getAllBookInventories());
 
         selectedBooksListView.setTooltip(new Tooltip("Selected books will show here"));
 
         readersButton.requestFocus();
 
-        operatorService.updateBookForms();
+        service.updateBookForms();
 
         bookTreeTableView.setContextMenu(getBookInventoryTreeTableContextMenu());
     }
@@ -71,7 +71,7 @@ public class OperatorBooksController implements Controller {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
                 String stringToSearch = searchBookTextField.getText().toUpperCase();
-                Collection<BookInventory> results = operatorService.searchBookInventory(stringToSearch);
+                Collection<BookInventory> results = service.searchBookInventory(stringToSearch);
                 updateTreeTableView(results.stream().toList());
             } catch (SearchEngineException e) {
                 DialogUtils.showInfo("Information","Book not found");
@@ -115,7 +115,7 @@ public class OperatorBooksController implements Controller {
                     case IN_READING_ROOM ->
                             DialogUtils.showInfo("Information", "This book is currently used by reader.");
                     case ARCHIVED, AVAILABLE ->
-                        operatorService.addSelectedBookToList(selectedBook);
+                            service.addSelectedBookToList(selectedBook);
 
                 }
 
@@ -130,24 +130,24 @@ public class OperatorBooksController implements Controller {
     public void selectedBooksListViewOnMouseClicked() {
         if (selectedBooksListView.getSelectionModel() != null) {
             Book bookToRemove = selectedBooksListView.getSelectionModel().getSelectedItem();
-            operatorService.removeFromSelectedBooks(bookToRemove);
+            service.removeFromSelectedBooks(bookToRemove);
         }
     }
 
     @FXML
     public void lendButtonOnMouseClicked() {
-        if (!operatorService.getSelectedBooks().isEmpty()) {
+        if (!service.getSelectedBooks().isEmpty()) {
 
-            Object[] bookArray = operatorService.getSelectedBooks().toArray();
+            Object[] bookArray = service.getSelectedBooks().toArray();
             SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml", "Create Book form", bookArray);
-            updateTreeTableView(operatorService.getAllBookInventories());
+            updateTreeTableView(service.getAllBookInventories());
             selectedBooksListView.getItems().clear();
         }
     }
 
     @FXML
     public void inboxButtonOnMouseClicked() {
-        Object[] objects = operatorService.getOverdueBookForms().toArray();
+        Object[] objects = service.getOverdueBookForms().toArray();
         SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml", "Inbox", objects);
     }
 
@@ -196,9 +196,9 @@ public class OperatorBooksController implements Controller {
 
             Book book = bookTreeItem.getValue();
 
-            operatorService.archiveBook(book);
+            service.archiveBook(book);
 
-            updateTreeTableView(operatorService.getAllBookInventories());
+            updateTreeTableView(service.getAllBookInventories());
             selectedBooksListView.getItems().clear();
 
         }catch (NoSuchElementException ignored){}

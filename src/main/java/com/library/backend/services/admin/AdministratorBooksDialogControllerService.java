@@ -65,8 +65,14 @@ public class AdministratorBooksDialogControllerService implements Service {
             for (Book bookToRemove : bookList) {
                 bookForm.getBooks().remove(bookToRemove);
             }
-            bookFormRepository.update(bookForm);
-            logger.info("Updated book form: {}", bookForm);
+
+            if (bookForm.getBooks().isEmpty()) {
+                bookFormRepository.delete(bookForm);
+                logger.info("Deleted book form: {}", bookForm);
+            } else {
+                bookFormRepository.update(bookForm);
+                logger.info("Updated book form: {}", bookForm);
+            }
         }
     }
 }
