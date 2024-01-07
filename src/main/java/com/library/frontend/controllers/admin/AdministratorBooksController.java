@@ -1,10 +1,9 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.AdministratorBooksControllerService;
 import com.library.database.entities.BookInventory;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookInventoryRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -39,7 +38,7 @@ public class AdministratorBooksController implements Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        service = new AdministratorBooksControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
+        service = ServiceFactory.getService(AdministratorBooksControllerService.class);
 
         operatorsButton.requestFocus();
         bookTextArea.setFocusTraversable(false);

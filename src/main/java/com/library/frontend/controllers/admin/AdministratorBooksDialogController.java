@@ -1,11 +1,10 @@
 package com.library.frontend.controllers.admin;
 
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.AdministratorBooksDialogControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookInventoryRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -34,7 +33,7 @@ public class AdministratorBooksDialogController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = new AdministratorBooksDialogControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
+        service = ServiceFactory.getService(AdministratorBooksDialogControllerService.class);
 
         bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
                 .findFirst()

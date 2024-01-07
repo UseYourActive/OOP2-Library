@@ -1,9 +1,9 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.AdministratorOperatorsControllerService;
 import com.library.database.entities.User;
-import com.library.database.repositories.UserRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -39,7 +39,7 @@ public class AdministratorOperatorsController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = new AdministratorOperatorsControllerService(UserRepository.getInstance());
+        service = ServiceFactory.getService(AdministratorOperatorsControllerService.class);
 
         booksButton.requestFocus();
 
