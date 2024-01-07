@@ -53,7 +53,7 @@ public class RegisterNewBookController implements Controller {
             );
 
             cancelButtonOnMouseClicked(mouseEvent);
-        } catch (IncorrectInputException e) {
+        } catch (IncorrectInputException | NumberFormatException e) {
             informationLabel.setText(e.getMessage());
         }
     }

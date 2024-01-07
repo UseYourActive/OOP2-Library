@@ -9,6 +9,7 @@ import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Getter
 public class AdministratorBooksControllerService implements Service {
     private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksControllerService.class);
     private final BookInventoryRepository bookInventoryRepository;

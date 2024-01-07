@@ -4,9 +4,11 @@ import com.google.common.collect.Lists;
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.operator.CreateReaderProfileControllerService;
 import com.library.database.entities.Reader;
 import com.library.database.entities.ReaderRating;
 import com.library.database.enums.Ratings;
+import com.library.database.repositories.ReaderRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
@@ -32,11 +34,11 @@ public class CreateReaderProfileController implements Controller {
     @FXML public Button cancelButton;
     @FXML public Label infoLabel;
 
-    private OperatorService operatorService;
+    private CreateReaderProfileControllerService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = ServiceFactory.getService(OperatorService.class);
+        service = ServiceFactory.getService(CreateReaderProfileControllerService.class);
     }
 
     @FXML
@@ -48,7 +50,7 @@ public class CreateReaderProfileController implements Controller {
             String phoneNumber = phoneNumberTextField.getText();
             String email = emailTextField.getText();
 
-            operatorService.createReader(firstName,middleName,lastName,phoneNumber,email);
+            service.createReader(firstName, middleName, lastName, phoneNumber, email);
 
             SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername() + "(Operator)");
         } catch (IncorrectInputException e) {

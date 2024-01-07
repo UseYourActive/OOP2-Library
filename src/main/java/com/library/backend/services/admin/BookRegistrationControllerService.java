@@ -20,9 +20,6 @@ import java.util.function.Supplier;
 
 public class BookRegistrationControllerService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(BookRegistrationControllerService.class);
-    private static final String LOG_SUCCESSFUL_REGISTRATION = "Book registration successful for title: '{}', author: '{}'";
-    private static final String LOG_ERROR_DURING_REGISTRATION = "Error occurred during book registration";
-    private static final String LOG_FAILED_VALIDATION = "Input validation failed";
     private final BookInventoryRepository bookInventoryRepository;
     private final BookRepository bookRepository;
 
@@ -31,23 +28,18 @@ public class BookRegistrationControllerService implements Service {
         this.bookRepository = bookRepository;
     }
 
-    public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws IncorrectInputException {
-        try {
-            checkInput(title, author, genre, year, amount);
+    public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws IncorrectInputException, NumberFormatException {
+        checkInput(title, author, genre, year, amount);
 
-            int quantity = getQuantity(amount);
+        int quantity = getQuantity(amount);
 
-            BookInventory bookInventory = createBookInventory(title, author, genre, quantity, year, resume);
+        BookInventory bookInventory = createBookInventory(title, author, genre, quantity, year, resume);
 
-            saveInventory(bookInventory);
-            logger.info(LOG_SUCCESSFUL_REGISTRATION, title, author);
-        } catch (IncorrectInputException e) {
-            logger.error(LOG_ERROR_DURING_REGISTRATION, e);
-            throw e;
-        }
+        saveInventory(bookInventory);
+        logger.info("Book registration successful for title: '{}', author: '{}'", title, author);
     }
 
-    private void checkInput(String title, String author, Genre genre, String year, String amount) throws IncorrectInputException {
+    private void checkInput(String title, String author, Genre genre, String year, String amount) throws IncorrectInputException, NumberFormatException {
         try {
             if (title.isEmpty())
                 throw new IncorrectInputException("Please enter book title.");
@@ -65,8 +57,8 @@ public class BookRegistrationControllerService implements Service {
             int amountInt = Integer.parseInt(amount);
             if (amountInt < 0)
                 throw new IncorrectInputException("Amount cannot be negative.");
-        } catch (IncorrectInputException e) {
-            logger.error(LOG_FAILED_VALIDATION, e);
+        } catch (IncorrectInputException | NumberFormatException e) {
+            logger.error("Incorrect input!", e);
             throw e;
         }
     }

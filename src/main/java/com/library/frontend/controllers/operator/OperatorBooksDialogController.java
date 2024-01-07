@@ -38,11 +38,11 @@ public class OperatorBooksDialogController implements Controller {
         tableViewBuilder = new BookTableViewBuilder();
         tableViewBuilder.createTableViewColumns(bookTableView);
 
-        BookInventory bookInventory = (BookInventory)SceneLoader.getTransferableObjects()[0];
+        BookInventory bookInventory = (BookInventory) SceneLoader.getTransferableObjects()[0];
 
         List<Book> bookList = bookInventory.getBookList();
 
-        tableViewBuilder.updateTableView(bookTableView,bookList);
+        tableViewBuilder.updateTableView(bookTableView, bookList);
     }
 
     @FXML

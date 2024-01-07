@@ -1,6 +1,7 @@
 package com.library.backend.services.admin;
 
 import com.library.backend.exception.InvalidQuantityException;
+import com.library.backend.exception.ObjectCannotBeNullException;
 import com.library.backend.services.Service;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
@@ -20,11 +21,15 @@ public class AddBookQuantityControllerService implements Service {
         this.bookInventoryRepository = bookInventoryRepository;
     }
 
-    public void increaseBookQuantity(String quantityString, BookInventory bookInventory) throws NumberFormatException, InvalidQuantityException {
+    public void increaseBookQuantity(String quantityString, BookInventory bookInventory) throws NumberFormatException, InvalidQuantityException, ObjectCannotBeNullException {
         try {
+            if (bookInventory == null) {
+                throw new ObjectCannotBeNullException("BookInventory cannot be null!");
+            }
+
             int quantity = Integer.parseInt(quantityString);
 
-            if (quantity < 0) {
+            if (quantity <= 0) {
                 logger.error("Invalid quantity: {}", quantityString);
                 throw new InvalidQuantityException("Invalid quantity");
             }
@@ -42,7 +47,7 @@ public class AddBookQuantityControllerService implements Service {
 
             bookInventoryRepository.update(bookInventory);
             logger.info("Increased book quantity successfully for book: '{}', quantity: {}", representiveBook.getTitle(), quantity);
-        } catch (InvalidQuantityException e) {
+        } catch (InvalidQuantityException | NumberFormatException | ObjectCannotBeNullException e) {
             logger.error(e.getMessage(), e);
             throw e;
         }
