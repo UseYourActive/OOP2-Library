@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -44,7 +45,7 @@ public class BookForm implements DBEntity {
 
     @Override
     public String toString() {
-        return reader.getFirstName() + " " + status + " " + books.stream().map(Book::toString);
+        return dateOfCreation.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + " " + status;
     }
 
     public boolean isOverdue() {

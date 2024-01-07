@@ -123,9 +123,6 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            if(!bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView).isLeaf())
-                bookTreeTableView.getSelectionModel().clearSelection();
-
             if (bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null) {
                 if (mouseEvent.getClickCount() == 2
                         && mouseEvent.getButton() == MouseButton.PRIMARY
@@ -153,6 +150,8 @@ public class OperatorBooksController implements Controller {
                 }
 
             }
+            if(!bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView).isLeaf())
+                bookTreeTableView.getSelectionModel().clearSelection();
         } catch (NoSuchElementException ignored) {}
     }
 
@@ -194,7 +193,10 @@ public class OperatorBooksController implements Controller {
 
                 Book parentBook = Book.builder()
                         .id(bookInventory.getRepresentiveBook().getId())
-                        .title(bookInventory.getRepresentiveBook().getTitle() + " " + bookInventory.getRepresentiveBook().getAuthor())
+                        .title(bookInventory.getRepresentiveBook().getTitle())
+                        .author(bookInventory.getRepresentiveBook().getAuthor())
+                        .genre(bookInventory.getRepresentiveBook().getGenre())
+                        .publishYear(bookInventory.getRepresentiveBook().getPublishYear())
                         .resume(bookInventory.getRepresentiveBook().getResume())
                         .build();
 
@@ -233,6 +235,7 @@ public class OperatorBooksController implements Controller {
         operatorService.saveBook(book);
 
         updateTreeTableView(operatorService.getAllBookInventories());
+        selectedBooksListView.getItems().clear();
     }
 
 
