@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class    LibraryApplication extends Application {
+public class LibraryApplication extends Application {
 
     @Override
     public void start(Stage stage){

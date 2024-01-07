@@ -1,7 +1,7 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.InboxControllerService;
+import com.library.backend.services.operator.InboxService;
 import com.library.database.entities.EventNotification;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.SceneLoader;
@@ -22,11 +22,11 @@ public class InboxController implements Controller {
     @FXML public ListView<EventNotification> eventNotificationListView;
     @FXML public Button closeButton;
 
-    private InboxControllerService service;
+    private InboxService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(InboxControllerService.class);
+        service = ServiceFactory.getService(InboxService.class);
 
         List<EventNotification> eventNotificationList = service.getEventNotifications(SceneLoader.getUser());
 

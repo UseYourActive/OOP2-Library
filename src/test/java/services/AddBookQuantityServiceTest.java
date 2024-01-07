@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.library.backend.exception.InvalidQuantityException;
 import com.library.backend.exception.ObjectCannotBeNullException;
-import com.library.backend.services.admin.AddBookQuantityControllerService;
+import com.library.backend.services.admin.AddBookQuantityService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.repositories.BookInventoryRepository;
@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class AddBookQuantityControllerServiceTest {
-    private AddBookQuantityControllerService service;
+public class AddBookQuantityServiceTest {
+    private AddBookQuantityService service;
     private BookRepository bookRepository;
     private BookInventoryRepository bookInventoryRepository;
 
@@ -24,7 +24,7 @@ public class AddBookQuantityControllerServiceTest {
     void setUp() {
         bookRepository = mock(BookRepository.class);
         bookInventoryRepository = mock(BookInventoryRepository.class);
-        service = new AddBookQuantityControllerService(bookRepository, bookInventoryRepository);
+        service = new AddBookQuantityService(bookRepository, bookInventoryRepository);
     }
 
     @Test

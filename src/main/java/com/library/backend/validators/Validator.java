@@ -1,4 +1,4 @@
-package com.library.utils.validators;
+package com.library.backend.validators;
 
 /**
  * The {@code Validator} interface defines a contract for classes that perform

@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @Getter
-public class AdministratorBooksControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksControllerService.class);
+public class AdministratorBooksService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
     private final SearchEngine<BookInventory> searchEngine;
 
-    public AdministratorBooksControllerService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
+    public AdministratorBooksService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookFormRepository = bookFormRepository;
         searchEngine = new BookInventorySearchEngine();

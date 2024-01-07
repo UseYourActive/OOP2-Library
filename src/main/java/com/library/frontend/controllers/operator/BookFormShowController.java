@@ -3,7 +3,7 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.exception.ReturnBookException;
 import com.library.backend.exception.email.EmailException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.BookFormShowControllerService;
+import com.library.backend.services.operator.BookFormShowService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
@@ -33,11 +33,11 @@ public class BookFormShowController implements Controller {
 
     private BookForm bookForm;
     private Reader reader;
-    private BookFormShowControllerService service;
+    private BookFormShowService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(BookFormShowControllerService.class);
+        service = ServiceFactory.getService(BookFormShowService.class);
 
         service.loadEmailSettings("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq");
 

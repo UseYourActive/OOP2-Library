@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CreateBookFormControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(CreateBookFormControllerService.class);
+public class CreateBookFormService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(CreateBookFormService.class);
     private final ReaderRepository readerRepository;
     private final BookFormRepository bookFormRepository;
     private final BookRepository bookRepository;
@@ -36,7 +36,7 @@ public class CreateBookFormControllerService implements Service {
     @Getter
     private double ratingValue;
 
-    public CreateBookFormControllerService(ReaderRepository readerRepository, BookFormRepository bookFormRepository, BookRepository bookRepository) {
+    public CreateBookFormService(ReaderRepository readerRepository, BookFormRepository bookFormRepository, BookRepository bookRepository) {
         this.readerRepository = readerRepository;
         this.bookFormRepository = bookFormRepository;
         this.bookRepository = bookRepository;

@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class InboxControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(InboxControllerService.class);
+public class InboxService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(InboxService.class);
     private final EventNotificationRepository eventNotificationRepository;
 
-    public InboxControllerService(EventNotificationRepository eventNotificationRepository) {
+    public InboxService(EventNotificationRepository eventNotificationRepository) {
         this.eventNotificationRepository = eventNotificationRepository;
     }
 

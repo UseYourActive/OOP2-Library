@@ -7,16 +7,16 @@ import com.library.backend.services.Service;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
 import com.library.database.repositories.UserRepository;
-import com.library.utils.validators.StrongPasswordValidator;
+import com.library.backend.validators.StrongPasswordValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateOperatorControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(CreateOperatorControllerService.class);
+public class CreateOperatorService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(CreateOperatorService.class);
     private final UserRepository userRepository;
     private final StrongPasswordValidator strongPasswordValidator;
 
-    public CreateOperatorControllerService(UserRepository userRepository) {
+    public CreateOperatorService(UserRepository userRepository) {
         this.userRepository = userRepository;
         strongPasswordValidator = new StrongPasswordValidator();
     }

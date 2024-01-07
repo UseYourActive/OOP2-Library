@@ -2,7 +2,7 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.AdministratorBooksControllerService;
+import com.library.backend.services.admin.AdministratorBooksService;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
@@ -31,14 +31,14 @@ public class AdministratorBooksController implements Controller {
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
 
-    private AdministratorBooksControllerService service;
+    private AdministratorBooksService service;
     private TableViewBuilder<BookInventory> bookInventoryTableViewBuilder;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        service = ServiceFactory.getService(AdministratorBooksControllerService.class);
+        service = ServiceFactory.getService(AdministratorBooksService.class);
 
         operatorsButton.requestFocus();
         bookTextArea.setFocusTraversable(false);

@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 
-public class AdministratorOperatorsControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsControllerService.class);
+public class AdministratorOperatorsService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsService.class);
     private final UserRepository userRepository;
 
-    public AdministratorOperatorsControllerService(UserRepository userRepository) {
+    public AdministratorOperatorsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

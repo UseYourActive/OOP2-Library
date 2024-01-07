@@ -1,15 +1,13 @@
 package services;
 
-import com.library.backend.services.admin.AdministratorBooksDialogControllerService;
+import com.library.backend.services.admin.AdministratorBooksDialogService;
 import com.library.database.entities.Book;
-import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-class AdministratorBooksDialogControllerServiceTest {
+class AdministratorBooksDialogServiceTest {
     private BookInventoryRepository bookInventoryRepository;
     private BookFormRepository bookFormRepository;
-    private AdministratorBooksDialogControllerService service;
+    private AdministratorBooksDialogService service;
 
     @BeforeEach
     void setUp() {
         bookInventoryRepository = mock(BookInventoryRepository.class);
         bookFormRepository = mock(BookFormRepository.class);
-        service = new AdministratorBooksDialogControllerService(bookInventoryRepository, bookFormRepository);
+        service = new AdministratorBooksDialogService(bookInventoryRepository, bookFormRepository);
     }
 
     @Test

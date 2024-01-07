@@ -1,6 +1,6 @@
 package validators;
 
-import com.library.utils.validators.StrongPasswordValidator;
+import com.library.backend.validators.StrongPasswordValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BookRegistrationControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(BookRegistrationControllerService.class);
+public class BookRegistrationService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(BookRegistrationService.class);
     private final BookInventoryRepository bookInventoryRepository;
     private final BookRepository bookRepository;
 
-    public BookRegistrationControllerService(BookInventoryRepository bookInventoryRepository, BookRepository bookRepository) {
+    public BookRegistrationService(BookInventoryRepository bookInventoryRepository, BookRepository bookRepository) {
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookRepository = bookRepository;
     }

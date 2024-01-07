@@ -3,7 +3,7 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.exception.InvalidQuantityException;
 import com.library.backend.exception.ObjectCannotBeNullException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.AddBookQuantityControllerService;
+import com.library.backend.services.admin.AddBookQuantityService;
 import com.library.database.entities.BookInventory;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
@@ -22,12 +22,12 @@ public class AddBookQuantityController implements Controller {
     @FXML public Button addButton;
     @FXML public Label informationLabel;
 
-    private AddBookQuantityControllerService service;
+    private AddBookQuantityService service;
     private BookInventory bookInventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(AddBookQuantityControllerService.class);
+        service = ServiceFactory.getService(AddBookQuantityService.class);
         bookInventory = (BookInventory) SceneLoader.getTransferableObjects()[0];
     }
 
