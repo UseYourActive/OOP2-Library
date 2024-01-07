@@ -53,7 +53,7 @@ public class ServiceFactory {
                 case ADMINISTRATOR_BOOKS_DIALOG_CONTROLLER_SERVICE -> service = serviceClass.cast(new AdministratorBooksDialogControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));
                 case ADMINISTRATOR_OPERATORS_CONTROLLER_SERVICE -> service = serviceClass.cast(new AdministratorOperatorsControllerService(UserRepository.getInstance()));
                 case BOOK_REGISTRATION_CONTROLLER_SERVICE -> service = serviceClass.cast(new BookRegistrationControllerService(BookInventoryRepository.getInstance(), BookRepository.getInstance()));
-
+                case CREATE_OPERATOR_CONTROLLER_SERVICE -> service = serviceClass.cast(new CreateOperatorControllerService(UserRepository.getInstance()));
                 case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance(), BookInventoryRepository.getInstance(), BookFormRepository.getInstance(), EventNotificationRepository.getInstance(), ReaderRatingRepository.getInstance()));
 
                 default -> throw new NonExistentServiceException("There is no such enum!");
