@@ -9,7 +9,7 @@ import java.io.IOException;
 public class    LibraryApplication extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage){
         SceneLoader.load(stage, "/views/logInScene.fxml", "Library");
     }
 
