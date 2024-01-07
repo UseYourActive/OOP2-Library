@@ -1,5 +1,6 @@
 package com.library.backend.services.operator;
 
+import com.library.backend.exception.ReturnBookException;
 import com.library.backend.exception.email.EmailException;
 import com.library.backend.exception.email.TransportException;
 import com.library.backend.services.EmailSenderService;
@@ -53,36 +54,41 @@ public class BookFormShowControllerService implements Service {
         }
     }
 
-    public void returnBooks(BookForm bookForm, List<Book> damagedBooks, List<Book> allBooks) {
+    public void returnBooks(BookForm bookForm, List<Book> damagedBooks, List<Book> allBooks) throws ReturnBookException {
         List<Book> booksToReturn = new ArrayList<>();
 
-        for (Book book : allBooks) {
-            if (damagedBooks.contains(book))
-                book.setBookStatus(BookStatus.DAMAGED);
-            else {
-                if (book.getPreviousBookStatus() == null)
-                    throw new RuntimeException("Failed to return books");
+        try {
+            for (Book book : allBooks) {
+                if (damagedBooks.contains(book))
+                    book.setBookStatus(BookStatus.DAMAGED);
+                else {
+                    if (book.getPreviousBookStatus() == null)
+                        throw new ReturnBookException("Failed to return books");
 
-                if (book.getPreviousBookStatus() == BookStatus.ARCHIVED)
-                    book.setBookStatus(BookStatus.ARCHIVED);
-                else
-                    book.setBookStatus(BookStatus.AVAILABLE);
+                    if (book.getPreviousBookStatus() == BookStatus.ARCHIVED)
+                        book.setBookStatus(BookStatus.ARCHIVED);
+                    else
+                        book.setBookStatus(BookStatus.AVAILABLE);
+                }
+
+                book.setNumberOfTimesUsed(book.getNumberOfTimesUsed() + 1);
+                booksToReturn.add(book);
+
+                if (book.getPreviousBookStatus() != BookStatus.ARCHIVED && book.getNumberOfTimesUsed() == 50) {
+                    EventNotification eventNotification = EventNotification.builder()
+                            .user(SceneLoader.getUser())
+                            .timestamp(LocalDateTime.now())
+                            .message("(" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + ")" + "Consider archiving of: " + book.getTitle() + "(" + book.getId() + ")")
+                            .build();
+
+                    eventNotificationRepository.save(eventNotification);
+                    logger.info("Event notification saved: '{}'", eventNotification.getMessage());
+                    //operatorService.saveEventNotification(eventNotification);
+                }
             }
-
-            book.setNumberOfTimesUsed(book.getNumberOfTimesUsed() + 1);
-            booksToReturn.add(book);
-
-            if (book.getPreviousBookStatus() != BookStatus.ARCHIVED && book.getNumberOfTimesUsed() == 50) {
-                EventNotification eventNotification = EventNotification.builder()
-                        .user(SceneLoader.getUser())
-                        .timestamp(LocalDateTime.now())
-                        .message("(" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + ")" + "Consider archiving of: " + book.getTitle() + "(" + book.getId() + ")")
-                        .build();
-
-                eventNotificationRepository.save(eventNotification);
-                logger.info("Event notification saved: '{}'", eventNotification.getMessage());
-                //operatorService.saveEventNotification(eventNotification);
-            }
+        } catch (ReturnBookException e){
+            logger.error(e.getMessage(), e);
+            throw e;
         }
 
         bookRepository.saveAll(booksToReturn);

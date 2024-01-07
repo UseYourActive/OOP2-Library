@@ -1,22 +1,12 @@
 package com.library.frontend.controllers.operator;
 
-import com.library.backend.engines.ReaderSearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.backend.exception.ReaderException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.CreateBookFormControllerService;
 import com.library.database.entities.Book;
-import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
-import com.library.database.enums.BookFormStatus;
-import com.library.database.enums.BookStatus;
 import com.library.database.enums.Ratings;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.ReaderRepository;
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.controllers.admin.AdministratorBooksController;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
@@ -29,11 +19,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class CreateBookFormController implements Controller {

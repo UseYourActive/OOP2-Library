@@ -2,7 +2,6 @@ package com.library.backend.services.operator;
 
 import com.google.common.collect.Lists;
 import com.library.backend.exception.IncorrectInputException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.Service;
 import com.library.database.entities.Reader;
 import com.library.database.entities.ReaderRating;

@@ -1,28 +1,15 @@
 package com.library.frontend.controllers.operator;
 
-import com.library.backend.engines.BookInventorySearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.backend.exception.searchengine.SearchEngineException;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.OperatorBooksControllerService;
 import com.library.database.entities.Book;
-import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
-import com.library.database.entities.EventNotification;
-import com.library.database.enums.BookFormStatus;
-import com.library.database.enums.BookStatus;
-import com.library.database.repositories.BookFormRepository;
-import com.library.database.repositories.BookInventoryRepository;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.EventNotificationRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import com.library.frontend.utils.tableviews.ContextMenuBuilder;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,11 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class OperatorBooksController implements Controller {

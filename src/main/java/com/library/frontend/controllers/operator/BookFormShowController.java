@@ -1,19 +1,12 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.ReturnBookException;
 import com.library.backend.exception.email.EmailException;
-import com.library.backend.services.EmailSenderService;
-import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.BookFormShowControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
-import com.library.database.entities.EventNotification;
 import com.library.database.entities.Reader;
-import com.library.database.enums.BookFormStatus;
-import com.library.database.enums.BookStatus;
-import com.library.database.repositories.BookRepository;
-import com.library.database.repositories.EventNotificationRepository;
-import com.library.database.repositories.ReaderRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -75,7 +68,11 @@ public class BookFormShowController implements Controller {
         List<Book> damagedBooks = checkModel.getCheckedItems();
         List<Book> allBooks = bookCheckListView.getItems();
 
-        service.returnBooks(bookForm, damagedBooks, allBooks);
+        try {
+            service.returnBooks(bookForm, damagedBooks, allBooks);
+        } catch (ReturnBookException e) {
+            DialogUtils.showError("No previous book", e.getMessage());
+        }
 
         closeButtonOnMouseClicked(mouseEvent);
     }
