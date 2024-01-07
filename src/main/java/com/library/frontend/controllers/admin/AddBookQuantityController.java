@@ -1,10 +1,9 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.InvalidQuantityException;
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.AddBookQuantityControllerService;
 import com.library.database.entities.BookInventory;
-import com.library.database.repositories.BookInventoryRepository;
-import com.library.database.repositories.BookRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -27,7 +26,7 @@ public class AddBookQuantityController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = new AddBookQuantityControllerService(BookRepository.getInstance(), BookInventoryRepository.getInstance());
+        service = ServiceFactory.getService(AddBookQuantityControllerService.class);
         bookInventory = (BookInventory) SceneLoader.getTransferableObjects()[0];
     }
 

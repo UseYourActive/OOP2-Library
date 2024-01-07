@@ -1,7 +1,7 @@
 package com.library.frontend.controllers.admin;
 
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.CreateOperatorControllerService;
-import com.library.database.repositories.UserRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ public class CreateOperatorController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = new CreateOperatorControllerService(UserRepository.getInstance());
+        service = ServiceFactory.getService(CreateOperatorControllerService.class);
     }
 
     @FXML

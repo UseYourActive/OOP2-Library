@@ -1,41 +1,13 @@
 package com.library.backend.services;
 
 import com.library.backend.exception.NonExistentServiceException;
+import com.library.backend.services.admin.*;
 import com.library.database.repositories.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * The {@code ServiceFactory} class is responsible for creating instances of different services
- * based on the specified service class. It uses a factory method pattern to instantiate the
- * appropriate service implementation based on the provided service class. This class provides
- * centralized service creation for the application.
- * <p>
- * The supported service types are defined by the {@code ServiceType} enum, and each type is associated
- * with a specific service implementation class. The supported services include:
- * <ul>
- *     <li>{@code ADMIN_SERVICE}: AdminService</li>
- *     <li>{@code LOG_IN_SERVICE}: LogInService</li>
- *     <li>{@code OPERATOR_SERVICE}: OperatorService</li>
- * </ul>
- * <p>
- * Example Usage:
- * <pre>
- * {@code
- * Service adminService = ServiceFactory.getService(AdminService.class);
- * }
- * </pre>
- * In this example, the {@code AdminService} instance will be created and returned by the factory.
- * <p>
- * The {@code Service} interface serves as a common interface for all service implementations.
- * Implementing classes should provide specific business logic for their respective services.
- *
- * @see com.library.backend.services.Service
- * @see com.library.backend.services.LogInService
- * @see com.library.backend.services.OperatorService
- */
 public class ServiceFactory {
     private static final Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
 
@@ -46,9 +18,14 @@ public class ServiceFactory {
     @Getter
     @RequiredArgsConstructor
     private enum ServiceType {
-        //ADMIN_SERVICE(AdminService.class),
-
         LOG_IN_SERVICE(LogInService.class),
+        ADD_BOOK_QUANTITY_CONTROLLER_SERVICE(AddBookQuantityControllerService.class),
+        ADMINISTRATOR_BOOKS_CONTROLLER_SERVICE(AdministratorBooksControllerService.class),
+        ADMINISTRATOR_BOOKS_DIALOG_CONTROLLER_SERVICE(AdministratorBooksDialogControllerService.class),
+        ADMINISTRATOR_OPERATORS_CONTROLLER_SERVICE(AdministratorOperatorsControllerService.class),
+        BOOK_REGISTRATION_CONTROLLER_SERVICE(BookRegistrationControllerService.class),
+        CREATE_OPERATOR_CONTROLLER_SERVICE(CreateOperatorControllerService.class),
+
         OPERATOR_SERVICE(OperatorService.class);
         private final Class<? extends Service> serviceClass;
     }
@@ -64,23 +41,21 @@ public class ServiceFactory {
      *
      * @param serviceClass The class object representing the service to be instantiated.
      * @return An instance of the specified service class, or {@code null} if instantiation fails.
-     * @throws NonExistentServiceException If the provided service class is not supported by the factory.
-     *                                     This exception is thrown when there is no matching enum value.
      */
     public static <T extends Service> T getService(Class<T> serviceClass) {
         T service = null;
         try {
             switch (getServiceType(serviceClass)) {
-
                 case LOG_IN_SERVICE -> service = serviceClass.cast(new LogInService(UserRepository.getInstance()));
-                case OPERATOR_SERVICE ->
-                        service = serviceClass.cast(new OperatorService(
-                                BookRepository.getInstance(),
-                                ReaderRepository.getInstance(),
-                                BookInventoryRepository.getInstance(),
-                                BookFormRepository.getInstance(),
-                                EventNotificationRepository.getInstance(),
-                                ReaderRatingRepository.getInstance()));
+
+                case ADD_BOOK_QUANTITY_CONTROLLER_SERVICE -> service = serviceClass.cast(new AddBookQuantityControllerService(BookRepository.getInstance(), BookInventoryRepository.getInstance()));
+                case ADMINISTRATOR_BOOKS_CONTROLLER_SERVICE -> service = serviceClass.cast(new AdministratorBooksControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));
+                case ADMINISTRATOR_BOOKS_DIALOG_CONTROLLER_SERVICE -> service = serviceClass.cast(new AdministratorBooksDialogControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));
+                case ADMINISTRATOR_OPERATORS_CONTROLLER_SERVICE -> service = serviceClass.cast(new AdministratorOperatorsControllerService(UserRepository.getInstance()));
+                case BOOK_REGISTRATION_CONTROLLER_SERVICE -> service = serviceClass.cast(new BookRegistrationControllerService(BookInventoryRepository.getInstance(), BookRepository.getInstance()));
+
+                case OPERATOR_SERVICE -> service = serviceClass.cast(new OperatorService(BookRepository.getInstance(), ReaderRepository.getInstance(), BookInventoryRepository.getInstance(), BookFormRepository.getInstance(), EventNotificationRepository.getInstance(), ReaderRatingRepository.getInstance()));
+
                 default -> throw new NonExistentServiceException("There is no such enum!");
             }
             logger.info("Service {} created successfully", serviceClass.getSimpleName());

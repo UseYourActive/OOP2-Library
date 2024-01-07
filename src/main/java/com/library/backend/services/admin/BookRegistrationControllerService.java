@@ -31,7 +31,7 @@ public class BookRegistrationControllerService implements Service {
         this.bookRepository = bookRepository;
     }
 
-    public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws Exception {
+    public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws IncorrectInputException {
         try {
             checkInput(title, author, genre, year, amount);
 
@@ -41,7 +41,7 @@ public class BookRegistrationControllerService implements Service {
 
             saveInventory(bookInventory);
             logger.info(LOG_SUCCESSFUL_REGISTRATION, title, author);
-        } catch (Exception e) {
+        } catch (IncorrectInputException e) {
             logger.error(LOG_ERROR_DURING_REGISTRATION, e);
             throw e;
         }
@@ -65,7 +65,7 @@ public class BookRegistrationControllerService implements Service {
             int amountInt = Integer.parseInt(amount);
             if (amountInt < 0)
                 throw new IncorrectInputException("Amount cannot be negative.");
-        } catch (Exception e) {
+        } catch (IncorrectInputException e) {
             logger.error(LOG_FAILED_VALIDATION, e);
             throw e;
         }

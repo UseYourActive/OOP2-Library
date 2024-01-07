@@ -1,9 +1,9 @@
 package com.library.frontend.controllers.admin;
 
+import com.library.backend.exception.IncorrectInputException;
+import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.BookRegistrationControllerService;
 import com.library.database.enums.Genre;
-import com.library.database.repositories.BookInventoryRepository;
-import com.library.database.repositories.BookRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
@@ -33,8 +33,8 @@ public class RegisterNewBookController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        service = ServiceFactory.getService(BookRegistrationControllerService.class);
 
-        service = new BookRegistrationControllerService(BookInventoryRepository.getInstance(), BookRepository.getInstance());
         Platform.runLater(() -> genreComboBox.requestFocus());
 
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
@@ -53,7 +53,7 @@ public class RegisterNewBookController implements Controller {
             );
 
             cancelButtonOnMouseClicked(mouseEvent);
-        } catch (Exception e) {
+        } catch (IncorrectInputException e) {
             informationLabel.setText(e.getMessage());
         }
     }
