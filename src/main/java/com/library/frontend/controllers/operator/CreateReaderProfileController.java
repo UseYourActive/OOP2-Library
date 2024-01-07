@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CreateReaderProfileController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(CreateReaderProfileController.class);
 
     @FXML public TextField firstNameTextField;
     @FXML public TextField middleNameTextField;
@@ -43,40 +42,17 @@ public class CreateReaderProfileController implements Controller {
     @FXML
     public void createReaderProfileButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            checkInput();
-
             String firstName = firstNameTextField.getText();
             String middleName = middleNameTextField.getText();
             String lastName = lastNameTextField.getText();
             String phoneNumber = phoneNumberTextField.getText();
             String email = emailTextField.getText();
 
-            ReaderRating readerRating= ReaderRating.builder()
-                    .rating(Ratings.NONE)
-                    .currentValue(-1)
-                    .coefficient(0)
-                    //.readers(new ArrayList<>())
-                    .build();
+            operatorService.createReader(firstName,middleName,lastName,phoneNumber,email);
 
-
-            Reader reader = Reader.builder()
-                    .firstName(firstName)
-                    .middleName(middleName)
-                    .lastName(lastName)
-                    .email(email)
-                    .phoneNumber(phoneNumber)
-                    .bookForms(Lists.newArrayList())
-                    .readerRating(readerRating)
-                    .build();
-
-           // readerRating.getReaders().add(reader);
-
-            //operatorService.saveRating(readerRating);
-            operatorService.createReader(reader);
             SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername() + "(Operator)");
         } catch (IncorrectInputException e) {
             infoLabel.setText(e.getMessage());
-            //logger.error("Error occurred during creating reader profile", e);
         }
     }
 
@@ -85,20 +61,5 @@ public class CreateReaderProfileController implements Controller {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", "Operator readers scene");
         }
-    }
-
-    private void checkInput() throws IncorrectInputException {
-        if (firstNameTextField.getText().isEmpty())
-            throw new IncorrectInputException("Please enter first name.");
-
-        if (middleNameTextField.getText().isEmpty())
-            throw new IncorrectInputException("Please enter middle name.");
-
-        if (lastNameTextField.getText().isEmpty())
-            throw new IncorrectInputException("Please enter last name.");
-
-        if (phoneNumberTextField.getText().isEmpty())
-            throw new IncorrectInputException("Please enter phone number.");
-
     }
 }

@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
@@ -29,13 +30,9 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class CreateBookFormController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(AdministratorBooksController.class);
 
     @FXML public TextField readerSearchBarTextField;
     @FXML public Button lendButton;
@@ -47,15 +44,13 @@ public class CreateBookFormController implements Controller {
     @FXML public TableView<Reader> readerTableView;
 
     private OperatorService operatorService;
-    private double ratingValue;
+
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
-    private SearchEngine<Reader> searchEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = ServiceFactory.getService(OperatorService.class);
-        searchEngine = new ReaderSearchEngine();
 
         bookTableView.setMouseTransparent(true);
         bookTableView.setFocusTraversable(false);
@@ -83,105 +78,66 @@ public class CreateBookFormController implements Controller {
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
-            List<Reader> readerList = operatorService.getAllReaders();
             String stringToSearch = readerSearchBarTextField.getText();
-            Collection<Reader> results = searchEngine.search(readerList, stringToSearch);
+            Collection<Reader> results = operatorService.searchReader(stringToSearch);
             readerTableViewBuilder.updateTableView(readerTableView, results);
         } catch (Exception e) {
-            logger.error("Error occurred during searching readers", e);
+            DialogUtils.showInfo("Information","Reader not found!");
         }
     }
 
     @FXML
-    public void lendButtonOnMouseClicked() throws ReaderException {
-        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
+    public void lendButtonOnMouseClicked(){
 
-            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
+        try {
+            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);
+            List<Book> bookList = bookTableView.getItems();
 
-            if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR)
-                throw new ReaderException("The reader is not allowed to take books anymore.");
+            operatorService.lendBooks(selectedReader, bookList);
 
-            if (bookTableView.getItems().stream()
-                    .allMatch(book -> book.getBookStatus()
-                            .equals(BookStatus.AVAILABLE))) {
-
-                operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.LENT);
-
-                BookForm bookForm = BookForm.builder()
-                        .reader(selectedReader)
-                        .books(bookTableView.getItems())
-                        .status(BookFormStatus.IN_USE)
-                        .expirationDate(LocalDateTime.now().plusMonths(1))
-                        .dateOfCreation(LocalDateTime.now())
-                        .build();
-
-                operatorService.saveNewBookForm(bookForm);
-
-                selectedReader.getBookForms().add(bookForm);
-
-                operatorService.saveReader(selectedReader);
-
-                ((Stage) cancelButton.getScene().getWindow()).close();
-            } else {
-                DialogUtils.showInfo("Information", "For normal lending reader\ncan take only AVAILABLE books.");
-            }
+            ((Stage) cancelButton.getScene().getWindow()).close();
+        }catch (NoSuchElementException ignored){}
+        catch (ReaderException e){
+            DialogUtils.showInfo("Information",e.getMessage());
         }
     }
 
     @FXML
-    public void lendReadingRoomButtonOnMouseClicked(MouseEvent mouseEvent) {
-        if (readerTableView.getSelectionModel() != null && readerTableView.getSelectionModel().getSelectedItem() != null) {
-            Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();
+    public void lendReadingRoomButtonOnMouseClicked() {
+        try {
+            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);
+            List<Book> books = bookTableView.getItems();
 
-            if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR){
-                DialogUtils.showError("Reader is not allowed to take books anymore","His rating is too low.");
-            }
-            else {
-
-                operatorService.changeBookStatus(bookTableView.getItems(), BookStatus.IN_READING_ROOM);
-
-                BookForm bookForm = BookForm.builder()
-                        .reader(selectedReader)
-                        .books(bookTableView.getItems())
-                        .status(BookFormStatus.IN_USE)
-                        .expirationDate(LocalDateTime.now().plusHours(12))
-                        .dateOfCreation(LocalDateTime.now())
-                        .build();
-
-                operatorService.saveNewBookForm(bookForm);
-
-                selectedReader.getBookForms().add(bookForm);
-
-                operatorService.saveReader(selectedReader);
-
-                ((Stage) cancelButton.getScene().getWindow()).close();
-            }
-        }
+            operatorService.lendReadingRoomBooks(selectedReader, books);
+            ((Stage) cancelButton.getScene().getWindow()).close();
+        }catch(ReaderException e){
+            DialogUtils.showError("Information",e.getMessage());
+        }catch (NoSuchElementException ignored){}
     }
 
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        ((Stage) cancelButton.getScene().getWindow()).close();
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            ((Stage) cancelButton.getScene().getWindow()).close();
+        }
     }
 
     @FXML
     public void ratingOnMouseClicked() {
-        readerRatingControl.setRating(ratingValue);
+        readerRatingControl.setRating(operatorService.getRatingValue());
     }
 
     @FXML
     public void readerTableViewOnMouseClicked() {
-        TableView.TableViewSelectionModel<Reader> selectionModel = readerTableView.getSelectionModel();
+        try{
+            Reader selectedReader= readerTableViewBuilder.getSelectedItem(readerTableView);
 
-        if (selectionModel != null) {
-            Reader selectedReader = selectionModel.getSelectedItem();
+            operatorService.setRatingValue(selectedReader.getReaderRating().getRating().getValue());
 
-            if (selectedReader != null) {
-                ratingValue=selectedReader.getReaderRating().getRating().getValue();
-                readerRatingControl.setRating(ratingValue);
+            double value= operatorService.getRatingValue();
+            readerRatingControl.setRating(value);
+            readerRatingControl.setDisable(value == -1);
 
-                readerRatingControl.setDisable(ratingValue == -1);
-            }
-        }
+        }catch (NoSuchElementException ignored){}
     }
 }

@@ -2,6 +2,7 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.engines.BookInventorySearchEngine;
 import com.library.backend.engines.SearchEngine;
+import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
@@ -32,7 +33,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class OperatorBooksController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(OperatorBooksController.class);
 
     @FXML public Button readersButton;
     @FXML public TextField searchBookTextField;
@@ -45,20 +45,16 @@ public class OperatorBooksController implements Controller {
     @FXML public Button inboxButton;
 
     private OperatorService operatorService;
-    private ObservableList<Book> selectedBooks;
-    private List<BookForm> overdueBookForms;
-    private SearchEngine<BookInventory> searchEngine;
     private BookTreeTableViewBuilder bookTreeTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         operatorService = ServiceFactory.getService(OperatorService.class);
-        searchEngine = new BookInventorySearchEngine();
 
-        selectedBooks = FXCollections.observableArrayList();
-        selectedBooksListView.setItems(selectedBooks);
+        operatorService.initializeSelectedBooks();
+        selectedBooksListView.setItems(operatorService.getSelectedBooks());
 
-        overdueBookForms = operatorService.getAllBookForms().stream().filter(BookForm::isOverdue).toList();
+        operatorService.setAllOverdueBooks();
 
         bookTreeTableViewBuilder = new BookTreeTableViewBuilder();
         bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);
@@ -69,19 +65,7 @@ public class OperatorBooksController implements Controller {
 
         readersButton.requestFocus();
 
-        for (BookForm bookForm : operatorService.getAllBookForms()) {
-            if (bookForm.isPresent() && bookForm.isOverdue()) {
-                bookForm.setStatus(BookFormStatus.LATE);
-                EventNotification eventNotification= EventNotification.builder()
-                        .user(SceneLoader.getUser())
-                        .timestamp(LocalDateTime.now())
-                        .message("The deadline for returning books of: "+bookForm.getReader().getFullName() + " has passed.")
-                        .build();
-
-                operatorService.saveEventNotification(eventNotification);
-                operatorService.saveNewBookForm(bookForm);
-            }
-        }
+        operatorService.updateBookForms();
 
         bookTreeTableView.setContextMenu(getBookInventoryTreeTableContextMenu());
     }
@@ -98,12 +82,10 @@ public class OperatorBooksController implements Controller {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             try {
                 String stringToSearch = searchBookTextField.getText().toUpperCase();
-                List<BookInventory> allBookInventories = operatorService.getAllBookInventories();
-                Collection<BookInventory> results = searchEngine.search(allBookInventories, stringToSearch);
-
+                Collection<BookInventory> results = operatorService.searchBookInventory(stringToSearch);
                 updateTreeTableView(results.stream().toList());
-            } catch (Exception e) {
-                logger.error("Error occurred during searching books", e);
+            } catch (SearchEngineException e) {
+                DialogUtils.showInfo("Information","Book not found");
             }
         }
     }
@@ -123,54 +105,51 @@ public class OperatorBooksController implements Controller {
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            if (bookTreeTableView.getSelectionModel() != null && bookTreeTableView.getSelectionModel().getSelectedItem() != null) {
-                if (mouseEvent.getClickCount() == 2
-                        && mouseEvent.getButton() == MouseButton.PRIMARY
-                        && !bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
 
-                    SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml", "Resume", bookTreeTableView.getSelectionModel().getSelectedItem().getValue().getResume());
+            TreeItem<Book> selectedTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);
+            Book selectedBook = selectedTreeItem.getValue();
 
-                }
+            if (mouseEvent.getClickCount() == 2
+                    && mouseEvent.getButton() == MouseButton.PRIMARY
+                    && !selectedTreeItem.isLeaf()) {
 
-                if (mouseEvent.getButton() == MouseButton.PRIMARY&&bookTreeTableView.getSelectionModel().getSelectedItem().isLeaf()) {
+                SceneLoader.loadModalityDialog("/views/operator/resumeShowScene.fxml", "Resume", selectedBook.getResume());
 
-                    Book selectedBook = bookTreeTableView.getSelectionModel().getSelectedItem().getValue();
-                    switch (selectedBook.getBookStatus()) {
-                        case LENT -> DialogUtils.showInfo("Information", "This book is already given.");
-                        case DAMAGED -> DialogUtils.showInfo("Information", "Damaged books are pending removal.");
-                        case IN_READING_ROOM ->
-                                DialogUtils.showInfo("Information", "This book is currently used by reader.");
-                        case ARCHIVED, AVAILABLE -> {
-                            if (!selectedBooks.contains(selectedBook))
-                                selectedBooks.add(selectedBook);
-                        }
+            }
 
-                    }
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && selectedTreeItem.isLeaf()) {
+
+
+                switch (selectedBook.getBookStatus()) {
+                    case LENT -> DialogUtils.showInfo("Information", "This book is already given.");
+                    case DAMAGED -> DialogUtils.showInfo("Information", "Damaged books are pending removal.");
+                    case IN_READING_ROOM ->
+                            DialogUtils.showInfo("Information", "This book is currently used by reader.");
+                    case ARCHIVED, AVAILABLE ->
+                        operatorService.addSelectedBookToList(selectedBook);
 
                 }
 
             }
-            if(!bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView).isLeaf())
+
+            if(!selectedTreeItem.isLeaf())
                 bookTreeTableView.getSelectionModel().clearSelection();
         } catch (NoSuchElementException ignored) {}
     }
 
     @FXML
     public void selectedBooksListViewOnMouseClicked() {
-        try {
-            if (selectedBooksListView.getSelectionModel() != null) {
-                selectedBooks.remove(selectedBooksListView.getSelectionModel().getSelectedItem());
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred during handling book table view click", e);
+        if (selectedBooksListView.getSelectionModel() != null) {
+            Book bookToRemove = selectedBooksListView.getSelectionModel().getSelectedItem();
+            operatorService.removeFromSelectedBooks(bookToRemove);
         }
     }
 
     @FXML
     public void lendButtonOnMouseClicked() {
-        if (!selectedBooks.isEmpty()) {
+        if (!operatorService.getSelectedBooks().isEmpty()) {
 
-            Object[] bookArray = selectedBooks.toArray();
+            Object[] bookArray = operatorService.getSelectedBooks().toArray();
             SceneLoader.loadModalityDialog("/views/operator/createBookFormScene.fxml", "Create Book form", bookArray);
             updateTreeTableView(operatorService.getAllBookInventories());
             selectedBooksListView.getItems().clear();
@@ -179,41 +158,38 @@ public class OperatorBooksController implements Controller {
 
     @FXML
     public void inboxButtonOnMouseClicked() {
-        Object[] objects = overdueBookForms.toArray();
+        Object[] objects = operatorService.getOverdueBookForms().toArray();
         SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml", "Inbox", objects);
     }
 
 
 
     private void updateTreeTableView(List<BookInventory> bookInventories) {
-        try {
-            //Creating the parents
-            bookTreeTableView.getRoot().getChildren().clear();
-            for (BookInventory bookInventory : bookInventories) {
 
-                Book parentBook = Book.builder()
-                        .id(bookInventory.getRepresentiveBook().getId())
-                        .title(bookInventory.getRepresentiveBook().getTitle())
-                        .author(bookInventory.getRepresentiveBook().getAuthor())
-                        .genre(bookInventory.getRepresentiveBook().getGenre())
-                        .publishYear(bookInventory.getRepresentiveBook().getPublishYear())
-                        .resume(bookInventory.getRepresentiveBook().getResume())
-                        .build();
+        //Creating the parents
+        bookTreeTableView.getRoot().getChildren().clear();
+        for (BookInventory bookInventory : bookInventories) {
 
-                TreeItem<Book> parent = new TreeItem<>(parentBook);
+            Book parentBook = Book.builder()
+                    .id(bookInventory.getRepresentiveBook().getId())
+                    .title(bookInventory.getRepresentiveBook().getTitle())
+                    .author(bookInventory.getRepresentiveBook().getAuthor())
+                    .genre(bookInventory.getRepresentiveBook().getGenre())
+                    .publishYear(bookInventory.getRepresentiveBook().getPublishYear())
+                    .resume(bookInventory.getRepresentiveBook().getResume())
+                    .build();
 
-                //Creating the children
-                for (Book book : bookInventory.getBookList()) {
+            TreeItem<Book> parent = new TreeItem<>(parentBook);
 
-                    TreeItem<Book> child = new TreeItem<>(book);
+            //Creating the children
+            for (Book book : bookInventory.getBookList()) {
 
-                    parent.getChildren().add(child);//Adding child to the root element
-                }
+                TreeItem<Book> child = new TreeItem<>(book);
 
-                bookTreeTableView.getRoot().getChildren().add(parent);
+                parent.getChildren().add(child);//Adding child to the root element
             }
-        } catch (Exception e) {
-            logger.error("Error occurred during updating book tree table view", e);
+
+            bookTreeTableView.getRoot().getChildren().add(parent);
         }
     }
 
@@ -226,16 +202,17 @@ public class OperatorBooksController implements Controller {
     }
 
     private void archiveBook(ActionEvent actionEvent){
-        TreeItem<Book> bookTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);
+        try {
+            TreeItem<Book> bookTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);
 
-        Book book = bookTreeItem.getValue();
+            Book book = bookTreeItem.getValue();
 
-        book.setBookStatus(BookStatus.ARCHIVED);
+            operatorService.archiveBook(book);
 
-        operatorService.saveBook(book);
+            updateTreeTableView(operatorService.getAllBookInventories());
+            selectedBooksListView.getItems().clear();
 
-        updateTreeTableView(operatorService.getAllBookInventories());
-        selectedBooksListView.getItems().clear();
+        }catch (NoSuchElementException ignored){}
     }
 
 

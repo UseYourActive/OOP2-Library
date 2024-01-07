@@ -28,9 +28,6 @@ public class ReaderRating implements DBEntity {
     @Column(name = "current_value", nullable = false)
     private double currentValue;
 
-   //@OneToMany(mappedBy = "reader_rating")
-   //private List<Reader> readers;
-
     @Override
     public Long getId() {
         return id;

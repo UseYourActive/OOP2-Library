@@ -1,7 +1,6 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.email.EmailException;
-import com.library.backend.exception.email.TransportException;
 import com.library.backend.services.EmailSenderService;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
@@ -18,21 +17,16 @@ import com.library.frontend.utils.tableviews.HiddenCheckBoxListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.IndexedCheckModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class BookFormShowController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(BookFormShowController.class);
 
     @FXML public Button returnButton;
     @FXML public Button closeButton;
@@ -44,26 +38,15 @@ public class BookFormShowController implements Controller {
     private BookForm bookForm;
     private Reader reader;
     private OperatorService operatorService;
-    private EmailSenderService emailSenderService;
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        logger.info("Initializing BookFormShowController");
+
         operatorService = ServiceFactory.getService(OperatorService.class);
 
-        try {
-            emailSenderService = new EmailSenderService("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq", "smtp.gmail.com", "587", false);
-        } catch (TransportException e) {
-            logger.error("Couldn't send email", e);
-        }
+        operatorService.loadEmailSettings("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq");
 
-        Object obj = SceneLoader.getTransferableObjects()[0];
-        if (obj instanceof BookForm)
-            bookForm = (BookForm) obj;
-
-        reader = bookForm.getReader();
+        getTransferObjects();
 
         readerLabel.setText(reader.getFullName().replace(' ', '\n'));
 
@@ -87,76 +70,40 @@ public class BookFormShowController implements Controller {
     @FXML
     public void returnButtonOnMouseClicked(MouseEvent mouseEvent) {
         IndexedCheckModel<Book> checkModel = bookCheckListView.getCheckModel();
+        List<Book> damagedBooks= checkModel.getCheckedItems();
+        List<Book> allBooks= bookCheckListView.getItems();
 
-        List<Book> booksToReturn = new ArrayList<>();
-
-        for (Book book : bookCheckListView.getItems()) {
-            if (checkModel.getCheckedItems().contains(book))
-                book.setBookStatus(BookStatus.DAMAGED);
-            else
-            {
-                if(book.getPreviousBookStatus()==null)
-                    throw new RuntimeException("Failed to return books");
-
-                if(book.getPreviousBookStatus()==BookStatus.ARCHIVED)
-                    book.setBookStatus(BookStatus.ARCHIVED);
-                else
-                    book.setBookStatus(BookStatus.AVAILABLE);
-            }
-
-            book.setNumberOfTimesUsed(book.getNumberOfTimesUsed()+1);
-            booksToReturn.add(book);
-
-            if(book.getPreviousBookStatus()!=BookStatus.ARCHIVED&&book.getNumberOfTimesUsed()==50){
-                EventNotification eventNotification= EventNotification.builder()
-                        .user(SceneLoader.getUser())
-                        .timestamp(LocalDateTime.now())
-                        .message("("+LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))+")"+"Consider archiving of: "+book.getTitle()+"("+book.getId()+")")
-                        .build();
-
-                operatorService.saveEventNotification(eventNotification);
-            }
-
-        }
-
-
-        operatorService.saveAllBooks(booksToReturn);
-
-        //Reader is going to be demoted if deadline of returning books have passed
-        if (bookForm.isOverdue()) {
-            reader.demote();
-        } else {
-            reader.promote();
-        }
-
-        //For every damaged book returned reader is going to be demoted
-        for(int i=0;i<checkModel.getCheckedItems().size();i++){
-            reader.demote();
-        }
-
-        bookForm.setStatus(BookFormStatus.RETURNED);
-
-        operatorService.saveReader(reader);
-
-        logger.info("Books returned successfully by reader: {}", reader.getFullName());
+        operatorService.returnBooks(bookForm,damagedBooks,allBooks);
 
         closeButtonOnMouseClicked(mouseEvent);
     }
 
     @FXML
     public void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(mouseEvent,"/views/operator/operatorReadersScene.fxml",SceneLoader.getUser().getUsername()+"(Operator)");
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            SceneLoader.load(mouseEvent, "/views/operator/operatorReadersScene.fxml", SceneLoader.getUser().getUsername() + "(Operator)");
+        }
     }
 
     @FXML
     public void notifyButtonOnMouseClicked() {
         try {
-            emailSenderService.sendEmail(reader.getEmail(), "Return of books", "");
-            logger.info("Notification sent to reader: {}", reader.getEmail());
+            String message = "You need to return books";
+            String subject = "Return of books";
+
+            operatorService.sendEmail(reader,subject,message);
+
             DialogUtils.showInfo("Email result", "An email notifying the user has been sent!");
         } catch (EmailException e) {
             DialogUtils.showError("Email result", "This email no longer exists!");
         }
+    }
+
+    private void getTransferObjects(){
+        Object obj = SceneLoader.getTransferableObjects()[0];
+        if (obj instanceof BookForm)
+            bookForm = (BookForm) obj;
+        reader = bookForm.getReader();
     }
 
 }

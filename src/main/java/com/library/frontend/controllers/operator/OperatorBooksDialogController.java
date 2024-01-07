@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -24,48 +25,30 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class OperatorBooksDialogController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(OperatorBooksDialogController.class);
 
     @FXML private Button closeButton;
     @FXML private TableView<Book> bookTableView;
 
-    private OperatorService operatorService;
+    private TableViewBuilder<Book> tableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        operatorService = ServiceFactory.getService(OperatorService.class);
-
         bookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        //prepareContextMenu();
-        TableViewBuilder<Book> tableViewBuilder = new BookTableViewBuilder();
+        tableViewBuilder = new BookTableViewBuilder();
         tableViewBuilder.createTableViewColumns(bookTableView);
 
-        BookInventory bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Error idk"));
+        BookInventory bookInventory = (BookInventory)SceneLoader.getTransferableObjects()[0];
 
         List<Book> bookList = bookInventory.getBookList();
 
-        updateTableView(bookList);
-    }
-
-    @FXML
-    private void bookTableViewOnMouseClicked(MouseEvent mouseEvent) {
-
+        tableViewBuilder.updateTableView(bookTableView,bookList);
     }
 
     @FXML
     private void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
-        ((Stage) closeButton.getScene().getWindow()).close();
-    }
-
-    private void updateTableView(List<Book> bookList) {
-        try {
-            bookTableView.getItems().clear();
-            bookTableView.getItems().addAll(FXCollections.observableArrayList(bookList));
-        } catch (Exception e) {
-            logger.error("Error occurred during table view update", e);
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            ((Stage) closeButton.getScene().getWindow()).close();
         }
     }
 }

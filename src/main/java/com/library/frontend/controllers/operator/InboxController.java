@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class InboxController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(InboxController.class);
 
     @FXML public ListView<EventNotification> eventNotificationListView;
     @FXML public Button closeButton;
@@ -30,18 +30,15 @@ public class InboxController implements Controller {
     public void initialize(URL location, ResourceBundle resources) {
        operatorService= ServiceFactory.getService(OperatorService.class);
 
-       List<EventNotification> eventNotificationList=operatorService.getAllEventNotifications().stream().filter(event -> event.getUser().equals(SceneLoader.getUser())).toList();
+       List<EventNotification> eventNotificationList=operatorService.getEventNotifications(SceneLoader.getUser());
 
        eventNotificationListView.setItems(FXCollections.observableArrayList(eventNotificationList));
     }
 
     @FXML
-    public void bookFormListViewOnMouseClicked(MouseEvent mouseEvent) {
-
-    }
-
-    @FXML
-    public void closeButtonOnMouseClicked() {
-        ((Stage) closeButton.getScene().getWindow()).close();
+    public void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            ((Stage) closeButton.getScene().getWindow()).close();
+        }
     }
 }
