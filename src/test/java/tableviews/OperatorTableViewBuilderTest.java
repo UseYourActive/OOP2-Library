@@ -2,8 +2,8 @@ package tableviews;
 
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
-import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
-import com.library.frontend.utils.tableviews.TableViewBuilder;
+import com.library.utils.tableviews.OperatorTableViewBuilder;
+import com.library.utils.tableviews.TableViewBuilder;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.junit.jupiter.api.BeforeEach;

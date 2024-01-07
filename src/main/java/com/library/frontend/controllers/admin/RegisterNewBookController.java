@@ -5,7 +5,7 @@ import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.BookRegistrationControllerService;
 import com.library.database.enums.Genre;
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

@@ -15,7 +15,7 @@ import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.EventNotificationRepository;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;

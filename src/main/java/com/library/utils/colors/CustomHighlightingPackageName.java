@@ -1,4 +1,4 @@
-package com.library.frontend.utils.colors;
+package com.library.utils.colors;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;

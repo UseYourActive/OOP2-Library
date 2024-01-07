@@ -1,4 +1,4 @@
-package com.library.frontend.utils.validators;
+package com.library.utils.validators;
 
 /**
  * The {@code Validator} interface defines a contract for classes that perform
@@ -21,7 +21,7 @@ package com.library.frontend.utils.validators;
  * }
  * </pre>
  *
- * @see com.library.frontend.utils.validators.StrongPasswordValidator
+ * @see StrongPasswordValidator
  */
 public interface Validator {
     /**

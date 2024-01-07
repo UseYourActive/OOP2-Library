@@ -7,7 +7,7 @@ import com.library.backend.services.Service;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
 import com.library.database.repositories.UserRepository;
-import com.library.frontend.utils.validators.StrongPasswordValidator;
+import com.library.utils.validators.StrongPasswordValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

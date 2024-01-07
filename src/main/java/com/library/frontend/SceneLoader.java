@@ -1,6 +1,7 @@
-package com.library.frontend.utils;
+package com.library.frontend;
 
 import com.library.database.entities.User;
+import com.library.utils.DialogUtils;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

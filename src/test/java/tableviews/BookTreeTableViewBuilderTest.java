@@ -1,8 +1,8 @@
 package tableviews;
 
 import com.library.database.entities.Book;
-import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
-import com.library.frontend.utils.tableviews.TreeTableViewBuilder;
+import com.library.utils.tableviews.BookTreeTableViewBuilder;
+import com.library.utils.tableviews.TreeTableViewBuilder;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import org.junit.jupiter.api.BeforeEach;

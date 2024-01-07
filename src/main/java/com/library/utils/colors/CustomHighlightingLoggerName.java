@@ -1,4 +1,4 @@
-package com.library.frontend.utils.colors;
+package com.library.utils.colors;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.color.ANSIConstants;

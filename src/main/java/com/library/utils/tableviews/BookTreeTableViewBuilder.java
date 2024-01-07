@@ -1,4 +1,4 @@
-package com.library.frontend.utils.tableviews;
+package com.library.utils.tableviews;
 
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;

@@ -2,8 +2,8 @@ package tableviews;
 
 import com.library.database.entities.Book;
 import com.library.database.enums.BookStatus;
-import com.library.frontend.utils.tableviews.BookTableViewBuilder;
-import com.library.frontend.utils.tableviews.TableViewBuilder;
+import com.library.utils.tableviews.BookTableViewBuilder;
+import com.library.utils.tableviews.TableViewBuilder;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.junit.jupiter.api.BeforeEach;

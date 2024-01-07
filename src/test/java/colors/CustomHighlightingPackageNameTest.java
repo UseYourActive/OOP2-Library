@@ -3,7 +3,7 @@ package colors;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.color.ANSIConstants;
-import com.library.frontend.utils.colors.CustomHighlightingPackageName;
+import com.library.utils.colors.CustomHighlightingPackageName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

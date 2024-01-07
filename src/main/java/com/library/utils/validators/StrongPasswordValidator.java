@@ -1,4 +1,4 @@
-package com.library.frontend.utils.validators;
+package com.library.utils.validators;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;

@@ -41,11 +41,11 @@
     </root>
 
     <!-- Custom Highlighting Rules -->
-    <conversionRule conversionWord="customHighlightingLogLevel" converterClass="com.library.frontend.utils.colors.CustomHighlightingLogLevel" />
-    <conversionRule conversionWord="customHighlightingPackageName" converterClass="com.library.frontend.utils.colors.CustomHighlightingPackageName" />
-    <conversionRule conversionWord="customHighlightingMessage" converterClass="com.library.frontend.utils.colors.CustomHighlightingMessage" />
-    <conversionRule conversionWord="customHighlightingThread" converterClass="com.library.frontend.utils.colors.CustomHighlightingThread" />
-    <conversionRule conversionWord="customHighlightingLoggerName" converterClass="com.library.frontend.utils.colors.CustomHighlightingLoggerName" />
-    <conversionRule conversionWord="customHighlightingTimestamp" converterClass="com.library.frontend.utils.colors.CustomHighlightingTimestamp" />
+    <conversionRule conversionWord="customHighlightingLogLevel" converterClass="com.library.utils.colors.CustomHighlightingLogLevel" />
+    <conversionRule conversionWord="customHighlightingPackageName" converterClass="com.library.utils.colors.CustomHighlightingPackageName" />
+    <conversionRule conversionWord="customHighlightingMessage" converterClass="com.library.utils.colors.CustomHighlightingMessage" />
+    <conversionRule conversionWord="customHighlightingThread" converterClass="com.library.utils.colors.CustomHighlightingThread" />
+    <conversionRule conversionWord="customHighlightingLoggerName" converterClass="com.library.utils.colors.CustomHighlightingLoggerName" />
+    <conversionRule conversionWord="customHighlightingTimestamp" converterClass="com.library.utils.colors.CustomHighlightingTimestamp" />
 
 </configuration>

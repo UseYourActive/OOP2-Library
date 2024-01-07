@@ -1,4 +1,4 @@
-package com.library.frontend.utils.tableviews;
+package com.library.utils.tableviews;
 
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.Genre;

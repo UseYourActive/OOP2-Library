@@ -14,7 +14,7 @@ import com.library.database.enums.BookStatus;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.EventNotificationRepository;
 import com.library.database.repositories.ReaderRepository;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

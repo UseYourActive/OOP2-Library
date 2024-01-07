@@ -3,7 +3,7 @@ package com.library.frontend.controllers.admin;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.admin.CreateOperatorControllerService;
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;

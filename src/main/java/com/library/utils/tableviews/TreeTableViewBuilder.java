@@ -1,4 +1,4 @@
-package com.library.frontend.utils.tableviews;
+package com.library.utils.tableviews;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;

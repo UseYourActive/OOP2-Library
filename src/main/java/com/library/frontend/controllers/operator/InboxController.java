@@ -4,7 +4,7 @@ import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.InboxControllerService;
 import com.library.database.entities.EventNotification;
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

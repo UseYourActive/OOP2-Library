@@ -5,7 +5,7 @@ import com.library.backend.exception.users.UserNotFoundException;
 import com.library.backend.services.LogInService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.User;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

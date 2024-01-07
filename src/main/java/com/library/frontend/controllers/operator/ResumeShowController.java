@@ -1,7 +1,7 @@
 package com.library.frontend.controllers.operator;
 
 import com.library.frontend.controllers.Controller;
-import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
