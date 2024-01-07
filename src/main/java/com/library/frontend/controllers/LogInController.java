@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 
 @NoArgsConstructor
 public class LogInController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
 
     @FXML private Button logInButton;
     @FXML private Label logInMessageLabel;
@@ -59,31 +58,26 @@ public class LogInController implements Controller {
         try {
             checkInput();
 
-            User logInUser = User.builder()
-                    .username(usernameTextField.getText())
-                    .password(passwordPasswordField.getText())
-                    .build();
+            String username=usernameTextField.getText();
+            String password=passwordPasswordField.getText();
 
-            User user = service.getUser(logInUser);
+            User user = service.getUser(username,password);
             SceneLoader.setUser(user);
 
             switch (user.getRole()) {
-                case ADMIN -> {
-                    SceneLoader.load(actionEvent, "/views/admin/administratorBooksScene.fxml", user.getUsername() + "(Administrator)");
-                }
-                case OPERATOR -> {
-                    SceneLoader.load(actionEvent, "/views/operator/operatorBooksScene.fxml", user.getUsername() + "(Operator)");
-                }
+                case ADMIN ->
+                        SceneLoader.load(actionEvent, "/views/admin/administratorBooksScene.fxml", user.getUsername() + "(Administrator)");
+
+                case OPERATOR ->
+                        SceneLoader.load(actionEvent, "/views/operator/operatorBooksScene.fxml", user.getUsername() + "(Operator)");
+
             }
 
         } catch (UserNotFoundException e) {
-            logger.error(e.getMessage());
             logInMessageLabel.setText("User not found!");
         } catch (HibernateException e) {
-            logger.error(e.getMessage());
             logInMessageLabel.setText("Error loading the database!");
         } catch (IncorrectInputException e) {
-            logger.error(e.getMessage());
             logInMessageLabel.setText("Invalid user input!");
         }
     }

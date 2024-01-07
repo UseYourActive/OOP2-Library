@@ -18,6 +18,5 @@ import javafx.fxml.Initializable;
  */
 public interface Controller extends Initializable {
     // This interface currently does not declare additional methods.
-    // It serves as a marker interface for JavaFX controllers.
 }
 

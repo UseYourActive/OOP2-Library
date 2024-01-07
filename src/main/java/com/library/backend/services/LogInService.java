@@ -60,17 +60,14 @@ public class LogInService implements Service {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Attempts to retrieve a user based on the provided user's username.
-     *
-     * @param user The user object containing the username for authentication.
-     * @return The retrieved user if found.
-     * @throws UserNotFoundException If the user with the specified username is not found.
-     * @throws HibernateException    If a Hibernate-related exception occurs during the retrieval process.
-     */
-    public User getUser(User user) throws UserNotFoundException, HibernateException {
-        String username = user.getUsername();
-        String providedPassword = user.getPassword();
+
+    public User getUser(String username, String password) throws UserNotFoundException, HibernateException {
+
+        User user = User.builder()
+                .username(username)
+                .password(password)
+                .build();
+
 
         logger.info("Attempting to retrieve user: {}", username);
 
@@ -82,7 +79,7 @@ public class LogInService implements Service {
 
         String storedPassword = retrievedUser.getPassword();
 
-        if (isPasswordMatch(providedPassword, storedPassword)) {
+        if (isPasswordMatch(user.getPassword(), storedPassword)) {
             logger.info("User retrieved successfully: {}", retrievedUser.getUsername());
             return retrievedUser;
         } else {

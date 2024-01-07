@@ -1,7 +1,8 @@
-package com.library.backend.services.trying;
+package com.library.backend.services.admin;
 
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.AdminService;
+import com.library.backend.services.Service;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
@@ -17,7 +18,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRegistrationService { // RegisterNewBookController
+public class BookRegistrationService implements Service { // RegisterNewBookController
     private static final Logger logger = LoggerFactory.getLogger(BookRegistrationService.class);
     private static final String LOG_SUCCESSFUL_REGISTRATION = "Book registration successful for title: '{}', author: '{}'";
     private static final String LOG_ERROR_DURING_REGISTRATION = "Error occurred during book registration";
@@ -34,7 +35,7 @@ public class BookRegistrationService { // RegisterNewBookController
 
             int quantity = getQuantity(amount);
 
-            BookInventory bookInventory = createOrRetrieveBookInventory(title, author, genre, quantity, year, resume);
+            BookInventory bookInventory = createBookInventory(title, author, genre, quantity, year, resume);
 
             adminService.saveInventory(bookInventory);
             logger.info(LOG_SUCCESSFUL_REGISTRATION, title, author);
@@ -75,18 +76,18 @@ public class BookRegistrationService { // RegisterNewBookController
             return Integer.parseInt(amount);
     }
 
-    private BookInventory createOrRetrieveBookInventory(String title, String author, Genre genre, int quantity, String year, String resume) {
+    private BookInventory createBookInventory(String title, String author, Genre genre, int quantity, String year, String resume) {
         BookInventoryRepository bookInventoryRepository = BookInventoryRepository.getInstance();
         BookInventory bookInventory = BookInventory.builder().build();
 
-        Book representativeBook = createOrRetrieveBook(title, author, genre, year, resume);
+        Book representativeBook = createBook(title, author, genre, year, resume);
 
         boolean flag = true;
 
         for (BookInventory existingInventory : bookInventoryRepository.findAll()) {
             if (existingInventory.getRepresentiveBook().equalsBook(representativeBook)) {
                 for (int i = 0; i < quantity; i++) {
-                    Book book = createOrRetrieveBook(title, author, genre, year, resume);
+                    Book book = createBook(title, author, genre, year, resume);
                     book.setInventory(existingInventory);
 
                     adminService.saveBook(book);
@@ -103,7 +104,7 @@ public class BookRegistrationService { // RegisterNewBookController
         if (flag) {
             List<Book> bookList = new ArrayList<>();
             for (int i = 0; i < quantity; i++) {
-                Book book = createOrRetrieveBook(title, author, genre, year, resume);
+                Book book = createBook(title, author, genre, year, resume);
                 bookInventory.setRepresentiveBook(book);
                 book.setInventory(bookInventory);
 
@@ -118,7 +119,7 @@ public class BookRegistrationService { // RegisterNewBookController
         return bookInventory;
     }
 
-    private Book createOrRetrieveBook(String title, String author, Genre genre, String year, String resume) {
+    private Book createBook(String title, String author, Genre genre, String year, String resume) {
         AuthorRepository authorRepository = AuthorRepository.getInstance();
 
         Author authorEntity = authorRepository.findByName(author).orElseGet(() ->

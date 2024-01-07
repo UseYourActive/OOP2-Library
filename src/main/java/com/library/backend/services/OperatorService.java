@@ -34,23 +34,7 @@ public class OperatorService implements Service {
         readerRatingRepository.save(readerRating);
     }
 
-    public void lendBookToReaderForReadingRoom(Book book, Reader reader) {
-        Preconditions.checkNotNull(book, "Book cannot be null");
-        Preconditions.checkNotNull(reader, "Reader cannot be null");
 
-        if (book.getBookStatus() == BookStatus.AVAILABLE) {
-            book.setBookStatus(BookStatus.IN_READING_ROOM);
-
-            boolean result = bookRepository.save(book);
-            if (result) {
-                logger.info("Book successfully lent to reader: {} - {}", reader.getFirstName() + " " + reader.getMiddleName() + " " + reader.getLastName(), book.getTitle());
-            } else {
-                logger.error("Failed to lend book to reader: {} - {}", reader.getFirstName() + " " + reader.getMiddleName() + " " + reader.getLastName(), book.getTitle());
-            }
-        } else {
-            logger.warn("Cannot lend book to reader. Book status is not AVAILABLE: {}", book.getTitle());
-        }
-    }
 
     public List<EventNotification> getAllEventNotifications(){
         return eventNotificationRepository.findAll();

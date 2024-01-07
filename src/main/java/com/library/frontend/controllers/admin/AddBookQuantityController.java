@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,24 +32,8 @@ public class AddBookQuantityController implements Controller {
     @FXML
     public void addButtonOnMouseClicked() {
         try {
-            int quantity = Integer.parseInt(quantityTextField.getText());
-
-            if (quantity<0)
-                throw new NumberFormatException();
-
-            Book representiveBook = bookInventory.getRepresentiveBook();
-
-            for (int i = 0; i < quantity; i++) {
-                Book book = new Book(representiveBook);
-                book.setBookStatus(BookStatus.AVAILABLE);
-                book.setNumberOfTimesUsed(0);
-
-                adminService.saveBook(book);
-                bookInventory.addBook(book);
-            }
-
-            adminService.saveInventory(bookInventory);
-
+            adminService.increaseBookQuantity(quantityTextField.getText(),bookInventory);
+            ((Stage)addButton.getScene().getWindow()).close();
         }catch (NumberFormatException e){
             informationLabel.setText("Incorrect input");
         }

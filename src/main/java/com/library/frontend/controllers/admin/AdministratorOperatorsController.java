@@ -1,29 +1,26 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.engines.OperatorSearchEngine;
-import com.library.backend.engines.SearchEngine;
-import com.library.backend.services.trying.AdminOperatorService;
-import com.library.backend.services.trying.ContextMenuService;
+import com.library.backend.exception.searchengine.SearchEngineException;
+import com.library.backend.services.admin.OperatorControllerService;
 import com.library.database.entities.User;
+import com.library.database.repositories.UserRepository;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.tableviews.ContextMenuBuilder;
 import com.library.frontend.utils.tableviews.OperatorTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AdministratorOperatorsController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsController.class);
 
     @FXML public Button booksButton;
     @FXML public TextField searchBookTextField;
@@ -31,23 +28,21 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
 
-    private AdminOperatorService adminOperatorService;
-    private SearchEngine<User> searchEngine;
+    private OperatorControllerService service;
     private TableViewBuilder<User> operatorTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adminOperatorService = new AdminOperatorService();
-        searchEngine = new OperatorSearchEngine();
+        service=new OperatorControllerService(UserRepository.getInstance());
 
         booksButton.requestFocus();
 
         operatorTableViewBuilder = new OperatorTableViewBuilder();
         operatorTableViewBuilder.createTableViewColumns(operatorTableView);
 
-        operatorTableViewBuilder.updateTableView(operatorTableView, adminOperatorService.getAllOperators());
+        operatorTableViewBuilder.updateTableView(operatorTableView, service.getAllUsers());
 
-        prepareContextMenu();
+        operatorTableView.setContextMenu(getContextMenu());
     }
 
     @FXML
@@ -62,25 +57,39 @@ public class AdministratorOperatorsController implements Controller {
     }
 
     @FXML
-    public void operatorTableViewOnMouseClicked() {
-        // Handle mouse click on table view if needed
-    }
-
-    @FXML
     public void searchOperatorButtonOnMouseClicked() {
         try {
-            List<User> userList = adminOperatorService.getAllOperators();
             String stringToSearch = searchBookTextField.getText();
-            Collection<User> results = searchEngine.search(userList, stringToSearch);
-            operatorTableViewBuilder.updateTableView(operatorTableView, results);
+            Collection<User> results = service.searchUser(stringToSearch);
+            operatorTableViewBuilder.updateTableView(operatorTableView,results.stream().toList());
             anchorPane.requestFocus();
-        } catch (Exception e) {
-            logger.error("Error occurred during operator search", e);
+        }catch (SearchEngineException e){
+            DialogUtils.showInfo("Error ","User not found!");
         }
     }
 
-    private void prepareContextMenu() {
-        ContextMenu contextMenu = ContextMenuService.createOperatorContextMenu(adminOperatorService, operatorTableViewBuilder, operatorTableView);
-        operatorTableView.setContextMenu(contextMenu);
+    private ContextMenu getContextMenu() {
+        Map<String, EventHandler<ActionEvent>> menuItems= new HashMap<>();
+
+        menuItems.put("Create operator",this::createOperator);
+        menuItems.put("Remove operator",this::removeOperator);
+
+        return ContextMenuBuilder.prepareContextMenu(menuItems);
+    }
+
+    private void createOperator(ActionEvent actionEvent){
+        SceneLoader.load("/views/admin/createOperatorScene.fxml", "Create operator");
+    }
+
+    private void removeOperator(ActionEvent actionEvent){
+        try{
+            User user = operatorTableViewBuilder.getSelectedItem(operatorTableView);
+
+            service.removeOperator(user);
+
+            operatorTableViewBuilder.updateTableView(operatorTableView,service.getAllUsers());
+        }catch (Exception e){
+            DialogUtils.showInfo("Error", e.getMessage());
+        }
     }
 }

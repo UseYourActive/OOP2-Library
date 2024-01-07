@@ -2,22 +2,34 @@ package com.library.backend.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.library.backend.engines.BookInventorySearchEngine;
+import com.library.backend.engines.OperatorSearchEngine;
 import com.library.backend.engines.SearchEngine;
+import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
 import com.library.database.entities.User;
 import com.library.database.enums.BookStatus;
+import com.library.database.enums.Role;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
+import com.library.frontend.utils.DialogUtils;
+import com.library.frontend.utils.SceneLoader;
+import com.library.frontend.utils.tableviews.BookTableViewBuilder;
+import com.library.frontend.utils.validators.StrongPasswordValidator;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 public class AdminService implements Service {
@@ -34,13 +46,135 @@ public class AdminService implements Service {
         this.bookFormRepository = bookFormRepository;
     }
 
-    public void archiveBook(Book book) {
-        updateBookStatus(book, BookStatus.ARCHIVED, "archived");
-    }
-
     public void saveBook(Book book) {
         performRepositoryOperation(() -> bookRepository.save(book), "saved", book.getTitle());
     }
+
+    public void createOperator(String username,String password,String repeatPassword) throws Exception {
+        try {
+            checkOperatorFieldsInput(username, password, repeatPassword);
+
+            if(userRepository.findByUsername(username).isPresent())
+                throw new Exception("User with this username already exists");
+
+            User operator = User.builder()
+                    .username(username)
+                    .password(password)
+                    .role(Role.OPERATOR)
+                    .build();
+
+
+
+            userRepository.save(operator);
+            logger.info("Operator creation successful for username: '{}'", username);
+        } catch (IncorrectInputException e) {
+            logger.error("Input validation failed during operator creation", e);
+            throw e;
+        } catch (Exception e) {
+            logger.error("Unexpected error during operator creation", e);
+            throw e;
+        }
+    }
+
+    private void checkOperatorFieldsInput(String username, String password, String repeatPassword) throws IncorrectInputException {
+        if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
+            throw new IncorrectInputException("Please fill out all fields!");
+        }
+
+        if (!password.equals(repeatPassword)) {
+            throw new IncorrectInputException("The passwords did not match!");
+        }
+
+        StrongPasswordValidator passwordValidator=new StrongPasswordValidator();
+
+        if (!passwordValidator.isValid(password)) {
+            throw new IncorrectInputException("Password is not strong enough.");
+        }
+    }
+
+    public void removeOperator(User user) throws Exception {
+        if (user.getRole() == Role.ADMIN) {
+            throw new Exception("You can't remove administrators");
+        }
+
+        userRepository.delete(user);
+        logger.info("Operator removed: {}", user.getUsername());
+
+    }
+
+    public void increaseBookQuantity(String quantityString,BookInventory bookInventory) throws NumberFormatException{
+        int quantity = Integer.parseInt(quantityString);
+
+        if (quantity<0)
+            throw new NumberFormatException();
+
+        Book representiveBook = bookInventory.getRepresentiveBook();
+
+        for (int i = 0; i < quantity; i++) {
+            Book book = new Book(representiveBook);
+            book.setBookStatus(BookStatus.AVAILABLE);
+            book.setNumberOfTimesUsed(0);
+
+            bookRepository.save(book);
+            bookInventory.addBook(book);
+        }
+
+        bookInventoryRepository.update(bookInventory);
+    }
+
+    public void removeSelectedBooks(BookInventory bookInventory,List<Book> booksToRemove){
+        updateBookForms(booksToRemove);
+        removeBooksAndUpdateRepresentiveBook(bookInventory, booksToRemove);
+    }
+
+    private void updateBookForms(List<Book> bookList) {
+        for(BookForm bookForm:bookFormRepository.findAll()){
+            for(Book bookToRemove:bookList){
+                bookForm.getBooks().remove(bookToRemove);
+            }
+            bookFormRepository.update(bookForm);
+        }
+    }
+
+    private void removeBooksAndUpdateRepresentiveBook(BookInventory bookInventory, List<Book> booksToRemove) {
+        boolean flag = true;
+
+        for (Book bookToRemove : booksToRemove) {
+            if (bookInventory.getRepresentiveBook().equals(bookToRemove) && bookInventory.getBookList().size() == 1) {
+                bookInventoryRepository.delete(bookInventory);
+
+                flag = false;
+                break;
+            }
+
+            if (bookInventory.getRepresentiveBook().equals(bookToRemove)) {
+                List<Book> nonSelected = bookInventory.getBookList().stream()
+                        .filter(book -> !booksToRemove.contains(book))
+                        .toList();
+
+                for (Book book : nonSelected) {
+                    if (!book.equals(bookInventory.getRepresentiveBook())) {
+                        bookInventory.setRepresentiveBook(book);
+                        break;
+                    }
+                }
+            }
+
+            bookInventory.getBookList().remove(bookToRemove);
+        }
+
+        if (flag)
+            bookInventoryRepository.save(bookInventory);
+
+    }
+
+
+    public void removeInventory(BookInventory inventory){
+        updateBookForms(inventory.getBookList());
+
+        performRepositoryOperation(() -> bookInventoryRepository.delete(inventory), "deleted", "");
+    }
+
 
     public Collection<BookInventory> searchBookInventory(String string) throws SearchEngineException {
 
@@ -49,6 +183,11 @@ public class AdminService implements Service {
         return searchEngine.search(inventories, string);
     }
 
+    public Collection<User> searchUser(String string) throws SearchEngineException{
+        List<User> inventories = userRepository.findAll();
+        SearchEngine<User> searchEngine = new OperatorSearchEngine();
+        return searchEngine.search(inventories, string);
+    }
 
     public void saveBookForm(BookForm bookForm){
 
@@ -57,21 +196,6 @@ public class AdminService implements Service {
     public List<BookForm> getAllBookForms(){
         return bookFormRepository.findAll();
     }
-    public void removeBook(Book book) {
-        bookRepository.delete(book);
-        logger.info("Book removed: {}", book.getTitle());
-    }
-
-    public void removeAll(List<Book> books){
-        bookRepository.deleteAll(books);
-        logger.info("Books removed: {}", books.size());
-    }
-
-    public List<Book> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        logEntityRetrieval("books", books.size());
-        return books;
-    }
 
     public void registerOperator(User operator) {
         hashAndSetPassword(operator);
@@ -79,10 +203,7 @@ public class AdminService implements Service {
         performRepositoryOperation(() -> userRepository.save(operator), "registered", operator.getUsername());
     }
 
-    public void removeOperator(User operator) {
-        userRepository.delete(operator);
-        logger.info("Operator removed: {}", operator.getUsername());
-    }
+
 
     public List<User> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -101,9 +222,6 @@ public class AdminService implements Service {
         performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "");
     }
 
-    public void removeInventory(BookInventory bookInventory){
-        performRepositoryOperation(() -> bookInventoryRepository.delete(bookInventory), "deleted", "");
-    }
 
 
     private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
@@ -115,14 +233,6 @@ public class AdminService implements Service {
         }
     }
 
-    private  void performRepositoryOperation(Runnable repositoryOperation, String action, String entityName) {
-        try{
-            repositoryOperation.run();
-            logger.info("{} {} successfully: {}", entityName, action, entityName);
-        }catch (Exception e){
-            logger.error("Failed to {} {}: {}", action, entityName, e.getMessage());
-        }
-    }
 
     private void logEntityRetrieval(String entityName, int size) {
         logger.info("Retrieved {} {}: {}", size, entityName, (size == 1 ? "entity" : "entities"));
@@ -134,12 +244,4 @@ public class AdminService implements Service {
         user.setPassword(hashedPassword);
     }
 
-    private void updateBookStatus(Book book, BookStatus newStatus, String action) {
-        if (book != null) {
-            book.setBookStatus(newStatus);
-            performRepositoryOperation(() -> bookRepository.save(book), action, book.getTitle());
-        } else {
-            logger.error("Cannot update book status. Book is null.");
-        }
-    }
 }

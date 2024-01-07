@@ -1,7 +1,6 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.exception.IncorrectInputException;
-import com.library.backend.services.trying.BookRegistrationService;
+import com.library.backend.services.admin.BookRegistrationService;
 import com.library.database.enums.Genre;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
@@ -11,14 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegisterNewBookController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(RegisterNewBookController.class);
 
     @FXML public TextField titleTextField;
     @FXML public TextField authorTextField;
@@ -35,6 +31,7 @@ public class RegisterNewBookController implements Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         bookRegistrationService = new BookRegistrationService();
         Platform.runLater(() -> genreComboBox.requestFocus());
 
@@ -54,21 +51,14 @@ public class RegisterNewBookController implements Controller {
             );
 
             cancelButtonOnMouseClicked(mouseEvent);
-        } catch (IncorrectInputException e) {
-            informationLabel.setText(e.getMessage());
-            logger.error("Error occurred during book registration", e);
         } catch (Exception e) {
-            informationLabel.setText("An unexpected error occurred.");
-            logger.error("Unexpected error during book registration", e);
+            informationLabel.setText(e.getMessage());
         }
     }
 
+
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
-        SceneLoader.load(
-                mouseEvent,
-                "/views/admin/administratorBooksScene.fxml",
-                SceneLoader.getUser().getUsername() + "(Administrator)"
-        );
+        SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
     }
 }
