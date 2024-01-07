@@ -1,5 +1,7 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.engines.ReaderSearchEngine;
+import com.library.backend.engines.SearchEngine;
 import com.library.backend.exception.ReaderException;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
@@ -13,12 +15,12 @@ import com.library.frontend.controllers.Controller;
 import com.library.frontend.controllers.admin.AdministratorBooksController;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.backend.engines.ReaderSearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.controlsfx.control.Rating;

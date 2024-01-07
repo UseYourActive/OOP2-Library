@@ -1,7 +1,9 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.services.admin.BookRegistrationService;
+import com.library.backend.services.admin.BookRegistrationControllerService;
 import com.library.database.enums.Genre;
+import com.library.database.repositories.BookInventoryRepository;
+import com.library.database.repositories.BookRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.application.Platform;
@@ -27,12 +29,12 @@ public class RegisterNewBookController implements Controller {
     @FXML public TextField amountTextField;
     @FXML public AnchorPane anchorPane;
 
-    private BookRegistrationService bookRegistrationService;
+    private BookRegistrationControllerService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        bookRegistrationService = new BookRegistrationService();
+        service = new BookRegistrationControllerService(BookInventoryRepository.getInstance(), BookRepository.getInstance());
         Platform.runLater(() -> genreComboBox.requestFocus());
 
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
@@ -41,7 +43,7 @@ public class RegisterNewBookController implements Controller {
     @FXML
     public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
-            bookRegistrationService.registerNewBook(
+            service.registerNewBook(
                     titleTextField.getText(),
                     authorTextField.getText(),
                     yearTextField.getText(),

@@ -14,13 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import org.hibernate.HibernateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -58,10 +53,10 @@ public class LogInController implements Controller {
         try {
             checkInput();
 
-            String username=usernameTextField.getText();
-            String password=passwordPasswordField.getText();
+            String username = usernameTextField.getText();
+            String password = passwordPasswordField.getText();
 
-            User user = service.getUser(username,password);
+            User user = service.getUser(username, password);
             SceneLoader.setUser(user);
 
             switch (user.getRole()) {

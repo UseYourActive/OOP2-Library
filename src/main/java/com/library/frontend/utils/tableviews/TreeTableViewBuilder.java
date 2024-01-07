@@ -1,9 +1,8 @@
 package com.library.frontend.utils.tableviews;
 
-import javafx.collections.FXCollections;
-import javafx.scene.control.*;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

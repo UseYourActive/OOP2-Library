@@ -1,11 +1,12 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.services.AdminService;
-import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.Book;
+import com.library.backend.exception.InvalidQuantityException;
+import com.library.backend.services.admin.AddBookQuantityControllerService;
 import com.library.database.entities.BookInventory;
-import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookInventoryRepository;
+import com.library.database.repositories.BookRepository;
 import com.library.frontend.controllers.Controller;
+import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,21 +22,22 @@ public class AddBookQuantityController implements Controller {
     @FXML public Button addButton;
     @FXML public Label informationLabel;
 
-    private AdminService adminService;
+    private AddBookQuantityControllerService service;
     private BookInventory bookInventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adminService= ServiceFactory.getService(AdminService.class);
-        bookInventory= (BookInventory) SceneLoader.getTransferableObjects()[0];
+        service = new AddBookQuantityControllerService(BookRepository.getInstance(), BookInventoryRepository.getInstance());
+        bookInventory = (BookInventory) SceneLoader.getTransferableObjects()[0];
     }
+
     @FXML
     public void addButtonOnMouseClicked() {
         try {
-            adminService.increaseBookQuantity(quantityTextField.getText(),bookInventory);
-            ((Stage)addButton.getScene().getWindow()).close();
-        }catch (NumberFormatException e){
-            informationLabel.setText("Incorrect input");
+            service.increaseBookQuantity(quantityTextField.getText(), bookInventory);
+        } catch (InvalidQuantityException e) {
+            DialogUtils.showError("Invalid quantity exception", e.getMessage());
         }
+        ((Stage) addButton.getScene().getWindow()).close();
     }
 }

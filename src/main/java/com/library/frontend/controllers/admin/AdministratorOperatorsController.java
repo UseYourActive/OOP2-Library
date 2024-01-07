@@ -1,7 +1,7 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
-import com.library.backend.services.admin.OperatorControllerService;
+import com.library.backend.services.admin.AdministratorOperatorsControllerService;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import com.library.frontend.controllers.Controller;
@@ -13,12 +13,18 @@ import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class AdministratorOperatorsController implements Controller {
 
@@ -28,12 +34,12 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
 
-    private OperatorControllerService service;
+    private AdministratorOperatorsControllerService service;
     private TableViewBuilder<User> operatorTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service=new OperatorControllerService(UserRepository.getInstance());
+        service = new AdministratorOperatorsControllerService(UserRepository.getInstance());
 
         booksButton.requestFocus();
 

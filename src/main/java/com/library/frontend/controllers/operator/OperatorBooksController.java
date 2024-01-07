@@ -1,5 +1,7 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.engines.BookInventorySearchEngine;
+import com.library.backend.engines.SearchEngine;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Book;
@@ -11,8 +13,6 @@ import com.library.database.enums.BookStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
-import com.library.backend.engines.BookInventorySearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.BookTreeTableViewBuilder;
 import com.library.frontend.utils.tableviews.ContextMenuBuilder;
 import javafx.collections.FXCollections;

@@ -1,5 +1,6 @@
 package repositories;
 
+import com.library.backend.exception.users.UserNotFoundException;
 import com.library.database.entities.User;
 import com.library.database.repositories.UserRepository;
 import org.hibernate.Session;
@@ -134,7 +135,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsername_UserFound_ReturnsUserOptional() {
+    void findByUsername_UserFound_ReturnsUserOptional() throws UserNotFoundException {
         // Arrange
         String username = "testUser";
         User expectedUser = new User();
@@ -155,7 +156,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsername_UserNotFound_ReturnsEmptyOptional() {
+    void findByUsername_UserNotFound_ReturnsEmptyOptional() throws UserNotFoundException {
         // Arrange
         String username = "nonExistentUser";
 

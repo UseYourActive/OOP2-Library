@@ -1,10 +1,11 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.services.AdminService;
-import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.admin.AdministratorBooksDialogControllerService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
+import com.library.database.repositories.BookFormRepository;
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -13,7 +14,10 @@ import com.library.frontend.utils.tableviews.ContextMenuBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -24,13 +28,13 @@ public class AdministratorBooksDialogController implements Controller {
     @FXML public TableView<Book> bookTableView;
     @FXML public Button closeButton;
 
-    private AdminService adminService;
+    private AdministratorBooksDialogControllerService service;
     private BookTableViewBuilder bookTableViewBuilder;
     private BookInventory bookInventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adminService=ServiceFactory.getService(AdminService.class);
+        service = new AdministratorBooksDialogControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
 
         bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
                 .findFirst()
@@ -71,13 +75,13 @@ public class AdministratorBooksDialogController implements Controller {
                     } else {
                         if (booksToRemove.size() == bookInventory.getBookList().size()) {
                             if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete\nall books from from inventory?\nThis will resolve to removing the inventory itself")) {
-                                adminService.removeSelectedBooks(bookInventory, booksToRemove);
+                                service.removeSelectedBooks(bookInventory, booksToRemove);
 
                                 ((Stage) closeButton.getScene().getWindow()).close();
                             }
                         } else {
                             if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want\nto delete the selected books ?")) {
-                                adminService.removeSelectedBooks(bookInventory, booksToRemove);
+                                service.removeSelectedBooks(bookInventory, booksToRemove);
 
                                 bookTableViewBuilder.updateTableView(bookTableView, bookInventory.getBookList());
                             }

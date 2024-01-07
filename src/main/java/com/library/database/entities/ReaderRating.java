@@ -4,8 +4,6 @@ import com.library.database.enums.Ratings;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Builder

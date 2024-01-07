@@ -1,6 +1,5 @@
 package com.library.database.entities;
 
-import com.library.database.enums.Ratings;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.library.frontend.controllers.admin;
 
-import com.library.backend.services.admin.OperatorControllerService;
+import com.library.backend.services.admin.CreateOperatorControllerService;
 import com.library.database.repositories.UserRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
@@ -22,14 +22,12 @@ public class CreateOperatorController implements Controller {
     @FXML public TextField repeatPasswordTextField;
     @FXML public Label informationLabel;
 
-    private OperatorControllerService service;
-    //private AdminService adminService;
+    private CreateOperatorControllerService service;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //adminService= ServiceFactory.getService(AdminService.class);
-        service=new OperatorControllerService(UserRepository.getInstance());
+        service = new CreateOperatorControllerService(UserRepository.getInstance());
     }
 
     @FXML

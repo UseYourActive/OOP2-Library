@@ -1,5 +1,6 @@
 package com.library.database.repositories;
 
+import com.library.backend.exception.users.UserNotFoundException;
 import com.library.database.entities.User;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
@@ -120,7 +121,7 @@ public class UserRepository extends Repository<User> {
      * @return An {@code Optional} containing the found user, or empty if the user is not found.
      * @throws HibernateException If an error occurs during the Hibernate operation.
      */
-    public Optional<User> findByUsername(String username) throws HibernateException {
+    public Optional<User> findByUsername(String username) throws HibernateException, UserNotFoundException {
         try {
             logger.info("Finding user by username: {}", username);
             User user = super.session.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
@@ -131,12 +132,15 @@ public class UserRepository extends Repository<User> {
                 logger.info("Successfully found user by username: {}", username);
             } else {
                 logger.error("User not found with username: {}", username);
-                //throw new UserNotFoundException("User not found");
+                throw new UserNotFoundException("User not found");
             }
 
             return Optional.ofNullable(user);
         } catch (HibernateException e) {
             logger.error("Error finding user by username: {}", username, e);
+            throw e;
+        } catch (UserNotFoundException e) {
+            logger.error(e.getMessage(), e);
             throw e;
         }
     }

@@ -1,9 +1,10 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
-import com.library.backend.services.AdminService;
-import com.library.backend.services.ServiceFactory;
+import com.library.backend.services.admin.AdministratorBooksControllerService;
 import com.library.database.entities.BookInventory;
+import com.library.database.repositories.BookFormRepository;
+import com.library.database.repositories.BookInventoryRepository;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.DialogUtils;
 import com.library.frontend.utils.SceneLoader;
@@ -31,15 +32,14 @@ public class AdministratorBooksController implements Controller {
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
 
-    private AdminService adminService;
+    private AdministratorBooksControllerService service;
     private TableViewBuilder<BookInventory> bookInventoryTableViewBuilder;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        adminService = ServiceFactory.getService(AdminService.class);
-
+        service = new AdministratorBooksControllerService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
 
         operatorsButton.requestFocus();
         bookTextArea.setFocusTraversable(false);
@@ -49,14 +49,14 @@ public class AdministratorBooksController implements Controller {
 
         inventoryTableView.setContextMenu(getBookInventoryContextMenu());
 
-        bookInventoryTableViewBuilder.updateTableView(inventoryTableView,adminService.getAllBookInventories());
+        bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());
     }
 
     @FXML
     public void searchBookButtonOnMouseClicked() {
         try {
             String stringToSearch = searchBookTextField.getText();
-            Collection<BookInventory> results = adminService.searchBookInventory(stringToSearch);
+            Collection<BookInventory> results = service.searchBookInventory(stringToSearch);
             bookInventoryTableViewBuilder.updateTableView(inventoryTableView,results.stream().toList());
 
         }catch (SearchEngineException e){
@@ -80,7 +80,7 @@ public class AdministratorBooksController implements Controller {
 
                 if (mouseEvent.getClickCount() == 2) {
                     SceneLoader.loadModalityDialog("/views/admin/administratorBooksDialogScene.fxml", selectedInventory.getRepresentiveBook().getTitle(), selectedInventory);
-                    bookInventoryTableViewBuilder.updateTableView(inventoryTableView, adminService.getAllBookInventories());
+                    bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());
                     bookTextArea.clear();
                 }
             }
@@ -121,9 +121,9 @@ public class AdministratorBooksController implements Controller {
        if (inventory != null) {
            if (DialogUtils.showConfirmation("Confirmation", "Are you sure you want to delete these book/s from the database ?")) {
 
-               adminService.removeInventory(inventory);
+               service.removeInventory(inventory);
 
-               bookInventoryTableViewBuilder.updateTableView(inventoryTableView, adminService.getAllBookInventories());
+               bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());
                bookTextArea.clear();
            }
        } else {

@@ -1,9 +1,7 @@
 package com.library.backend.services.admin;
 
 import com.library.backend.exception.IncorrectInputException;
-import com.library.backend.services.AdminService;
 import com.library.backend.services.Service;
-import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.Author;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
@@ -11,22 +9,26 @@ import com.library.database.enums.BookStatus;
 import com.library.database.enums.Genre;
 import com.library.database.repositories.AuthorRepository;
 import com.library.database.repositories.BookInventoryRepository;
+import com.library.database.repositories.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-public class BookRegistrationService implements Service { // RegisterNewBookController
-    private static final Logger logger = LoggerFactory.getLogger(BookRegistrationService.class);
+public class BookRegistrationControllerService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(BookRegistrationControllerService.class);
     private static final String LOG_SUCCESSFUL_REGISTRATION = "Book registration successful for title: '{}', author: '{}'";
     private static final String LOG_ERROR_DURING_REGISTRATION = "Error occurred during book registration";
     private static final String LOG_FAILED_VALIDATION = "Input validation failed";
-    private final AdminService adminService;
+    private final BookInventoryRepository bookInventoryRepository;
+    private final BookRepository bookRepository;
 
-    public BookRegistrationService() {
-        this.adminService = ServiceFactory.getService(AdminService.class);
+    public BookRegistrationControllerService(BookInventoryRepository bookInventoryRepository, BookRepository bookRepository) {
+        this.bookInventoryRepository = bookInventoryRepository;
+        this.bookRepository = bookRepository;
     }
 
     public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws Exception {
@@ -37,7 +39,7 @@ public class BookRegistrationService implements Service { // RegisterNewBookCont
 
             BookInventory bookInventory = createBookInventory(title, author, genre, quantity, year, resume);
 
-            adminService.saveInventory(bookInventory);
+            saveInventory(bookInventory);
             logger.info(LOG_SUCCESSFUL_REGISTRATION, title, author);
         } catch (Exception e) {
             logger.error(LOG_ERROR_DURING_REGISTRATION, e);
@@ -90,11 +92,11 @@ public class BookRegistrationService implements Service { // RegisterNewBookCont
                     Book book = createBook(title, author, genre, year, resume);
                     book.setInventory(existingInventory);
 
-                    adminService.saveBook(book);
+                    saveBook(book);
 
                     existingInventory.addBook(book);
                 }
-                adminService.saveInventory(existingInventory);
+                saveInventory(existingInventory);
 
                 flag = false;
                 break;
@@ -108,7 +110,7 @@ public class BookRegistrationService implements Service { // RegisterNewBookCont
                 bookInventory.setRepresentiveBook(book);
                 book.setInventory(bookInventory);
 
-                adminService.saveBook(book);
+                saveBook(book);
 
                 bookList.add(book);
             }
@@ -150,5 +152,22 @@ public class BookRegistrationService implements Service { // RegisterNewBookCont
         }
 
         return book;
+    }
+
+    public void saveInventory(BookInventory bookInventory) {
+        performRepositoryOperation(() -> bookInventoryRepository.save(bookInventory), "saved", "BookInventory");
+    }
+
+    private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
+        T result = repositoryOperation.get();
+        if (result != null) {
+            logger.info("{} {} successfully: {}", entityName, action, entityName);
+        } else {
+            logger.error("Failed to {} {}: {}", action, entityName, entityName);
+        }
+    }
+
+    public void saveBook(Book book) {
+        performRepositoryOperation(() -> bookRepository.save(book), "saved", "Book");
     }
 }

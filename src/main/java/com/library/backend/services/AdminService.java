@@ -16,20 +16,12 @@ import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.UserRepository;
-import com.library.frontend.utils.DialogUtils;
-import com.library.frontend.utils.SceneLoader;
-import com.library.frontend.utils.tableviews.BookTableViewBuilder;
 import com.library.frontend.utils.validators.StrongPasswordValidator;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 public class AdminService implements Service {

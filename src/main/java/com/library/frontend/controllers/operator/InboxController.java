@@ -2,12 +2,10 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
-import com.library.database.entities.BookForm;
 import com.library.database.entities.EventNotification;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;

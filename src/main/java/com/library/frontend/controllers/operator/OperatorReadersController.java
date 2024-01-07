@@ -1,15 +1,13 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.engines.ReaderSearchEngine;
+import com.library.backend.engines.SearchEngine;
 import com.library.backend.services.OperatorService;
 import com.library.backend.services.ServiceFactory;
 import com.library.database.entities.BookForm;
-import com.library.database.entities.EventNotification;
 import com.library.database.entities.Reader;
-import com.library.database.enums.BookFormStatus;
 import com.library.frontend.controllers.Controller;
 import com.library.frontend.utils.SceneLoader;
-import com.library.backend.engines.ReaderSearchEngine;
-import com.library.backend.engines.SearchEngine;
 import com.library.frontend.utils.tableviews.ReaderTableViewBuilder;
 import com.library.frontend.utils.tableviews.TableViewBuilder;
 import javafx.event.ActionEvent;
@@ -22,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
