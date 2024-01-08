@@ -24,9 +24,12 @@ import java.util.ResourceBundle;
 public class LogInController implements Controller {
 
     @FXML private Button logInButton;
-    @FXML private Label logInMessageLabel;
-    @FXML private TextField usernameTextField;
-    @FXML private PasswordField passwordPasswordField;
+    @FXML
+    public Label logInMessageLabel;
+    @FXML
+    public TextField usernameTextField;
+    @FXML
+    public PasswordField passwordPasswordField;
 
     private LogInService service;
 
@@ -78,7 +81,7 @@ public class LogInController implements Controller {
     }
 
     //Try to move the logic inside a class
-    private void checkInput() throws IncorrectInputException {
+    public void checkInput() throws IncorrectInputException {
         if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
             throw new IncorrectInputException("Please enter username\nand password!");
         }

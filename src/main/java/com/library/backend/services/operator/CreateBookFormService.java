@@ -29,7 +29,7 @@ public class CreateBookFormService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(CreateBookFormService.class);
     private final ReaderRepository readerRepository;
     private final BookFormRepository bookFormRepository;
-    private final BookRepository bookRepository;
+    @Getter private final BookRepository bookRepository;
     @Getter
     @Setter
     private SearchEngine<Reader> readerSearchEngine;
@@ -58,6 +58,12 @@ public class CreateBookFormService implements Service {
 
     public void lendBooks(Reader selectedReader, List<Book> bookList) throws ReaderException {
         logger.info("Lending books to reader '{}'", selectedReader.getFullName());
+
+        // Null check for ReaderRating
+        if (selectedReader.getReaderRating() == null) {
+            logger.warn("The reader '{}' does not have a rating.", selectedReader.getFullName());
+            throw new ReaderException("The reader does not have a rating.");
+        }
 
         if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR) {
             logger.warn("The reader '{}' is not allowed to take books anymore.", selectedReader.getFullName());
@@ -90,6 +96,7 @@ public class CreateBookFormService implements Service {
             throw new ReaderException("For normal lending, the reader can take only AVAILABLE books.");
         }
     }
+
 
     public void lendReadingRoomBooks(Reader selectedReader, List<Book> bookList) throws ReaderException {
         logger.info("Lending reading room books to reader '{}'", selectedReader.getFullName());

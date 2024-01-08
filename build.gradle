@@ -18,6 +18,7 @@ dependencies {
     testImplementation group: 'org.testfx', name: 'testfx-junit5', version: '4.0.17'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.8.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.1'
 
     // Email sender
     implementation 'com.sun.mail:javax.mail:1.6.2'

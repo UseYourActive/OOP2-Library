@@ -15,6 +15,7 @@ import com.library.database.repositories.BookRepository;
 import com.library.database.repositories.EventNotificationRepository;
 import com.library.database.repositories.ReaderRepository;
 import com.library.frontend.SceneLoader;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ public class BookFormShowService implements Service {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
     private final EventNotificationRepository eventNotificationRepository;
-    private EmailSenderService emailSenderService;
+    @Getter private EmailSenderService emailSenderService;
 
     public BookFormShowService(BookRepository bookRepository, ReaderRepository readerRepository, EventNotificationRepository eventNotificationRepository) {
         this.bookRepository = bookRepository;
