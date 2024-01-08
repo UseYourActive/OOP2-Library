@@ -11,6 +11,7 @@ import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.LazyInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,19 +45,21 @@ public class AdministratorBooksService implements Service {
     }
 
     public void updateBookForms(List<Book> bookList) {
-        for (BookForm bookForm : bookFormRepository.findAll()) {
-            for (Book bookToRemove : bookList) {
-                bookForm.getBooks().remove(bookToRemove);
-            }
+        try {
+            for (BookForm bookForm : bookFormRepository.findAll()) {
+                for (Book bookToRemove : bookList) {
+                    bookForm.getBooks().remove(bookToRemove);
+                }
 
-            if (bookForm.getBooks().isEmpty()) {
-                bookFormRepository.delete(bookForm);
-                logger.info("Deleted book form: {}", bookForm);
-            } else {
-                bookFormRepository.update(bookForm);
-                logger.info("Updated book form: {}", bookForm);
+                if (bookForm.getBooks().isEmpty()) {
+                    bookFormRepository.delete(bookForm);
+                    logger.info("Deleted book form: {}", bookForm);
+                } else {
+                    bookFormRepository.update(bookForm);
+                    logger.info("Updated book form: {}", bookForm);
+                }
             }
-        }
+        }catch (LazyInitializationException ignored){}
     }
 
     private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
