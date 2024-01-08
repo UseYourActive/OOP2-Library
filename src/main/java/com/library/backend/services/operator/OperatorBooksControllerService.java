@@ -19,6 +19,7 @@ import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import org.hibernate.boot.archive.spi.ArchiveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,16 +119,11 @@ public class OperatorBooksControllerService implements Service {
         }
     }
 
-    public void archiveBook(Book book) {
-        try {
-            updateBookStatus(book, BookStatus.ARCHIVED, "archived");
-        } catch (Exception e) {
-            logger.error("Failed to archive book", e);
-            throw new RuntimeException("Failed to archive book", e);
-        }
+    public void archiveBook(Book book) throws ArchiveException{
+        updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
-    private void updateBookStatus(Book book, BookStatus newStatus, String action) {
+    private void updateBookStatus(Book book, BookStatus newStatus, String action) throws ArchiveException{
         try {
             Preconditions.checkNotNull(book, "Book cannot be null");
             book.setBookStatus(newStatus);
@@ -139,7 +135,7 @@ public class OperatorBooksControllerService implements Service {
             }
         } catch (Exception e) {
             logger.error("Failed to update book status", e);
-            throw new RuntimeException("Failed to update book status", e);
+            throw new ArchiveException("Failed to archive book", e);
         }
     }
 }

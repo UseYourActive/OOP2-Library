@@ -63,3 +63,25 @@ application {
 test {
     useJUnitPlatform()
 }
+
+tasks.named('jar') {
+    duplicatesStrategy = 'exclude' // Set a strategy to handle duplicates
+
+    manifest {
+        attributes(
+                'Main-Class': 'com.library.LibraryApplication'
+        )
+    }
+
+   // // Include dependencies in the generated JAR
+   // from {
+   //     configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+   //             .collect { it - 'module-info.class' } // Exclude module-info.class files
+   // }
+//
+   // // Include JavaFX modules explicitly
+   // from {
+   //     configurations.runtimeClasspath.findAll { it.name.startsWith('javafx') }
+   //             .collect { it.isDirectory() ? it : zipTree(it) }
+   // }
+}
