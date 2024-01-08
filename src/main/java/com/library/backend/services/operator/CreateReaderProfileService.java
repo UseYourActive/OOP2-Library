@@ -26,7 +26,6 @@ public class CreateReaderProfileService implements Service {
                     .rating(Ratings.NONE)
                     .currentValue(-1)
                     .coefficient(0)
-                    //.readers(new ArrayList<>())
                     .build();
 
             Reader reader = Reader.builder()
@@ -39,20 +38,13 @@ public class CreateReaderProfileService implements Service {
                     .readerRating(readerRating)
                     .build();
 
-            // readerRating.getReaders().add(reader);
-
-            //operatorService.saveRating(readerRating);
             readerRepository.save(reader);
-            //operatorService.createReader(reader);
 
             logger.info("Created a new reader profile: {}", reader.getFullName());
 
         } catch (IncorrectInputException e) {
             logger.error("Failed to create reader profile due to incorrect input.", e);
             throw e;
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred while creating a reader profile.", e);
-            throw new RuntimeException("Failed to create reader profile.", e);
         }
     }
 

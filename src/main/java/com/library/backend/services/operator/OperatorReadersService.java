@@ -29,14 +29,10 @@ public class OperatorReadersService implements Service {
     }
 
     public List<Reader> getAllReaders() {
-        try {
-            List<Reader> readers = readerRepository.findAll();
-            logger.info("Retrieved {} readers from the repository.", readers.size());
-            return readers;
-        } catch (Exception e) {
-            logger.error("Failed to retrieve readers", e);
-            throw new RuntimeException("Failed to retrieve readers", e);
-        }
+
+        List<Reader> readers = readerRepository.findAll();
+        logger.info("Retrieved {} readers from the repository.", readers.size());
+        return readers;
     }
 
     public Collection<Reader> searchReader(String stringToSearch) throws SearchEngineException {
@@ -44,7 +40,7 @@ public class OperatorReadersService implements Service {
             return readerSearchEngine.search(readerRepository.findAll(), stringToSearch);
         } catch (SearchEngineException e) {
             logger.error("Failed to search readers", e);
-            throw new RuntimeException("Failed to search readers", e);
+            throw new SearchEngineException("Failed to search readers", e);
         }
     }
 
@@ -55,7 +51,6 @@ public class OperatorReadersService implements Service {
             logger.info("Removed reader: {}", reader);
         } catch (Exception e) {
             logger.error("Failed to remove reader", e);
-            throw new RuntimeException("Failed to remove reader", e);
         }
     }
 }

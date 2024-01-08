@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.LibraryException;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.OperatorBooksService;
@@ -17,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.hibernate.boot.archive.spi.ArchiveException;
 
 import java.net.URL;
 import java.util.*;
@@ -202,6 +204,9 @@ public class OperatorBooksController implements Controller {
             selectedBooksListView.getItems().clear();
 
         }catch (NoSuchElementException ignored){}
+        catch (LibraryException e){
+            DialogUtils.showInfo("Information",e.getMessage());
+        }
     }
 
 
