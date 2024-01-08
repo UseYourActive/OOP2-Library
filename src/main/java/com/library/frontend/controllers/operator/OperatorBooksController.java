@@ -1,5 +1,6 @@
 package com.library.frontend.controllers.operator;
 
+import com.library.backend.exception.LibraryException;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
 import com.library.backend.services.operator.OperatorBooksControllerService;
@@ -203,7 +204,7 @@ public class OperatorBooksController implements Controller {
             selectedBooksListView.getItems().clear();
 
         }catch (NoSuchElementException ignored){}
-        catch (ArchiveException e){
+        catch (LibraryException e){
             DialogUtils.showInfo("Information",e.getMessage());
         }
     }

@@ -3,6 +3,7 @@ package com.library.backend.services.operator;
 import com.google.common.base.Preconditions;
 import com.library.backend.engines.BookInventorySearchEngine;
 import com.library.backend.engines.SearchEngine;
+import com.library.backend.exception.LibraryException;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.Service;
 import com.library.database.entities.Book;
@@ -19,7 +20,6 @@ import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
-import org.hibernate.boot.archive.spi.ArchiveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,11 +119,11 @@ public class OperatorBooksControllerService implements Service {
         }
     }
 
-    public void archiveBook(Book book) throws ArchiveException{
+    public void archiveBook(Book book) throws LibraryException{
         updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
-    private void updateBookStatus(Book book, BookStatus newStatus, String action) throws ArchiveException{
+    private void updateBookStatus(Book book, BookStatus newStatus, String action) throws LibraryException {
         try {
             Preconditions.checkNotNull(book, "Book cannot be null");
             book.setBookStatus(newStatus);
@@ -135,7 +135,7 @@ public class OperatorBooksControllerService implements Service {
             }
         } catch (Exception e) {
             logger.error("Failed to update book status", e);
-            throw new ArchiveException("Failed to archive book", e);
+            throw new LibraryException("Failed to archive book", e);
         }
     }
 }
