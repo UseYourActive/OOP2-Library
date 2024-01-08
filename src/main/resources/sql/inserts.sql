@@ -51,3 +51,6 @@ VALUES
   (20,0, '2002', 'Book20', 'Summary of Book20', 10, 'BIOGRAPHY', 'AVAILABLE', 20);
 
 UPDATE book_inventories SET book_id = inventory_id;
+
+SELECT setval('books_book_id_seq', 21);
+SELECT setval('book_inventories_inventory_id_seq', 21);

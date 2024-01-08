@@ -35,13 +35,14 @@ public class AddBookQuantityController implements Controller {
     public void addButtonOnMouseClicked() {
         try {
             service.increaseBookQuantity(quantityTextField.getText(), bookInventory);
+
+            ((Stage) addButton.getScene().getWindow()).close();
         } catch (InvalidQuantityException e) {
-            DialogUtils.showError("Invalid quantity exception!", e.getMessage());
+            informationLabel.setText("Invalid quantity exception!");
         } catch (NumberFormatException e) {
-            DialogUtils.showError("Only numbers are allowed!", e.getMessage());
+            informationLabel.setText("Only numbers are allowed!");
         } catch (ObjectCannotBeNullException e) {
             DialogUtils.showError("Object was not found!", e.getMessage());
         }
-        ((Stage) addButton.getScene().getWindow()).close();
     }
 }

@@ -31,7 +31,7 @@ public class AddBookQuantityService implements Service {
 
             if (quantity <= 0) {
                 logger.error("Invalid quantity: {}", quantityString);
-                throw new InvalidQuantityException("Invalid quantity");
+                throw new InvalidQuantityException();
             }
 
             Book representiveBook = bookInventory.getRepresentiveBook();
