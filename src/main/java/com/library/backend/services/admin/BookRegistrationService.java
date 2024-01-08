@@ -29,7 +29,7 @@ public class BookRegistrationService implements Service {
     }
 
     public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws IncorrectInputException, NumberFormatException {
-        checkInput(title, author, genre, year, amount);
+        checkInput(title, author, genre, year, amount, resume);
 
         int quantity = getQuantity(amount);
 
@@ -39,16 +39,19 @@ public class BookRegistrationService implements Service {
         logger.info("Book registration successful for title: '{}', author: '{}'", title, author);
     }
 
-    private void checkInput(String title, String author, Genre genre, String year, String amount) throws IncorrectInputException, NumberFormatException {
+    private void checkInput(String title, String author, Genre genre, String year, String amount, String resume) throws IncorrectInputException, NumberFormatException {
         try {
-            if (title.isEmpty())
+            if (title == null || title.isEmpty())
                 throw new IncorrectInputException("Please enter book title.");
 
-            if (author.isEmpty())
+            if (author == null || author.isEmpty() || (containsNumbers(author)))
                 throw new IncorrectInputException("Please enter book author.");
 
             if (genre == null)
                 throw new IncorrectInputException("Please choose the genre of the book.");
+
+            if (resume == null || resume.isEmpty())
+                throw new IncorrectInputException("Please write the resume of the book.");
 
             int yearInt = Integer.parseInt(year);
             if (yearInt < 0)
@@ -61,6 +64,10 @@ public class BookRegistrationService implements Service {
             logger.error("Incorrect input!", e);
             throw e;
         }
+    }
+
+    private boolean containsNumbers(String input) {
+        return input.matches(".*\\d+.*");
     }
 
     private int getQuantity(String amount) {

@@ -43,7 +43,7 @@ public class AdministratorBooksService implements Service {
         performRepositoryOperation(() -> bookInventoryRepository.delete(inventory), "deleted", "BookInventory");
     }
 
-    private void updateBookForms(List<Book> bookList) {
+    public void updateBookForms(List<Book> bookList) {
         for (BookForm bookForm : bookFormRepository.findAll()) {
             for (Book bookToRemove : bookList) {
                 bookForm.getBooks().remove(bookToRemove);
