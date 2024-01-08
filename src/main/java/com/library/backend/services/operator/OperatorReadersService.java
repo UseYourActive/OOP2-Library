@@ -15,15 +15,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 
-public class OperatorReadersControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(OperatorReadersControllerService.class);
+public class OperatorReadersService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(OperatorReadersService.class);
     private final ReaderRepository readerRepository;
-    private SearchEngine<Reader> readerSearchEngine;
+    @Setter private SearchEngine<Reader> readerSearchEngine;
     @Setter
     @Getter
     private double ratingValue;
 
-    public OperatorReadersControllerService(ReaderRepository readerRepository) {
+    public OperatorReadersService(ReaderRepository readerRepository) {
         this.readerRepository = readerRepository;
         this.readerSearchEngine = new ReaderSearchEngine();
     }

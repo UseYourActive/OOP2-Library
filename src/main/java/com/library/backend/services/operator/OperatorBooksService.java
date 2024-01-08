@@ -20,6 +20,7 @@ import com.library.frontend.SceneLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,19 +28,18 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-public class OperatorBooksControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(OperatorBooksControllerService.class);
+public class OperatorBooksService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(OperatorBooksService.class);
     private final BookFormRepository bookFormRepository;
     private final BookInventoryRepository bookInventoryRepository;
     private final EventNotificationRepository eventNotificationRepository;
     private final BookRepository bookRepository;
-    @Getter
-    private ObservableList<Book> selectedBooks;
-    private SearchEngine<BookInventory> bookInventorySearchEngine;
-    @Getter
-    private List<BookForm> overdueBookForms;
+    @Setter private SearchEngine<BookInventory> bookInventorySearchEngine;
 
-    public OperatorBooksControllerService(BookFormRepository bookFormRepository, BookInventoryRepository bookInventoryRepository, EventNotificationRepository eventNotificationRepository, BookRepository bookRepository) {
+    @Getter private ObservableList<Book> selectedBooks;
+    @Getter private List<BookForm> overdueBookForms;
+
+    public OperatorBooksService(BookFormRepository bookFormRepository, BookInventoryRepository bookInventoryRepository, EventNotificationRepository eventNotificationRepository, BookRepository bookRepository) {
         this.bookFormRepository = bookFormRepository;
         this.bookInventoryRepository = bookInventoryRepository;
         this.eventNotificationRepository = eventNotificationRepository;

@@ -2,13 +2,13 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.ReaderException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.CreateBookFormControllerService;
+import com.library.backend.services.operator.CreateBookFormService;
 import com.library.database.entities.Book;
 import com.library.database.entities.Reader;
 import com.library.database.enums.Ratings;
+import com.library.frontend.SceneLoader;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
-import com.library.frontend.SceneLoader;
 import com.library.utils.tableviews.BookTableViewBuilder;
 import com.library.utils.tableviews.ReaderTableViewBuilder;
 import javafx.fxml.FXML;
@@ -33,13 +33,13 @@ public class CreateBookFormController implements Controller {
     @FXML public Rating readerRatingControl;
     @FXML public TableView<Reader> readerTableView;
 
-    private CreateBookFormControllerService service;
+    private CreateBookFormService service;
     private BookTableViewBuilder bookTableViewBuilder;
     private ReaderTableViewBuilder readerTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(CreateBookFormControllerService.class);
+        service = ServiceFactory.getService(CreateBookFormService.class);
 
         bookTableView.setMouseTransparent(true);
         bookTableView.setFocusTraversable(false);

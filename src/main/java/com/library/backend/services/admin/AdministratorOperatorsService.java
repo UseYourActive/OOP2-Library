@@ -7,17 +7,18 @@ import com.library.backend.services.Service;
 import com.library.database.entities.User;
 import com.library.database.enums.Role;
 import com.library.database.repositories.UserRepository;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
 
-public class AdministratorOperatorsControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsControllerService.class);
-    private final UserRepository userRepository;
+public class AdministratorOperatorsService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsService.class);
+    @Getter private final UserRepository userRepository;
 
-    public AdministratorOperatorsControllerService(UserRepository userRepository) {
+    public AdministratorOperatorsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

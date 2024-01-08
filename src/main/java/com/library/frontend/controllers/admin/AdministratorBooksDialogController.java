@@ -1,13 +1,13 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.AdministratorBooksDialogControllerService;
+import com.library.backend.services.admin.AdministratorBooksDialogService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
 import com.library.database.enums.BookStatus;
+import com.library.frontend.SceneLoader;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
-import com.library.frontend.SceneLoader;
 import com.library.utils.tableviews.BookTableViewBuilder;
 import com.library.utils.tableviews.ContextMenuBuilder;
 import javafx.event.ActionEvent;
@@ -27,13 +27,13 @@ public class AdministratorBooksDialogController implements Controller {
     @FXML public TableView<Book> bookTableView;
     @FXML public Button closeButton;
 
-    private AdministratorBooksDialogControllerService service;
+    private AdministratorBooksDialogService service;
     private BookTableViewBuilder bookTableViewBuilder;
     private BookInventory bookInventory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(AdministratorBooksDialogControllerService.class);
+        service = ServiceFactory.getService(AdministratorBooksDialogService.class);
 
         bookInventory = (BookInventory) Arrays.stream(SceneLoader.getTransferableObjects())
                 .findFirst()

@@ -23,14 +23,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookFormShowControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(BookFormShowControllerService.class);
+public class BookFormShowService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(BookFormShowService.class);
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
     private final EventNotificationRepository eventNotificationRepository;
     private EmailSenderService emailSenderService;
 
-    public BookFormShowControllerService(BookRepository bookRepository, ReaderRepository readerRepository, EventNotificationRepository eventNotificationRepository) {
+    public BookFormShowService(BookRepository bookRepository, ReaderRepository readerRepository, EventNotificationRepository eventNotificationRepository) {
         this.bookRepository = bookRepository;
         this.readerRepository = readerRepository;
         this.eventNotificationRepository = eventNotificationRepository;

@@ -2,9 +2,9 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.CreateReaderProfileControllerService;
-import com.library.frontend.controllers.Controller;
+import com.library.backend.services.operator.CreateReaderProfileService;
 import com.library.frontend.SceneLoader;
+import com.library.frontend.controllers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,11 +26,11 @@ public class CreateReaderProfileController implements Controller {
     @FXML public Button cancelButton;
     @FXML public Label infoLabel;
 
-    private CreateReaderProfileControllerService service;
+    private CreateReaderProfileService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(CreateReaderProfileControllerService.class);
+        service = ServiceFactory.getService(CreateReaderProfileService.class);
     }
 
     @FXML

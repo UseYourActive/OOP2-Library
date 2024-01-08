@@ -1,9 +1,9 @@
 package com.library.frontend.controllers.admin;
 
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.CreateOperatorControllerService;
-import com.library.frontend.controllers.Controller;
+import com.library.backend.services.admin.CreateOperatorService;
 import com.library.frontend.SceneLoader;
+import com.library.frontend.controllers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -22,12 +22,12 @@ public class CreateOperatorController implements Controller {
     @FXML public TextField repeatPasswordTextField;
     @FXML public Label informationLabel;
 
-    private CreateOperatorControllerService service;
+    private CreateOperatorService service;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(CreateOperatorControllerService.class);
+        service = ServiceFactory.getService(CreateOperatorService.class);
     }
 
     @FXML

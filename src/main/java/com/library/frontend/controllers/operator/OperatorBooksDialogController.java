@@ -2,8 +2,8 @@ package com.library.frontend.controllers.operator;
 
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
-import com.library.frontend.controllers.Controller;
 import com.library.frontend.SceneLoader;
+import com.library.frontend.controllers.Controller;
 import com.library.utils.tableviews.BookTableViewBuilder;
 import com.library.utils.tableviews.TableViewBuilder;
 import javafx.fxml.FXML;

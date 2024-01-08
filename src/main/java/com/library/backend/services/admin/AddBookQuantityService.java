@@ -11,12 +11,12 @@ import com.library.database.repositories.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddBookQuantityControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(AddBookQuantityControllerService.class);
+public class AddBookQuantityService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(AddBookQuantityService.class);
     private final BookRepository bookRepository;
     private final BookInventoryRepository bookInventoryRepository;
 
-    public AddBookQuantityControllerService(BookRepository bookRepository, BookInventoryRepository bookInventoryRepository) {
+    public AddBookQuantityService(BookRepository bookRepository, BookInventoryRepository bookInventoryRepository) {
         this.bookRepository = bookRepository;
         this.bookInventoryRepository = bookInventoryRepository;
     }

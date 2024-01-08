@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class AdministratorBooksDialogControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksControllerService.class);
+public class AdministratorBooksDialogService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
 
-    public AdministratorBooksDialogControllerService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
+    public AdministratorBooksDialogService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookFormRepository = bookFormRepository;
     }

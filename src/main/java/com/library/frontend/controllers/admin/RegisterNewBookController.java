@@ -2,10 +2,10 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.IncorrectInputException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.BookRegistrationControllerService;
+import com.library.backend.services.admin.BookRegistrationService;
 import com.library.database.enums.Genre;
-import com.library.frontend.controllers.Controller;
 import com.library.frontend.SceneLoader;
+import com.library.frontend.controllers.Controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -29,11 +29,11 @@ public class RegisterNewBookController implements Controller {
     @FXML public TextField amountTextField;
     @FXML public AnchorPane anchorPane;
 
-    private BookRegistrationControllerService service;
+    private BookRegistrationService service;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(BookRegistrationControllerService.class);
+        service = ServiceFactory.getService(BookRegistrationService.class);
 
         Platform.runLater(() -> genreComboBox.requestFocus());
 

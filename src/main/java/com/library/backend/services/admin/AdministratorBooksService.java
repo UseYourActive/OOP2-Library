@@ -10,6 +10,7 @@ import com.library.database.entities.BookInventory;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +19,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @Getter
-public class AdministratorBooksControllerService implements Service {
-    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksControllerService.class);
+public class AdministratorBooksService implements Service {
+    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
-    private final SearchEngine<BookInventory> searchEngine;
+    @Setter private SearchEngine<BookInventory> searchEngine;
 
-    public AdministratorBooksControllerService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
+    public AdministratorBooksService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookFormRepository = bookFormRepository;
         searchEngine = new BookInventorySearchEngine();
@@ -42,7 +43,7 @@ public class AdministratorBooksControllerService implements Service {
         performRepositoryOperation(() -> bookInventoryRepository.delete(inventory), "deleted", "BookInventory");
     }
 
-    private void updateBookForms(List<Book> bookList) {
+    public void updateBookForms(List<Book> bookList) {
         for (BookForm bookForm : bookFormRepository.findAll()) {
             for (Book bookToRemove : bookList) {
                 bookForm.getBooks().remove(bookToRemove);

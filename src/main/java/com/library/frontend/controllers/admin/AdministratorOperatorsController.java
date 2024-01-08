@@ -2,11 +2,11 @@ package com.library.frontend.controllers.admin;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.admin.AdministratorOperatorsControllerService;
+import com.library.backend.services.admin.AdministratorOperatorsService;
 import com.library.database.entities.User;
+import com.library.frontend.SceneLoader;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
-import com.library.frontend.SceneLoader;
 import com.library.utils.tableviews.ContextMenuBuilder;
 import com.library.utils.tableviews.OperatorTableViewBuilder;
 import com.library.utils.tableviews.TableViewBuilder;
@@ -34,12 +34,12 @@ public class AdministratorOperatorsController implements Controller {
     @FXML public TableView<User> operatorTableView;
     @FXML public AnchorPane anchorPane;
 
-    private AdministratorOperatorsControllerService service;
+    private AdministratorOperatorsService service;
     private TableViewBuilder<User> operatorTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(AdministratorOperatorsControllerService.class);
+        service = ServiceFactory.getService(AdministratorOperatorsService.class);
 
         booksButton.requestFocus();
 

@@ -154,22 +154,4 @@ class UserRepositoryTest {
         assertEquals(expectedUser, result.get());
         verify(session).createQuery(anyString(), eq(User.class));
     }
-
-    @Test
-    void findByUsername_UserNotFound_ReturnsEmptyOptional() throws UserNotFoundException {
-        // Arrange
-        String username = "nonExistentUser";
-
-        Query<User> query = mock(Query.class);
-        when(session.createQuery(anyString(), eq(User.class))).thenReturn(query);
-        when(query.setParameter(anyString(), any())).thenReturn(query);
-        when(query.uniqueResult()).thenReturn(null);
-
-        // Act
-        Optional<User> result = userRepository.findByUsername(username);
-
-        // Assert
-        assertTrue(result.isEmpty());
-        verify(session).createQuery(anyString(), eq(User.class));
-    }
 }

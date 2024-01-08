@@ -2,12 +2,12 @@ package com.library.frontend.controllers.operator;
 
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.OperatorReadersControllerService;
+import com.library.backend.services.operator.OperatorReadersService;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.Reader;
+import com.library.frontend.SceneLoader;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
-import com.library.frontend.SceneLoader;
 import com.library.utils.tableviews.ContextMenuBuilder;
 import com.library.utils.tableviews.ReaderTableViewBuilder;
 import com.library.utils.tableviews.TableViewBuilder;
@@ -31,12 +31,12 @@ public class OperatorReadersController implements Controller {
     @FXML public ListView<BookForm> bookFormListView;
     @FXML public Rating readerRatingControl;
 
-    private OperatorReadersControllerService service;
+    private OperatorReadersService service;
     private TableViewBuilder<Reader> readerTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(OperatorReadersControllerService.class);
+        service = ServiceFactory.getService(OperatorReadersService.class);
 
         booksButton.requestFocus();
 

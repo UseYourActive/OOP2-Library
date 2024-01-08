@@ -10,11 +10,11 @@ import com.library.database.repositories.ReaderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateReaderProfileControllerService implements Service {
-    private static final Logger logger = LoggerFactory.getLogger(CreateReaderProfileControllerService.class);
+public class CreateReaderProfileService implements Service {
+    private static final Logger logger = LoggerFactory.getLogger(CreateReaderProfileService.class);
     private final ReaderRepository readerRepository;
 
-    public CreateReaderProfileControllerService(ReaderRepository readerRepository) {
+    public CreateReaderProfileService(ReaderRepository readerRepository) {
         this.readerRepository = readerRepository;
     }
 

@@ -3,12 +3,12 @@ package com.library.frontend.controllers.operator;
 import com.library.backend.exception.LibraryException;
 import com.library.backend.exception.searchengine.SearchEngineException;
 import com.library.backend.services.ServiceFactory;
-import com.library.backend.services.operator.OperatorBooksControllerService;
+import com.library.backend.services.operator.OperatorBooksService;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookInventory;
+import com.library.frontend.SceneLoader;
 import com.library.frontend.controllers.Controller;
 import com.library.utils.DialogUtils;
-import com.library.frontend.SceneLoader;
 import com.library.utils.tableviews.BookTreeTableViewBuilder;
 import com.library.utils.tableviews.ContextMenuBuilder;
 import javafx.event.ActionEvent;
@@ -35,12 +35,12 @@ public class OperatorBooksController implements Controller {
     @FXML public Button lendButton;
     @FXML public Button inboxButton;
 
-    private OperatorBooksControllerService service;
+    private OperatorBooksService service;
     private BookTreeTableViewBuilder bookTreeTableViewBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service = ServiceFactory.getService(OperatorBooksControllerService.class);
+        service = ServiceFactory.getService(OperatorBooksService.class);
 
         service.initializeSelectedBooks();
         selectedBooksListView.setItems(service.getSelectedBooks());
