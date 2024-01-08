@@ -45,7 +45,7 @@ public class CreateOperatorService implements Service {
     }
 
     private void checkOperatorFieldsInput(String username, String password, String repeatPassword) throws IncorrectInputException {
-        if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
+        if (username == null || password == null || repeatPassword == null || username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
             logger.error("Please fill out all fields!");
             throw new IncorrectInputException("Please fill out all fields!");
         }
