@@ -1,0 +1,96 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DBEntity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: DBEntity (com.library.database.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">DBEntity</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.entities;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code DBEntity} interface is a marker interface that represents an entity
+&nbsp; * in the database. Classes implementing this interface are expected to model
+&nbsp; * entities stored in the database.
+&nbsp; * &lt;p&gt;
+&nbsp; * This interface serves as a common base interface for all database entities
+&nbsp; * and is typically used to indicate that a class is an entity, allowing for
+&nbsp; * generic processing of entities in certain situations.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * Implementing classes should provide appropriate implementations for
+&nbsp; * {@code equals}, {@code hashCode}, and any other relevant methods based on
+&nbsp; * the business logic of the entity.
+&nbsp; * &lt;/p&gt;
+&nbsp; *
+&nbsp; * @see java.lang.Object#equals(Object)
+&nbsp; * @see java.lang.Object#hashCode()
+&nbsp; */
+&nbsp;public interface DBEntity {
+&nbsp;    /**
+&nbsp;     * Gets the unique identifier (ID) associated with the entity.
+&nbsp;     *
+&nbsp;     * @return The unique identifier (ID) of the entity.
+&nbsp;     */
+&nbsp;    Long getId();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

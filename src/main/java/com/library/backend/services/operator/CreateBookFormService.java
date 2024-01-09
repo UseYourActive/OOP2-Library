@@ -25,6 +25,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The {@code CreateBookFormService} class provides services for creating and managing book lending forms.
+ * It includes functionality for retrieving readers, searching for readers, lending books, and lending reading room books.
+ *
+ * @see Service
+ */
 public class CreateBookFormService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(CreateBookFormService.class);
     private final ReaderRepository readerRepository;
@@ -38,6 +44,13 @@ public class CreateBookFormService implements Service {
     @Getter
     private double ratingValue;
 
+    /**
+     * Constructs a {@code CreateBookFormService} instance with the specified repositories.
+     *
+     * @param readerRepository    The repository for managing reader data.
+     * @param bookFormRepository  The repository for managing book form data.
+     * @param bookRepository      The repository for managing book data.
+     */
     public CreateBookFormService(ReaderRepository readerRepository, BookFormRepository bookFormRepository, BookRepository bookRepository) {
         this.readerRepository = readerRepository;
         this.bookFormRepository = bookFormRepository;
@@ -45,17 +58,36 @@ public class CreateBookFormService implements Service {
         this.readerSearchEngine = new ReaderSearchEngine();
     }
 
+    /**
+     * Retrieves all readers from the repository.
+     *
+     * @return The list of all readers.
+     */
     public List<Reader> getAllReaders() {
         List<Reader> readers = readerRepository.findAll();
         logger.info("Retrieved {} readers from the repository.", readers.size());
         return readers;
     }
 
+    /**
+     * Searches for readers based on the provided search string.
+     *
+     * @param stringToSearch The string used for searching readers.
+     * @return A collection of readers matching the search criteria.
+     * @throws SearchEngineException If an error occurs during the search.
+     */
     public Collection<Reader> searchReader(String stringToSearch) throws SearchEngineException {
         logger.info("Searching for readers with '{}'", stringToSearch);
         return readerSearchEngine.search(readerRepository.findAll(), stringToSearch);
     }
 
+    /**
+     * Lends books to the selected reader.
+     *
+     * @param selectedReader The reader to whom the books are lent.
+     * @param bookList       The list of books to be lent.
+     * @throws ReaderException If an error occurs during the lending process.
+     */
     public void lendBooks(Reader selectedReader, List<Book> bookList) throws ReaderException {
         logger.info("Lending books to reader '{}'", selectedReader.getFullName());
 
@@ -98,6 +130,13 @@ public class CreateBookFormService implements Service {
     }
 
 
+    /**
+     * Lends reading room books to the selected reader.
+     *
+     * @param selectedReader The reader to whom the reading room books are lent.
+     * @param bookList       The list of reading room books to be lent.
+     * @throws ReaderException If an error occurs during the lending process.
+     */
     public void lendReadingRoomBooks(Reader selectedReader, List<Book> bookList) throws ReaderException {
         logger.info("Lending reading room books to reader '{}'", selectedReader.getFullName());
 
@@ -128,6 +167,12 @@ public class CreateBookFormService implements Service {
         //operatorService.saveReader(selectedReader);
     }
 
+    /**
+     * Changes the status of a collection of books to the specified status.
+     *
+     * @param books  The collection of books for which the status is changed.
+     * @param status The new status for the books.
+     */
     private void changeBookStatus(Collection<Book> books, BookStatus status) {
         logger.info("Changing book status to '{}' for {} books", status, books.size());
 

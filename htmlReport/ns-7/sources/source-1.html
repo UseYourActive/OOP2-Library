@@ -1,0 +1,325 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EmailSenderService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailSenderService (com.library.backend.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmailSenderService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.2%
+  </span>
+  <span class="absValue">
+    (41/47)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">EmailSenderService$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EmailSenderService$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84.3%
+  </span>
+  <span class="absValue">
+    (43/51)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services;
+&nbsp;
+&nbsp;import com.library.backend.exception.email.EmailException;
+&nbsp;import com.library.backend.exception.email.TransportException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import javax.mail.*;
+&nbsp;import javax.mail.internet.InternetAddress;
+&nbsp;import javax.mail.internet.MimeMessage;
+&nbsp;import java.util.Properties;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code EmailSenderService} class provides functionality for sending emails using JavaMail API.
+&nbsp; * It allows customization of the email configuration such as SMTP host, port, and SSL settings.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create an EmailSenderService instance with email configuration
+&nbsp; * EmailSenderService emailSender = new EmailSenderService(&quot;yourUsername&quot;, &quot;yourPassword&quot;, &quot;smtp.example.com&quot;, &quot;587&quot;, true);
+&nbsp; *
+&nbsp; * // Send an email
+&nbsp; * try {
+&nbsp; *     emailSender.sendEmail(&quot;recipient@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+&nbsp; *     // Email sent successfully
+&nbsp; * } catch (EmailException e) {
+&nbsp; *     // Handle the case where sending the email fails
+&nbsp; * }
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, an {@code EmailSenderService} instance is created with the necessary email configuration,
+&nbsp; * and the {@code sendEmail} method is used to send an email. If the email is sent successfully,
+&nbsp; * the log will indicate success; otherwise, an {@link EmailException EmailException}
+&nbsp; * is thrown with details about the failure.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code EmailSenderService} class supports both standard SMTP and SMTP with SSL connections.
+&nbsp; *
+&nbsp; * @see EmailException
+&nbsp; */
+&nbsp;public class EmailSenderService implements Service {
+&nbsp;
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);</b>
+&nbsp;
+&nbsp;    private final String username;
+&nbsp;    private final String password;
+&nbsp;    private final String smtpHost;
+&nbsp;    private final String smtpPort;
+&nbsp;    private final boolean useSSL;
+&nbsp;    private final Transport transport;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code EmailSenderService} instance with the specified email configuration.
+&nbsp;     *
+&nbsp;     * @param username The username for authentication.
+&nbsp;     * @param password The password for authentication.
+&nbsp;     * @param smtpHost The SMTP server host.
+&nbsp;     * @param smtpPort The SMTP server port.
+&nbsp;     * @param useSSL   True if SSL should be used, false otherwise.
+&nbsp;     * @throws TransportException If there is an issue initializing the Transport object.
+&nbsp;     */
+<b class="fc">&nbsp;    public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL) throws TransportException {</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        this.smtpHost = smtpHost;</b>
+<b class="fc">&nbsp;        this.smtpPort = smtpPort;</b>
+<b class="fc">&nbsp;        this.useSSL = useSSL;</b>
+<b class="fc">&nbsp;        this.transport = initializeTransport();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code EmailSenderService} instance with the specified email configuration and pre-initialized transport.
+&nbsp;     *
+&nbsp;     * @param username  The username for authentication.
+&nbsp;     * @param password  The password for authentication.
+&nbsp;     * @param smtpHost  The SMTP server host.
+&nbsp;     * @param smtpPort  The SMTP server port.
+&nbsp;     * @param useSSL    True if SSL should be used, false otherwise.
+&nbsp;     * @param transport Pre-initialized Transport for sending emails.
+&nbsp;     */
+<b class="fc">&nbsp;    public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL, Transport transport) {</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        this.smtpHost = smtpHost;</b>
+<b class="fc">&nbsp;        this.smtpPort = smtpPort;</b>
+<b class="fc">&nbsp;        this.useSSL = useSSL;</b>
+<b class="fc">&nbsp;        this.transport = transport;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends an email with the specified recipient, subject, and body.
+&nbsp;     *
+&nbsp;     * @param to      The recipient&#39;s email address.
+&nbsp;     * @param subject The subject of the email.
+&nbsp;     * @param body    The body/content of the email.
+&nbsp;     * @throws EmailException If there is an issue sending the email.
+&nbsp;     */
+&nbsp;    public void sendEmail(String to, String subject, String body) throws EmailException {
+<b class="fc">&nbsp;        if (transport == null) {</b>
+<b class="nc">&nbsp;            throw new TransportException(&quot;Transport is not set. Cannot send email.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Properties props = getProperties();</b>
+&nbsp;
+<b class="fc">&nbsp;        Session session = Session.getInstance(props, new Authenticator() {</b>
+&nbsp;            @Override
+&nbsp;            protected PasswordAuthentication getPasswordAuthentication() {
+<b class="nc">&nbsp;                return new PasswordAuthentication(username, password);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            Message message = new MimeMessage(session);</b>
+<b class="fc">&nbsp;            message.setFrom(new InternetAddress(username));</b>
+<b class="fc">&nbsp;            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));</b>
+<b class="fc">&nbsp;            message.setSubject(subject);</b>
+<b class="fc">&nbsp;            message.setText(body);</b>
+&nbsp;
+<b class="fc">&nbsp;            transport.connect(smtpHost, username, password);</b>
+<b class="fc">&nbsp;            transport.sendMessage(message, message.getAllRecipients());</b>
+<b class="fc">&nbsp;            transport.close();</b>
+&nbsp;
+<b class="fc">&nbsp;            logger.info(&quot;Email sent successfully!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (MessagingException e) {</b>
+<b class="fc">&nbsp;            logger.error(&quot;Error sending email&quot;, e);</b>
+<b class="fc">&nbsp;            throw new EmailException(&quot;Failed to send email&quot;, e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves and configures the email properties based on the provided SMTP configuration.
+&nbsp;     * This method is used internally to set up the properties required for sending emails.
+&nbsp;     *
+&nbsp;     * @return A {@link Properties} object containing the configured email properties.
+&nbsp;     */
+&nbsp;    private Properties getProperties() {
+<b class="fc">&nbsp;        Properties props = new Properties();</b>
+<b class="fc">&nbsp;        props.put(&quot;mail.smtp.auth&quot;, &quot;true&quot;);</b>
+<b class="fc">&nbsp;        props.put(&quot;mail.smtp.host&quot;, smtpHost);</b>
+<b class="fc">&nbsp;        props.put(&quot;mail.smtp.port&quot;, smtpPort);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (useSSL) {</b>
+<b class="nc">&nbsp;            props.put(&quot;mail.smtp.socketFactory.port&quot;, smtpPort);</b>
+<b class="nc">&nbsp;            props.put(&quot;mail.smtp.socketFactory.class&quot;, &quot;javax.net.ssl.SSLSocketFactory&quot;);</b>
+<b class="nc">&nbsp;            props.put(&quot;mail.smtp.socketFactory.fallback&quot;, &quot;false&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            props.put(&quot;mail.smtp.starttls.enable&quot;, &quot;true&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return props;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes and returns the Transport object for sending emails.
+&nbsp;     * This method sets up the email session with the provided authentication and properties.
+&nbsp;     *
+&nbsp;     * @return A configured {@link Transport} object for sending emails.
+&nbsp;     * @throws TransportException If an error occurs while initializing the Transport object.
+&nbsp;     */
+&nbsp;    private Transport initializeTransport() throws TransportException {
+<b class="fc">&nbsp;        Properties props = getProperties();</b>
+<b class="fc">&nbsp;        Session session = Session.getInstance(props, new Authenticator() {</b>
+&nbsp;            @Override
+&nbsp;            protected PasswordAuthentication getPasswordAuthentication() {
+<b class="nc">&nbsp;                return new PasswordAuthentication(username, password);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            return session.getTransport(&quot;smtp&quot;);</b>
+<b class="nc">&nbsp;        } catch (NoSuchProviderException e) {</b>
+<b class="nc">&nbsp;            throw new TransportException(&quot;Error initializing Transport&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

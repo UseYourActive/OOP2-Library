@@ -120,6 +120,7 @@ public class UserRepository extends Repository<User> {
      * @param username The username of the user to find.
      * @return An {@code Optional} containing the found user, or empty if the user is not found.
      * @throws HibernateException If an error occurs during the Hibernate operation.
+     * @throws UserNotFoundException If the user is not found.
      */
     public Optional<User> findByUsername(String username) throws HibernateException, UserNotFoundException {
         try {

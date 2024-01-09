@@ -1,0 +1,185 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OperatorReadersService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: OperatorReadersService (com.library.backend.services.operator)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OperatorReadersService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (4/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.9%
+  </span>
+  <span class="absValue">
+    (11/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.operator;
+&nbsp;
+&nbsp;import com.google.common.base.Preconditions;
+&nbsp;import com.library.backend.engines.ReaderSearchEngine;
+&nbsp;import com.library.backend.engines.SearchEngine;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import com.library.database.repositories.ReaderRepository;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code OperatorReadersService} class provides services for managing operations related to readers
+&nbsp; * performed by operators in the library system.
+&nbsp; *
+&nbsp; * @see Service
+&nbsp; */
+&nbsp;public class OperatorReadersService implements Service {
+<b class="fc">&nbsp;    private final static Logger logger = LoggerFactory.getLogger(OperatorReadersService.class);</b>
+&nbsp;    private final ReaderRepository readerRepository;
+<b class="nc">&nbsp;    @Setter private SearchEngine&lt;Reader&gt; readerSearchEngine;</b>
+<b class="nc">&nbsp;    @Setter @Getter private double ratingValue;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code OperatorReadersService} instance with the specified {@code ReaderRepository}.
+&nbsp;     *
+&nbsp;     * @param readerRepository The repository for managing readers.
+&nbsp;     */
+<b class="fc">&nbsp;    public OperatorReadersService(ReaderRepository readerRepository) {</b>
+<b class="fc">&nbsp;        this.readerRepository = readerRepository;</b>
+<b class="fc">&nbsp;        this.readerSearchEngine = new ReaderSearchEngine();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a list of all readers in the library.
+&nbsp;     *
+&nbsp;     * @return A list of readers.
+&nbsp;     */
+&nbsp;    public List&lt;Reader&gt; getAllReaders() {
+<b class="fc">&nbsp;        List&lt;Reader&gt; readers = readerRepository.findAll();</b>
+<b class="fc">&nbsp;        logger.info(&quot;Retrieved {} readers from the repository.&quot;, readers.size());</b>
+<b class="fc">&nbsp;        return readers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for readers based on the specified search string.
+&nbsp;     *
+&nbsp;     * @param stringToSearch The search string for readers.
+&nbsp;     * @return A collection of matching readers.
+&nbsp;     * @throws SearchEngineException If an error occurs during the search operation.
+&nbsp;     */
+&nbsp;    public Collection&lt;Reader&gt; searchReader(String stringToSearch) throws SearchEngineException {
+&nbsp;        try {
+<b class="nc">&nbsp;            return readerSearchEngine.search(readerRepository.findAll(), stringToSearch);</b>
+<b class="nc">&nbsp;        } catch (SearchEngineException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to search readers&quot;, e);</b>
+<b class="nc">&nbsp;            throw new SearchEngineException(&quot;Failed to search readers&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the specified reader from the library.
+&nbsp;     *
+&nbsp;     * @param reader The reader to be removed.
+&nbsp;     */
+&nbsp;    public void removeReader(Reader reader) {
+&nbsp;        try {
+<b class="fc">&nbsp;            Preconditions.checkNotNull(reader, &quot;Reader cannot be null&quot;);</b>
+<b class="fc">&nbsp;            readerRepository.delete(reader);</b>
+<b class="fc">&nbsp;            logger.info(&quot;Removed reader: {}&quot;, reader);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to remove reader&quot;, e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

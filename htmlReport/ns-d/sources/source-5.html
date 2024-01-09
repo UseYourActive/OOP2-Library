@@ -1,0 +1,269 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EventNotificationRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: EventNotificationRepository (com.library.database.repositories)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EventNotificationRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.5%
+  </span>
+  <span class="absValue">
+    (1/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.repositories;
+&nbsp;
+&nbsp;import com.library.database.entities.EventNotification;
+&nbsp;import com.library.database.entities.User;
+&nbsp;import jakarta.persistence.NoResultException;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code EventNotificationRepository} class provides methods to interact with the database for managing
+&nbsp; * {@code EventNotification} entities. It extends the {@code Repository} class and implements operations such as finding
+&nbsp; * notifications by ID, retrieving all notifications, getting notifications by ID, finding notifications by user, and
+&nbsp; * saving notifications.
+&nbsp; *
+&nbsp; * &lt;p&gt;The class follows the singleton pattern to ensure a single instance throughout the application.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @see Repository
+&nbsp; * @see EventNotification
+&nbsp; */
+&nbsp;public class EventNotificationRepository extends Repository&lt;EventNotification&gt; {
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(EventNotificationRepository.class);</b>
+&nbsp;    private static volatile EventNotificationRepository instance;
+&nbsp;
+<b class="nc">&nbsp;    private EventNotificationRepository() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get the singleton instance of the {@code EventNotificationRepository}. If the instance does not exist, it is created
+&nbsp;     * in a thread-safe manner using double-checked locking.
+&nbsp;     *
+&nbsp;     * @return The singleton instance of the {@code EventNotificationRepository}.
+&nbsp;     */
+&nbsp;    public static EventNotificationRepository getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            synchronized (EventNotificationRepository.class) {</b>
+<b class="nc">&nbsp;                if (instance == null) {</b>
+<b class="nc">&nbsp;                    instance = new EventNotificationRepository();</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return an event notification by its unique identifier (ID). If the notification is not found, an empty
+&nbsp;     * {@code Optional} is returned.
+&nbsp;     *
+&nbsp;     * @param id The ID of the event notification to find.
+&nbsp;     * @return An {@code Optional} containing the found event notification, or empty if the notification is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Optional&lt;EventNotification&gt; findById(Long id) throws HibernateException {
+&nbsp;        try {
+<b class="nc">&nbsp;            EventNotification notification = session.get(EventNotification.class, id);</b>
+<b class="nc">&nbsp;            if (notification != null) {</b>
+<b class="nc">&nbsp;                logger.info(&quot;Successfully found event notification with id: {}&quot;, id);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                logger.info(&quot;No event notification found with id: {}&quot;, id);</b>
+&nbsp;                // maybe throw an exception?
+&nbsp;            }
+<b class="nc">&nbsp;            return Optional.ofNullable(notification);</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error finding event notification by ID: {}&quot;, id, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve and return a list of all event notifications. This method uses HQL (Hibernate Query Language) to execute a
+&nbsp;     * query to fetch all notifications.
+&nbsp;     *
+&nbsp;     * @return A list containing all event notifications.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public List&lt;EventNotification&gt; findAll() throws HibernateException {
+&nbsp;        try {
+<b class="nc">&nbsp;            return session.createQuery(&quot;SELECT n FROM EventNotification n&quot;, EventNotification.class).getResultList();</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error retrieving all event notifications&quot;, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get and return an event notification by its unique identifier (ID). If the notification is not found, it returns
+&nbsp;     * null.
+&nbsp;     *
+&nbsp;     * @param id The ID of the event notification to get.
+&nbsp;     * @return The found event notification, or null if the notification is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public EventNotification getById(Long id) {
+<b class="nc">&nbsp;        EventNotification notification = session.get(EventNotification.class, id);</b>
+<b class="nc">&nbsp;        if (notification != null) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;Successfully found event notification with id: {}&quot;, id);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return notification;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Executes a Hibernate query with parameters and returns the result as an optional value. The method uses the provided
+&nbsp;     * query, parameter name, and parameter value to create a Hibernate query, sets the parameters, and retrieves a single
+&nbsp;     * result.
+&nbsp;     *
+&nbsp;     * &lt;p&gt;If the query execution returns no result, an empty {@code Optional} is returned. If an exception occurs during the
+&nbsp;     * execution, the method logs an error and throws a {@code HibernateException}.&lt;/p&gt;
+&nbsp;     *
+&nbsp;     * @param &lt;T&gt;        The type of the result.
+&nbsp;     * @param query      The HQL (Hibernate Query Language) query string.
+&nbsp;     * @param paramName  The name of the parameter in the query.
+&nbsp;     * @param paramValue The value of the parameter in the query.
+&nbsp;     * @param resultType The class type of the expected result.
+&nbsp;     * @return An {@code Optional} containing the result of the query, or empty if no result is found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     * @throws NoResultException  If no result is found for the query.
+&nbsp;     */
+&nbsp;    private &lt;T&gt; Optional&lt;T&gt; executeQuery(String query, String paramName, String paramValue, Class&lt;T&gt; resultType) throws HibernateException, NoResultException {
+&nbsp;        try {
+<b class="nc">&nbsp;            return Optional.ofNullable(</b>
+<b class="nc">&nbsp;                    session.createQuery(query, resultType)</b>
+<b class="nc">&nbsp;                            .setParameter(paramName, paramValue)</b>
+<b class="nc">&nbsp;                            .getSingleResult()</b>
+&nbsp;            );
+<b class="nc">&nbsp;        } catch (NoResultException e) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;No result found with {} : {}&quot;, paramName, paramValue);</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error executing query: {}&quot;, query, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return a list of event notifications associated with the specified user.
+&nbsp;     *
+&nbsp;     * @param user The user for whom to find event notifications.
+&nbsp;     * @return A list containing event notifications associated with the specified user.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public List&lt;EventNotification&gt; findByUser(User user) throws HibernateException {
+<b class="nc">&nbsp;        String query = &quot;SELECT n FROM EventNotification n WHERE n.user = :user&quot;;</b>
+<b class="nc">&nbsp;        return session.createQuery(query, EventNotification.class)</b>
+<b class="nc">&nbsp;                .setParameter(&quot;user&quot;, user)</b>
+<b class="nc">&nbsp;                .getResultList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Save the specified event notification to the database. This method encapsulates the save operation inside a Hibernate
+&nbsp;     * transaction.
+&nbsp;     *
+&nbsp;     * @param notification The event notification to be saved.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public void saveNotification(EventNotification notification) throws HibernateException {
+<b class="nc">&nbsp;        actionInsideOfTransaction(session -&gt; session.persist(notification));</b>
+<b class="nc">&nbsp;        logger.info(&quot;Event notification saved successfully&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AdministratorBooksController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend.controllers.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdministratorBooksController (com.library.frontend.controllers.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdministratorBooksController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend.controllers.admin;
+&nbsp;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.ServiceFactory;
+&nbsp;import com.library.backend.services.admin.AdministratorBooksService;
+&nbsp;import com.library.database.entities.BookInventory;
+&nbsp;import com.library.frontend.SceneLoader;
+&nbsp;import com.library.frontend.controllers.Controller;
+&nbsp;import com.library.utils.DialogUtils;
+&nbsp;import com.library.utils.tableviews.ContextMenuBuilder;
+&nbsp;import com.library.utils.tableviews.InventoryTableViewBuilder;
+&nbsp;import com.library.utils.tableviews.TableViewBuilder;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.AnchorPane;
+&nbsp;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code AdministratorBooksController} class is responsible for managing the user interface interactions related to
+&nbsp; * book administration in the library management system. It interacts with the backend {@code AdministratorBooksService}
+&nbsp; * to handle various book-related operations such as searching, viewing details, registering new books, adding quantities,
+&nbsp; * and removing book inventories.
+&nbsp; *
+&nbsp; * @see Controller
+&nbsp; */
+<b class="nc">&nbsp;public class AdministratorBooksController implements Controller {</b>
+&nbsp;
+&nbsp;    @FXML public Button operatorsButton;
+&nbsp;    @FXML public TextField searchBookTextField;
+&nbsp;    @FXML public Button searchBookButton;
+&nbsp;    @FXML public TextArea bookTextArea;
+&nbsp;    @FXML public TableView&lt;BookInventory&gt; inventoryTableView;
+&nbsp;    @FXML public AnchorPane anchorPane;
+&nbsp;    @FXML public Button logOutButton;
+&nbsp;
+&nbsp;    private AdministratorBooksService service;
+&nbsp;    private TableViewBuilder&lt;BookInventory&gt; bookInventoryTableViewBuilder;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the AdministratorBooksController by setting up the required services and creating the book inventory
+&nbsp;     * table view with context menu options.
+&nbsp;     *
+&nbsp;     * @param location  The URL location.
+&nbsp;     * @param resources The ResourceBundle.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(URL location, ResourceBundle resources) {
+&nbsp;
+<b class="nc">&nbsp;        service = ServiceFactory.getService(AdministratorBooksService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        operatorsButton.requestFocus();</b>
+<b class="nc">&nbsp;        bookTextArea.setFocusTraversable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        bookInventoryTableViewBuilder = new InventoryTableViewBuilder();</b>
+<b class="nc">&nbsp;        bookInventoryTableViewBuilder.createTableViewColumns(inventoryTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;        inventoryTableView.setContextMenu(getBookInventoryContextMenu());</b>
+&nbsp;
+<b class="nc">&nbsp;        bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the action when the &quot;Search&quot; button is clicked. Performs a search based on user input and updates the
+&nbsp;     * book inventory table view accordingly.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void searchBookButtonOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            String stringToSearch = searchBookTextField.getText();</b>
+<b class="nc">&nbsp;            Collection&lt;BookInventory&gt; results = service.searchBookInventory(stringToSearch);</b>
+<b class="nc">&nbsp;            bookInventoryTableViewBuilder.updateTableView(inventoryTableView,results.stream().toList());</b>
+&nbsp;
+<b class="nc">&nbsp;        }catch (SearchEngineException e){</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Error &quot;,&quot;BookInventory not found!&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Operators&quot; button. Loads the administrator operators scene and updates the
+&nbsp;     * window title with the current administrator&#39;s username.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void operatorsButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        SceneLoader.load(mouseEvent, &quot;/views/admin/administratorOperatorsScene.fxml&quot;, SceneLoader.getUser().getUsername() + &quot;(Administrator)&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the book inventory table view. Displays the details of the selected book inventory in
+&nbsp;     * the text area. Additionally, double-clicking on an inventory item opens a modality dialog for detailed book
+&nbsp;     * information.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void booksTableViewOnClicked(MouseEvent mouseEvent) {
+&nbsp;        try {
+<b class="nc">&nbsp;            BookInventory selectedInventory= bookInventoryTableViewBuilder.getSelectedItem(inventoryTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;            if(mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+&nbsp;
+<b class="nc">&nbsp;                bookTextArea.setText(selectedInventory.toString());</b>
+&nbsp;
+<b class="nc">&nbsp;                if (mouseEvent.getClickCount() == 2) {</b>
+<b class="nc">&nbsp;                    SceneLoader.loadModalityDialog(&quot;/views/admin/administratorBooksDialogScene.fxml&quot;, selectedInventory.getRepresentativeBook().getTitle(), selectedInventory);</b>
+<b class="nc">&nbsp;                    bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());</b>
+<b class="nc">&nbsp;                    bookTextArea.clear();</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {}</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Log Out&quot; button. Logs out the current user and returns to the login scene.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if(mouseEvent.getButton() == MouseButton.PRIMARY){</b>
+<b class="nc">&nbsp;            SceneLoader.load(mouseEvent, &quot;/views/logInScene.fxml&quot;, &quot;LogIn&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the anchor pane. Requests focus for the anchor pane and clears the selection in the
+&nbsp;     * inventory table view.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void anchorPaneOnMouseClicked() {
+<b class="nc">&nbsp;        anchorPane.requestFocus();</b>
+<b class="nc">&nbsp;        inventoryTableView.getSelectionModel().clearSelection();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a context menu with options for book inventory management, including registering new books, adding books,
+&nbsp;     * and removing inventories.
+&nbsp;     *
+&nbsp;     * @return The context menu.
+&nbsp;     */
+&nbsp;    private ContextMenu getBookInventoryContextMenu() {
+<b class="nc">&nbsp;        Map&lt;String, EventHandler&lt;ActionEvent&gt;&gt; stringEventHandlerMap=new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        stringEventHandlerMap.put(&quot;Register book&quot;,this::registerNewBook);</b>
+<b class="nc">&nbsp;        stringEventHandlerMap.put(&quot;Add books&quot;,this::setQuantityOnSelectedBook);</b>
+<b class="nc">&nbsp;        stringEventHandlerMap.put(&quot;Remove inventory&quot;,this::removeSelectedInventory);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ContextMenuBuilder.prepareContextMenu(stringEventHandlerMap);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Opens the &quot;Register New Book&quot; scene when invoked.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The ActionEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    private void registerNewBook(ActionEvent mouseEvent) {
+<b class="nc">&nbsp;        SceneLoader.load(&quot;/views/admin/registerNewBookScene.fxml&quot;, &quot;Register new book&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the selected book inventory after confirming the user&#39;s intent through a dialog.
+&nbsp;     *
+&nbsp;     * @param actionEvent The ActionEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    private void removeSelectedInventory(ActionEvent actionEvent) {
+<b class="nc">&nbsp;       BookInventory inventory = inventoryTableView.getSelectionModel().getSelectedItem();</b>
+&nbsp;
+<b class="nc">&nbsp;       if (inventory != null) {</b>
+<b class="nc">&nbsp;           if (DialogUtils.showConfirmation(&quot;Confirmation&quot;, &quot;Are you sure you want to delete these book/s from the database ?&quot;)) {</b>
+&nbsp;
+<b class="nc">&nbsp;               service.removeInventory(inventory);</b>
+&nbsp;
+<b class="nc">&nbsp;               bookInventoryTableViewBuilder.updateTableView(inventoryTableView, service.getAllBookInventories());</b>
+<b class="nc">&nbsp;               bookTextArea.clear();</b>
+&nbsp;           }
+&nbsp;       } else {
+<b class="nc">&nbsp;           DialogUtils.showInfo(&quot;Information&quot;, &quot;Please select an inventory!&quot;);</b>
+&nbsp;       }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Opens a modality dialog for adding books to the selected book inventory.
+&nbsp;     *
+&nbsp;     * @param actionEvent The ActionEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    private void setQuantityOnSelectedBook(ActionEvent actionEvent) {
+&nbsp;        try {
+<b class="nc">&nbsp;           BookInventory bookInventory=bookInventoryTableViewBuilder.getSelectedItem(inventoryTableView);</b>
+<b class="nc">&nbsp;           SceneLoader.loadModalityDialog(&quot;/views/admin/addBookQuantityScene.fxml&quot;,&quot;Add books&quot;,bookInventory);</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Information&quot;, &quot;Please select a book!&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

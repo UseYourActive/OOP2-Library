@@ -11,7 +11,6 @@ import java.util.List;
  * @param <T> Type of items to be searched.
  */
 public interface SearchEngine<T> {
-
     /**
      * Searches for items based on a search string.
      *

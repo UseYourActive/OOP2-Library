@@ -19,5 +19,10 @@ package com.library.database.entities;
  * @see java.lang.Object#hashCode()
  */
 public interface DBEntity {
+    /**
+     * Gets the unique identifier (ID) associated with the entity.
+     *
+     * @return The unique identifier (ID) of the entity.
+     */
     Long getId();
 }

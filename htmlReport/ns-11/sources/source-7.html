@@ -1,0 +1,293 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OperatorReadersController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend.controllers.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: OperatorReadersController (com.library.frontend.controllers.operator)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OperatorReadersController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend.controllers.operator;
+&nbsp;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.ServiceFactory;
+&nbsp;import com.library.backend.services.operator.OperatorReadersService;
+&nbsp;import com.library.database.entities.BookForm;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import com.library.frontend.SceneLoader;
+&nbsp;import com.library.frontend.controllers.Controller;
+&nbsp;import com.library.utils.DialogUtils;
+&nbsp;import com.library.utils.tableviews.ContextMenuBuilder;
+&nbsp;import com.library.utils.tableviews.ReaderTableViewBuilder;
+&nbsp;import com.library.utils.tableviews.TableViewBuilder;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import org.controlsfx.control.Rating;
+&nbsp;
+&nbsp;import java.net.URL;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Controller class for the operator&#39;s management of readers.
+&nbsp; * This controller handles operations related to readers, such as searching, displaying details, and managing book forms.
+&nbsp; */
+<b class="nc">&nbsp;public class OperatorReadersController implements Controller {</b>
+&nbsp;    /** Button to navigate to the operator&#39;s book management scene. */
+&nbsp;    @FXML public Button booksButton;
+&nbsp;
+&nbsp;    /** TextField for entering the search query to find readers. */
+&nbsp;    @FXML public TextField searchBarTextField;
+&nbsp;
+&nbsp;    /** Button to initiate the search for readers based on the entered query. */
+&nbsp;    @FXML public Button searchReaderButton;
+&nbsp;
+&nbsp;    /** TableView displaying a list of readers. */
+&nbsp;    @FXML public TableView&lt;Reader&gt; readerTableView;
+&nbsp;
+&nbsp;    /** ListView displaying book forms associated with the selected reader. */
+&nbsp;    @FXML public ListView&lt;BookForm&gt; bookFormListView;
+&nbsp;
+&nbsp;    /** Rating control displaying and allowing interaction with the selected reader&#39;s rating. */
+&nbsp;    @FXML public Rating readerRatingControl;
+&nbsp;
+&nbsp;    /** Service class providing functionality for operator actions related to readers. */
+&nbsp;    private OperatorReadersService service;
+&nbsp;
+&nbsp;    /** TableViewBuilder instance for creating and updating the reader TableView. */
+&nbsp;    private TableViewBuilder&lt;Reader&gt; readerTableViewBuilder;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the OperatorReadersController.
+&nbsp;     *
+&nbsp;     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+&nbsp;     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(URL location, ResourceBundle resources) {
+<b class="nc">&nbsp;        service = ServiceFactory.getService(OperatorReadersService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        booksButton.requestFocus();</b>
+&nbsp;
+<b class="nc">&nbsp;        readerTableViewBuilder = new ReaderTableViewBuilder();</b>
+<b class="nc">&nbsp;        readerTableViewBuilder.createTableViewColumns(readerTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;        readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());</b>
+&nbsp;
+<b class="nc">&nbsp;        readerTableView.setContextMenu(getContextMenu());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Books&quot; button, navigating to the operator&#39;s book management scene.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if (mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+<b class="nc">&nbsp;            SceneLoader.load(mouseEvent, &quot;/views/operator/operatorBooksScene.fxml&quot;, SceneLoader.getUser().getUsername() + &quot; (Operator)&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Search Reader&quot; button, initiating the search for readers.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void searchReaderButtonOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            String stringToSearch = searchBarTextField.getText();</b>
+<b class="nc">&nbsp;            Collection&lt;Reader&gt; results = service.searchReader(stringToSearch);</b>
+<b class="nc">&nbsp;            readerTableViewBuilder.updateTableView(readerTableView, results);</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (SearchEngineException e) {</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Information&quot;, &quot;Reader not found&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click event on the reader TableView, displaying details and book forms of the selected reader.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void readerTableViewOnClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;            bookFormListView.getItems().setAll(selectedReader.getBookForms());</b>
+&nbsp;
+<b class="nc">&nbsp;            service.setRatingValue(selectedReader.getReaderRating().getRating().getValue());</b>
+<b class="nc">&nbsp;            readerRatingControl.setRating(service.getRatingValue());</b>
+&nbsp;
+<b class="nc">&nbsp;            readerRatingControl.setDisable(service.getRatingValue() == -1);</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the book form ListView, opening a detailed view of the selected book form.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void bookFormListViewOnMouseClicked() {
+<b class="nc">&nbsp;        MultipleSelectionModel&lt;BookForm&gt; selectionModel = bookFormListView.getSelectionModel();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (selectionModel != null) {</b>
+<b class="nc">&nbsp;            BookForm selectedBookForm = selectionModel.getSelectedItem();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (selectedBookForm != null) {</b>
+<b class="nc">&nbsp;                String sceneTittle = selectedBookForm.getStatus().getDisplayValue() + &quot; &quot; + selectedBookForm.getDateOfCreation().format(DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy HH:mm&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;                SceneLoader.load(&quot;/views/operator/bookFormShowScene.fxml&quot;, sceneTittle, selectedBookForm);</b>
+<b class="nc">&nbsp;                readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());</b>
+<b class="nc">&nbsp;                bookFormListView.getItems().clear();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the reader rating control, updating the displayed rating value.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void readerRatingOnMouseClicked() {
+<b class="nc">&nbsp;        readerRatingControl.setRating(service.getRatingValue());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the context menu for the reader TableView, providing additional actions for the operator.
+&nbsp;     *
+&nbsp;     * @return The ContextMenu for the reader TableView.
+&nbsp;     */
+&nbsp;    private ContextMenu getContextMenu() {
+<b class="nc">&nbsp;        Map&lt;String, EventHandler&lt;ActionEvent&gt;&gt; menuItems = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        menuItems.put(&quot;Create Reader&quot;, this::createReader);</b>
+<b class="nc">&nbsp;        menuItems.put(&quot;Remove Reader&quot;, this::removeReader);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ContextMenuBuilder.prepareContextMenu(menuItems);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Event handler for the &quot;Create Reader&quot; context menu item, loading the scene for creating a new reader profile.
+&nbsp;     *
+&nbsp;     * @param actionEvent The ActionEvent representing the &quot;Create Reader&quot; menu item selection.
+&nbsp;     */
+&nbsp;    private void createReader(ActionEvent actionEvent) {
+<b class="nc">&nbsp;        SceneLoader.load(&quot;/views/operator/createReaderProfileScene.fxml&quot;, SceneLoader.getUser().getUsername() + &quot; (Operator)&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Event handler for the &quot;Remove Reader&quot; context menu item, removing the selected reader from the system.
+&nbsp;     *
+&nbsp;     * @param actionEvent The ActionEvent representing the &quot;Remove Reader&quot; menu item selection.
+&nbsp;     */
+&nbsp;    private void removeReader(ActionEvent actionEvent) {
+&nbsp;
+<b class="nc">&nbsp;        Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (selectedReader != null) {</b>
+&nbsp;
+<b class="nc">&nbsp;            service.removeReader(selectedReader);</b>
+&nbsp;
+<b class="nc">&nbsp;            readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());</b>
+<b class="nc">&nbsp;            bookFormListView.getItems().clear();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

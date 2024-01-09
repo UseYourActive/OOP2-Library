@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ReaderRating</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaderRating (com.library.database.entities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaderRating</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (4/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18.2%
+  </span>
+  <span class="absValue">
+    (4/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ReaderRating$HibernateInstantiator$aknLDCQv</td>
+  </tr>
+  <tr>
+    <td class="name">ReaderRating$HibernateProxy$mkeQowMm</td>
+  </tr>
+  <tr>
+    <td class="name">ReaderRating$ReaderRatingBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    38.5%
+  </span>
+  <span class="absValue">
+    (5/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    21.7%
+  </span>
+  <span class="absValue">
+    (5/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.entities;
+&nbsp;
+&nbsp;import com.library.database.enums.Ratings;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ReaderRating} class represents the rating of a library reader, including a coefficient
+&nbsp; * that influences the rating and the current calculated value.
+&nbsp; * &lt;p&gt;
+&nbsp; * This class is annotated with JPA annotations for entity mapping and is designed to be used with a
+&nbsp; * relational database.
+&nbsp; *
+&nbsp; * @see DBEntity
+&nbsp; * @see Table
+&nbsp; * @see Column
+&nbsp; * @see GeneratedValue
+&nbsp; * @see GenerationType
+&nbsp; * @see Enumerated
+&nbsp; * @see lombok.Getter
+&nbsp; * @see lombok.Setter
+&nbsp; * @see lombok.Builder
+&nbsp; * @see lombok.NoArgsConstructor
+&nbsp; * @see lombok.AllArgsConstructor
+&nbsp; */
+&nbsp;@Getter
+<b class="nc">&nbsp;@Setter</b>
+<b class="fc">&nbsp;@Builder</b>
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;reader_ratings&quot;)
+&nbsp;public class ReaderRating implements DBEntity {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The unique identifier for the reader rating.
+&nbsp;     */
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    @Column(name = &quot;rating_id&quot;)
+&nbsp;    private Long id;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The overall rating value represented by an enumeration.
+&nbsp;     */
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    @Column(name = &quot;rating&quot;, nullable = false)
+<b class="nc">&nbsp;    private Ratings rating;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The coefficient influencing the rating.
+&nbsp;     */
+&nbsp;    @Column(name = &quot;coefficient&quot;, nullable = false)
+<b class="nc">&nbsp;    private int coefficient;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The current calculated value of the reader&#39;s rating.
+&nbsp;     */
+&nbsp;    @Column(name = &quot;current_value&quot;, nullable = false)
+<b class="nc">&nbsp;    private double currentValue;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the unique identifier for the reader rating.
+&nbsp;     *
+&nbsp;     * @return The unique identifier for the reader rating.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Long getId() {
+<b class="nc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Increases the coefficient and adjusts the current value based on certain conditions.
+&nbsp;     */
+&nbsp;    public void increase() {
+<b class="nc">&nbsp;        coefficient++;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (currentValue == -1) {</b>
+<b class="nc">&nbsp;            currentValue = 3;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (coefficient % 5 == 0 &amp;&amp; currentValue &lt; 5) {</b>
+<b class="nc">&nbsp;                currentValue++;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Decreases the coefficient and adjusts the current value based on certain conditions.
+&nbsp;     */
+&nbsp;    public void decrease() {
+<b class="nc">&nbsp;        coefficient--;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (currentValue == -1) {</b>
+<b class="nc">&nbsp;            currentValue = 2;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (Math.abs(coefficient) % 5 == 0 &amp;&amp; currentValue &gt; 0) {</b>
+<b class="nc">&nbsp;                currentValue--;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the overall rating based on the current calculated value.
+&nbsp;     *
+&nbsp;     * @throws IllegalStateException if the current value does not match any valid rating.
+&nbsp;     */
+&nbsp;    public void updateRating() throws IllegalStateException {
+<b class="nc">&nbsp;        for (Ratings rating : Ratings.values()) {</b>
+<b class="nc">&nbsp;            if (rating.getValue() == currentValue) {</b>
+<b class="nc">&nbsp;                this.rating = rating;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Overrides the default {@code toString()} method to provide a string representation of the reader&#39;s rating.
+&nbsp;     *
+&nbsp;     * @return A string representation of the reader&#39;s rating.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return rating.getDisplayValue();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

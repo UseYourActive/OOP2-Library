@@ -34,7 +34,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "3";
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act
         assertDoesNotThrow(() -> service.increaseBookQuantity(quantityString, bookInventory));
@@ -64,7 +64,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "-2"; // or any invalid quantity
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act & Assert
         assertThrows(InvalidQuantityException.class,
@@ -79,7 +79,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "abc"; // or any non-numeric input
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act & Assert
         assertThrows(NumberFormatException.class,
@@ -94,7 +94,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "0";
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act
         assertThrows(InvalidQuantityException.class, () -> service.increaseBookQuantity(quantityString, bookInventory));
@@ -122,7 +122,7 @@ public class AddBookQuantityServiceTest {
         bookInventory.setBookList(new ArrayList<>());
         Book existingBook = new Book();
         bookInventory.addBook(existingBook);
-        bookInventory.setRepresentiveBook(existingBook);
+        bookInventory.setRepresentativeBook(existingBook);
 
         // Act
         assertDoesNotThrow(() -> service.increaseBookQuantity(quantityString, bookInventory));
@@ -184,7 +184,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "0";
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act & Assert
         assertThrows(InvalidQuantityException.class, () -> service.increaseBookQuantity(quantityString, bookInventory));
@@ -199,7 +199,7 @@ public class AddBookQuantityServiceTest {
         String quantityString = "3";
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBookList(new ArrayList<>());
-        bookInventory.setRepresentiveBook(new Book());
+        bookInventory.setRepresentativeBook(new Book());
 
         // Act
         assertDoesNotThrow(() -> service.increaseBookQuantity(quantityString, bookInventory));

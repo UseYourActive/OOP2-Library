@@ -62,9 +62,13 @@ public class EventNotification implements DBEntity{
     @Column(name = "timestamp", nullable = false, unique = true)
     private LocalDateTime timestamp;
 
-
+    /**
+     * Returns a string representation of the event notification, including the timestamp and message.
+     *
+     * @return A string representation of the event notification.
+     */
     @Override
     public String toString() {
-        return timestamp.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))+ " "+message;
+        return timestamp.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) + " " + message;
     }
 }

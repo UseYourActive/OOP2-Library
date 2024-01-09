@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for managing the operator's inbox, displaying event notifications.
+ */
 public class InboxController implements Controller {
 
     @FXML public ListView<EventNotification> eventNotificationListView;
@@ -24,18 +27,32 @@ public class InboxController implements Controller {
 
     private InboxService service;
 
+    /**
+     * Initializes the controller and loads the necessary services.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(InboxService.class);
 
+        // Retrieve event notifications for the current user
         List<EventNotification> eventNotificationList = service.getEventNotifications(SceneLoader.getUser());
 
+        // Set the retrieved event notifications to the ListView
         eventNotificationListView.setItems(FXCollections.observableArrayList(eventNotificationList));
     }
 
+    /**
+     * Handles the mouse click event on the "Close" button, closing the inbox window.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            // Close the inbox window
             ((Stage) closeButton.getScene().getWindow()).close();
         }
     }

@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookFormRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: BookFormRepository (com.library.database.repositories)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookFormRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    65.7%
+  </span>
+  <span class="absValue">
+    (23/35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.repositories;
+&nbsp;
+&nbsp;import com.library.database.entities.BookForm;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code BookFormRepository} class provides specific repository operations for managing {@link BookForm} entities
+&nbsp; * using Hibernate as the underlying ORM (Object-Relational Mapping) framework. It extends the generic {@link Repository}
+&nbsp; * class and implements methods for finding book request forms by various criteria.
+&nbsp; *
+&nbsp; * &lt;p&gt;This class follows the Singleton design pattern to ensure a single instance is used across the application,
+&nbsp; * promoting consistency in entity management.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Usage of this class includes finding book request forms by ID, retrieving all book request forms, getting book
+&nbsp; * request forms by ID, and finding book request forms by name.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Note: This class is thread-safe due to the Singleton pattern, making it suitable for use in multi-threaded
+&nbsp; * environments.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @see BookForm
+&nbsp; * @see Repository
+&nbsp; * @see HibernateException
+&nbsp; * @see Logger
+&nbsp; */
+&nbsp;public class BookFormRepository extends Repository&lt;BookForm&gt; {
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(BookFormRepository.class);</b>
+&nbsp;    private static volatile BookFormRepository instance;
+&nbsp;
+<b class="fc">&nbsp;    private BookFormRepository() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the singleton instance of the {@code BookFormRepository}.
+&nbsp;     *
+&nbsp;     * @return The singleton instance of the {@code BookFormRepository}.
+&nbsp;     */
+&nbsp;    public static BookFormRepository getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            synchronized (BookFormRepository.class) {</b>
+<b class="fc">&nbsp;                if (instance == null) {</b>
+<b class="fc">&nbsp;                    instance = new BookFormRepository();</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return a book request form by its unique identifier (ID). This method utilizes the Hibernate session to perform
+&nbsp;     * the database operation. If the book request form is not found, an empty {@code Optional} is returned.
+&nbsp;     *
+&nbsp;     * @param id The ID of the book request form to find.
+&nbsp;     * @return An {@code Optional} containing the found book request form, or empty if the book request form is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Optional&lt;BookForm&gt; findById(Long id) throws HibernateException {
+&nbsp;        try {
+<b class="fc">&nbsp;            BookForm bookRequestForm = session.get(BookForm.class, id);</b>
+<b class="fc">&nbsp;            if (bookRequestForm != null) {</b>
+<b class="fc">&nbsp;                logger.info(&quot;Successfully found book request form with ID: {}&quot;, id);</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                logger.info(&quot;No book request form found with ID: {}&quot;, id);</b>
+&nbsp;                // maybe throw an exception?
+&nbsp;            }
+<b class="fc">&nbsp;            return Optional.ofNullable(bookRequestForm);</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error finding book request form by ID: {}&quot;, id, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve and return a list of all book request forms. This method uses Hibernates HQL (Hibernate Query Language) to execute
+&nbsp;     * a query to fetch all book request forms.
+&nbsp;     *
+&nbsp;     * @return A list containing all book request forms.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public List&lt;BookForm&gt; findAll() throws HibernateException {
+&nbsp;        try {
+<b class="fc">&nbsp;            logger.info(&quot;Finding all book request forms&quot;);</b>
+<b class="fc">&nbsp;            List&lt;BookForm&gt; bookRequestForms = session.createQuery(&quot;SELECT b FROM BookForm b&quot;, BookForm.class).getResultList();</b>
+<b class="fc">&nbsp;            logger.info(&quot;Found {} book request forms&quot;, bookRequestForms.size());</b>
+<b class="fc">&nbsp;            return bookRequestForms;</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error retrieving all book request forms&quot;, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get and return a book request form by its unique identifier (ID). This method is similar to {@link #findById(Long)}, but
+&nbsp;     * it returns the book request form directly instead of wrapping it in an {@code Optional}. If the book request form is not found,
+&nbsp;     * it returns null.
+&nbsp;     *
+&nbsp;     * @param id The ID of the book request form to get.
+&nbsp;     * @return The found book request form, or null if the book request form is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public BookForm getById(Long id) throws HibernateException {
+&nbsp;        try {
+<b class="fc">&nbsp;            logger.info(&quot;Successfully found book request form with ID: {}&quot;, id);</b>
+<b class="fc">&nbsp;            return session.get(BookForm.class, id);</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error getting book request form by ID: {}&quot;, id, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return a book request form by its name. This method uses a parameterized query to search for a book request form with the
+&nbsp;     * specified name. If the book request form is not found, an empty {@code Optional} is returned.
+&nbsp;     *
+&nbsp;     * @param name The name of the book request form to find.
+&nbsp;     * @return An {@code Optional} containing the found book request form, or empty if the book request form is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public Optional&lt;BookForm&gt; findGenreByName(String name) throws HibernateException {
+&nbsp;        try {
+<b class="fc">&nbsp;            return session.createQuery(&quot;SELECT b FROM BookForm b WHERE b.name = :name&quot;, BookForm.class)</b>
+<b class="fc">&nbsp;                    .setParameter(&quot;name&quot;, name)</b>
+<b class="fc">&nbsp;                    .getResultStream()</b>
+<b class="fc">&nbsp;                    .findFirst();</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error finding book request form by name: {}&quot;, name, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

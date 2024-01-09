@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookTreeTableViewBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.utils.tableviews</a>
+</div>
+
+<h1>Coverage Summary for Class: BookTreeTableViewBuilder (com.library.utils.tableviews)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookTreeTableViewBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/71)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.utils.tableviews;
+&nbsp;
+&nbsp;import com.library.database.entities.Author;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.enums.BookStatus;
+&nbsp;import com.library.database.enums.Genre;
+&nbsp;import javafx.beans.property.ReadOnlyStringWrapper;
+&nbsp;import javafx.scene.control.TreeItem;
+&nbsp;import javafx.scene.control.TreeTableColumn;
+&nbsp;import javafx.scene.control.TreeTableView;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.time.Year;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code BookTreeTableViewBuilder} class implements the {@link TreeTableViewBuilder} interface
+&nbsp; * to create and configure JavaFX {@link javafx.scene.control.TreeTableView} columns for the {@link Book} entity.
+&nbsp; * It defines columns for book properties such as title, author, genre, status, times used, and published year.
+&nbsp; *
+&nbsp; * @see TreeTableViewBuilder
+&nbsp; */
+<b class="nc">&nbsp;public class BookTreeTableViewBuilder implements TreeTableViewBuilder&lt;Book&gt; {</b>
+<b class="nc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(BookTreeTableViewBuilder.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates and configures the tree table columns for the specified {@link javafx.scene.control.TreeTableView}.
+&nbsp;     * Defines columns for book title, author, genre, status, times used, and published year.
+&nbsp;     *
+&nbsp;     * @param bookTreeTableView The TreeTableView for which columns are created and configured.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createTreeTableViewColumns(TreeTableView&lt;Book&gt; bookTreeTableView) {
+<b class="nc">&nbsp;        logger.info(&quot;Creating and configuring tree table columns...&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeItem&lt;Book&gt; root = new TreeItem&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; titleColumn = new TreeTableColumn&lt;&gt;(&quot;Book&quot;);</b>
+<b class="nc">&nbsp;        titleColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting title for book: {}&quot;, p.getValue().getValue().getTitle());</b>
+<b class="nc">&nbsp;            return new ReadOnlyStringWrapper(p.getValue().getValue().getTitle());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        titleColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.3));</b>
+<b class="nc">&nbsp;        titleColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; authorColumn = new TreeTableColumn&lt;&gt;(&quot;Author&quot;);</b>
+<b class="nc">&nbsp;        authorColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting author for book: {}&quot;, p.getValue().getValue().getAuthor());</b>
+<b class="nc">&nbsp;            Author author = p.getValue().getValue().getAuthor();</b>
+<b class="nc">&nbsp;            if (author != null) {</b>
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(author.toString());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(&quot;&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        authorColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.2));</b>
+<b class="nc">&nbsp;        authorColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; genreColumn = new TreeTableColumn&lt;&gt;(&quot;Genre&quot;);</b>
+<b class="nc">&nbsp;        genreColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting genre for book: {}&quot;, p.getValue().getValue().getGenre());</b>
+<b class="nc">&nbsp;            Genre genre = p.getValue().getValue().getGenre();</b>
+<b class="nc">&nbsp;            if (genre != null) {</b>
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(genre.getValue());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(&quot;&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        genreColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));</b>
+<b class="nc">&nbsp;        genreColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; publishedYearColumn = new TreeTableColumn&lt;&gt;(&quot;Year&quot;);</b>
+<b class="nc">&nbsp;        publishedYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting published year for book: {}&quot;, p.getValue().getValue().getPublishYear());</b>
+<b class="nc">&nbsp;            Year publishedYear = p.getValue().getValue().getPublishYear();</b>
+<b class="nc">&nbsp;            if (publishedYear != null) {</b>
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(publishedYear.toString());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(&quot;&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        publishedYearColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));</b>
+<b class="nc">&nbsp;        publishedYearColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; idColumn = new TreeTableColumn&lt;&gt;(&quot;ID&quot;);</b>
+<b class="nc">&nbsp;        idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting book status for book: {}&quot;, p.getValue().getValue().getBookStatus());</b>
+<b class="nc">&nbsp;            return new ReadOnlyStringWrapper(p.getValue().getValue().getId().toString());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        idColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));</b>
+<b class="nc">&nbsp;        idColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; bookStatusColumn = new TreeTableColumn&lt;&gt;(&quot;Status&quot;);</b>
+<b class="nc">&nbsp;        bookStatusColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting book status for book: {}&quot;, p.getValue().getValue().getBookStatus());</b>
+<b class="nc">&nbsp;            BookStatus bookStatus = p.getValue().getValue().getBookStatus();</b>
+<b class="nc">&nbsp;            if (bookStatus != null) {</b>
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(bookStatus.getDisplayValue());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(&quot;&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        bookStatusColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));</b>
+<b class="nc">&nbsp;        bookStatusColumn.setResizable(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        TreeTableColumn&lt;Book, String&gt; numberOfTimesUsedColumn = new TreeTableColumn&lt;&gt;(&quot;Times used&quot;);</b>
+<b class="nc">&nbsp;        numberOfTimesUsedColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures&lt;Book, String&gt; p) -&gt; {</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Getting number of times used for book: {}&quot;, p.getValue().getValue().getNumberOfTimesUsed());</b>
+<b class="nc">&nbsp;            Integer numberOfTimesUsed = p.getValue().getValue().getNumberOfTimesUsed();</b>
+<b class="nc">&nbsp;            if (numberOfTimesUsed != null) {</b>
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(numberOfTimesUsed.toString());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return new ReadOnlyStringWrapper(&quot;&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        numberOfTimesUsedColumn.prefWidthProperty().bind(bookTreeTableView.widthProperty().multiply(0.1));</b>
+<b class="nc">&nbsp;        numberOfTimesUsedColumn.setResizable(false);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        logger.info(&quot;Tree table columns created and configured successfully.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        bookTreeTableView.setRoot(root);</b>
+<b class="nc">&nbsp;        bookTreeTableView.setShowRoot(false);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(titleColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(authorColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(genreColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(publishedYearColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(idColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(bookStatusColumn);</b>
+<b class="nc">&nbsp;        bookTreeTableView.getColumns().add(numberOfTimesUsedColumn);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

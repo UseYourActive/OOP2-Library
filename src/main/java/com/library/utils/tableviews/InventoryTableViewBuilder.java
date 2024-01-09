@@ -29,15 +29,15 @@ public class InventoryTableViewBuilder implements TableViewBuilder<BookInventory
     public void createTableViewColumns(TableView<BookInventory> tableView) {
         try {
             TableColumn<BookInventory, String> titleTableColumn = new TableColumn<>("Title");
-            titleTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentiveBook().getTitle()));
+            titleTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentativeBook().getTitle()));
             titleTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
             TableColumn<BookInventory, String> authorTableColumn = new TableColumn<>("Author");
-            authorTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentiveBook().getAuthor().toString())); // Assuming getAuthor() returns a String
+            authorTableColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRepresentativeBook().getAuthor().toString())); // Assuming getAuthor() returns a String
             authorTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
             TableColumn<BookInventory, Genre> genreTableColumn = new TableColumn<>("Genre");
-            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRepresentiveBook().getGenre()));
+            genreTableColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRepresentativeBook().getGenre()));
             genreTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));
 
             tableView.getColumns().add(titleTableColumn);

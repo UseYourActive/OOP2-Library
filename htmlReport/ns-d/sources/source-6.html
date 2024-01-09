@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ReaderRatingRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaderRatingRepository (com.library.database.repositories)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaderRatingRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.repositories;
+&nbsp;
+&nbsp;import com.library.database.entities.ReaderRating;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ReaderRatingRepository} class provides methods for interacting with the database to perform CRUD (Create, Read,
+&nbsp; * Update, Delete) operations on {@code ReaderRating} entities. It extends the {@code Repository} class and inherits common
+&nbsp; * functionality for managing Hibernate sessions and transactions.
+&nbsp; *
+&nbsp; * &lt;p&gt;This class follows the Singleton pattern to ensure a single instance is used throughout the application. The
+&nbsp; * {@code getInstance()} method provides access to the singleton instance.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Concrete implementations include methods to find a reader rating by ID, retrieve all reader ratings, get a reader
+&nbsp; * rating by ID, and find all reader ratings.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Usage of this class requires proper exception handling, especially for Hibernate-related exceptions that may occur
+&nbsp; * during database interactions.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Note: This class is thread-safe and can be safely accessed by multiple threads concurrently.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @see ReaderRating
+&nbsp; * @see Repository
+&nbsp; * @see HibernateException
+&nbsp; * @see Optional
+&nbsp; * @see Logger
+&nbsp; */
+&nbsp;public class ReaderRatingRepository extends Repository&lt;ReaderRating&gt; {
+<b class="nc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(ReaderRatingRepository.class);</b>
+&nbsp;    private static volatile ReaderRatingRepository instance;
+&nbsp;
+<b class="nc">&nbsp;    private ReaderRatingRepository() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the singleton instance of the {@code ReaderRatingRepository}.
+&nbsp;     *
+&nbsp;     * @return The singleton instance of the {@code ReaderRatingRepository}.
+&nbsp;     */
+&nbsp;    public static ReaderRatingRepository getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            synchronized (ReaderRatingRepository.class) {</b>
+<b class="nc">&nbsp;                if (instance == null) {</b>
+<b class="nc">&nbsp;                    instance = new ReaderRatingRepository();</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return a {@code ReaderRating} entity by its unique identifier (ID). If the reader rating is not found,
+&nbsp;     * an empty {@code Optional} is returned.
+&nbsp;     *
+&nbsp;     * @param id The ID of the reader rating to find.
+&nbsp;     * @return An {@code Optional} containing the found reader rating, or empty if the reader rating is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Optional&lt;ReaderRating&gt; findById(Long id) throws HibernateException {
+&nbsp;        try {
+<b class="nc">&nbsp;            ReaderRating readerRating = session.get(ReaderRating.class, id);</b>
+<b class="nc">&nbsp;            if (readerRating != null) {</b>
+<b class="nc">&nbsp;                logger.info(&quot;Successfully found reader rating with id: {}&quot;, id);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                logger.info(&quot;No reader rating found with id: {}&quot;, id);</b>
+&nbsp;                // maybe throw an exception?
+&nbsp;            }
+<b class="nc">&nbsp;            return Optional.ofNullable(readerRating);</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error finding reader rating by ID: {}&quot;, id, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve and return a list of all {@code ReaderRating} entities. This method uses HQL (Hibernate Query Language) to
+&nbsp;     * execute a query to fetch all reader ratings.
+&nbsp;     *
+&nbsp;     * @return A list containing all reader rating entities.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public List&lt;ReaderRating&gt; findAll() throws HibernateException {
+&nbsp;        try {
+<b class="nc">&nbsp;            return session.createQuery(&quot;SELECT r FROM ReaderRating r&quot;, ReaderRating.class).getResultList();</b>
+<b class="nc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error retrieving all reader ratings&quot;, e);</b>
+<b class="nc">&nbsp;            throw e;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get and return a {@code ReaderRating} entity by its unique identifier (ID). If the reader rating is not found, it
+&nbsp;     * returns null.
+&nbsp;     *
+&nbsp;     * @param id The ID of the reader rating to get.
+&nbsp;     * @return The found reader rating, or null if the reader rating is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ReaderRating getById(Long id) throws HibernateException {
+<b class="nc">&nbsp;        ReaderRating readerRating = session.get(ReaderRating.class, id);</b>
+<b class="nc">&nbsp;        if (readerRating != null) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;Successfully found reader rating with id: {}&quot;, id);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return readerRating;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

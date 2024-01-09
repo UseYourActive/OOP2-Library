@@ -1,0 +1,321 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Repository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: Repository (com.library.database.repositories)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Repository</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30.8%
+  </span>
+  <span class="absValue">
+    (4/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28.3%
+  </span>
+  <span class="absValue">
+    (15/53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.repositories;
+&nbsp;
+&nbsp;import com.library.database.entities.DBEntity;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.hibernate.Session;
+&nbsp;import org.hibernate.SessionFactory;
+&nbsp;import org.hibernate.Transaction;
+&nbsp;import org.hibernate.cfg.Configuration;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.function.Consumer;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code Repository} class provides a generic implementation for basic CRUD (Create, Read, Update, Delete) operations
+&nbsp; * using Hibernate as the underlying ORM (Object-Relational Mapping) framework. It serves as a base class for specific
+&nbsp; * repositories handling entities of a particular type.
+&nbsp; *
+&nbsp; * &lt;p&gt;This class manages Hibernate sessions, transactions, and provides methods for common database operations, such as
+&nbsp; * finding entities by ID, retrieving all entities, getting entities by ID, deleting entities, saving entities, and updating
+&nbsp; * entities.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;The class utilizes a {@code ThreadLocal} to manage the Hibernate {@code Session} instances for each thread, ensuring
+&nbsp; * thread-safety in a multi-threaded environment.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Concrete subclasses must implement the following methods:&lt;/p&gt;
+&nbsp; * &lt;ul&gt;
+&nbsp; *     &lt;li&gt;{@link #findById(Long)}: Find an entity by its ID.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #findAll()}: Retrieve all entities of the specified type.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #getById(Long)}: Get an entity by its ID.&lt;/li&gt;
+&nbsp; * &lt;/ul&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Additionally, the class supports methods for deleting, saving, and updating entities, with these operations
+&nbsp; * encapsulated in a transaction.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;The class also provides a method for executing an action inside a Hibernate transaction, ensuring proper handling
+&nbsp; * of transactions.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Usage of this class requires the implementation of specific repositories for entities, extending this class.&lt;/p&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Note: This class implements the {@code AutoCloseable} interface, allowing it to be used in try-with-resources
+&nbsp; * constructs, ensuring proper resource management.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @param &lt;T&gt; The type of entity managed by the repository.
+&nbsp; *
+&nbsp; * @see HibernateException
+&nbsp; * @see Session
+&nbsp; * @see Transaction
+&nbsp; * @see Configuration
+&nbsp; * @see LoggerFactory
+&nbsp; */
+&nbsp;@Getter
+<b class="fc">&nbsp;@Setter</b>
+&nbsp;public abstract class Repository&lt;T extends DBEntity&gt; implements AutoCloseable {
+&nbsp;    private static final SessionFactory sessionFactory;
+<b class="fc">&nbsp;    private static final ThreadLocal&lt;Session&gt; threadLocalSession = new ThreadLocal&lt;&gt;();</b>
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(Repository.class);</b>
+<b class="nc">&nbsp;    protected Session session;</b>
+<b class="nc">&nbsp;    protected Transaction transaction;</b>
+&nbsp;
+<b class="fc">&nbsp;    protected Repository() {</b>
+<b class="fc">&nbsp;        this.session = getThreadLocalSession();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    static {
+&nbsp;        try {
+<b class="fc">&nbsp;            Configuration configuration = new Configuration().configure(&quot;/sql/hibernate.cfg.xml&quot;);</b>
+<b class="fc">&nbsp;            sessionFactory = configuration.buildSessionFactory();</b>
+<b class="fc">&nbsp;            logger.info(&quot;Hibernate initialized successfully&quot;);</b>
+<b class="nc">&nbsp;        } catch (Throwable ex) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error initializing Hibernate: {}&quot;, ex.getMessage(), ex);</b>
+<b class="nc">&nbsp;            throw new ExceptionInInitializerError(ex);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find and return an entity by its unique identifier (ID). This method utilizes the Hibernate session to perform
+&nbsp;     * the database operation. If the entity is not found, an empty {@code Optional} is returned.
+&nbsp;     *
+&nbsp;     * @param id The ID of the entity to find.
+&nbsp;     * @return An {@code Optional} containing the found entity, or empty if the entity is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public abstract Optional&lt;T&gt; findById(Long id) throws HibernateException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve and return a list of all entities of the specified type. This method uses Hibernates HQL (Hibernate Query
+&nbsp;     * Language) to execute a query to fetch all entities.
+&nbsp;     *
+&nbsp;     * @return A list containing all entities of the specified type.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public abstract List&lt;T&gt; findAll() throws HibernateException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get and return an entity by its unique identifier (ID). This method is similar to {@link #findById(Long)}, but it
+&nbsp;     * returns the entity directly instead of wrapping it in an {@code Optional}. If the entity is not found, it returns null.
+&nbsp;     *
+&nbsp;     * @param id The ID of the entity to get.
+&nbsp;     * @return The found entity, or null if the entity is not found.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public abstract T getById(Long id) throws HibernateException;
+&nbsp;
+&nbsp;    private Session getThreadLocalSession() throws org.hibernate.HibernateException {
+<b class="fc">&nbsp;        Session currentSession = threadLocalSession.get();</b>
+<b class="fc">&nbsp;        if (currentSession == null || !currentSession.isOpen()) {</b>
+<b class="fc">&nbsp;            currentSession = sessionFactory.openSession();</b>
+<b class="fc">&nbsp;            threadLocalSession.set(currentSession);</b>
+<b class="fc">&nbsp;            logger.debug(&quot;Opened new Hibernate session&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return currentSession;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Execute the provided action inside a Hibernate transaction. This method handles the beginning and committing of
+&nbsp;     * transactions and provides proper error handling, including transaction rollback in case of an exception.
+&nbsp;     *
+&nbsp;     * @param action The action to be executed inside the transaction. It takes a {@code Session} as a parameter.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate transaction.
+&nbsp;     */
+&nbsp;    protected final void actionInsideOfTransaction(Consumer&lt;Session&gt; action) throws org.hibernate.HibernateException {
+<b class="nc">&nbsp;        transaction = session.getTransaction();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            transaction.begin();</b>
+<b class="nc">&nbsp;            action.accept(session);</b>
+<b class="nc">&nbsp;            transaction.commit();</b>
+<b class="nc">&nbsp;            logger.debug(&quot;Transaction committed successfully&quot;);</b>
+<b class="nc">&nbsp;        } catch (org.hibernate.HibernateException exception) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error during Hibernate transaction&quot;, exception);</b>
+<b class="nc">&nbsp;            if (transaction.isActive()) {</b>
+<b class="nc">&nbsp;                transaction.rollback();</b>
+<b class="nc">&nbsp;                logger.debug(&quot;Transaction rolled back&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            throw new org.hibernate.HibernateException(&quot;Unable to add data to the database&quot;, exception);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Close the Hibernate session associated with this repository. This method ensures that the session is closed and
+&nbsp;     * removes it from the {@code ThreadLocal} storage.
+&nbsp;     *
+&nbsp;     * @throws HibernateException If an error occurs while closing the Hibernate session.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public final void close() throws org.hibernate.HibernateException {
+&nbsp;        try {
+<b class="nc">&nbsp;            if (session != null &amp;&amp; session.isOpen()) {</b>
+<b class="nc">&nbsp;                session.close();</b>
+<b class="nc">&nbsp;                threadLocalSession.remove();</b>
+<b class="nc">&nbsp;                logger.debug(&quot;Closed Hibernate session&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (org.hibernate.HibernateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error closing Hibernate session&quot;, e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete the specified entity from the database. This method encapsulates the deletion operation inside a Hibernate
+&nbsp;     * transaction.
+&nbsp;     *
+&nbsp;     * @param object The entity to be deleted.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public final boolean delete(T object) throws org.hibernate.HibernateException {
+<b class="nc">&nbsp;        actionInsideOfTransaction(session -&gt; session.remove(object));</b>
+<b class="nc">&nbsp;        logger.info(&quot;Entity deleted successfully&quot;);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Save the specified entity to the database. This method encapsulates the save operation inside a Hibernate transaction.
+&nbsp;     *
+&nbsp;     * @param object The entity to be saved.
+&nbsp;     * @return True if the entity was saved successfully.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public final boolean save(T object) throws org.hibernate.HibernateException {
+<b class="nc">&nbsp;        actionInsideOfTransaction(session -&gt; session.persist(object));</b>
+<b class="nc">&nbsp;        logger.info(&quot;Entity saved successfully&quot;);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Update the specified entity in the database. This method encapsulates the update operation inside a Hibernate
+&nbsp;     * transaction.
+&nbsp;     *
+&nbsp;     * @param object The entity to be updated.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public final boolean update(T object) throws org.hibernate.HibernateException {
+<b class="nc">&nbsp;        actionInsideOfTransaction(session -&gt; session.merge(object));</b>
+<b class="nc">&nbsp;        logger.info(&quot;Entity updated successfully&quot;);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete multiple entities from the database. This method encapsulates the deletion operation inside a Hibernate
+&nbsp;     * transaction.
+&nbsp;     *
+&nbsp;     * @param entities The collection of books to be deleted.
+&nbsp;     * @throws HibernateException If an error occurs during the Hibernate operation.
+&nbsp;     */
+&nbsp;    public final void deleteAll(Collection&lt;T&gt; entities) throws HibernateException {
+<b class="nc">&nbsp;        actionInsideOfTransaction(session -&gt; {</b>
+<b class="nc">&nbsp;            for (T entity : entities) {</b>
+<b class="nc">&nbsp;                session.remove(entity);</b>
+<b class="nc">&nbsp;                logger.info(&quot;Entity with ID {} deleted successfully&quot;, entity.getId());</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

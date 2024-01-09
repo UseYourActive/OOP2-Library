@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SceneLoader</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: SceneLoader (com.library.frontend)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SceneLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/54)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend;
+&nbsp;
+&nbsp;import com.library.database.entities.User;
+&nbsp;import com.library.utils.DialogUtils;
+&nbsp;import javafx.event.Event;
+&nbsp;import javafx.fxml.FXMLLoader;
+&nbsp;import javafx.scene.Node;
+&nbsp;import javafx.scene.Parent;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.stage.Modality;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code SceneLoader} class provides utility methods for loading JavaFX scenes and managing stages.
+&nbsp; * It includes methods to load main scenes, load scenes into a specific stage, and load modal dialog scenes.
+&nbsp; * Additionally, it allows setting a username and transferable objects for use in loaded scenes.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Load a main scene on a button click event
+&nbsp; * SceneLoader.load(event, &quot;mainScene.fxml&quot;, &quot;Main Scene&quot;);
+&nbsp; *
+&nbsp; * // Load a main scene in a specific stage
+&nbsp; * SceneLoader.load(primaryStage, &quot;mainScene.fxml&quot;, &quot;Main Scene&quot;);
+&nbsp; *
+&nbsp; * // Load a modal dialog scene with transferable objects
+&nbsp; * SceneLoader.loadModalityDialog(&quot;dialogScene.fxml&quot;, &quot;Dialog Scene&quot;, object1, object2);
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; *
+&nbsp; * @see javafx.fxml.FXMLLoader
+&nbsp; * @see javafx.scene.Parent
+&nbsp; * @see javafx.scene.Scene
+&nbsp; * @see javafx.stage.Stage
+&nbsp; * @see javafx.stage.Modality
+&nbsp; */
+&nbsp;public class SceneLoader {
+<b class="nc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(SceneLoader.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The username to be transferred to loaded scenes.
+&nbsp;     */
+<b class="nc">&nbsp;    @Getter</b>
+<b class="nc">&nbsp;    @Setter</b>
+&nbsp;    private static User user;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The primary stage used for loading scenes.
+&nbsp;     */
+<b class="nc">&nbsp;    @Getter</b>
+<b class="nc">&nbsp;    @Setter</b>
+&nbsp;    private static Stage stage;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Objects to be transferred to loaded scenes.
+&nbsp;     */
+<b class="nc">&nbsp;    @Setter</b>
+<b class="nc">&nbsp;    @Getter</b>
+&nbsp;    private static Object[] transferableObjects;
+&nbsp;
+&nbsp;    private SceneLoader() {
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads a main scene triggered by an event (e.g., button click).
+&nbsp;     *
+&nbsp;     * @param event         The event that triggered the scene load.
+&nbsp;     * @param resourceFiles The FXML resource file for the scene.
+&nbsp;     * @param stageTitle    The title of the stage.
+&nbsp;     */
+&nbsp;    public static void load(Event event, String resourceFiles, String stageTitle,Object ... objects) {
+<b class="nc">&nbsp;        if (objects != null)</b>
+<b class="nc">&nbsp;            SceneLoader.transferableObjects = objects;</b>
+&nbsp;
+<b class="nc">&nbsp;        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();</b>
+<b class="nc">&nbsp;        loadBackground(stage, resourceFiles, stageTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads a main scene without an event, assuming a primary stage is set.
+&nbsp;     *
+&nbsp;     * @param resourceFiles The FXML resource file for the scene.
+&nbsp;     * @param stageTitle    The title of the stage.
+&nbsp;     */
+&nbsp;    public static void load(String resourceFiles, String stageTitle,Object ... objects) {
+<b class="nc">&nbsp;        if (stage == null)</b>
+<b class="nc">&nbsp;            throw new RuntimeException();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (objects != null)</b>
+<b class="nc">&nbsp;            SceneLoader.transferableObjects = objects;</b>
+&nbsp;
+<b class="nc">&nbsp;        loadBackground(stage, resourceFiles, stageTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads a main scene into a specified stage.
+&nbsp;     *
+&nbsp;     * @param stage         The stage where the scene will be loaded.
+&nbsp;     * @param resourceFiles The FXML resource file for the scene.
+&nbsp;     * @param stageTitle    The title of the stage.
+&nbsp;     */
+&nbsp;    public static void load(Stage stage, String resourceFiles, String stageTitle,Object ... objects) {
+<b class="nc">&nbsp;        if (objects != null)</b>
+<b class="nc">&nbsp;            SceneLoader.transferableObjects = objects;</b>
+&nbsp;
+<b class="nc">&nbsp;        loadBackground(stage, resourceFiles, stageTitle);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the background of a stage with the specified FXML resource file and title.
+&nbsp;     * This method is used internally by the SceneLoader utility to set the scene, title, and other properties
+&nbsp;     * of the provided stage based on the FXML resource file.
+&nbsp;     *
+&nbsp;     * @param stage         The stage to load the scene background into.
+&nbsp;     * @param resourceFiles The FXML resource file for the scene background.
+&nbsp;     * @param stageTitle    The title to set for the stage.
+&nbsp;     * @throws IllegalStateException If an error occurs during opening the dialog with the table view.
+&nbsp;     * @throws NullPointerException  If unexpected null pointers occur.
+&nbsp;     * @throws IOException           If an error occurs during the loading of the FXML form.
+&nbsp;     */
+&nbsp;    private static void loadBackground(Stage stage, String resourceFiles, String stageTitle) {
+&nbsp;        try {
+<b class="nc">&nbsp;            Parent root = FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));</b>
+<b class="nc">&nbsp;            Scene scene = new Scene(root);</b>
+<b class="nc">&nbsp;            stage.setScene(scene);</b>
+<b class="nc">&nbsp;            stage.setResizable(false);</b>
+<b class="nc">&nbsp;            stage.setTitle(stageTitle);</b>
+<b class="nc">&nbsp;            stage.show();</b>
+<b class="nc">&nbsp;            SceneLoader.stage = stage;</b>
+&nbsp;
+<b class="nc">&nbsp;            logger.info(&quot;Loaded scene: {}&quot;, resourceFiles);</b>
+<b class="nc">&nbsp;        } catch (IllegalStateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error occurred during opening dialog with table view&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Null Pointer occurred unexpectedly!&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error loading form: {}&quot;, resourceFiles, e);</b>
+<b class="nc">&nbsp;            DialogUtils.showError(&quot;Error&quot;, &quot;An error occurred when trying to open the new dialog window!&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads a modal dialog scene with transferable objects.
+&nbsp;     *
+&nbsp;     * @param resourceFiles The FXML resource file for the dialog scene.
+&nbsp;     * @param stageTitle    The title of the dialog stage.
+&nbsp;     * @param objects       Objects to be transferred to the loaded scene.
+&nbsp;     */
+&nbsp;    public static void loadModalityDialog(String resourceFiles, String stageTitle, Object... objects) {
+&nbsp;        try {
+<b class="nc">&nbsp;            if (objects != null)</b>
+<b class="nc">&nbsp;                SceneLoader.transferableObjects = objects;</b>
+&nbsp;
+<b class="nc">&nbsp;            Stage dialogStage = new Stage();</b>
+<b class="nc">&nbsp;            dialogStage.initModality(Modality.WINDOW_MODAL);</b>
+<b class="nc">&nbsp;            dialogStage.initOwner(SceneLoader.getStage());</b>
+&nbsp;
+<b class="nc">&nbsp;            Parent root = FXMLLoader.load(Objects.requireNonNull(SceneLoader.class.getResource(resourceFiles)));</b>
+<b class="nc">&nbsp;            Scene dialogScene = new Scene(root);</b>
+&nbsp;
+<b class="nc">&nbsp;            dialogStage.setTitle(stageTitle);</b>
+<b class="nc">&nbsp;            dialogStage.setScene(dialogScene);</b>
+<b class="nc">&nbsp;            dialogStage.setResizable(false);</b>
+<b class="nc">&nbsp;            dialogStage.showAndWait();</b>
+<b class="nc">&nbsp;        } catch (IllegalStateException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error occurred during opening dialog with table view!&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Null Pointer occurred unexpectedly!&quot;, e);</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error loading form: {}&quot;, resourceFiles, e);</b>
+<b class="nc">&nbsp;            DialogUtils.showError(&quot;Error&quot;, &quot;An error occurred when trying to open the new dialog window!&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

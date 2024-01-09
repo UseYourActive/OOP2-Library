@@ -19,31 +19,95 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * The {@code AdministratorBooksService} class provides functionality for managing book inventories
+ * and associated book forms within the administration module. It includes methods for searching book inventories,
+ * removing inventories, updating book forms, and retrieving all book inventories.
+ * <p>
+ * Example Usage:
+ * <pre>
+ * {@code
+ * // Create an AdministratorBooksService instance with BookInventoryRepository and BookFormRepository
+ * AdministratorBooksService booksService = new AdministratorBooksService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
+ *
+ * // Search for book inventories based on a string
+ * String searchString = "Java Programming";
+ * Collection<BookInventory> searchResults = booksService.searchBookInventory(searchString);
+ *
+ * // Remove a book inventory
+ * BookInventory inventoryToRemove = // obtain a BookInventory instance;
+ * booksService.removeInventory(inventoryToRemove);
+ *
+ * // Retrieve all book inventories
+ * List<BookInventory> allInventories = booksService.getAllBookInventories();
+ * }
+ * </pre>
+ * In this example, an {@code AdministratorBooksService} instance is created with the necessary repositories,
+ * and various methods are used to search, remove, and retrieve book inventories.
+ * <p>
+ * The {@code AdministratorBooksService} class implements the {@link com.library.backend.services.Service Service}
+ * interface, providing a common interface for various services in the application.
+ *
+ * @see com.library.backend.services.Service
+ * @see com.library.database.entities.BookInventory
+ * @see com.library.database.repositories.BookInventoryRepository
+ * @see com.library.database.entities.BookForm
+ * @see com.library.database.repositories.BookFormRepository
+ * @see com.library.backend.engines.SearchEngine
+ * @see com.library.backend.exception.searchengine.SearchEngineException
+ */
 @Getter
 public class AdministratorBooksService implements Service {
+
     private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);
+
     private final BookInventoryRepository bookInventoryRepository;
     private final BookFormRepository bookFormRepository;
-    @Setter private SearchEngine<BookInventory> searchEngine;
 
+    @Setter
+    private SearchEngine<BookInventory> searchEngine;
+
+    /**
+     * Constructs an {@code AdministratorBooksService} instance with the specified repositories.
+     *
+     * @param bookInventoryRepository The repository for accessing book inventory data.
+     * @param bookFormRepository      The repository for accessing book form data.
+     */
     public AdministratorBooksService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {
         this.bookInventoryRepository = bookInventoryRepository;
         this.bookFormRepository = bookFormRepository;
         searchEngine = new BookInventorySearchEngine();
     }
 
-    public Collection<BookInventory> searchBookInventory(String string) throws SearchEngineException {
+    /**
+     * Searches for book inventories based on the provided string using the configured {@link com.library.backend.engines.SearchEngine SearchEngine}.
+     *
+     * @param searchString The string to search for in book inventories.
+     * @return A collection of book inventories matching the search criteria.
+     * @throws SearchEngineException If there is an issue with the search engine.
+     */
+    public Collection<BookInventory> searchBookInventory(String searchString) throws SearchEngineException {
         List<BookInventory> inventories = bookInventoryRepository.findAll();
-        logger.info("Searching book inventories for: '{}'", string);
-        return searchEngine.search(inventories, string);
+        logger.info("Searching book inventories for: '{}'", searchString);
+        return searchEngine.search(inventories, searchString);
     }
 
+    /**
+     * Removes the specified {@link com.library.database.entities.BookInventory BookInventory} along with its associated book forms.
+     *
+     * @param inventory The BookInventory instance to be removed.
+     */
     public void removeInventory(BookInventory inventory) {
         updateBookForms(inventory.getBookList());
 
         performRepositoryOperation(() -> bookInventoryRepository.delete(inventory), "deleted", "BookInventory");
     }
 
+    /**
+     * Updates the associated {@link com.library.database.entities.BookForm BookForms} by removing specified books.
+     *
+     * @param bookList The list of books to be removed from book forms.
+     */
     public void updateBookForms(List<Book> bookList) {
         try {
             for (BookForm bookForm : bookFormRepository.findAll()) {
@@ -59,18 +123,15 @@ public class AdministratorBooksService implements Service {
                     logger.info("Updated book form: {}", bookForm);
                 }
             }
-        }catch (LazyInitializationException ignored){}
-    }
-
-    private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
-        T result = repositoryOperation.get();
-        if (result != null) {
-            logger.info("{} {} successfully: {}", entityName, action, entityName);
-        } else {
-            logger.error("Failed to {} {}: {}", action, entityName, entityName);
+        } catch (LazyInitializationException ignored) {
         }
     }
 
+    /**
+     * Retrieves all {@link com.library.database.entities.BookInventory BookInventories} from the repository.
+     *
+     * @return A list containing all book inventories.
+     */
     public List<BookInventory> getAllBookInventories() {
         List<BookInventory> inventories = bookInventoryRepository.findAll();
         logEntityRetrieval("book_inventories", inventories.size());
@@ -79,5 +140,22 @@ public class AdministratorBooksService implements Service {
 
     private void logEntityRetrieval(String entityName, int size) {
         logger.info("Retrieved {} {}: {}", size, entityName, (size == 1 ? "entity" : "entities"));
+    }
+
+    /**
+     * Performs a repository operation and logs the result.
+     *
+     * @param repositoryOperation The operation to be performed on the repository.
+     * @param action              The action being performed (e.g., created, updated, deleted).
+     * @param entityName          The name of the entity being operated on.
+     * @param <T>                 The type of result from the repository operation.
+     */
+    private <T> void performRepositoryOperation(Supplier<T> repositoryOperation, String action, String entityName) {
+        T result = repositoryOperation.get();
+        if (result != null) {
+            logger.info("{} {} successfully: {}", entityName, action, entityName);
+        } else {
+            logger.error("Failed to {} {}: {}", action, entityName, entityName);
+        }
     }
 }

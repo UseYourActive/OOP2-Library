@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ReaderTableViewBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.utils.tableviews</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaderTableViewBuilder (com.library.utils.tableviews)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaderTableViewBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84.2%
+  </span>
+  <span class="absValue">
+    (16/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.utils.tableviews;
+&nbsp;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import javafx.scene.control.TableColumn;
+&nbsp;import javafx.scene.control.TableView;
+&nbsp;import javafx.scene.control.cell.PropertyValueFactory;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ReaderTableViewBuilder} class implements the {@link TableViewBuilder} interface
+&nbsp; * to create and configure JavaFX {@link javafx.scene.control.TableView} columns for the {@link Reader} entity.
+&nbsp; * It defines columns for reader-related properties such as first name, last name, and email.
+&nbsp; *
+&nbsp; * @see TableViewBuilder
+&nbsp; */
+<b class="fc">&nbsp;public class ReaderTableViewBuilder implements TableViewBuilder&lt;Reader&gt; {</b>
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(ReaderTableViewBuilder.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
+&nbsp;     * Defines columns for reader-related properties such as first name, last name, and email.
+&nbsp;     *
+&nbsp;     * @param tableView The TableView for which columns are created and configured.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createTableViewColumns(TableView&lt;Reader&gt; tableView) {
+&nbsp;        try {
+<b class="fc">&nbsp;            TableColumn&lt;Reader, String&gt; firstNameColumn = new TableColumn&lt;&gt;(&quot;First Name&quot;);</b>
+<b class="fc">&nbsp;            firstNameColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;firstName&quot;));</b>
+<b class="fc">&nbsp;            firstNameColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            TableColumn&lt;Reader, String&gt; lastNameColumn = new TableColumn&lt;&gt;(&quot;Last Name&quot;);</b>
+<b class="fc">&nbsp;            lastNameColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;lastName&quot;));</b>
+<b class="fc">&nbsp;            lastNameColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            TableColumn&lt;Reader, String&gt; emailColumn = new TableColumn&lt;&gt;(&quot;Email&quot;);</b>
+<b class="fc">&nbsp;            emailColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;email&quot;));</b>
+<b class="fc">&nbsp;            emailColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            tableView.getColumns().add(firstNameColumn);</b>
+<b class="fc">&nbsp;            tableView.getColumns().add(lastNameColumn);</b>
+<b class="fc">&nbsp;            tableView.getColumns().add(emailColumn);</b>
+&nbsp;
+<b class="fc">&nbsp;            logger.info(&quot;Reader table view columns created successfully&quot;);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to create reader table view columns: {}&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;            throw e;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

@@ -28,6 +28,12 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * The {@code OperatorBooksService} class provides services for managing book-related operations
+ * and book inventory for operators in the library system.
+ *
+ * @see Service
+ */
 public class OperatorBooksService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(OperatorBooksService.class);
     private final BookFormRepository bookFormRepository;
@@ -39,6 +45,14 @@ public class OperatorBooksService implements Service {
     @Getter private ObservableList<Book> selectedBooks;
     @Getter private List<BookForm> overdueBookForms;
 
+    /**
+     * Constructs an {@code OperatorBooksService} instance with the specified repositories.
+     *
+     * @param bookFormRepository        The repository for managing book forms.
+     * @param bookInventoryRepository   The repository for managing book inventories.
+     * @param eventNotificationRepository The repository for managing event notifications.
+     * @param bookRepository           The repository for managing books.
+     */
     public OperatorBooksService(BookFormRepository bookFormRepository, BookInventoryRepository bookInventoryRepository, EventNotificationRepository eventNotificationRepository, BookRepository bookRepository) {
         this.bookFormRepository = bookFormRepository;
         this.bookInventoryRepository = bookInventoryRepository;
@@ -47,15 +61,27 @@ public class OperatorBooksService implements Service {
         bookInventorySearchEngine = new BookInventorySearchEngine();
     }
 
+    /**
+     * Initializes the list of selected books for book-related operations.
+     */
     public void initializeSelectedBooks() {
         selectedBooks = FXCollections.observableArrayList();
     }
 
+    /**
+     * Sets the list of overdue book forms in the service.
+     */
     public void setAllOverdueBooks() {
         overdueBookForms = bookFormRepository.findAll().stream().filter(BookForm::isOverdue).toList();
         logger.info("Retrieved {} overdue book forms from the repository.", overdueBookForms.size());
     }
 
+    /**
+     * Retrieves a list of all book inventories in the library.
+     *
+     * @return A list of book inventories.
+     * @throws RuntimeException If an error occurs while retrieving book inventories.
+     */
     public List<BookInventory> getAllBookInventories() {
         try {
             List<BookInventory> inventories = bookInventoryRepository.findAll();
@@ -67,6 +93,13 @@ public class OperatorBooksService implements Service {
         }
     }
 
+    /**
+     * Searches for book inventories based on the specified search string.
+     *
+     * @param stringToSearch The search string for book inventories.
+     * @return A collection of matching book inventories.
+     * @throws SearchEngineException If an error occurs during the search operation.
+     */
     public Collection<BookInventory> searchBookInventory(String stringToSearch) throws SearchEngineException {
         try {
             return bookInventorySearchEngine.search(bookInventoryRepository.findAll(), stringToSearch);
@@ -76,6 +109,9 @@ public class OperatorBooksService implements Service {
         }
     }
 
+    /**
+     * Updates the status of book forms based on their overdue status.
+     */
     public void updateBookForms() {
         try {
             List<BookForm> bookForms = bookFormRepository.findAll();
@@ -100,6 +136,12 @@ public class OperatorBooksService implements Service {
         }
     }
 
+    /**
+     * Adds the specified book to the list of selected books.
+     *
+     * @param book The book to be added to the list.
+     * @throws RuntimeException If an error occurs during the operation.
+     */
     public void addSelectedBookToList(Book book) {
         try {
             if (!selectedBooks.contains(book))
@@ -110,6 +152,12 @@ public class OperatorBooksService implements Service {
         }
     }
 
+    /**
+     * Removes the specified book from the list of selected books.
+     *
+     * @param book The book to be removed from the list.
+     * @throws RuntimeException If an error occurs during the operation.
+     */
     public void removeFromSelectedBooks(Book book) {
         try {
             selectedBooks.remove(book);
@@ -119,10 +167,24 @@ public class OperatorBooksService implements Service {
         }
     }
 
+    /**
+     * Archives the specified book by updating its status.
+     *
+     * @param book The book to be archived.
+     * @throws LibraryException If an error occurs during the archive operation.
+     */
     public void archiveBook(Book book) throws LibraryException{
         updateBookStatus(book, BookStatus.ARCHIVED, "archived");
     }
 
+    /**
+     * Updates the status of the specified book.
+     *
+     * @param book      The book whose status is to be updated.
+     * @param newStatus The new status for the book.
+     * @param action    The action being performed (e.g., "archived").
+     * @throws LibraryException If an error occurs during the status update.
+     */
     private void updateBookStatus(Book book, BookStatus newStatus, String action) throws LibraryException {
         try {
             Preconditions.checkNotNull(book, "Book cannot be null");

@@ -31,7 +31,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
-public class User implements DBEntity{
+public class User implements DBEntity {
     /**
      * The unique identifier for the user.
      */
@@ -59,7 +59,10 @@ public class User implements DBEntity{
     @Column(name = "role", length = 16, nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    /**
+     * The list of event notifications associated with the user.
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<EventNotification> eventNotifications;
 
     /**

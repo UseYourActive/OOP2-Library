@@ -24,6 +24,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code BookFormShowService} class provides services related to displaying and managing book return forms.
+ * It includes functionality for loading email settings, sending emails to readers, and processing book returns.
+ *
+ * @see Service
+ */
 public class BookFormShowService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(BookFormShowService.class);
     private final BookRepository bookRepository;
@@ -31,12 +37,25 @@ public class BookFormShowService implements Service {
     private final EventNotificationRepository eventNotificationRepository;
     @Getter private EmailSenderService emailSenderService;
 
+    /**
+     * Constructs a {@code BookFormShowService} instance with the specified repositories.
+     *
+     * @param bookRepository               The repository for managing book data.
+     * @param readerRepository             The repository for managing reader data.
+     * @param eventNotificationRepository The repository for managing event notifications.
+     */
     public BookFormShowService(BookRepository bookRepository, ReaderRepository readerRepository, EventNotificationRepository eventNotificationRepository) {
         this.bookRepository = bookRepository;
         this.readerRepository = readerRepository;
         this.eventNotificationRepository = eventNotificationRepository;
     }
 
+    /**
+     * Loads email settings for the {@code EmailSenderService}.
+     *
+     * @param username The username for the email service.
+     * @param password The password for the email service.
+     */
     public void loadEmailSettings(String username, String password) {
         try {
             emailSenderService = new EmailSenderService(username, password, "smtp.gmail.com", "587", false);
@@ -45,6 +64,14 @@ public class BookFormShowService implements Service {
         }
     }
 
+    /**
+     * Sends an email to the specified reader with the given subject and message.
+     *
+     * @param reader  The reader to whom the email is sent.
+     * @param subject The subject of the email.
+     * @param message The content of the email.
+     * @throws EmailException If an error occurs during email sending.
+     */
     public void sendEmail(Reader reader, String subject, String message) throws EmailException {
         try {
             emailSenderService.sendEmail(reader.getEmail(), subject, message);
@@ -55,10 +82,19 @@ public class BookFormShowService implements Service {
         }
     }
 
+    /**
+     * Processes the return of books based on the provided book form, damaged books, and all books.
+     *
+     * @param bookForm      The book return form.
+     * @param damagedBooks  The list of damaged books.
+     * @param allBooks      The list of all books being returned.
+     * @throws ReturnBookException If an error occurs during the book return process.
+     */
     public void returnBooks(BookForm bookForm, List<Book> damagedBooks, List<Book> allBooks) throws ReturnBookException {
         List<Book> booksToReturn = new ArrayList<>();
 
         try {
+            // Process the return status of each book
             for (Book book : allBooks) {
                 if (damagedBooks.contains(book))
                     book.setBookStatus(BookStatus.DAMAGED);
@@ -75,6 +111,7 @@ public class BookFormShowService implements Service {
                 book.setNumberOfTimesUsed(book.getNumberOfTimesUsed() + 1);
                 booksToReturn.add(book);
 
+                // Check and notify if a book is being used excessively
                 if (book.getPreviousBookStatus() != BookStatus.ARCHIVED && book.getNumberOfTimesUsed() == 50) {
                     EventNotification eventNotification = EventNotification.builder()
                             .user(SceneLoader.getUser())
@@ -84,7 +121,6 @@ public class BookFormShowService implements Service {
 
                     eventNotificationRepository.save(eventNotification);
                     logger.info("Event notification saved: '{}'", eventNotification.getMessage());
-                    //operatorService.saveEventNotification(eventNotification);
                 }
             }
         } catch (ReturnBookException e){
@@ -92,12 +128,13 @@ public class BookFormShowService implements Service {
             throw e;
         }
 
+        // Save the updated book statuses
         bookRepository.saveAll(booksToReturn);
         logger.info("Books returned successfully");
 
         Reader reader = bookForm.getReader();
 
-        //Reader is going to be demoted if the deadline for returning books has passed
+        // Demote or promote the reader based on book return conditions
         if (bookForm.isOverdue()) {
             reader.demote();
             logger.info("Reader demoted due to overdue books");
@@ -106,16 +143,17 @@ public class BookFormShowService implements Service {
             logger.info("Reader promoted for returning books on time");
         }
 
-        //For every damaged book returned reader is going to be demoted
+        // Demote the reader for each damaged book returned
         for (int i = 0; i < damagedBooks.size(); i++) {
             reader.demote();
             logger.info("Reader demoted due to damaged book");
         }
 
+        // Update the book return form status
         bookForm.setStatus(BookFormStatus.RETURNED);
 
+        // Save the reader information
         readerRepository.save(reader);
         logger.info("Reader information saved successfully");
-        //operatorService.saveReader(reader);
     }
 }

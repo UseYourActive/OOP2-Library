@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CreateBookFormController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend.controllers.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: CreateBookFormController (com.library.frontend.controllers.operator)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CreateBookFormController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/47)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend.controllers.operator;
+&nbsp;
+&nbsp;import com.library.backend.exception.ReaderException;
+&nbsp;import com.library.backend.services.ServiceFactory;
+&nbsp;import com.library.backend.services.operator.CreateBookFormService;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import com.library.database.enums.Ratings;
+&nbsp;import com.library.frontend.SceneLoader;
+&nbsp;import com.library.frontend.controllers.Controller;
+&nbsp;import com.library.utils.DialogUtils;
+&nbsp;import com.library.utils.tableviews.BookTableViewBuilder;
+&nbsp;import com.library.utils.tableviews.ReaderTableViewBuilder;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.TableView;
+&nbsp;import javafx.scene.control.TextField;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import org.controlsfx.control.Rating;
+&nbsp;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Controller for creating a book form in the operator view.
+&nbsp; */
+<b class="nc">&nbsp;public class CreateBookFormController implements Controller {</b>
+&nbsp;    @FXML public TextField readerSearchBarTextField;
+&nbsp;    @FXML public Button lendButton;
+&nbsp;    @FXML public Button cancelButton;
+&nbsp;    @FXML public Button searchReaderButton;
+&nbsp;    @FXML public TableView&lt;Book&gt; bookTableView;
+&nbsp;    @FXML public Button lendReadingRoomButton;
+&nbsp;    @FXML public Rating readerRatingControl;
+&nbsp;    @FXML public TableView&lt;Reader&gt; readerTableView;
+&nbsp;
+&nbsp;    private CreateBookFormService service;
+&nbsp;    private BookTableViewBuilder bookTableViewBuilder;
+&nbsp;    private ReaderTableViewBuilder readerTableViewBuilder;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the controller, loads necessary services, and sets up UI components.
+&nbsp;     *
+&nbsp;     * @param location  The URL location.
+&nbsp;     * @param resources The ResourceBundle.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(URL location, ResourceBundle resources) {
+<b class="nc">&nbsp;        service = ServiceFactory.getService(CreateBookFormService.class);</b>
+&nbsp;
+&nbsp;        // Make the book table view non-interactive
+<b class="nc">&nbsp;        bookTableView.setMouseTransparent(true);</b>
+<b class="nc">&nbsp;        bookTableView.setFocusTraversable(false);</b>
+&nbsp;
+&nbsp;        // Retrieve selected books from transferable objects
+<b class="nc">&nbsp;        List&lt;Book&gt; selectedBooks = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (Object object : SceneLoader.getTransferableObjects()) {</b>
+<b class="nc">&nbsp;            if (object instanceof Book)</b>
+<b class="nc">&nbsp;                selectedBooks.add((Book) object);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Initialize UI components
+<b class="nc">&nbsp;        readerRatingControl.setRating(Ratings.NONE.getValue());</b>
+&nbsp;
+<b class="nc">&nbsp;        bookTableViewBuilder = new BookTableViewBuilder();</b>
+<b class="nc">&nbsp;        bookTableViewBuilder.createTableViewColumns(bookTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;        readerTableViewBuilder = new ReaderTableViewBuilder();</b>
+<b class="nc">&nbsp;        readerTableViewBuilder.createTableViewColumns(readerTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;        bookTableViewBuilder.updateTableView(bookTableView, selectedBooks);</b>
+<b class="nc">&nbsp;        readerTableViewBuilder.updateTableView(readerTableView, service.getAllReaders());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Search Reader&quot; button, searching for readers based on user input.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void searchReaderButtonOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            String stringToSearch = readerSearchBarTextField.getText();</b>
+<b class="nc">&nbsp;            Collection&lt;Reader&gt; results = service.searchReader(stringToSearch);</b>
+<b class="nc">&nbsp;            readerTableViewBuilder.updateTableView(readerTableView, results);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Information&quot;, &quot;Reader not found!&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Lend&quot; button, lending selected books to the chosen reader.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void lendButtonOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);</b>
+<b class="nc">&nbsp;            List&lt;Book&gt; bookList = bookTableView.getItems();</b>
+&nbsp;
+<b class="nc">&nbsp;            service.lendBooks(selectedReader, bookList);</b>
+&nbsp;
+&nbsp;            // Close the window after lending
+<b class="nc">&nbsp;            ((Stage) cancelButton.getScene().getWindow()).close();</b>
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {</b>
+<b class="nc">&nbsp;        } catch (ReaderException e) {</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Information&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Lend Reading Room&quot; button, lending selected books for reading in the room.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void lendReadingRoomButtonOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);</b>
+<b class="nc">&nbsp;            List&lt;Book&gt; books = bookTableView.getItems();</b>
+&nbsp;
+<b class="nc">&nbsp;            service.lendReadingRoomBooks(selectedReader, books);</b>
+&nbsp;
+&nbsp;            // Close the window after lending
+<b class="nc">&nbsp;            ((Stage) cancelButton.getScene().getWindow()).close();</b>
+<b class="nc">&nbsp;        } catch (ReaderException e) {</b>
+<b class="nc">&nbsp;            DialogUtils.showError(&quot;Information&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Cancel&quot; button, closing the window.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if (mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+<b class="nc">&nbsp;            ((Stage) cancelButton.getScene().getWindow()).close();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the rating control, updating the rating value.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void ratingOnMouseClicked() {
+<b class="nc">&nbsp;        readerRatingControl.setRating(service.getRatingValue());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the reader table view, updating the rating control based on the selected reader.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void readerTableViewOnMouseClicked() {
+&nbsp;        try {
+<b class="nc">&nbsp;            Reader selectedReader = readerTableViewBuilder.getSelectedItem(readerTableView);</b>
+&nbsp;
+&nbsp;            // Set rating value based on the selected reader
+<b class="nc">&nbsp;            service.setRatingValue(selectedReader.getReaderRating().getRating().getValue());</b>
+&nbsp;
+<b class="nc">&nbsp;            double value = service.getRatingValue();</b>
+<b class="nc">&nbsp;            readerRatingControl.setRating(value);</b>
+<b class="nc">&nbsp;            readerRatingControl.setDisable(value == -1);</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

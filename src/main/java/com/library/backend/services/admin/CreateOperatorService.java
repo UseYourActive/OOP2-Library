@@ -12,27 +12,51 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code CreateOperatorService} class provides functionality to create operator accounts.
+ * It includes input validation and checks for existing usernames.
+ * Strong password validation is also performed before creating an operator.
+ *
+ * @see Service
+ */
 public class CreateOperatorService implements Service {
     private final static Logger logger = LoggerFactory.getLogger(CreateOperatorService.class);
     private final UserRepository userRepository;
     @Setter private StrongPasswordValidator strongPasswordValidator;
 
+    /**
+     * Constructs a {@code CreateOperatorService} instance with the specified UserRepository.
+     *
+     * @param userRepository The repository for managing user data.
+     */
     public CreateOperatorService(UserRepository userRepository) {
         this.userRepository = userRepository;
         strongPasswordValidator = new StrongPasswordValidator();
     }
 
-    public void createOperator(String username, String password, String repeatPassword) throws UserExistException, IncorrectInputException, UserNotFoundException {
+    /**
+     * Creates a new operator account with the provided username, password, and repeat password.
+     * Validates input fields, checks for existing usernames, and enforces strong password criteria.
+     *
+     * @param username        The username for the new operator.
+     * @param password        The password for the new operator.
+     * @param repeatPassword  The repeated password for confirmation.
+     * @throws UserExistException      If a user with the same username already exists.
+     * @throws IncorrectInputException If the input validation fails.
+     * @throws UserNotFoundException   If an unexpected error occurs during user creation.
+     */
+    public void createOperator(String username, String password, String repeatPassword)
+            throws UserExistException, IncorrectInputException, UserNotFoundException {
         try {
             checkOperatorFieldsInput(username, password, repeatPassword);
 
             if (userRepository.findByUsername(username).isPresent())
-                   throw new UserExistException("User with this username already exists");
+                throw new UserExistException("User with this username already exists");
 
         } catch (IncorrectInputException e) {
             logger.error("Input validation failed during operator creation", e);
             throw e;
-        }catch (UserNotFoundException ignored){
+        } catch (UserNotFoundException ignored) {
             User operator = User.builder()
                     .username(username)
                     .password(password)
@@ -44,7 +68,17 @@ public class CreateOperatorService implements Service {
         }
     }
 
-    private void checkOperatorFieldsInput(String username, String password, String repeatPassword) throws IncorrectInputException {
+    /**
+     * Validates the input fields for creating an operator, including username, password, and repeat password.
+     * Checks for empty fields, matching passwords, and enforces strong password criteria.
+     *
+     * @param username       The username for the new operator.
+     * @param password       The password for the new operator.
+     * @param repeatPassword The repeated password for confirmation.
+     * @throws IncorrectInputException If the input validation fails.
+     */
+    private void checkOperatorFieldsInput(String username, String password, String repeatPassword)
+            throws IncorrectInputException {
         if (username == null || password == null || repeatPassword == null || username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
             logger.error("Please fill out all fields!");
             throw new IncorrectInputException("Please fill out all fields!");
@@ -61,3 +95,4 @@ public class CreateOperatorService implements Service {
         }
     }
 }
+

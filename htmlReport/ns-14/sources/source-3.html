@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ContextMenuBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.utils.tableviews</a>
+</div>
+
+<h1>Coverage Summary for Class: ContextMenuBuilder (com.library.utils.tableviews)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ContextMenuBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.utils.tableviews;
+&nbsp;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.scene.control.ContextMenu;
+&nbsp;import javafx.scene.control.MenuItem;
+&nbsp;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ContextMenuBuilder} class provides a convenient way to create a JavaFX ContextMenu
+&nbsp; * with specified menu items and their corresponding ActionEvent handlers.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create a map of menu items with their corresponding ActionEvent handlers
+&nbsp; * Map&lt;String, EventHandler&lt;ActionEvent&gt;&gt; menuItems = new HashMap&lt;&gt;();
+&nbsp; * menuItems.put(&quot;Open&quot;, e -&gt; openFile());
+&nbsp; * menuItems.put(&quot;Delete&quot;, e -&gt; deleteItem());
+&nbsp; *
+&nbsp; * // Create a ContextMenu using the ContextMenuBuilder
+&nbsp; * ContextMenu contextMenu = ContextMenuBuilder.prepareContextMenu(menuItems);
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; *
+&nbsp; * @see javafx.scene.control.ContextMenu
+&nbsp; * @see javafx.scene.control.MenuItem
+&nbsp; * @see javafx.event.ActionEvent
+&nbsp; */
+<b class="nc">&nbsp;public class ContextMenuBuilder {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prepares and returns a ContextMenu with menu items and their corresponding ActionEvent handlers.
+&nbsp;     *
+&nbsp;     * @param menuItems A map where the keys are the labels of the menu items, and the values are
+&nbsp;     *                  the corresponding ActionEvent handlers.
+&nbsp;     * @return A ContextMenu with the specified menu items and handlers.
+&nbsp;     */
+&nbsp;    public static ContextMenu prepareContextMenu(Map&lt;String, EventHandler&lt;ActionEvent&gt;&gt; menuItems) {
+<b class="nc">&nbsp;        ContextMenu contextMenu = new ContextMenu();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Map.Entry&lt;String, EventHandler&lt;ActionEvent&gt;&gt; entry : menuItems.entrySet()) {</b>
+<b class="nc">&nbsp;            MenuItem menuItem = new MenuItem(entry.getKey());</b>
+<b class="nc">&nbsp;            menuItem.setOnAction(entry.getValue());</b>
+<b class="nc">&nbsp;            contextMenu.getItems().add(menuItem);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return contextMenu;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

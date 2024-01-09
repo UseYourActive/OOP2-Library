@@ -1,0 +1,292 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CreateBookFormService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: CreateBookFormService (com.library.backend.services.operator)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CreateBookFormService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.7%
+  </span>
+  <span class="absValue">
+    (5/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20.6%
+  </span>
+  <span class="absValue">
+    (14/68)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.operator;
+&nbsp;
+&nbsp;import com.library.backend.engines.ReaderSearchEngine;
+&nbsp;import com.library.backend.engines.SearchEngine;
+&nbsp;import com.library.backend.exception.ReaderException;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.entities.BookForm;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import com.library.database.enums.BookFormStatus;
+&nbsp;import com.library.database.enums.BookStatus;
+&nbsp;import com.library.database.enums.Ratings;
+&nbsp;import com.library.database.repositories.BookFormRepository;
+&nbsp;import com.library.database.repositories.BookRepository;
+&nbsp;import com.library.database.repositories.ReaderRepository;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code CreateBookFormService} class provides services for creating and managing book lending forms.
+&nbsp; * It includes functionality for retrieving readers, searching for readers, lending books, and lending reading room books.
+&nbsp; *
+&nbsp; * @see Service
+&nbsp; */
+&nbsp;public class CreateBookFormService implements Service {
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(CreateBookFormService.class);</b>
+&nbsp;    private final ReaderRepository readerRepository;
+&nbsp;    private final BookFormRepository bookFormRepository;
+<b class="fc">&nbsp;    @Getter private final BookRepository bookRepository;</b>
+<b class="nc">&nbsp;    @Getter</b>
+<b class="nc">&nbsp;    @Setter</b>
+&nbsp;    private SearchEngine&lt;Reader&gt; readerSearchEngine;
+&nbsp;
+<b class="nc">&nbsp;    @Setter</b>
+<b class="nc">&nbsp;    @Getter</b>
+&nbsp;    private double ratingValue;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a {@code CreateBookFormService} instance with the specified repositories.
+&nbsp;     *
+&nbsp;     * @param readerRepository    The repository for managing reader data.
+&nbsp;     * @param bookFormRepository  The repository for managing book form data.
+&nbsp;     * @param bookRepository      The repository for managing book data.
+&nbsp;     */
+<b class="fc">&nbsp;    public CreateBookFormService(ReaderRepository readerRepository, BookFormRepository bookFormRepository, BookRepository bookRepository) {</b>
+<b class="fc">&nbsp;        this.readerRepository = readerRepository;</b>
+<b class="fc">&nbsp;        this.bookFormRepository = bookFormRepository;</b>
+<b class="fc">&nbsp;        this.bookRepository = bookRepository;</b>
+<b class="fc">&nbsp;        this.readerSearchEngine = new ReaderSearchEngine();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all readers from the repository.
+&nbsp;     *
+&nbsp;     * @return The list of all readers.
+&nbsp;     */
+&nbsp;    public List&lt;Reader&gt; getAllReaders() {
+<b class="fc">&nbsp;        List&lt;Reader&gt; readers = readerRepository.findAll();</b>
+<b class="fc">&nbsp;        logger.info(&quot;Retrieved {} readers from the repository.&quot;, readers.size());</b>
+<b class="fc">&nbsp;        return readers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for readers based on the provided search string.
+&nbsp;     *
+&nbsp;     * @param stringToSearch The string used for searching readers.
+&nbsp;     * @return A collection of readers matching the search criteria.
+&nbsp;     * @throws SearchEngineException If an error occurs during the search.
+&nbsp;     */
+&nbsp;    public Collection&lt;Reader&gt; searchReader(String stringToSearch) throws SearchEngineException {
+<b class="nc">&nbsp;        logger.info(&quot;Searching for readers with &#39;{}&#39;&quot;, stringToSearch);</b>
+<b class="nc">&nbsp;        return readerSearchEngine.search(readerRepository.findAll(), stringToSearch);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Lends books to the selected reader.
+&nbsp;     *
+&nbsp;     * @param selectedReader The reader to whom the books are lent.
+&nbsp;     * @param bookList       The list of books to be lent.
+&nbsp;     * @throws ReaderException If an error occurs during the lending process.
+&nbsp;     */
+&nbsp;    public void lendBooks(Reader selectedReader, List&lt;Book&gt; bookList) throws ReaderException {
+<b class="fc">&nbsp;        logger.info(&quot;Lending books to reader &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;
+&nbsp;        // Null check for ReaderRating
+<b class="fc">&nbsp;        if (selectedReader.getReaderRating() == null) {</b>
+<b class="fc">&nbsp;            logger.warn(&quot;The reader &#39;{}&#39; does not have a rating.&quot;, selectedReader.getFullName());</b>
+<b class="fc">&nbsp;            throw new ReaderException(&quot;The reader does not have a rating.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR) {</b>
+<b class="nc">&nbsp;            logger.warn(&quot;The reader &#39;{}&#39; is not allowed to take books anymore.&quot;, selectedReader.getFullName());</b>
+<b class="nc">&nbsp;            throw new ReaderException(&quot;The reader is not allowed to take books anymore.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (bookList.stream().allMatch(book -&gt; book.getBookStatus().equals(BookStatus.AVAILABLE))) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;Changing status of books to &#39;LENT&#39;&quot;);</b>
+<b class="nc">&nbsp;            changeBookStatus(bookList, BookStatus.LENT);</b>
+&nbsp;
+<b class="nc">&nbsp;            BookForm bookForm = BookForm.builder()</b>
+<b class="nc">&nbsp;                    .reader(selectedReader)</b>
+<b class="nc">&nbsp;                    .books(bookList)</b>
+<b class="nc">&nbsp;                    .status(BookFormStatus.IN_USE)</b>
+<b class="nc">&nbsp;                    .expirationDate(LocalDateTime.now().plusMonths(1))</b>
+<b class="nc">&nbsp;                    .dateOfCreation(LocalDateTime.now())</b>
+<b class="nc">&nbsp;                    .build();</b>
+&nbsp;
+<b class="nc">&nbsp;            bookFormRepository.save(bookForm);</b>
+<b class="nc">&nbsp;            logger.info(&quot;Saved new book form for reader &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;            //operatorService.saveNewBookForm(bookForm);
+&nbsp;
+<b class="nc">&nbsp;            selectedReader.getBookForms().add(bookForm);</b>
+&nbsp;
+<b class="nc">&nbsp;            readerRepository.save(selectedReader);</b>
+<b class="nc">&nbsp;            logger.info(&quot;Updated reader information for &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;            //operatorService.saveReader(selectedReader);
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            logger.warn(&quot;For normal lending, the reader &#39;{}&#39; can take only AVAILABLE books.&quot;, selectedReader.getFullName());</b>
+<b class="nc">&nbsp;            throw new ReaderException(&quot;For normal lending, the reader can take only AVAILABLE books.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Lends reading room books to the selected reader.
+&nbsp;     *
+&nbsp;     * @param selectedReader The reader to whom the reading room books are lent.
+&nbsp;     * @param bookList       The list of reading room books to be lent.
+&nbsp;     * @throws ReaderException If an error occurs during the lending process.
+&nbsp;     */
+&nbsp;    public void lendReadingRoomBooks(Reader selectedReader, List&lt;Book&gt; bookList) throws ReaderException {
+<b class="nc">&nbsp;        logger.info(&quot;Lending reading room books to reader &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (selectedReader.getReaderRating().getRating() == Ratings.ZERO_STAR) {</b>
+<b class="nc">&nbsp;            logger.warn(&quot;Reader &#39;{}&#39; is not allowed to take books anymore. His rating is too low.&quot;, selectedReader.getFullName());</b>
+<b class="nc">&nbsp;            throw new ReaderException(&quot;Reader is not allowed to take books anymore. His rating is too low.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        logger.info(&quot;Changing status of books to &#39;IN_READING_ROOM&#39;&quot;);</b>
+<b class="nc">&nbsp;        changeBookStatus(bookList, BookStatus.IN_READING_ROOM);</b>
+&nbsp;
+<b class="nc">&nbsp;        BookForm bookForm = BookForm.builder()</b>
+<b class="nc">&nbsp;                .reader(selectedReader)</b>
+<b class="nc">&nbsp;                .books(bookList)</b>
+<b class="nc">&nbsp;                .status(BookFormStatus.IN_USE)</b>
+<b class="nc">&nbsp;                .expirationDate(LocalDateTime.now().plusHours(12))</b>
+<b class="nc">&nbsp;                .dateOfCreation(LocalDateTime.now())</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;
+<b class="nc">&nbsp;        bookFormRepository.save(bookForm);</b>
+<b class="nc">&nbsp;        logger.info(&quot;Saved new book form for reader &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;        //operatorService.saveNewBookForm(bookForm);
+&nbsp;
+<b class="nc">&nbsp;        selectedReader.getBookForms().add(bookForm);</b>
+&nbsp;
+<b class="nc">&nbsp;        readerRepository.save(selectedReader);</b>
+<b class="nc">&nbsp;        logger.info(&quot;Updated reader information for &#39;{}&#39;&quot;, selectedReader.getFullName());</b>
+&nbsp;        //operatorService.saveReader(selectedReader);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Changes the status of a collection of books to the specified status.
+&nbsp;     *
+&nbsp;     * @param books  The collection of books for which the status is changed.
+&nbsp;     * @param status The new status for the books.
+&nbsp;     */
+&nbsp;    private void changeBookStatus(Collection&lt;Book&gt; books, BookStatus status) {
+<b class="nc">&nbsp;        logger.info(&quot;Changing book status to &#39;{}&#39; for {} books&quot;, status, books.size());</b>
+&nbsp;
+<b class="nc">&nbsp;        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (Book book : books) {</b>
+<b class="nc">&nbsp;            book.updatePreviousBookStatus();</b>
+<b class="nc">&nbsp;            book.setBookStatus(status);</b>
+<b class="nc">&nbsp;            bookSet.add(book);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        bookRepository.saveAll(bookSet);</b>
+<b class="nc">&nbsp;        logger.info(&quot;Book status changed successfully&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

@@ -11,14 +11,14 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * The {@code EmailSender} class provides functionality for sending emails using JavaMail API.
+ * The {@code EmailSenderService} class provides functionality for sending emails using JavaMail API.
  * It allows customization of the email configuration such as SMTP host, port, and SSL settings.
  * <p>
  * Example Usage:
  * <pre>
  * {@code
- * // Create an EmailSender instance with email configuration
- * EmailSender emailSender = new EmailSender("yourUsername", "yourPassword", "smtp.example.com", "587", true);
+ * // Create an EmailSenderService instance with email configuration
+ * EmailSenderService emailSender = new EmailSenderService("yourUsername", "yourPassword", "smtp.example.com", "587", true);
  *
  * // Send an email
  * try {
@@ -29,17 +29,19 @@ import java.util.Properties;
  * }
  * }
  * </pre>
- * In this example, an {@code EmailSender} instance is created with the necessary email configuration,
+ * In this example, an {@code EmailSenderService} instance is created with the necessary email configuration,
  * and the {@code sendEmail} method is used to send an email. If the email is sent successfully,
  * the log will indicate success; otherwise, an {@link EmailException EmailException}
  * is thrown with details about the failure.
  * <p>
- * The {@code EmailSender} class supports both standard SMTP and SMTP with SSL connections.
+ * The {@code EmailSenderService} class supports both standard SMTP and SMTP with SSL connections.
  *
  * @see EmailException
  */
 public class EmailSenderService implements Service {
+
     private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
+
     private final String username;
     private final String password;
     private final String smtpHost;
@@ -48,13 +50,14 @@ public class EmailSenderService implements Service {
     private final Transport transport;
 
     /**
-     * Constructs an {@code EmailSender} instance with the specified email configuration.
+     * Constructs an {@code EmailSenderService} instance with the specified email configuration.
      *
      * @param username The username for authentication.
      * @param password The password for authentication.
      * @param smtpHost The SMTP server host.
      * @param smtpPort The SMTP server port.
      * @param useSSL   True if SSL should be used, false otherwise.
+     * @throws TransportException If there is an issue initializing the Transport object.
      */
     public EmailSenderService(String username, String password, String smtpHost, String smtpPort, boolean useSSL) throws TransportException {
         this.username = username;
@@ -66,7 +69,7 @@ public class EmailSenderService implements Service {
     }
 
     /**
-     * Constructs an {@code EmailSender} instance with the specified email configuration and pre-initialized transport.
+     * Constructs an {@code EmailSenderService} instance with the specified email configuration and pre-initialized transport.
      *
      * @param username  The username for authentication.
      * @param password  The password for authentication.
@@ -153,7 +156,7 @@ public class EmailSenderService implements Service {
      * This method sets up the email session with the provided authentication and properties.
      *
      * @return A configured {@link Transport} object for sending emails.
-     * @throws RuntimeException If an error occurs while initializing the Transport object.
+     * @throws TransportException If an error occurs while initializing the Transport object.
      */
     private Transport initializeTransport() throws TransportException {
         Properties props = getProperties();

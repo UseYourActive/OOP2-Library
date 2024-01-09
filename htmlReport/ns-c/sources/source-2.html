@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookStatus</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.database.enums</a>
+</div>
+
+<h1>Coverage Summary for Class: BookStatus (com.library.database.enums)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookStatus</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.database.enums;
+&nbsp;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Getter;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code BookStatus} enum represents the possible statuses of a book in a library system.
+&nbsp; * Each status has a corresponding display value.
+&nbsp; *
+&nbsp; * &lt;p&gt;The enum includes the following statuses:&lt;/p&gt;
+&nbsp; * &lt;ul&gt;
+&nbsp; *     &lt;li&gt;{@link #AVAILABLE}: The book is available for borrowing.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #LENT}: The book is currently lent to a reader.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #ARCHIVED}: The book is archived and not available for regular borrowing.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #DAMAGED}: The book is damaged and may not be available for borrowing.&lt;/li&gt;
+&nbsp; *     &lt;li&gt;{@link #IN_READING_ROOM}: The book is available for reading within the library&#39;s reading room.&lt;/li&gt;
+&nbsp; * &lt;/ul&gt;
+&nbsp; *
+&nbsp; * &lt;p&gt;Each enum constant has a display value that provides a human-readable representation of the status.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @see lombok.AllArgsConstructor
+&nbsp; * @see lombok.Getter
+&nbsp; */
+<b class="fc">&nbsp;@Getter</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+&nbsp;public enum BookStatus {
+&nbsp;    /**
+&nbsp;     * The book is available for borrowing.
+&nbsp;     */
+<b class="fc">&nbsp;    AVAILABLE(&quot;Available&quot;),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The book is currently lent to a reader.
+&nbsp;     */
+<b class="fc">&nbsp;    LENT(&quot;Lent&quot;),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The book is archived and not available for regular borrowing.
+&nbsp;     */
+<b class="fc">&nbsp;    ARCHIVED(&quot;Archived&quot;),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The book is damaged and may not be available for borrowing.
+&nbsp;     */
+<b class="fc">&nbsp;    DAMAGED(&quot;Damaged&quot;),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The book is available for reading within the library&#39;s reading room.
+&nbsp;     */
+<b class="fc">&nbsp;    IN_READING_ROOM(&quot;In reading room&quot;);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The human-readable display value of the book status.
+&nbsp;     */
+<b class="nc">&nbsp;    private final String displayValue;</b>
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

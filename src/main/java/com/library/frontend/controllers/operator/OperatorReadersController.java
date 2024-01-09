@@ -23,17 +23,41 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Controller class for the operator's management of readers.
+ * This controller handles operations related to readers, such as searching, displaying details, and managing book forms.
+ */
 public class OperatorReadersController implements Controller {
+    /** Button to navigate to the operator's book management scene. */
     @FXML public Button booksButton;
+
+    /** TextField for entering the search query to find readers. */
     @FXML public TextField searchBarTextField;
+
+    /** Button to initiate the search for readers based on the entered query. */
     @FXML public Button searchReaderButton;
+
+    /** TableView displaying a list of readers. */
     @FXML public TableView<Reader> readerTableView;
+
+    /** ListView displaying book forms associated with the selected reader. */
     @FXML public ListView<BookForm> bookFormListView;
+
+    /** Rating control displaying and allowing interaction with the selected reader's rating. */
     @FXML public Rating readerRatingControl;
 
+    /** Service class providing functionality for operator actions related to readers. */
     private OperatorReadersService service;
+
+    /** TableViewBuilder instance for creating and updating the reader TableView. */
     private TableViewBuilder<Reader> readerTableViewBuilder;
 
+    /**
+     * Initializes the OperatorReadersController.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(OperatorReadersService.class);
@@ -48,6 +72,11 @@ public class OperatorReadersController implements Controller {
         readerTableView.setContextMenu(getContextMenu());
     }
 
+    /**
+     * Handles the mouse click event on the "Books" button, navigating to the operator's book management scene.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -55,6 +84,9 @@ public class OperatorReadersController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Search Reader" button, initiating the search for readers.
+     */
     @FXML
     public void searchReaderButtonOnMouseClicked() {
         try {
@@ -67,6 +99,9 @@ public class OperatorReadersController implements Controller {
         }
     }
 
+    /**
+     * Handles the click event on the reader TableView, displaying details and book forms of the selected reader.
+     */
     @FXML
     public void readerTableViewOnClicked() {
         try {
@@ -83,6 +118,9 @@ public class OperatorReadersController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the book form ListView, opening a detailed view of the selected book form.
+     */
     @FXML
     public void bookFormListViewOnMouseClicked() {
         MultipleSelectionModel<BookForm> selectionModel = bookFormListView.getSelectionModel();
@@ -100,11 +138,19 @@ public class OperatorReadersController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the reader rating control, updating the displayed rating value.
+     */
     @FXML
     public void readerRatingOnMouseClicked() {
         readerRatingControl.setRating(service.getRatingValue());
     }
 
+    /**
+     * Gets the context menu for the reader TableView, providing additional actions for the operator.
+     *
+     * @return The ContextMenu for the reader TableView.
+     */
     private ContextMenu getContextMenu() {
         Map<String, EventHandler<ActionEvent>> menuItems = new HashMap<>();
 
@@ -114,10 +160,20 @@ public class OperatorReadersController implements Controller {
         return ContextMenuBuilder.prepareContextMenu(menuItems);
     }
 
+    /**
+     * Event handler for the "Create Reader" context menu item, loading the scene for creating a new reader profile.
+     *
+     * @param actionEvent The ActionEvent representing the "Create Reader" menu item selection.
+     */
     private void createReader(ActionEvent actionEvent) {
         SceneLoader.load("/views/operator/createReaderProfileScene.fxml", SceneLoader.getUser().getUsername() + " (Operator)");
     }
 
+    /**
+     * Event handler for the "Remove Reader" context menu item, removing the selected reader from the system.
+     *
+     * @param actionEvent The ActionEvent representing the "Remove Reader" menu item selection.
+     */
     private void removeReader(ActionEvent actionEvent) {
 
         Reader selectedReader = readerTableView.getSelectionModel().getSelectedItem();

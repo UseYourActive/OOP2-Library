@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AdministratorOperatorsService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdministratorOperatorsService (com.library.backend.services.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdministratorOperatorsService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.admin;
+&nbsp;
+&nbsp;import com.library.backend.engines.OperatorSearchEngine;
+&nbsp;import com.library.backend.engines.SearchEngine;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.User;
+&nbsp;import com.library.database.enums.Role;
+&nbsp;import com.library.database.repositories.UserRepository;
+&nbsp;import lombok.Getter;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code AdministratorOperatorsService} class provides functionality for managing operators
+&nbsp; * (non-administrator users) within the administration module. It includes methods for searching operators,
+&nbsp; * removing operators, and retrieving all users.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create an AdministratorOperatorsService instance with UserRepository
+&nbsp; * AdministratorOperatorsService operatorsService = new AdministratorOperatorsService(UserRepository.getInstance());
+&nbsp; *
+&nbsp; * // Search for operators based on a string
+&nbsp; * String searchString = &quot;John Doe&quot;;
+&nbsp; * Collection&lt;User&gt; searchResults = operatorsService.searchUser(searchString);
+&nbsp; *
+&nbsp; * // Remove an operator
+&nbsp; * User operatorToRemove = // obtain a User instance;
+&nbsp; * try {
+&nbsp; *     operatorsService.removeOperator(operatorToRemove);
+&nbsp; *     // Operator removed successfully
+&nbsp; * } catch (Exception e) {
+&nbsp; *     // Handle the exception (e.g., trying to remove an administrator)
+&nbsp; * }
+&nbsp; *
+&nbsp; * // Retrieve all users
+&nbsp; * List&lt;User&gt; allUsers = operatorsService.getAllUsers();
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, an {@code AdministratorOperatorsService} instance is created with the necessary repository,
+&nbsp; * and various methods are used to search, remove, and retrieve operators.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code AdministratorOperatorsService} class implements the {@link com.library.backend.services.Service Service}
+&nbsp; * interface, providing a common interface for various services in the application.
+&nbsp; *
+&nbsp; * @see com.library.backend.services.Service
+&nbsp; * @see com.library.database.entities.User
+&nbsp; * @see com.library.database.repositories.UserRepository
+&nbsp; * @see com.library.backend.engines.SearchEngine
+&nbsp; * @see com.library.backend.exception.searchengine.SearchEngineException
+&nbsp; */
+&nbsp;public class AdministratorOperatorsService implements Service {
+&nbsp;
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(AdministratorOperatorsService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;    @Getter</b>
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code AdministratorOperatorsService} instance with the specified UserRepository.
+&nbsp;     *
+&nbsp;     * @param userRepository The repository for accessing user data.
+&nbsp;     */
+<b class="fc">&nbsp;    public AdministratorOperatorsService(UserRepository userRepository) {</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for operators (non-administrator users) based on the provided string
+&nbsp;     * using the configured {@link com.library.backend.engines.SearchEngine SearchEngine}.
+&nbsp;     *
+&nbsp;     * @param searchString The string to search for in user data.
+&nbsp;     * @return A collection of users matching the search criteria.
+&nbsp;     * @throws SearchEngineException If there is an issue with the search engine.
+&nbsp;     */
+&nbsp;    public Collection&lt;User&gt; searchUser(String searchString) throws SearchEngineException {
+<b class="fc">&nbsp;        List&lt;User&gt; users = userRepository.findAll();</b>
+<b class="fc">&nbsp;        SearchEngine&lt;User&gt; searchEngine = new OperatorSearchEngine();</b>
+<b class="fc">&nbsp;        logger.info(&quot;Searching users with string: {}&quot;, searchString);</b>
+<b class="fc">&nbsp;        return searchEngine.search(users, searchString);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the specified {@link com.library.database.entities.User User} (operator).
+&nbsp;     *
+&nbsp;     * @param user The User instance to be removed.
+&nbsp;     * @throws Exception If there is an issue during the removal, such as attempting to remove an administrator.
+&nbsp;     */
+&nbsp;    public void removeOperator(User user) throws Exception {
+<b class="fc">&nbsp;        if (user.getRole() == Role.ADMIN) {</b>
+<b class="fc">&nbsp;            logger.warn(&quot;Attempt to remove administrator: {}&quot;, user.getUsername());</b>
+<b class="fc">&nbsp;            throw new Exception(&quot;You can&#39;t remove administrators&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        userRepository.delete(user);</b>
+<b class="fc">&nbsp;        logger.info(&quot;Operator removed: {}&quot;, user.getUsername());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all {@link com.library.database.entities.User Users} from the repository.
+&nbsp;     *
+&nbsp;     * @return A list containing all users.
+&nbsp;     */
+&nbsp;    public List&lt;User&gt; getAllUsers() {
+<b class="fc">&nbsp;        logger.info(&quot;Fetching all users&quot;);</b>
+<b class="fc">&nbsp;        return userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OperatorNotFoundException</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.exception.users</a>
+</div>
+
+<h1>Coverage Summary for Class: OperatorNotFoundException (com.library.backend.exception.users)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OperatorNotFoundException</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/**
+&nbsp; * The {@code OperatorNotFoundException} class is a specific type of {@code UserNotFoundException} that represents errors
+&nbsp; * related to the absence or non-existence of an operator user in the library system. It extends the base
+&nbsp; * {@code UserNotFoundException} and provides more specific information about issues encountered when trying to find an
+&nbsp; * operator user.
+&nbsp; *
+&nbsp; * &lt;p&gt;This exception is part of the library&#39;s exception hierarchy and can be caught to handle operator user
+&nbsp; * not found errors separately from other user-related issues.&lt;/p&gt;
+&nbsp; *
+&nbsp; * @see UserNotFoundException
+&nbsp; */
+&nbsp;package com.library.backend.exception.users;
+&nbsp;
+&nbsp;import lombok.experimental.StandardException;
+&nbsp;
+<b class="fc">&nbsp;@StandardException</b>
+&nbsp;public class OperatorNotFoundException extends UserNotFoundException {
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

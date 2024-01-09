@@ -1,0 +1,188 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RegisterNewBookController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend.controllers.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: RegisterNewBookController (com.library.frontend.controllers.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RegisterNewBookController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend.controllers.admin;
+&nbsp;
+&nbsp;import com.library.backend.exception.IncorrectInputException;
+&nbsp;import com.library.backend.services.ServiceFactory;
+&nbsp;import com.library.backend.services.admin.BookRegistrationService;
+&nbsp;import com.library.database.enums.Genre;
+&nbsp;import com.library.frontend.SceneLoader;
+&nbsp;import com.library.frontend.controllers.Controller;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.collections.FXCollections;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.AnchorPane;
+&nbsp;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.ResourceBundle;
+&nbsp;
+&nbsp;/**
+&nbsp; * Controller for registering new books in the administrator view.
+&nbsp; */
+<b class="nc">&nbsp;public class RegisterNewBookController implements Controller {</b>
+&nbsp;
+&nbsp;    @FXML public TextField titleTextField;
+&nbsp;    @FXML public TextField authorTextField;
+&nbsp;    @FXML public TextField yearTextField;
+&nbsp;    @FXML public TextArea resumeTextField;
+&nbsp;    @FXML public ComboBox&lt;Genre&gt; genreComboBox;
+&nbsp;    @FXML public Button registerButton;
+&nbsp;    @FXML public Button cancelButton;
+&nbsp;    @FXML public Label informationLabel;
+&nbsp;    @FXML public TextField amountTextField;
+&nbsp;    @FXML public AnchorPane anchorPane;
+&nbsp;
+&nbsp;    private BookRegistrationService service;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the controller with the necessary service for book registration and sets up the genre ComboBox.
+&nbsp;     *
+&nbsp;     * @param location  The URL location.
+&nbsp;     * @param resources The ResourceBundle.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(URL location, ResourceBundle resources) {
+<b class="nc">&nbsp;        service = ServiceFactory.getService(BookRegistrationService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; genreComboBox.requestFocus());</b>
+&nbsp;
+<b class="nc">&nbsp;        genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Register&quot; button, attempting to register a new book.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
+&nbsp;        try {
+<b class="nc">&nbsp;            service.registerNewBook(</b>
+<b class="nc">&nbsp;                    titleTextField.getText(),</b>
+<b class="nc">&nbsp;                    authorTextField.getText(),</b>
+<b class="nc">&nbsp;                    yearTextField.getText(),</b>
+<b class="nc">&nbsp;                    resumeTextField.getText(),</b>
+<b class="nc">&nbsp;                    genreComboBox.getSelectionModel().getSelectedItem(),</b>
+<b class="nc">&nbsp;                    amountTextField.getText()</b>
+&nbsp;            );
+&nbsp;
+<b class="nc">&nbsp;            cancelButtonOnMouseClicked(mouseEvent);</b>
+<b class="nc">&nbsp;        } catch (IncorrectInputException | NumberFormatException e) {</b>
+<b class="nc">&nbsp;            informationLabel.setText(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Cancel&quot; button, navigating back to the administrator books scene.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        SceneLoader.load(mouseEvent, &quot;/views/admin/administratorBooksScene.fxml&quot;, SceneLoader.getUser().getUsername() + &quot;(Administrator)&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

@@ -20,19 +20,28 @@ import org.hibernate.HibernateException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The {@code LogInController} class is responsible for handling user login interactions in the library management system.
+ * It interacts with the backend {@code LogInService} to authenticate users and load appropriate scenes based on their roles.
+ *
+ * @see Controller
+ */
 @NoArgsConstructor
 public class LogInController implements Controller {
 
     @FXML private Button logInButton;
-    @FXML
-    public Label logInMessageLabel;
-    @FXML
-    public TextField usernameTextField;
-    @FXML
-    public PasswordField passwordPasswordField;
+    @FXML public Label logInMessageLabel;
+    @FXML public TextField usernameTextField;
+    @FXML public PasswordField passwordPasswordField;
 
     private LogInService service;
 
+    /**
+     * Initializes the login controller. Sets focus on the username text field and configures button events.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> usernameTextField.requestFocus());
@@ -51,6 +60,12 @@ public class LogInController implements Controller {
         });
     }
 
+    /**
+     * Handles the action when the login button is clicked or Enter key is pressed.
+     * Authenticates the user, sets the user in the SceneLoader, and loads the appropriate scene based on the user's role.
+     *
+     * @param actionEvent The ActionEvent associated with the login button click.
+     */
     @FXML
     public void logInButtonOnAction(ActionEvent actionEvent) {
         try {
@@ -80,7 +95,11 @@ public class LogInController implements Controller {
         }
     }
 
-    //Try to move the logic inside a class
+    /**
+     * Checks the input fields for correctness. Throws an {@code IncorrectInputException} if any input is missing.
+     *
+     * @throws IncorrectInputException If the username or password is blank.
+     */
     public void checkInput() throws IncorrectInputException {
         if (usernameTextField.getText().isBlank() && passwordPasswordField.getText().isBlank()) {
             throw new IncorrectInputException("Please enter username\nand password!");

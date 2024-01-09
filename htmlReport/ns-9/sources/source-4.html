@@ -1,0 +1,177 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > InboxService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: InboxService (com.library.backend.services.operator)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InboxService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.operator;
+&nbsp;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.EventNotification;
+&nbsp;import com.library.database.entities.User;
+&nbsp;import com.library.database.repositories.EventNotificationRepository;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code InboxService} class provides services for managing event notifications related to users.
+&nbsp; * It includes functionality to retrieve event notifications for a specific user.
+&nbsp; *
+&nbsp; * @see Service
+&nbsp; */
+&nbsp;public class InboxService implements Service {
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(InboxService.class);</b>
+&nbsp;    private final EventNotificationRepository eventNotificationRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code InboxService} instance with the specified event notification repository.
+&nbsp;     *
+&nbsp;     * @param eventNotificationRepository The repository for managing event notifications.
+&nbsp;     */
+<b class="fc">&nbsp;    public InboxService(EventNotificationRepository eventNotificationRepository) {</b>
+<b class="fc">&nbsp;        this.eventNotificationRepository = eventNotificationRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a list of event notifications associated with the specified user.
+&nbsp;     *
+&nbsp;     * @param user The user for whom event notifications are to be retrieved.
+&nbsp;     * @return A list of event notifications for the specified user.
+&nbsp;     * @throws RuntimeException If an error occurs while retrieving event notifications.
+&nbsp;     */
+&nbsp;    public List&lt;EventNotification&gt; getEventNotifications(User user) {
+&nbsp;        try {
+<b class="fc">&nbsp;            List&lt;EventNotification&gt; allNotifications = eventNotificationRepository.findAll();</b>
+&nbsp;
+<b class="fc">&nbsp;            if (allNotifications != null) {</b>
+<b class="fc">&nbsp;                return allNotifications.stream()</b>
+<b class="fc">&nbsp;                        .filter(notification -&gt; {</b>
+<b class="fc">&nbsp;                            User notificationUser = notification.getUser();</b>
+<b class="fc">&nbsp;                            return notificationUser != null &amp;&amp; notificationUser.equals(user);</b>
+&nbsp;                        })
+<b class="fc">&nbsp;                        .toList();</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                throw new RuntimeException(&quot;Failed to retrieve event notifications. Repository returned null.&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        } catch (HibernateException e) {</b>
+<b class="fc">&nbsp;            throw new RuntimeException(&quot;Failed to retrieve event notifications.&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //    public List&lt;EventNotification&gt; getEventNotifications(User user) {
+&nbsp;//        try {
+&nbsp;//            List&lt;EventNotification&gt; allEventNotifications = eventNotificationRepository.findAll();
+&nbsp;//            List&lt;EventNotification&gt; userEventNotifications = allEventNotifications.stream()
+&nbsp;//                    .filter(event -&gt; event.getUser().equals(user))
+&nbsp;//                    .toList();
+&nbsp;//
+&nbsp;//            logger.info(&quot;Retrieved {} event notifications for user: {}&quot;, userEventNotifications.size(), user.getUsername());
+&nbsp;//            return userEventNotifications;
+&nbsp;//
+&nbsp;//        } catch (Exception e) {
+&nbsp;//            logger.error(&quot;Failed to retrieve event notifications for user: {}&quot;, user.getUsername(), e);
+&nbsp;//            throw new RuntimeException(&quot;Failed to retrieve event notifications.&quot;, e);
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

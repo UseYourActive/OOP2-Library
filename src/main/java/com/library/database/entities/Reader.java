@@ -35,7 +35,7 @@ import java.util.List;
 @Table(name = "readers", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"first_name", "middle_name", "last_name"})
 })
-public class Reader implements DBEntity{
+public class Reader implements DBEntity {
     /**
      * The unique identifier for the reader.
      */
@@ -78,9 +78,8 @@ public class Reader implements DBEntity{
     /**
      * The list of book forms associated with the reader.
      */
-    @OneToMany(mappedBy = "reader",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
     private List<BookForm> bookForms;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rating_id", nullable = false)
@@ -98,24 +97,28 @@ public class Reader implements DBEntity{
                 id, firstName, middleName, lastName, phoneNumber, email, readerRating);
     }
 
-    public void promote(){
+    /**
+     * Promotes the reader by increasing the rating and updating the overall rating value.
+     */
+    public void promote() {
         readerRating.increase();
         readerRating.updateRating();
-        //int currentRatingValue=rating.getCurrentValue();
-        //rating=rating.getNewRating(currentRatingValue);
-        //rating.setCurrentValue(currentRatingValue);
     }
 
-    public void demote(){
+    /**
+     * Demotes the reader by decreasing the rating and updating the overall rating value.
+     */
+    public void demote() {
         readerRating.decrease();
         readerRating.updateRating();
-        //int currentRatingValue=rating.getCurrentValue();
-        //rating=rating.getNewRating(currentRatingValue);
-        //rating.setCurrentValue(currentRatingValue);
     }
 
-
-    public String getFullName(){
-        return firstName+" "+middleName+" "+lastName;
+    /**
+     * Retrieves the full name of the reader.
+     *
+     * @return The full name of the reader.
+     */
+    public String getFullName() {
+        return firstName + " " + middleName + " " + lastName;
     }
 }

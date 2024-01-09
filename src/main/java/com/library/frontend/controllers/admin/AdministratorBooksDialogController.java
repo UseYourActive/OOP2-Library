@@ -22,6 +22,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Controller for the dialog that allows administrators to manage books within a specific book inventory.
+ */
 public class AdministratorBooksDialogController implements Controller {
 
     @FXML public TableView<Book> bookTableView;
@@ -31,6 +34,12 @@ public class AdministratorBooksDialogController implements Controller {
     private BookTableViewBuilder bookTableViewBuilder;
     private BookInventory bookInventory;
 
+    /**
+     * Initializes the controller with necessary services and sets up the book table view.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(AdministratorBooksDialogService.class);
@@ -49,11 +58,19 @@ public class AdministratorBooksDialogController implements Controller {
         bookTableView.setContextMenu(getContextMenu());
     }
 
+    /**
+     * Handles the mouse click event on the close button, closing the dialog window.
+     */
     @FXML
     public void closeButtonOnMouseClicked() {
         ((Stage) closeButton.getScene().getWindow()).close();
     }
 
+    /**
+     * Creates and returns the context menu for book-related actions in the book table view.
+     *
+     * @return The created ContextMenu.
+     */
     private ContextMenu getContextMenu(){
         Map<String, EventHandler<ActionEvent>> menuItems=new HashMap<>();
 
@@ -62,6 +79,11 @@ public class AdministratorBooksDialogController implements Controller {
         return ContextMenuBuilder.prepareContextMenu(menuItems);
     }
 
+    /**
+     * Handles the removal of selected books from the book inventory.
+     *
+     * @param actionEvent The ActionEvent representing the mouse click event.
+     */
     private void removeSelectedBooks(ActionEvent actionEvent) {
 
             try {

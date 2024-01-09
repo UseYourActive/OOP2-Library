@@ -22,6 +22,9 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Controller for managing operator tasks related to books, including searching, archiving, and handling book forms.
+ */
 public class OperatorBooksController implements Controller {
 
     @FXML public Button readersButton;
@@ -37,6 +40,12 @@ public class OperatorBooksController implements Controller {
     private OperatorBooksService service;
     private BookTreeTableViewBuilder bookTreeTableViewBuilder;
 
+    /**
+     * Initializes the controller, sets up necessary services, and loads initial data.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(OperatorBooksService.class);
@@ -60,6 +69,11 @@ public class OperatorBooksController implements Controller {
         bookTreeTableView.setContextMenu(getBookInventoryTreeTableContextMenu());
     }
 
+    /**
+     * Handles the mouse click event on the "Readers" button, navigating to the readers scene.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void readersButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -67,6 +81,11 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Search Book" button, searching for books based on user input.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -80,6 +99,11 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Log Out" button, navigating to the log-in scene.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -87,11 +111,19 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the AnchorPane, clearing the selection in the Book TreeTableView.
+     */
     @FXML
     public void anchorPaneOnMouseClicked() {
         bookTreeTableView.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Handles the mouse click event on the Book TreeTableView, performing various actions based on the selected item.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
         try {
@@ -127,6 +159,9 @@ public class OperatorBooksController implements Controller {
         } catch (NoSuchElementException ignored) {}
     }
 
+    /**
+     * Handles the mouse click event on the Selected Books ListView, removing the selected book from the list.
+     */
     @FXML
     public void selectedBooksListViewOnMouseClicked() {
         if (selectedBooksListView.getSelectionModel() != null) {
@@ -135,6 +170,9 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Lend" button, initiating the process of lending selected books.
+     */
     @FXML
     public void lendButtonOnMouseClicked() {
         if (!service.getSelectedBooks().isEmpty()) {
@@ -146,14 +184,20 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Inbox" button, displaying overdue book forms in a modal dialog.
+     */
     @FXML
     public void inboxButtonOnMouseClicked() {
         Object[] objects = service.getOverdueBookForms().toArray();
         SceneLoader.loadModalityDialog("/views/operator/inboxScene.fxml", "Inbox", objects);
     }
 
-
-
+    /**
+     * Updates the TreeTableView with the provided list of book inventories.
+     *
+     * @param bookInventories The list of book inventories to be displayed.
+     */
     private void updateTreeTableView(List<BookInventory> bookInventories) {
 
         //Creating the parents
@@ -161,12 +205,12 @@ public class OperatorBooksController implements Controller {
         for (BookInventory bookInventory : bookInventories) {
 
             Book parentBook = Book.builder()
-                    .id(bookInventory.getRepresentiveBook().getId())
-                    .title(bookInventory.getRepresentiveBook().getTitle())
-                    .author(bookInventory.getRepresentiveBook().getAuthor())
-                    .genre(bookInventory.getRepresentiveBook().getGenre())
-                    .publishYear(bookInventory.getRepresentiveBook().getPublishYear())
-                    .resume(bookInventory.getRepresentiveBook().getResume())
+                    .id(bookInventory.getRepresentativeBook().getId())
+                    .title(bookInventory.getRepresentativeBook().getTitle())
+                    .author(bookInventory.getRepresentativeBook().getAuthor())
+                    .genre(bookInventory.getRepresentativeBook().getGenre())
+                    .publishYear(bookInventory.getRepresentativeBook().getPublishYear())
+                    .resume(bookInventory.getRepresentativeBook().getResume())
                     .build();
 
             TreeItem<Book> parent = new TreeItem<>(parentBook);
@@ -183,6 +227,11 @@ public class OperatorBooksController implements Controller {
         }
     }
 
+    /**
+     * Retrieves the context menu for the BookInventory TreeTableView, including actions like archiving a book.
+     *
+     * @return The ContextMenu for the TreeTableView.
+     */
     private ContextMenu getBookInventoryTreeTableContextMenu(){
         Map<String, EventHandler<ActionEvent>> menuItems=new HashMap<>();
 
@@ -191,6 +240,11 @@ public class OperatorBooksController implements Controller {
         return ContextMenuBuilder.prepareContextMenu(menuItems);
     }
 
+    /**
+     * Archives the selected book from the TreeTableView.
+     *
+     * @param actionEvent The ActionEvent triggering the archive action.
+     */
     private void archiveBook(ActionEvent actionEvent){
         try {
             TreeItem<Book> bookTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);
@@ -207,6 +261,4 @@ public class OperatorBooksController implements Controller {
             DialogUtils.showInfo("Information",e.getMessage());
         }
     }
-
-
 }

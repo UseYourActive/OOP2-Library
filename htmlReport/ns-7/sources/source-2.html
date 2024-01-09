@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > LogInService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services</a>
+</div>
+
+<h1>Coverage Summary for Class: LogInService (com.library.backend.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LogInService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services;
+&nbsp;
+&nbsp;import at.favre.lib.crypto.bcrypt.BCrypt;
+&nbsp;import com.library.backend.exception.users.UserNotFoundException;
+&nbsp;import com.library.database.entities.User;
+&nbsp;import com.library.database.repositories.UserRepository;
+&nbsp;import org.hibernate.HibernateException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code LogInService} class provides functionality related to user authentication and login.
+&nbsp; * It interacts with the {@link com.library.database.repositories.UserRepository UserRepository}
+&nbsp; * to retrieve user information based on the provided username.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create a LogInService instance with a UserRepository
+&nbsp; * LogInService logInService = new LogInService(UserRepository.getInstance());
+&nbsp; *
+&nbsp; * // Attempt to retrieve a user by username
+&nbsp; * User user = new User(&quot;exampleUsername&quot;, &quot;password&quot;);
+&nbsp; * try {
+&nbsp; *     User retrievedUser = logInService.getUser(user);
+&nbsp; *     // Perform actions with the retrieved user
+&nbsp; * } catch (UserNotFoundException e) {
+&nbsp; *     // Handle the case where the user is not found
+&nbsp; * } catch (HibernateException e) {
+&nbsp; *     // Handle Hibernate-related exceptions
+&nbsp; * }
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, the {@code LogInService} instance is created, and the {@code getUser} method is
+&nbsp; * used to retrieve a user by username. If the user is found, the retrieved user is returned; otherwise,
+&nbsp; * a {@link UserNotFoundException UserNotFoundException} is thrown.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code LogInService} class implements the {@link com.library.backend.services.Service Service}
+&nbsp; * interface, providing a common interface for various services in the application.
+&nbsp; *
+&nbsp; * @see com.library.backend.services.Service
+&nbsp; * @see UserNotFoundException
+&nbsp; * @see com.library.database.entities.User
+&nbsp; * @see com.library.database.repositories.UserRepository
+&nbsp; */
+&nbsp;public class LogInService implements Service {
+&nbsp;
+<b class="fc">&nbsp;    private final Logger logger = LoggerFactory.getLogger(LogInService.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The repository responsible for accessing user data from the database.
+&nbsp;     */
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a {@code LogInService} instance with the specified {@link com.library.database.repositories.UserRepository UserRepository}.
+&nbsp;     *
+&nbsp;     * @param userRepository The repository used for accessing user data.
+&nbsp;     */
+<b class="fc">&nbsp;    public LogInService(UserRepository userRepository) {</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a user by username and validates the provided password against the stored password.
+&nbsp;     *
+&nbsp;     * @param username The username of the user to retrieve.
+&nbsp;     * @param password The provided password for validation.
+&nbsp;     * @return The retrieved user if authentication is successful.
+&nbsp;     * @throws UserNotFoundException If the user with the specified username is not found.
+&nbsp;     * @throws HibernateException    If a Hibernate-related exception occurs during user retrieval.
+&nbsp;     */
+&nbsp;    public User getUser(String username, String password) throws UserNotFoundException, HibernateException {
+&nbsp;
+<b class="fc">&nbsp;        User user = User.builder()</b>
+<b class="fc">&nbsp;                .username(username)</b>
+<b class="fc">&nbsp;                .password(password)</b>
+<b class="fc">&nbsp;                .build();</b>
+&nbsp;
+<b class="fc">&nbsp;        logger.info(&quot;Attempting to retrieve user: {}&quot;, username);</b>
+&nbsp;
+<b class="fc">&nbsp;        User retrievedUser = userRepository.findByUsername(username)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; {</b>
+<b class="fc">&nbsp;                    logger.error(&quot;User not found: {}&quot;, username);</b>
+<b class="fc">&nbsp;                    return new UserNotFoundException(&quot;User not found&quot;);</b>
+&nbsp;                });
+&nbsp;
+<b class="fc">&nbsp;        String storedPassword = retrievedUser.getPassword();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (isPasswordMatch(user.getPassword(), storedPassword)) {</b>
+<b class="fc">&nbsp;            logger.info(&quot;User retrieved successfully: {}&quot;, retrievedUser.getUsername());</b>
+<b class="fc">&nbsp;            return retrievedUser;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            logger.error(&quot;Invalid password for user: {}&quot;, username);</b>
+<b class="nc">&nbsp;            throw new UserNotFoundException(&quot;Invalid password&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Compares the provided password with the stored password using BCrypt or plain comparison.
+&nbsp;     *
+&nbsp;     * @param providedPassword The password provided for validation.
+&nbsp;     * @param storedPassword   The stored password for comparison.
+&nbsp;     * @return {@code true} if the passwords match, {@code false} otherwise.
+&nbsp;     */
+&nbsp;    private boolean isPasswordMatch(String providedPassword, String storedPassword) {
+<b class="fc">&nbsp;        if (storedPassword.startsWith(&quot;$2a$&quot;) || storedPassword.startsWith(&quot;$2b$&quot;)) {</b>
+<b class="nc">&nbsp;            BCrypt.Result result = BCrypt.verifyer().verify(providedPassword.toCharArray(), storedPassword);</b>
+<b class="nc">&nbsp;            return result.verified;</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return providedPassword.equals(storedPassword);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

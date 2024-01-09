@@ -1,0 +1,394 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OperatorBooksController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.frontend.controllers.operator</a>
+</div>
+
+<h1>Coverage Summary for Class: OperatorBooksController (com.library.frontend.controllers.operator)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OperatorBooksController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/78)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OperatorBooksController$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/79)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.frontend.controllers.operator;
+&nbsp;
+&nbsp;import com.library.backend.exception.LibraryException;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.ServiceFactory;
+&nbsp;import com.library.backend.services.operator.OperatorBooksService;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.entities.BookInventory;
+&nbsp;import com.library.frontend.SceneLoader;
+&nbsp;import com.library.frontend.controllers.Controller;
+&nbsp;import com.library.utils.DialogUtils;
+&nbsp;import com.library.utils.tableviews.BookTreeTableViewBuilder;
+&nbsp;import com.library.utils.tableviews.ContextMenuBuilder;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.AnchorPane;
+&nbsp;
+&nbsp;import java.net.URL;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Controller for managing operator tasks related to books, including searching, archiving, and handling book forms.
+&nbsp; */
+<b class="nc">&nbsp;public class OperatorBooksController implements Controller {</b>
+&nbsp;
+&nbsp;    @FXML public Button readersButton;
+&nbsp;    @FXML public TextField searchBookTextField;
+&nbsp;    @FXML public Button searchBookButton;
+&nbsp;    @FXML public AnchorPane anchorPane;
+&nbsp;    @FXML public Button logOutButton;
+&nbsp;    @FXML public TreeTableView&lt;Book&gt; bookTreeTableView;
+&nbsp;    @FXML public ListView&lt;Book&gt; selectedBooksListView;
+&nbsp;    @FXML public Button lendButton;
+&nbsp;    @FXML public Button inboxButton;
+&nbsp;
+&nbsp;    private OperatorBooksService service;
+&nbsp;    private BookTreeTableViewBuilder bookTreeTableViewBuilder;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the controller, sets up necessary services, and loads initial data.
+&nbsp;     *
+&nbsp;     * @param location  The URL location.
+&nbsp;     * @param resources The ResourceBundle.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(URL location, ResourceBundle resources) {
+<b class="nc">&nbsp;        service = ServiceFactory.getService(OperatorBooksService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        service.initializeSelectedBooks();</b>
+<b class="nc">&nbsp;        selectedBooksListView.setItems(service.getSelectedBooks());</b>
+&nbsp;
+<b class="nc">&nbsp;        service.setAllOverdueBooks();</b>
+&nbsp;
+<b class="nc">&nbsp;        bookTreeTableViewBuilder = new BookTreeTableViewBuilder();</b>
+<b class="nc">&nbsp;        bookTreeTableViewBuilder.createTreeTableViewColumns(bookTreeTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;        updateTreeTableView(service.getAllBookInventories());</b>
+&nbsp;
+<b class="nc">&nbsp;        selectedBooksListView.setTooltip(new Tooltip(&quot;Selected books will show here&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;        readersButton.requestFocus();</b>
+&nbsp;
+<b class="nc">&nbsp;        service.updateBookForms();</b>
+&nbsp;
+<b class="nc">&nbsp;        bookTreeTableView.setContextMenu(getBookInventoryTreeTableContextMenu());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Readers&quot; button, navigating to the readers scene.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void readersButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if (mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+<b class="nc">&nbsp;            SceneLoader.load(mouseEvent, &quot;/views/operator/operatorReadersScene.fxml&quot;, &quot;Readers&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Search Book&quot; button, searching for books based on user input.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void searchBookButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if (mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                String stringToSearch = searchBookTextField.getText().toUpperCase();</b>
+<b class="nc">&nbsp;                Collection&lt;BookInventory&gt; results = service.searchBookInventory(stringToSearch);</b>
+<b class="nc">&nbsp;                updateTreeTableView(results.stream().toList());</b>
+<b class="nc">&nbsp;            } catch (SearchEngineException e) {</b>
+<b class="nc">&nbsp;                DialogUtils.showInfo(&quot;Information&quot;,&quot;Book not found&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Log Out&quot; button, navigating to the log-in scene.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void logOutButtonOnMouseClicked(MouseEvent mouseEvent) {
+<b class="nc">&nbsp;        if (mouseEvent.getButton() == MouseButton.PRIMARY) {</b>
+<b class="nc">&nbsp;            SceneLoader.load(mouseEvent, &quot;/views/logInScene.fxml&quot;, &quot;Log In&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the AnchorPane, clearing the selection in the Book TreeTableView.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void anchorPaneOnMouseClicked() {
+<b class="nc">&nbsp;        bookTreeTableView.getSelectionModel().clearSelection();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the Book TreeTableView, performing various actions based on the selected item.
+&nbsp;     *
+&nbsp;     * @param mouseEvent The MouseEvent representing the mouse click event.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void bookTreeTableViewOnMouseClicked(MouseEvent mouseEvent) {
+&nbsp;        try {
+&nbsp;
+<b class="nc">&nbsp;            TreeItem&lt;Book&gt; selectedTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);</b>
+<b class="nc">&nbsp;            Book selectedBook = selectedTreeItem.getValue();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (mouseEvent.getClickCount() == 2</b>
+<b class="nc">&nbsp;                    &amp;&amp; mouseEvent.getButton() == MouseButton.PRIMARY</b>
+<b class="nc">&nbsp;                    &amp;&amp; !selectedTreeItem.isLeaf()) {</b>
+&nbsp;
+<b class="nc">&nbsp;                SceneLoader.loadModalityDialog(&quot;/views/operator/resumeShowScene.fxml&quot;, &quot;Resume&quot;, selectedBook.getResume());</b>
+&nbsp;
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if (mouseEvent.getButton() == MouseButton.PRIMARY &amp;&amp; selectedTreeItem.isLeaf()) {</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;                switch (selectedBook.getBookStatus()) {</b>
+<b class="nc">&nbsp;                    case LENT -&gt; DialogUtils.showInfo(&quot;Information&quot;, &quot;This book is already given.&quot;);</b>
+<b class="nc">&nbsp;                    case DAMAGED -&gt; DialogUtils.showInfo(&quot;Information&quot;, &quot;Damaged books are pending removal.&quot;);</b>
+&nbsp;                    case IN_READING_ROOM -&gt;
+<b class="nc">&nbsp;                            DialogUtils.showInfo(&quot;Information&quot;, &quot;This book is currently used by reader.&quot;);</b>
+&nbsp;                    case ARCHIVED, AVAILABLE -&gt;
+<b class="nc">&nbsp;                            service.addSelectedBookToList(selectedBook);</b>
+&nbsp;
+&nbsp;                }
+&nbsp;
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if(!selectedTreeItem.isLeaf())</b>
+<b class="nc">&nbsp;                bookTreeTableView.getSelectionModel().clearSelection();</b>
+<b class="nc">&nbsp;        } catch (NoSuchElementException ignored) {}</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the Selected Books ListView, removing the selected book from the list.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void selectedBooksListViewOnMouseClicked() {
+<b class="nc">&nbsp;        if (selectedBooksListView.getSelectionModel() != null) {</b>
+<b class="nc">&nbsp;            Book bookToRemove = selectedBooksListView.getSelectionModel().getSelectedItem();</b>
+<b class="nc">&nbsp;            service.removeFromSelectedBooks(bookToRemove);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Lend&quot; button, initiating the process of lending selected books.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void lendButtonOnMouseClicked() {
+<b class="nc">&nbsp;        if (!service.getSelectedBooks().isEmpty()) {</b>
+&nbsp;
+<b class="nc">&nbsp;            Object[] bookArray = service.getSelectedBooks().toArray();</b>
+<b class="nc">&nbsp;            SceneLoader.loadModalityDialog(&quot;/views/operator/createBookFormScene.fxml&quot;, &quot;Create Book form&quot;, bookArray);</b>
+<b class="nc">&nbsp;            updateTreeTableView(service.getAllBookInventories());</b>
+<b class="nc">&nbsp;            selectedBooksListView.getItems().clear();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the mouse click event on the &quot;Inbox&quot; button, displaying overdue book forms in a modal dialog.
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void inboxButtonOnMouseClicked() {
+<b class="nc">&nbsp;        Object[] objects = service.getOverdueBookForms().toArray();</b>
+<b class="nc">&nbsp;        SceneLoader.loadModalityDialog(&quot;/views/operator/inboxScene.fxml&quot;, &quot;Inbox&quot;, objects);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the TreeTableView with the provided list of book inventories.
+&nbsp;     *
+&nbsp;     * @param bookInventories The list of book inventories to be displayed.
+&nbsp;     */
+&nbsp;    private void updateTreeTableView(List&lt;BookInventory&gt; bookInventories) {
+&nbsp;
+&nbsp;        //Creating the parents
+<b class="nc">&nbsp;        bookTreeTableView.getRoot().getChildren().clear();</b>
+<b class="nc">&nbsp;        for (BookInventory bookInventory : bookInventories) {</b>
+&nbsp;
+<b class="nc">&nbsp;            Book parentBook = Book.builder()</b>
+<b class="nc">&nbsp;                    .id(bookInventory.getRepresentativeBook().getId())</b>
+<b class="nc">&nbsp;                    .title(bookInventory.getRepresentativeBook().getTitle())</b>
+<b class="nc">&nbsp;                    .author(bookInventory.getRepresentativeBook().getAuthor())</b>
+<b class="nc">&nbsp;                    .genre(bookInventory.getRepresentativeBook().getGenre())</b>
+<b class="nc">&nbsp;                    .publishYear(bookInventory.getRepresentativeBook().getPublishYear())</b>
+<b class="nc">&nbsp;                    .resume(bookInventory.getRepresentativeBook().getResume())</b>
+<b class="nc">&nbsp;                    .build();</b>
+&nbsp;
+<b class="nc">&nbsp;            TreeItem&lt;Book&gt; parent = new TreeItem&lt;&gt;(parentBook);</b>
+&nbsp;
+&nbsp;            //Creating the children
+<b class="nc">&nbsp;            for (Book book : bookInventory.getBookList()) {</b>
+&nbsp;
+<b class="nc">&nbsp;                TreeItem&lt;Book&gt; child = new TreeItem&lt;&gt;(book);</b>
+&nbsp;
+<b class="nc">&nbsp;                parent.getChildren().add(child);//Adding child to the root element</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            bookTreeTableView.getRoot().getChildren().add(parent);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the context menu for the BookInventory TreeTableView, including actions like archiving a book.
+&nbsp;     *
+&nbsp;     * @return The ContextMenu for the TreeTableView.
+&nbsp;     */
+&nbsp;    private ContextMenu getBookInventoryTreeTableContextMenu(){
+<b class="nc">&nbsp;        Map&lt;String, EventHandler&lt;ActionEvent&gt;&gt; menuItems=new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        menuItems.put(&quot;Archive book&quot;,this::archiveBook);</b>
+&nbsp;
+<b class="nc">&nbsp;        return ContextMenuBuilder.prepareContextMenu(menuItems);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Archives the selected book from the TreeTableView.
+&nbsp;     *
+&nbsp;     * @param actionEvent The ActionEvent triggering the archive action.
+&nbsp;     */
+&nbsp;    private void archiveBook(ActionEvent actionEvent){
+&nbsp;        try {
+<b class="nc">&nbsp;            TreeItem&lt;Book&gt; bookTreeItem = bookTreeTableViewBuilder.getSelectedItem(bookTreeTableView);</b>
+&nbsp;
+<b class="nc">&nbsp;            Book book = bookTreeItem.getValue();</b>
+&nbsp;
+<b class="nc">&nbsp;            service.archiveBook(book);</b>
+&nbsp;
+<b class="nc">&nbsp;            updateTreeTableView(service.getAllBookInventories());</b>
+<b class="nc">&nbsp;            selectedBooksListView.getItems().clear();</b>
+&nbsp;
+<b class="nc">&nbsp;        }catch (NoSuchElementException ignored){}</b>
+<b class="nc">&nbsp;        catch (LibraryException e){</b>
+<b class="nc">&nbsp;            DialogUtils.showInfo(&quot;Information&quot;,e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

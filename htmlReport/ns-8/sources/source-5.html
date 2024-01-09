@@ -1,0 +1,404 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookRegistrationService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: BookRegistrationService (com.library.backend.services.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookRegistrationService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (72/84)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.admin;
+&nbsp;
+&nbsp;import com.library.backend.exception.IncorrectInputException;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.Author;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.entities.BookInventory;
+&nbsp;import com.library.database.enums.BookStatus;
+&nbsp;import com.library.database.enums.Genre;
+&nbsp;import com.library.database.repositories.AuthorRepository;
+&nbsp;import com.library.database.repositories.BookInventoryRepository;
+&nbsp;import com.library.database.repositories.BookRepository;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.time.Year;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.function.Supplier;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code BookRegistrationService} class provides functionality for registering new books
+&nbsp; * and managing the corresponding book inventory. It includes methods for validating input,
+&nbsp; * creating book entities, and saving book inventories and books.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create a BookRegistrationService instance with BookInventoryRepository and BookRepository
+&nbsp; * BookRegistrationService registrationService = new BookRegistrationService(BookInventoryRepository.getInstance(), BookRepository.getInstance());
+&nbsp; *
+&nbsp; * // Register a new book
+&nbsp; * String title = &quot;The Great Gatsby&quot;;
+&nbsp; * String author = &quot;F. Scott Fitzgerald&quot;;
+&nbsp; * String year = &quot;1925&quot;;
+&nbsp; * String resume = &quot;A novel capturing the essence of the Jazz Age.&quot;;
+&nbsp; * Genre genre = Genre.FICTION;
+&nbsp; * String amount = &quot;5&quot;;
+&nbsp; * try {
+&nbsp; *     registrationService.registerNewBook(title, author, year, resume, genre, amount);
+&nbsp; *     // Book registration successful
+&nbsp; * } catch (IncorrectInputException | NumberFormatException e) {
+&nbsp; *     // Handle incorrect input or number format exception
+&nbsp; * }
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, a {@code BookRegistrationService} instance is created, and the {@code registerNewBook}
+&nbsp; * method is used to register a new book. If the registration is successful, the log will indicate success;
+&nbsp; * otherwise, an {@link IncorrectInputException} or {@link NumberFormatException} is thrown with details about the failure.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code BookRegistrationService} class implements the {@link com.library.backend.services.Service Service}
+&nbsp; * interface, providing a common interface for various services in the application.
+&nbsp; *
+&nbsp; * @see com.library.backend.services.Service
+&nbsp; * @see com.library.backend.exception.IncorrectInputException
+&nbsp; * @see com.library.database.entities.Author
+&nbsp; * @see com.library.database.entities.Book
+&nbsp; * @see com.library.database.entities.BookInventory
+&nbsp; * @see com.library.database.enums.Genre
+&nbsp; * @see com.library.database.enums.BookStatus
+&nbsp; * @see com.library.database.repositories.AuthorRepository
+&nbsp; * @see com.library.database.repositories.BookInventoryRepository
+&nbsp; * @see com.library.database.repositories.BookRepository
+&nbsp; */
+&nbsp;public class BookRegistrationService implements Service {
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(BookRegistrationService.class);</b>
+&nbsp;    private final BookInventoryRepository bookInventoryRepository;
+&nbsp;    private final BookRepository bookRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a {@code BookRegistrationService} instance with the specified BookInventoryRepository and BookRepository.
+&nbsp;     *
+&nbsp;     * @param bookInventoryRepository The repository for managing book inventories.
+&nbsp;     * @param bookRepository          The repository for managing books.
+&nbsp;     */
+<b class="fc">&nbsp;    public BookRegistrationService(BookInventoryRepository bookInventoryRepository, BookRepository bookRepository) {</b>
+<b class="fc">&nbsp;        this.bookInventoryRepository = bookInventoryRepository;</b>
+<b class="fc">&nbsp;        this.bookRepository = bookRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Registers a new book with the specified details, including title, author, year, resume, genre, and quantity.
+&nbsp;     *
+&nbsp;     * @param title   The title of the new book.
+&nbsp;     * @param author  The author of the new book.
+&nbsp;     * @param year    The publication year of the new book.
+&nbsp;     * @param resume  A summary or description of the new book.
+&nbsp;     * @param genre   The genre of the new book.
+&nbsp;     * @param amount  The quantity of the new book.
+&nbsp;     * @throws IncorrectInputException If the input validation fails.
+&nbsp;     * @throws NumberFormatException   If there is an issue parsing numeric input.
+&nbsp;     */
+&nbsp;    public void registerNewBook(String title, String author, String year, String resume, Genre genre, String amount) throws IncorrectInputException, NumberFormatException {
+<b class="fc">&nbsp;        checkInput(title, author, genre, year, amount, resume);</b>
+&nbsp;
+<b class="fc">&nbsp;        int quantity = getQuantity(amount);</b>
+&nbsp;
+<b class="fc">&nbsp;        BookInventory bookInventory = createBookInventory(title, author, genre, quantity, year, resume);</b>
+&nbsp;
+<b class="fc">&nbsp;        saveInventory(bookInventory);</b>
+<b class="fc">&nbsp;        logger.info(&quot;Book registration successful for title: &#39;{}&#39;, author: &#39;{}&#39;&quot;, title, author);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the input parameters for book registration and throws exceptions if validation fails.
+&nbsp;     *
+&nbsp;     * @param title   The title of the book.
+&nbsp;     * @param author  The author of the book.
+&nbsp;     * @param genre   The genre of the book.
+&nbsp;     * @param year    The publication year of the book.
+&nbsp;     * @param amount  The quantity of the book.
+&nbsp;     * @param resume  The summary or description of the book.
+&nbsp;     * @throws IncorrectInputException If the input validation fails.
+&nbsp;     * @throws NumberFormatException   If there is an issue parsing numeric input.
+&nbsp;     */
+&nbsp;    private void checkInput(String title, String author, Genre genre, String year, String amount, String resume) throws IncorrectInputException, NumberFormatException {
+&nbsp;        try {
+<b class="fc">&nbsp;            if (title == null || title.isEmpty())</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Please enter book title.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (author == null || author.isEmpty() || (containsNumbers(author)))</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Please enter book author.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (genre == null)</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Please choose the genre of the book.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (resume == null || resume.isEmpty())</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Please write the resume of the book.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            int yearInt = Integer.parseInt(year);</b>
+<b class="fc">&nbsp;            if (yearInt &lt; 0)</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Year cannot be negative.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            int amountInt = Integer.parseInt(amount);</b>
+<b class="fc">&nbsp;            if (amountInt &lt; 0)</b>
+<b class="fc">&nbsp;                throw new IncorrectInputException(&quot;Amount cannot be negative.&quot;);</b>
+<b class="fc">&nbsp;        } catch (IncorrectInputException | NumberFormatException e) {</b>
+<b class="fc">&nbsp;            logger.error(&quot;Incorrect input!&quot;, e);</b>
+<b class="fc">&nbsp;            throw e;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if the given input string contains numeric digits.
+&nbsp;     *
+&nbsp;     * @param input The input string to be checked.
+&nbsp;     * @return {@code true} if the input contains numeric digits, {@code false} otherwise.
+&nbsp;     */
+&nbsp;    private boolean containsNumbers(String input) {
+<b class="fc">&nbsp;        return input.matches(&quot;.*\\d+.*&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the quantity from the provided amount string. Returns 1 if the string is empty.
+&nbsp;     *
+&nbsp;     * @param amount The string representing the quantity.
+&nbsp;     * @return The parsed quantity or 1 if the string is empty.
+&nbsp;     */
+&nbsp;    private int getQuantity(String amount) {
+<b class="fc">&nbsp;        if (amount.isEmpty())</b>
+<b class="nc">&nbsp;            return 1;</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return Integer.parseInt(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new {@link com.library.database.entities.BookInventory BookInventory} instance with the specified details
+&nbsp;     * and saves it to the repository. Manages the association between books and the representative book.
+&nbsp;     *
+&nbsp;     * @param title   The title of the book.
+&nbsp;     * @param author  The author of the book.
+&nbsp;     * @param genre   The genre of the book.
+&nbsp;     * @param quantity The quantity of the book.
+&nbsp;     * @param year    The publication year of the book.
+&nbsp;     * @param resume  The summary or description of the book.
+&nbsp;     * @return The created BookInventory instance.
+&nbsp;     */
+&nbsp;    private BookInventory createBookInventory(String title, String author, Genre genre, int quantity, String year, String resume) {
+<b class="fc">&nbsp;        BookInventoryRepository bookInventoryRepository = BookInventoryRepository.getInstance();</b>
+<b class="fc">&nbsp;        BookInventory bookInventory = BookInventory.builder().build();</b>
+&nbsp;
+<b class="fc">&nbsp;        Book representativeBook = createBook(title, author, genre, year, resume);</b>
+&nbsp;
+<b class="fc">&nbsp;        boolean flag = true;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (BookInventory existingInventory : bookInventoryRepository.findAll()) {</b>
+<b class="fc">&nbsp;            if (existingInventory.getRepresentativeBook().equalsBook(representativeBook)) {</b>
+<b class="nc">&nbsp;                for (int i = 0; i &lt; quantity; i++) {</b>
+<b class="nc">&nbsp;                    Book book = createBook(title, author, genre, year, resume);</b>
+<b class="nc">&nbsp;                    book.setInventory(existingInventory);</b>
+&nbsp;
+<b class="nc">&nbsp;                    saveBook(book);</b>
+&nbsp;
+<b class="nc">&nbsp;                    existingInventory.addBook(book);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                saveInventory(existingInventory);</b>
+&nbsp;
+<b class="nc">&nbsp;                flag = false;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        if (flag) {</b>
+<b class="fc">&nbsp;            List&lt;Book&gt; bookList = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            for (int i = 0; i &lt; quantity; i++) {</b>
+<b class="fc">&nbsp;                Book book = createBook(title, author, genre, year, resume);</b>
+<b class="fc">&nbsp;                bookInventory.setRepresentativeBook(book);</b>
+<b class="fc">&nbsp;                book.setInventory(bookInventory);</b>
+&nbsp;
+<b class="fc">&nbsp;                saveBook(book);</b>
+&nbsp;
+<b class="fc">&nbsp;                bookList.add(book);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            bookInventory.setBookList(bookList);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return bookInventory;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new {@link com.library.database.entities.Book Book} instance with the specified details.
+&nbsp;     * Associates the book with an author and handles parsing of the publication year.
+&nbsp;     *
+&nbsp;     * @param title   The title of the book.
+&nbsp;     * @param author  The author of the book.
+&nbsp;     * @param genre   The genre of the book.
+&nbsp;     * @param year    The publication year of the book.
+&nbsp;     * @param resume  The summary or description of the book.
+&nbsp;     * @return The created Book instance.
+&nbsp;     */
+&nbsp;    private Book createBook(String title, String author, Genre genre, String year, String resume) {
+<b class="fc">&nbsp;        AuthorRepository authorRepository = AuthorRepository.getInstance();</b>
+&nbsp;
+<b class="fc">&nbsp;        Author authorEntity = authorRepository.findByName(author).orElseGet(() -&gt;</b>
+<b class="fc">&nbsp;                Author.builder()</b>
+<b class="fc">&nbsp;                        .name(author)</b>
+<b class="fc">&nbsp;                        .books(new ArrayList&lt;&gt;())</b>
+<b class="fc">&nbsp;                        .build()</b>
+&nbsp;        );
+&nbsp;
+<b class="fc">&nbsp;        Book book = Book.builder()</b>
+<b class="fc">&nbsp;                .title(title)</b>
+<b class="fc">&nbsp;                .author(authorEntity)</b>
+<b class="fc">&nbsp;                .genre(genre)</b>
+<b class="fc">&nbsp;                .bookStatus(BookStatus.AVAILABLE)</b>
+<b class="fc">&nbsp;                .numberOfTimesUsed(0)</b>
+<b class="fc">&nbsp;                .resume(&quot;&quot;)</b>
+<b class="fc">&nbsp;                .build();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            if (!year.isEmpty())</b>
+<b class="fc">&nbsp;                book.setPublishYear(Year.parse(year));</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.warn(&quot;Failed to parse year &#39;{}&#39;. Defaulting to current year.&quot;, year);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!resume.isEmpty()) {</b>
+<b class="fc">&nbsp;            book.setResume(resume);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return book;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Saves the specified {@link com.library.database.entities.BookInventory BookInventory} to the repository.
+&nbsp;     *
+&nbsp;     * @param bookInventory The BookInventory instance to be saved.
+&nbsp;     */
+&nbsp;    public void saveInventory(BookInventory bookInventory) {
+<b class="fc">&nbsp;        performRepositoryOperation(() -&gt; bookInventoryRepository.save(bookInventory), &quot;saved&quot;, &quot;BookInventory&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a repository operation specified by the provided {@code repositoryOperation} supplier.
+&nbsp;     * Logs the result and status using the logger.
+&nbsp;     *
+&nbsp;     * @param repositoryOperation The supplier representing the repository operation to be performed.
+&nbsp;     * @param action             A string describing the action performed (e.g., &quot;saved&quot;, &quot;deleted&quot;).
+&nbsp;     * @param entityName         A string representing the entity type on which the operation is performed.
+&nbsp;     * @param &lt;T&gt;                The type of the result of the repository operation.
+&nbsp;     */
+&nbsp;    private &lt;T&gt; void performRepositoryOperation(Supplier&lt;T&gt; repositoryOperation, String action, String entityName) {
+<b class="fc">&nbsp;        T result = repositoryOperation.get();</b>
+<b class="fc">&nbsp;        if (result != null) {</b>
+<b class="fc">&nbsp;            logger.info(&quot;{} {} successfully: {}&quot;, entityName, action, entityName);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            logger.error(&quot;Failed to {} {}: {}&quot;, action, entityName, entityName);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Saves the specified {@link com.library.database.entities.Book Book} to the repository.
+&nbsp;     *
+&nbsp;     * @param book The Book instance to be saved.
+&nbsp;     */
+&nbsp;    public void saveBook(Book book) {
+<b class="fc">&nbsp;        performRepositoryOperation(() -&gt; bookRepository.save(book), &quot;saved&quot;, &quot;Book&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

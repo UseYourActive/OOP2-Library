@@ -9,9 +9,17 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code ServiceFactory} class is responsible for creating instances of various service classes
+ * based on the provided service type. It encapsulates the logic of instantiating services with
+ * their required dependencies and provides a centralized point for obtaining service instances.
+ */
 public class ServiceFactory {
     private static final Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
 
+    /**
+     * Enumeration of supported service types along with their corresponding implementation classes.
+     */
     @Getter
     @RequiredArgsConstructor
     private enum ServiceType {
@@ -34,6 +42,14 @@ public class ServiceFactory {
         private final Class<? extends Service> serviceClass;
     }
 
+    /**
+     * Retrieves an instance of the specified service class.
+     *
+     * @param <T>           The type of service.
+     * @param serviceClass  The class of the service to be instantiated.
+     * @return An instance of the specified service class.
+     * @throws NonExistentServiceException If the provided service class is not found in the enumeration.
+     */
     public static <T extends Service> T getService(Class<T> serviceClass) {
         T service = null;
         try {
@@ -66,6 +82,12 @@ public class ServiceFactory {
         return service;
     }
 
+    /**
+     * Determines the service type associated with the provided service class.
+     *
+     * @param serviceClass The class of the service.
+     * @return The corresponding service type.
+     */
     private static ServiceType getServiceType(Class<? extends Service> serviceClass) {
         ServiceType processorType = null;
 

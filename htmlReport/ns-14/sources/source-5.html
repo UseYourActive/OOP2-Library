@@ -1,0 +1,157 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > InventoryTableViewBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.utils.tableviews</a>
+</div>
+
+<h1>Coverage Summary for Class: InventoryTableViewBuilder (com.library.utils.tableviews)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InventoryTableViewBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84.2%
+  </span>
+  <span class="absValue">
+    (16/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.utils.tableviews;
+&nbsp;
+&nbsp;import com.library.database.entities.BookInventory;
+&nbsp;import com.library.database.enums.Genre;
+&nbsp;import javafx.beans.property.SimpleObjectProperty;
+&nbsp;import javafx.beans.property.SimpleStringProperty;
+&nbsp;import javafx.scene.control.TableColumn;
+&nbsp;import javafx.scene.control.TableView;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code InventoryTableViewBuilder} class implements the {@link TableViewBuilder} interface
+&nbsp; * to create and configure JavaFX {@link javafx.scene.control.TableView} columns for the {@link BookInventory} entity.
+&nbsp; * It defines columns for book inventory properties such as title, author, and genre.
+&nbsp; *
+&nbsp; * @see TableViewBuilder
+&nbsp; */
+<b class="fc">&nbsp;public class InventoryTableViewBuilder implements TableViewBuilder&lt;BookInventory&gt; {</b>
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(InventoryTableViewBuilder.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates and configures the table columns for the specified {@link javafx.scene.control.TableView}.
+&nbsp;     * Defines columns for book inventory title, author, and genre.
+&nbsp;     *
+&nbsp;     * @param tableView The TableView for which columns are created and configured.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createTableViewColumns(TableView&lt;BookInventory&gt; tableView) {
+&nbsp;        try {
+<b class="fc">&nbsp;            TableColumn&lt;BookInventory, String&gt; titleTableColumn = new TableColumn&lt;&gt;(&quot;Title&quot;);</b>
+<b class="fc">&nbsp;            titleTableColumn.setCellValueFactory(data -&gt; new SimpleStringProperty(data.getValue().getRepresentativeBook().getTitle()));</b>
+<b class="fc">&nbsp;            titleTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            TableColumn&lt;BookInventory, String&gt; authorTableColumn = new TableColumn&lt;&gt;(&quot;Author&quot;);</b>
+<b class="fc">&nbsp;            authorTableColumn.setCellValueFactory(data -&gt; new SimpleStringProperty(data.getValue().getRepresentativeBook().getAuthor().toString())); // Assuming getAuthor() returns a String</b>
+<b class="fc">&nbsp;            authorTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            TableColumn&lt;BookInventory, Genre&gt; genreTableColumn = new TableColumn&lt;&gt;(&quot;Genre&quot;);</b>
+<b class="fc">&nbsp;            genreTableColumn.setCellValueFactory(data -&gt; new SimpleObjectProperty&lt;&gt;(data.getValue().getRepresentativeBook().getGenre()));</b>
+<b class="fc">&nbsp;            genreTableColumn.prefWidthProperty().bind(tableView.widthProperty().divide(3));</b>
+&nbsp;
+<b class="fc">&nbsp;            tableView.getColumns().add(titleTableColumn);</b>
+<b class="fc">&nbsp;            tableView.getColumns().add(authorTableColumn);</b>
+<b class="fc">&nbsp;            tableView.getColumns().add(genreTableColumn);</b>
+&nbsp;
+<b class="fc">&nbsp;            logger.info(&quot;Book Inventory table view created successfully&quot;);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to create book inventory table view: {}&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;            throw e;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

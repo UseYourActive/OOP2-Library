@@ -10,24 +10,47 @@ import com.library.database.repositories.ReaderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The {@code CreateReaderProfileService} class provides services for creating new reader profiles.
+ * It includes functionality for validating input and creating a reader profile with an associated reader rating.
+ *
+ * @see Service
+ */
 public class CreateReaderProfileService implements Service {
     private static final Logger logger = LoggerFactory.getLogger(CreateReaderProfileService.class);
     private final ReaderRepository readerRepository;
 
+    /**
+     * Constructs a {@code CreateReaderProfileService} instance with the specified reader repository.
+     *
+     * @param readerRepository The repository for managing reader data.
+     */
     public CreateReaderProfileService(ReaderRepository readerRepository) {
         this.readerRepository = readerRepository;
     }
 
+    /**
+     * Creates a new reader profile with the provided information.
+     *
+     * @param firstName   The first name of the reader.
+     * @param middleName  The middle name of the reader.
+     * @param lastName    The last name of the reader.
+     * @param phoneNumber The phone number of the reader.
+     * @param email       The email address of the reader.
+     * @throws IncorrectInputException If the input validation fails.
+     */
     public void createReader(String firstName, String middleName, String lastName, String phoneNumber, String email) throws IncorrectInputException {
         try {
             checkInput(firstName, middleName, lastName, phoneNumber);
 
+            // Create a new reader rating with default values
             ReaderRating readerRating = ReaderRating.builder()
                     .rating(Ratings.NONE)
                     .currentValue(-1)
                     .coefficient(0)
                     .build();
 
+            // Create a new reader with the provided information
             Reader reader = Reader.builder()
                     .firstName(firstName)
                     .middleName(middleName)
@@ -38,6 +61,7 @@ public class CreateReaderProfileService implements Service {
                     .readerRating(readerRating)
                     .build();
 
+            // Save the new reader profile to the repository
             readerRepository.save(reader);
 
             logger.info("Created a new reader profile: {}", reader.getFullName());
@@ -48,6 +72,15 @@ public class CreateReaderProfileService implements Service {
         }
     }
 
+    /**
+     * Validates the input parameters for creating a new reader profile.
+     *
+     * @param firstName   The first name of the reader.
+     * @param middleName  The middle name of the reader.
+     * @param lastName    The last name of the reader.
+     * @param phoneNumber The phone number of the reader.
+     * @throws IncorrectInputException If any of the input parameters are empty.
+     */
     private void checkInput(String firstName, String middleName, String lastName, String phoneNumber) throws IncorrectInputException {
         if (firstName.isEmpty())
             throw new IncorrectInputException("Please enter first name.");

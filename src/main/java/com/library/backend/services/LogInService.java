@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * @see com.library.database.repositories.UserRepository
  */
 public class LogInService implements Service {
+
     private final Logger logger = LoggerFactory.getLogger(LogInService.class);
 
     /**
@@ -60,14 +61,21 @@ public class LogInService implements Service {
         this.userRepository = userRepository;
     }
 
-
+    /**
+     * Retrieves a user by username and validates the provided password against the stored password.
+     *
+     * @param username The username of the user to retrieve.
+     * @param password The provided password for validation.
+     * @return The retrieved user if authentication is successful.
+     * @throws UserNotFoundException If the user with the specified username is not found.
+     * @throws HibernateException    If a Hibernate-related exception occurs during user retrieval.
+     */
     public User getUser(String username, String password) throws UserNotFoundException, HibernateException {
 
         User user = User.builder()
                 .username(username)
                 .password(password)
                 .build();
-
 
         logger.info("Attempting to retrieve user: {}", username);
 
@@ -88,6 +96,13 @@ public class LogInService implements Service {
         }
     }
 
+    /**
+     * Compares the provided password with the stored password using BCrypt or plain comparison.
+     *
+     * @param providedPassword The password provided for validation.
+     * @param storedPassword   The stored password for comparison.
+     * @return {@code true} if the passwords match, {@code false} otherwise.
+     */
     private boolean isPasswordMatch(String providedPassword, String storedPassword) {
         if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$")) {
             BCrypt.Result result = BCrypt.verifyer().verify(providedPassword.toCharArray(), storedPassword);

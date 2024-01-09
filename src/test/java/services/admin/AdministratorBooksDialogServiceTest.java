@@ -30,7 +30,7 @@ class AdministratorBooksDialogServiceTest {
         // Arrange
         BookInventory bookInventory = new BookInventory();
         Book bookToRemove = new Book();
-        bookInventory.setRepresentiveBook(bookToRemove);
+        bookInventory.setRepresentativeBook(bookToRemove);
         bookInventory.setBookList(List.of(bookToRemove));
         List<Book> booksToRemove = List.of(bookToRemove);
 
@@ -47,7 +47,7 @@ class AdministratorBooksDialogServiceTest {
         // Arrange
         BookInventory bookInventory = new BookInventory();
         Book bookToRemove = new Book();
-        bookInventory.setRepresentiveBook(bookToRemove);
+        bookInventory.setRepresentativeBook(bookToRemove);
         bookInventory.setBookList(Arrays.asList(bookToRemove));
 
         List<Book> booksToRemove = Arrays.asList(bookToRemove);

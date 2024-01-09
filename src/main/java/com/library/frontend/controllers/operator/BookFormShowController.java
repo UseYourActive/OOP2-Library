@@ -23,6 +23,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for displaying details of a book form in the operator view.
+ */
 public class BookFormShowController implements Controller {
     @FXML public Button returnButton;
     @FXML public Button closeButton;
@@ -35,18 +38,27 @@ public class BookFormShowController implements Controller {
     private Reader reader;
     private BookFormShowService service;
 
+    /**
+     * Initializes the controller by loading necessary services and setting up the UI components.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(BookFormShowService.class);
 
+        // Load email settings for notifications
         service.loadEmailSettings("ooplibrary7@gmail.com", "ngjh lkzt ehwl urpq");
 
+        // Retrieve necessary objects from the transferable objects
         getTransferObjects();
 
+        // Set up UI components with book form and reader details
         readerLabel.setText(reader.getFullName().replace(' ', '\n'));
-
         bookCheckListView.getItems().setAll(bookForm.getBooks());
 
+        // Handle UI adjustments based on book form status
         if (bookCheckListView.getItems() == null) {
             DialogUtils.showInfo("Information", "Books were removed from the library");
         }
@@ -62,6 +74,11 @@ public class BookFormShowController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Return" button, allowing the operator to process book returns.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void returnButtonOnMouseClicked(MouseEvent mouseEvent) {
         IndexedCheckModel<Book> checkModel = bookCheckListView.getCheckModel();
@@ -77,6 +94,11 @@ public class BookFormShowController implements Controller {
         closeButtonOnMouseClicked(mouseEvent);
     }
 
+    /**
+     * Handles the mouse click event on the "Close" button, navigating back to the operator readers scene.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void closeButtonOnMouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -84,12 +106,16 @@ public class BookFormShowController implements Controller {
         }
     }
 
+    /**
+     * Handles the mouse click event on the "Notify" button, sending an email notification to the reader.
+     */
     @FXML
     public void notifyButtonOnMouseClicked() {
         try {
             String message = "You need to return books";
             String subject = "Return of books";
 
+            // Send email notification to the reader
             service.sendEmail(reader, subject, message);
 
             DialogUtils.showInfo("Email result", "An email notifying the user has been sent!");
@@ -98,6 +124,9 @@ public class BookFormShowController implements Controller {
         }
     }
 
+    /**
+     * Retrieves the necessary transferable objects from the SceneLoader.
+     */
     private void getTransferObjects() {
         Object obj = SceneLoader.getTransferableObjects()[0];
         if (obj instanceof BookForm)

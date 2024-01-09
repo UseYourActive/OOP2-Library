@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for managing operators in the administrator view.
+ */
 public class AdministratorOperatorsController implements Controller {
 
     @FXML public Button booksButton;
@@ -37,6 +40,12 @@ public class AdministratorOperatorsController implements Controller {
     private AdministratorOperatorsService service;
     private TableViewBuilder<User> operatorTableViewBuilder;
 
+    /**
+     * Initializes the controller with necessary services and sets up the operator table view.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(AdministratorOperatorsService.class);
@@ -51,17 +60,28 @@ public class AdministratorOperatorsController implements Controller {
         operatorTableView.setContextMenu(getContextMenu());
     }
 
+    /**
+     * Handles the mouse click event on the "Books" button, navigating to the administrator books view.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void booksButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");
     }
 
+    /**
+     * Handles the mouse click event on the anchor pane, ensuring the operator table view loses focus and selection.
+     */
     @FXML
     public void anchorPaneOnMouseClicked() {
         anchorPane.requestFocus();
         operatorTableView.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Handles the mouse click event on the "Search Operator" button, searching for operators based on user input.
+     */
     @FXML
     public void searchOperatorButtonOnMouseClicked() {
         try {
@@ -74,6 +94,11 @@ public class AdministratorOperatorsController implements Controller {
         }
     }
 
+    /**
+     * Creates and returns the context menu for operator-related actions in the operator table view.
+     *
+     * @return The created ContextMenu.
+     */
     private ContextMenu getContextMenu() {
         Map<String, EventHandler<ActionEvent>> menuItems= new HashMap<>();
 
@@ -83,10 +108,20 @@ public class AdministratorOperatorsController implements Controller {
         return ContextMenuBuilder.prepareContextMenu(menuItems);
     }
 
+    /**
+     * Handles the "Create Operator" action, navigating to the create operator scene.
+     *
+     * @param actionEvent The ActionEvent representing the action.
+     */
     private void createOperator(ActionEvent actionEvent){
         SceneLoader.load("/views/admin/createOperatorScene.fxml", "Create operator");
     }
 
+    /**
+     * Handles the "Remove Operator" action, removing the selected operator from the system.
+     *
+     * @param actionEvent The ActionEvent representing the action.
+     */
     private void removeOperator(ActionEvent actionEvent){
         try{
             User user = operatorTableViewBuilder.getSelectedItem(operatorTableView);

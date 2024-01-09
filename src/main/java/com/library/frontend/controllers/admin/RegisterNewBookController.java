@@ -16,6 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for registering new books in the administrator view.
+ */
 public class RegisterNewBookController implements Controller {
 
     @FXML public TextField titleTextField;
@@ -31,6 +34,12 @@ public class RegisterNewBookController implements Controller {
 
     private BookRegistrationService service;
 
+    /**
+     * Initializes the controller with the necessary service for book registration and sets up the genre ComboBox.
+     *
+     * @param location  The URL location.
+     * @param resources The ResourceBundle.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service = ServiceFactory.getService(BookRegistrationService.class);
@@ -40,6 +49,11 @@ public class RegisterNewBookController implements Controller {
         genreComboBox.setItems(FXCollections.observableArrayList(Genre.values()));
     }
 
+    /**
+     * Handles the mouse click event on the "Register" button, attempting to register a new book.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void registerButtonOnMouseClicked(MouseEvent mouseEvent) {
         try {
@@ -58,7 +72,11 @@ public class RegisterNewBookController implements Controller {
         }
     }
 
-
+    /**
+     * Handles the mouse click event on the "Cancel" button, navigating back to the administrator books scene.
+     *
+     * @param mouseEvent The MouseEvent representing the mouse click event.
+     */
     @FXML
     public void cancelButtonOnMouseClicked(MouseEvent mouseEvent) {
         SceneLoader.load(mouseEvent, "/views/admin/administratorBooksScene.fxml", SceneLoader.getUser().getUsername() + "(Administrator)");

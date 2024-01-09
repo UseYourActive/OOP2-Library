@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ReaderSearchEngine</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.engines</a>
+</div>
+
+<h1>Coverage Summary for Class: ReaderSearchEngine (com.library.backend.engines)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReaderSearchEngine</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15.4%
+  </span>
+  <span class="absValue">
+    (2/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.engines;
+&nbsp;
+&nbsp;import com.library.backend.exception.searchengine.ReaderSearchEngineException;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.database.entities.Reader;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;/**
+&nbsp; * Search engine implementation for searching readers.
+&nbsp; */
+<b class="fc">&nbsp;public class ReaderSearchEngine implements SearchEngine&lt;Reader&gt; {</b>
+<b class="fc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(ReaderSearchEngine.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for readers based on a search string.
+&nbsp;     *
+&nbsp;     * @param items          List of readers to search.
+&nbsp;     * @param stringToSearch Search string.
+&nbsp;     * @return A set of readers matching the search criteria.
+&nbsp;     * @throws SearchEngineException If an error occurs during the search operation.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Set&lt;Reader&gt; search(List&lt;Reader&gt; items, String stringToSearch) throws SearchEngineException {
+&nbsp;        try {
+<b class="nc">&nbsp;            return items.stream()</b>
+<b class="nc">&nbsp;                    .filter(reader -&gt; reader.getFirstName().toUpperCase().contains(stringToSearch.toUpperCase()) ||</b>
+<b class="nc">&nbsp;                            reader.getMiddleName().toUpperCase().contains(stringToSearch.toUpperCase()) ||</b>
+<b class="nc">&nbsp;                            reader.getLastName().toUpperCase().contains(stringToSearch.toUpperCase()) ||</b>
+<b class="nc">&nbsp;                            reader.getEmail().toUpperCase().contains(stringToSearch.toUpperCase()) ||</b>
+<b class="nc">&nbsp;                            reader.getPhoneNumber().contains(stringToSearch.toUpperCase()) ||</b>
+<b class="nc">&nbsp;                            reader.getReaderRating().toString().toUpperCase().contains(stringToSearch.toUpperCase())</b>
+&nbsp;                    )
+<b class="nc">&nbsp;                    .collect(Collectors.toSet());</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Error occurred during reader search&quot;, e);</b>
+<b class="nc">&nbsp;            throw new ReaderSearchEngineException(&quot;Error occurred during reader search&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

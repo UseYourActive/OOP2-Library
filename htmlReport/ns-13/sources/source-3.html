@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CustomHighlightingMarker</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.utils.colors</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomHighlightingMarker (com.library.utils.colors)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomHighlightingMarker</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.utils.colors;
+&nbsp;
+&nbsp;import ch.qos.logback.classic.spi.ILoggingEvent;
+&nbsp;import ch.qos.logback.core.pattern.color.ANSIConstants;
+&nbsp;import ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase;
+&nbsp;import org.slf4j.Marker;
+&nbsp;import org.slf4j.MarkerFactory;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code CustomHighlightingMarker} class is a Logback {@link
+&nbsp; * ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase} implementation that provides
+&nbsp; * custom highlighting for log messages based on the presence of a specific marker. If the log event
+&nbsp; * contains a marker with the name &quot;highlight,&quot; the foreground color is customized; otherwise, the
+&nbsp; * default foreground color is used.
+&nbsp; * &lt;p&gt;
+&nbsp; * This class is designed to be used with the Logback logging framework to customize the visual
+&nbsp; * representation of log messages based on the presence of specific markers.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Configuration in Logback.xml:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * &lt;conversionRule conversionWord=&quot;highlightMarker&quot;
+&nbsp; *                 converterClass=&quot;com.library.frontend.utils.colors.CustomHighlightingMarker&quot; /&gt;
+&nbsp; *
+&nbsp; * &lt;appender name=&quot;CONSOLE&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+&nbsp; *     &lt;encoder&gt;
+&nbsp; *         &lt;pattern&gt;%highlightMarker(%-5level) [%logger{35}] - %msg%n&lt;/pattern&gt;
+&nbsp; *     &lt;/encoder&gt;
+&nbsp; * &lt;/appender&gt;
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, the log messages with the &quot;highlight&quot; marker will be highlighted with a yellow
+&nbsp; * foreground color.
+&nbsp; *
+&nbsp; * @see ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase
+&nbsp; * @see ch.qos.logback.classic.spi.ILoggingEvent
+&nbsp; * @see ch.qos.logback.core.pattern.color.ANSIConstants
+&nbsp; * @see org.slf4j.Marker
+&nbsp; * @see org.slf4j.MarkerFactory
+&nbsp; */
+<b class="fc">&nbsp;public class CustomHighlightingMarker extends ForegroundCompositeConverterBase&lt;ILoggingEvent&gt; {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines the foreground color code based on the presence of the &quot;highlight&quot; marker in the
+&nbsp;     * log event. It returns the ANSI color code for the foreground color based on the marker&#39;s
+&nbsp;     * presence.
+&nbsp;     *
+&nbsp;     * @param event The logging event containing information about the log message.
+&nbsp;     * @return The ANSI color code for the foreground color based on the presence of the &quot;highlight&quot;
+&nbsp;     * marker.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getForegroundColorCode(ILoggingEvent event) {
+<b class="fc">&nbsp;        List&lt;Marker&gt; markerList = event.getMarkerList();</b>
+&nbsp;
+<b class="fc">&nbsp;        return markerList != null &amp;&amp; markerList.contains(MarkerFactory.getMarker(&quot;highlight&quot;)) ?</b>
+<b class="fc">&nbsp;                ANSIConstants.YELLOW_FG : ANSIConstants.DEFAULT_FG;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

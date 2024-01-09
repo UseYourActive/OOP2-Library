@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ServiceFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services</a>
+</div>
+
+<h1>Coverage Summary for Class: ServiceFactory (com.library.backend.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServiceFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ServiceFactory$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ServiceFactory$ServiceType</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/46)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services;
+&nbsp;
+&nbsp;import com.library.backend.exception.NonExistentServiceException;
+&nbsp;import com.library.backend.services.admin.*;
+&nbsp;import com.library.backend.services.operator.*;
+&nbsp;import com.library.database.repositories.*;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ServiceFactory} class is responsible for creating instances of various service classes
+&nbsp; * based on the provided service type. It encapsulates the logic of instantiating services with
+&nbsp; * their required dependencies and provides a centralized point for obtaining service instances.
+&nbsp; */
+<b class="nc">&nbsp;public class ServiceFactory {</b>
+<b class="nc">&nbsp;    private static final Logger logger = LoggerFactory.getLogger(ServiceFactory.class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Enumeration of supported service types along with their corresponding implementation classes.
+&nbsp;     */
+<b class="nc">&nbsp;    @Getter</b>
+<b class="nc">&nbsp;    @RequiredArgsConstructor</b>
+&nbsp;    private enum ServiceType {
+<b class="nc">&nbsp;        LOG_IN_SERVICE(LogInService.class),</b>
+&nbsp;
+<b class="nc">&nbsp;        ADD_BOOK_QUANTITY_SERVICE(AddBookQuantityService.class),</b>
+<b class="nc">&nbsp;        ADMINISTRATOR_BOOKS_SERVICE(AdministratorBooksService.class),</b>
+<b class="nc">&nbsp;        ADMINISTRATOR_BOOKS_DIALOG_SERVICE(AdministratorBooksDialogService.class),</b>
+<b class="nc">&nbsp;        ADMINISTRATOR_OPERATORS_SERVICE(AdministratorOperatorsService.class),</b>
+<b class="nc">&nbsp;        BOOK_REGISTRATION_SERVICE(BookRegistrationService.class),</b>
+<b class="nc">&nbsp;        CREATE_OPERATOR_SERVICE(CreateOperatorService.class),</b>
+&nbsp;
+<b class="nc">&nbsp;        BOOK_FORM_SHOW_SERVICE(BookFormShowService.class),</b>
+<b class="nc">&nbsp;        CREATE_BOOK_FORM_SERVICE(CreateBookFormService.class),</b>
+<b class="nc">&nbsp;        CREATE_READER_PROFILE_SERVICE(CreateReaderProfileService.class),</b>
+<b class="nc">&nbsp;        INBOX_SERVICE(InboxService.class),</b>
+<b class="nc">&nbsp;        OPERATOR_BOOKS_SERVICE(OperatorBooksService.class),</b>
+<b class="nc">&nbsp;        OPERATOR_READERS_SERVICE(OperatorReadersService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        private final Class&lt;? extends Service&gt; serviceClass;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves an instance of the specified service class.
+&nbsp;     *
+&nbsp;     * @param &lt;T&gt;           The type of service.
+&nbsp;     * @param serviceClass  The class of the service to be instantiated.
+&nbsp;     * @return An instance of the specified service class.
+&nbsp;     * @throws NonExistentServiceException If the provided service class is not found in the enumeration.
+&nbsp;     */
+&nbsp;    public static &lt;T extends Service&gt; T getService(Class&lt;T&gt; serviceClass) {
+<b class="nc">&nbsp;        T service = null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            switch (getServiceType(serviceClass)) {</b>
+<b class="nc">&nbsp;                case LOG_IN_SERVICE -&gt; service = serviceClass.cast(new LogInService(UserRepository.getInstance()));</b>
+&nbsp;
+&nbsp;                // Admin services
+<b class="nc">&nbsp;                case ADD_BOOK_QUANTITY_SERVICE -&gt; service = serviceClass.cast(new AddBookQuantityService(BookRepository.getInstance(), BookInventoryRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case ADMINISTRATOR_BOOKS_SERVICE -&gt; service = serviceClass.cast(new AdministratorBooksService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case ADMINISTRATOR_BOOKS_DIALOG_SERVICE -&gt; service = serviceClass.cast(new AdministratorBooksDialogService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case ADMINISTRATOR_OPERATORS_SERVICE -&gt; service = serviceClass.cast(new AdministratorOperatorsService(UserRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case BOOK_REGISTRATION_SERVICE -&gt; service = serviceClass.cast(new BookRegistrationService(BookInventoryRepository.getInstance(), BookRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case CREATE_OPERATOR_SERVICE -&gt; service = serviceClass.cast(new CreateOperatorService(UserRepository.getInstance()));</b>
+&nbsp;
+&nbsp;                // Operator services
+<b class="nc">&nbsp;                case BOOK_FORM_SHOW_SERVICE -&gt; service = serviceClass.cast(new BookFormShowService(BookRepository.getInstance(), ReaderRepository.getInstance(), EventNotificationRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case CREATE_BOOK_FORM_SERVICE -&gt; service = serviceClass.cast(new CreateBookFormService(ReaderRepository.getInstance(), BookFormRepository.getInstance(), BookRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case CREATE_READER_PROFILE_SERVICE -&gt; service = serviceClass.cast(new CreateReaderProfileService(ReaderRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case INBOX_SERVICE -&gt; service = serviceClass.cast(new InboxService(EventNotificationRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case OPERATOR_BOOKS_SERVICE -&gt; service = serviceClass.cast(new OperatorBooksService(BookFormRepository.getInstance(), BookInventoryRepository.getInstance(), EventNotificationRepository.getInstance(), BookRepository.getInstance()));</b>
+<b class="nc">&nbsp;                case OPERATOR_READERS_SERVICE -&gt; service = serviceClass.cast(new OperatorReadersService(ReaderRepository.getInstance()));</b>
+&nbsp;
+<b class="nc">&nbsp;                default -&gt; throw new NonExistentServiceException(&quot;There is no such enum!&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            logger.info(&quot;Service {} created successfully&quot;, serviceClass.getSimpleName());</b>
+<b class="nc">&nbsp;        } catch (NonExistentServiceException e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to create service {}: {}&quot;, serviceClass.getSimpleName(), e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return service;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines the service type associated with the provided service class.
+&nbsp;     *
+&nbsp;     * @param serviceClass The class of the service.
+&nbsp;     * @return The corresponding service type.
+&nbsp;     */
+&nbsp;    private static ServiceType getServiceType(Class&lt;? extends Service&gt; serviceClass) {
+<b class="nc">&nbsp;        ServiceType processorType = null;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (ServiceType type : ServiceType.values()) {</b>
+<b class="nc">&nbsp;            if (type.serviceClass == serviceClass) {</b>
+<b class="nc">&nbsp;                processorType = type;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return processorType;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

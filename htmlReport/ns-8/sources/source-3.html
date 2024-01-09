@@ -1,0 +1,265 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AdministratorBooksService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.services.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdministratorBooksService (com.library.backend.services.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdministratorBooksService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.services.admin;
+&nbsp;
+&nbsp;import com.library.backend.engines.BookInventorySearchEngine;
+&nbsp;import com.library.backend.engines.SearchEngine;
+&nbsp;import com.library.backend.exception.searchengine.SearchEngineException;
+&nbsp;import com.library.backend.services.Service;
+&nbsp;import com.library.database.entities.Book;
+&nbsp;import com.library.database.entities.BookForm;
+&nbsp;import com.library.database.entities.BookInventory;
+&nbsp;import com.library.database.repositories.BookFormRepository;
+&nbsp;import com.library.database.repositories.BookInventoryRepository;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;import org.hibernate.LazyInitializationException;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;import java.util.function.Supplier;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code AdministratorBooksService} class provides functionality for managing book inventories
+&nbsp; * and associated book forms within the administration module. It includes methods for searching book inventories,
+&nbsp; * removing inventories, updating book forms, and retrieving all book inventories.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create an AdministratorBooksService instance with BookInventoryRepository and BookFormRepository
+&nbsp; * AdministratorBooksService booksService = new AdministratorBooksService(BookInventoryRepository.getInstance(), BookFormRepository.getInstance());
+&nbsp; *
+&nbsp; * // Search for book inventories based on a string
+&nbsp; * String searchString = &quot;Java Programming&quot;;
+&nbsp; * Collection&lt;BookInventory&gt; searchResults = booksService.searchBookInventory(searchString);
+&nbsp; *
+&nbsp; * // Remove a book inventory
+&nbsp; * BookInventory inventoryToRemove = // obtain a BookInventory instance;
+&nbsp; * booksService.removeInventory(inventoryToRemove);
+&nbsp; *
+&nbsp; * // Retrieve all book inventories
+&nbsp; * List&lt;BookInventory&gt; allInventories = booksService.getAllBookInventories();
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; * In this example, an {@code AdministratorBooksService} instance is created with the necessary repositories,
+&nbsp; * and various methods are used to search, remove, and retrieve book inventories.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code AdministratorBooksService} class implements the {@link com.library.backend.services.Service Service}
+&nbsp; * interface, providing a common interface for various services in the application.
+&nbsp; *
+&nbsp; * @see com.library.backend.services.Service
+&nbsp; * @see com.library.database.entities.BookInventory
+&nbsp; * @see com.library.database.repositories.BookInventoryRepository
+&nbsp; * @see com.library.database.entities.BookForm
+&nbsp; * @see com.library.database.repositories.BookFormRepository
+&nbsp; * @see com.library.backend.engines.SearchEngine
+&nbsp; * @see com.library.backend.exception.searchengine.SearchEngineException
+&nbsp; */
+&nbsp;@Getter
+&nbsp;public class AdministratorBooksService implements Service {
+&nbsp;
+<b class="nc">&nbsp;    private final static Logger logger = LoggerFactory.getLogger(AdministratorBooksService.class);</b>
+&nbsp;
+<b class="nc">&nbsp;    private final BookInventoryRepository bookInventoryRepository;</b>
+<b class="nc">&nbsp;    private final BookFormRepository bookFormRepository;</b>
+&nbsp;
+<b class="nc">&nbsp;    @Setter</b>
+<b class="nc">&nbsp;    private SearchEngine&lt;BookInventory&gt; searchEngine;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an {@code AdministratorBooksService} instance with the specified repositories.
+&nbsp;     *
+&nbsp;     * @param bookInventoryRepository The repository for accessing book inventory data.
+&nbsp;     * @param bookFormRepository      The repository for accessing book form data.
+&nbsp;     */
+<b class="nc">&nbsp;    public AdministratorBooksService(BookInventoryRepository bookInventoryRepository, BookFormRepository bookFormRepository) {</b>
+<b class="nc">&nbsp;        this.bookInventoryRepository = bookInventoryRepository;</b>
+<b class="nc">&nbsp;        this.bookFormRepository = bookFormRepository;</b>
+<b class="nc">&nbsp;        searchEngine = new BookInventorySearchEngine();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for book inventories based on the provided string using the configured {@link com.library.backend.engines.SearchEngine SearchEngine}.
+&nbsp;     *
+&nbsp;     * @param searchString The string to search for in book inventories.
+&nbsp;     * @return A collection of book inventories matching the search criteria.
+&nbsp;     * @throws SearchEngineException If there is an issue with the search engine.
+&nbsp;     */
+&nbsp;    public Collection&lt;BookInventory&gt; searchBookInventory(String searchString) throws SearchEngineException {
+<b class="nc">&nbsp;        List&lt;BookInventory&gt; inventories = bookInventoryRepository.findAll();</b>
+<b class="nc">&nbsp;        logger.info(&quot;Searching book inventories for: &#39;{}&#39;&quot;, searchString);</b>
+<b class="nc">&nbsp;        return searchEngine.search(inventories, searchString);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the specified {@link com.library.database.entities.BookInventory BookInventory} along with its associated book forms.
+&nbsp;     *
+&nbsp;     * @param inventory The BookInventory instance to be removed.
+&nbsp;     */
+&nbsp;    public void removeInventory(BookInventory inventory) {
+<b class="nc">&nbsp;        updateBookForms(inventory.getBookList());</b>
+&nbsp;
+<b class="nc">&nbsp;        performRepositoryOperation(() -&gt; bookInventoryRepository.delete(inventory), &quot;deleted&quot;, &quot;BookInventory&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the associated {@link com.library.database.entities.BookForm BookForms} by removing specified books.
+&nbsp;     *
+&nbsp;     * @param bookList The list of books to be removed from book forms.
+&nbsp;     */
+&nbsp;    public void updateBookForms(List&lt;Book&gt; bookList) {
+&nbsp;        try {
+<b class="nc">&nbsp;            for (BookForm bookForm : bookFormRepository.findAll()) {</b>
+<b class="nc">&nbsp;                for (Book bookToRemove : bookList) {</b>
+<b class="nc">&nbsp;                    bookForm.getBooks().remove(bookToRemove);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;
+<b class="nc">&nbsp;                if (bookForm.getBooks().isEmpty()) {</b>
+<b class="nc">&nbsp;                    bookFormRepository.delete(bookForm);</b>
+<b class="nc">&nbsp;                    logger.info(&quot;Deleted book form: {}&quot;, bookForm);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    bookFormRepository.update(bookForm);</b>
+<b class="nc">&nbsp;                    logger.info(&quot;Updated book form: {}&quot;, bookForm);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } catch (LazyInitializationException ignored) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all {@link com.library.database.entities.BookInventory BookInventories} from the repository.
+&nbsp;     *
+&nbsp;     * @return A list containing all book inventories.
+&nbsp;     */
+&nbsp;    public List&lt;BookInventory&gt; getAllBookInventories() {
+<b class="nc">&nbsp;        List&lt;BookInventory&gt; inventories = bookInventoryRepository.findAll();</b>
+<b class="nc">&nbsp;        logEntityRetrieval(&quot;book_inventories&quot;, inventories.size());</b>
+<b class="nc">&nbsp;        return inventories;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void logEntityRetrieval(String entityName, int size) {
+<b class="nc">&nbsp;        logger.info(&quot;Retrieved {} {}: {}&quot;, size, entityName, (size == 1 ? &quot;entity&quot; : &quot;entities&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a repository operation and logs the result.
+&nbsp;     *
+&nbsp;     * @param repositoryOperation The operation to be performed on the repository.
+&nbsp;     * @param action              The action being performed (e.g., created, updated, deleted).
+&nbsp;     * @param entityName          The name of the entity being operated on.
+&nbsp;     * @param &lt;T&gt;                 The type of result from the repository operation.
+&nbsp;     */
+&nbsp;    private &lt;T&gt; void performRepositoryOperation(Supplier&lt;T&gt; repositoryOperation, String action, String entityName) {
+<b class="nc">&nbsp;        T result = repositoryOperation.get();</b>
+<b class="nc">&nbsp;        if (result != null) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;{} {} successfully: {}&quot;, entityName, action, entityName);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            logger.error(&quot;Failed to {} {}: {}&quot;, action, entityName, entityName);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

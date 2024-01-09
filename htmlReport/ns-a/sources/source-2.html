@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Validator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.library.backend.validators</a>
+</div>
+
+<h1>Coverage Summary for Class: Validator (com.library.backend.validators)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Validator</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.library.backend.validators;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code Validator} interface defines a contract for classes that perform
+&nbsp; * validation on a given value. Implementing classes should provide an implementation
+&nbsp; * for the {@link #isValid(String)} method to determine whether a value is valid
+&nbsp; * based on specific criteria.
+&nbsp; * &lt;p&gt;
+&nbsp; * Example Usage:
+&nbsp; * &lt;pre&gt;
+&nbsp; * {@code
+&nbsp; * // Create a custom implementation of Validator for a specific validation criteria
+&nbsp; * public class CustomValidator implements Validator {
+&nbsp; *     {@literal @}Override
+&nbsp; *     public boolean isValid(String value) {
+&nbsp; *         // Implement validation logic based on specific criteria
+&nbsp; *         // Return true if the value is valid, false otherwise
+&nbsp; *         // ...
+&nbsp; *     }
+&nbsp; * }
+&nbsp; * }
+&nbsp; * &lt;/pre&gt;
+&nbsp; *
+&nbsp; * @see StrongPasswordValidator
+&nbsp; */
+&nbsp;public interface Validator {
+&nbsp;    /**
+&nbsp;     * Checks whether the provided value is valid based on specific criteria.
+&nbsp;     *
+&nbsp;     * @param value The value to be validated.
+&nbsp;     * @return {@code true} if the value is valid; {@code false} otherwise.
+&nbsp;     */
+&nbsp;    boolean isValid(String value);
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-09 06:36</div>
+</div>
+</body>
+</html>

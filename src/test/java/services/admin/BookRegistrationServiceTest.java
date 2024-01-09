@@ -52,8 +52,8 @@ public class BookRegistrationServiceTest {
         verify(bookInventoryRepository).save(bookInventoryCaptor.capture());
         BookInventory savedInventory = bookInventoryCaptor.getValue();
         assertNotNull(savedInventory);
-        assertEquals(title, savedInventory.getRepresentiveBook().getTitle());
-        assertEquals(author, savedInventory.getRepresentiveBook().getAuthor().getName());
+        assertEquals(title, savedInventory.getRepresentativeBook().getTitle());
+        assertEquals(author, savedInventory.getRepresentativeBook().getAuthor().getName());
         assertEquals(5, savedInventory.getBookList().size());
     }
 
