@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -48,6 +49,10 @@ dependencies {
 
     // JavaFX
     implementation 'org.controlsfx:controlsfx:11.1.2'
+}
+
+jacocoTestReport {
+    dependsOn test
 }
 
 javafx {
