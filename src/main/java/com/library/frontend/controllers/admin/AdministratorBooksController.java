@@ -38,6 +38,7 @@ public class AdministratorBooksController implements Controller {
     @FXML public TableView<BookInventory> inventoryTableView;
     @FXML public AnchorPane anchorPane;
     @FXML public Button logOutButton;
+    public Button inboxButton;
 
     private AdministratorBooksService service;
     private TableViewBuilder<BookInventory> bookInventoryTableViewBuilder;
@@ -199,5 +200,9 @@ public class AdministratorBooksController implements Controller {
         } catch (NoSuchElementException e) {
             DialogUtils.showInfo("Information", "Please select a book!");
         }
+    }
+
+    public void inboxButtonOnMouseClicked(MouseEvent mouseEvent) {
+        service.loadNotifications();
     }
 }

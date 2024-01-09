@@ -7,14 +7,18 @@ import com.library.backend.services.Service;
 import com.library.database.entities.Book;
 import com.library.database.entities.BookForm;
 import com.library.database.entities.BookInventory;
+import com.library.database.enums.BookStatus;
 import com.library.database.repositories.BookFormRepository;
 import com.library.database.repositories.BookInventoryRepository;
+import com.library.utils.DialogUtils;
+import jdk.jshell.execution.Util;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.LazyInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -157,5 +161,19 @@ public class AdministratorBooksService implements Service {
         } else {
             logger.error("Failed to {} {}: {}", action, entityName, entityName);
         }
+    }
+
+    public void loadNotifications(){
+        List<Book> bookList = new ArrayList<>();
+
+        bookInventoryRepository.findAll().forEach(bookInventory -> bookList.addAll(bookInventory.getBookList().stream().filter(book -> book.getBookStatus()== BookStatus.DAMAGED).toList()));
+
+
+        StringBuilder stringBuilder=new StringBuilder();
+        for(Book book:bookList){
+            stringBuilder.append("Title").append(book.getTitle()).append("\tID").append(book.getId()).append(" ").append(book.getBookStatus()).append("\n");;
+        }
+
+        DialogUtils.showInfo("Damaged books",stringBuilder.toString());
     }
 }

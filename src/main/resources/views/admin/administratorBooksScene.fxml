@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="452.0" prefWidth="755.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.admin.AdministratorBooksController">
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#anchorPaneOnMouseClicked" prefHeight="452.0" prefWidth="755.0" style="-fx-background-color: E3A054; -fx-border-width: 4; -fx-border-color: #7C4D16;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.frontend.controllers.admin.AdministratorBooksController">
    <children>
       <Button fx:id="operatorsButton" layoutX="16.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#operatorsButtonOnMouseClicked" prefHeight="26.0" prefWidth="115.0" text="Operators" />
-      <Button fx:id="logOutButton" layoutX="618.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#logOutButtonOnMouseClicked" prefHeight="26.0" prefWidth="122.0" text="Log Out" />
+      <Button fx:id="logOutButton" layoutX="661.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#logOutButtonOnMouseClicked" prefHeight="26.0" prefWidth="79.0" text="Log Out" />
       <TextField fx:id="searchBookTextField" layoutX="148.0" layoutY="21.0" prefHeight="26.0" prefWidth="329.0" promptText="title, author, year, genre" />
-      <Button fx:id="searchBookButton" layoutX="485.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#searchBookButtonOnMouseClicked" prefHeight="26.0" prefWidth="122.0" text="Search book" />
+      <Button fx:id="searchBookButton" layoutX="485.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#searchBookButtonOnMouseClicked" prefHeight="26.0" prefWidth="86.0" text="Search book" />
       <TextArea fx:id="bookTextArea" editable="false" layoutX="484.0" layoutY="71.0" prefHeight="372.0" prefWidth="264.0" wrapText="true" />
       <TableView fx:id="inventoryTableView" layoutX="17.0" layoutY="71.0" onMouseClicked="#booksTableViewOnClicked" prefHeight="372.0" prefWidth="459.0" />
+      <Button fx:id="inboxButton" layoutX="578.0" layoutY="21.0" mnemonicParsing="false" onMouseClicked="#inboxButtonOnMouseClicked" prefHeight="26.0" prefWidth="79.0" text="inbox" />
    </children>
 </AnchorPane>
