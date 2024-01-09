@@ -12,9 +12,6 @@ import lombok.Getter;
  * demoted based on a coefficient, and specific rules are applied to adjust the rating values. The enum includes methods
  * to retrieve the current rating based on the current integer value.</p>
  *
- * <p>The enum also includes a setter for the value, allowing external modification of the rating value. The {@link #increase()}
- * and {@link #decrease()} methods adjust the rating value based on the coefficient and specific rules for rating changes.</p>
- *
  * @see lombok.Getter
  * @see lombok.Setter
  */
@@ -89,42 +86,5 @@ public enum Ratings {
         this.displayValue = displayValue;
         this.value = value;
     }
-
-
-   // public void increase() {
-   //     coefficient++;
-//
-   //     if (value == -1) {
-   //         currentValue=3;
-   //     } else {
-   //         if (coefficient % 5 == 0 && currentValue < 5) {
-   //             currentValue++;
-   //         }
-   //     }
-   // }
-//
-//
-   // public void decrease() {
-   //     coefficient--;
-//
-   //     if (value == -1) {
-   //         currentValue=2;
-   //     } else {
-   //         if ( Math.abs(coefficient) % 5 == 0 && currentValue > 0) {
-   //             currentValue--;
-   //         }
-   //     }
-   // }
-//
-//
-   //public ReaderRating getNewRating(int currentValue) throws IllegalStateException {
-   //    for (ReaderRating readerRating : ReaderRating.values()) {
-   //        if (readerRating.value==currentValue) {
-   //            return readerRating;
-   //        }
-   //    }
-//
-   //    throw new IllegalStateException("No matching Rating for value: " + value);
-   //}
 }
 

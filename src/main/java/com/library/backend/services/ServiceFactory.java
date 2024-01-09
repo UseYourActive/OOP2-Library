@@ -48,7 +48,6 @@ public class ServiceFactory {
      * @param <T>           The type of service.
      * @param serviceClass  The class of the service to be instantiated.
      * @return An instance of the specified service class.
-     * @throws NonExistentServiceException If the provided service class is not found in the enumeration.
      */
     public static <T extends Service> T getService(Class<T> serviceClass) {
         T service = null;

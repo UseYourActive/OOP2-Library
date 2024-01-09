@@ -26,12 +26,10 @@ package com.library.backend.services;
  *   }
  * }
  * </pre>
- * </p>
- * <p>
  * Note: This interface does not enforce any specific methods, allowing flexibility in
  * implementation details. It is up to individual services to define and document the
  * necessary methods based on their requirements.
- * </p>
+ *
  */
 public interface Service {
     // This interface intentionally left blank. Implementors should define methods as needed.

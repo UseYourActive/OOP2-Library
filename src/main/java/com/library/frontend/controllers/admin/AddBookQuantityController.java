@@ -25,12 +25,15 @@ import java.util.ResourceBundle;
  * @see Controller
  */
 public class AddBookQuantityController implements Controller {
-
+    /** Text field for inputting the quantity to be added. */
     @FXML public TextField quantityTextField;
+    /** Button to trigger the addition of quantity. */
     @FXML public Button addButton;
+    /** Label for displaying information or error messages. */
     @FXML public Label informationLabel;
-
+    /** Service for handling the addition of book quantity. */
     private AddBookQuantityService service;
+    /** The book inventory instance used by the controller. */
     private BookInventory bookInventory;
 
     /**
